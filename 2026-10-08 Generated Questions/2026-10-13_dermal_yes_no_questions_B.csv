@@ -1,0 +1,501 @@
+﻿Question ID,Topic,Question,Sources cited,Grounding
+Y001,Acquisition & modality,Is the image a dermoscopic (dermatoscopic) image rather than a naked-eye clinical photograph?,Dinnes 2018b; Finnane 2017,source-supported
+Y002,Acquisition & modality,Is the image a close-up clinical photograph framed on a single lesion?,Finnane 2017,source-supported
+Y003,Acquisition & modality,Is the image a regional overview photograph showing a body region rather than one lesion?,Finnane 2017,source-supported
+Y004,Acquisition & modality,Does the image appear to be a lesion crop extracted from 3D total-body photography?,Kurtansky 2024; Saha 2025,source-supported
+Y005,Acquisition & modality,Does the image appear to have been captured with a smartphone camera?,Pacheco 2020; Chuchu 2018b,source-supported
+Y006,Acquisition & modality,Does the image show suppressed surface glare consistent with cross-polarized acquisition?,Ghosh 2008,source-supported
+Y007,Acquisition & modality,"Does the image show signs of non-polarized contact dermoscopy, such as an immersion-fluid layer or contact-plate edge?",,standard term
+Y008,Acquisition & modality,Is the dark circular edge of the dermoscope's field of view visible in the frame?,,not named in sources
+Y009,Acquisition & modality,"Is a ruler, scale bar or other size reference visible in the image?",Katragadda 2017,source-supported
+Y010,Acquisition & modality,Is a colour-calibration chart or reference patch visible in the image?,Katragadda 2017; Finnane 2017,source-supported
+Y011,Acquisition & modality,Is the background around the imaged body part plain and uncluttered?,Katragadda 2017,source-supported
+Y012,Acquisition & modality,Is the lesion approximately centred in the frame?,Katragadda 2017; Saha 2025,source-supported
+Y013,Acquisition & modality,"Is the entire lesion, including all of its border, contained within the frame?",Katragadda 2017,source-supported
+Y014,Acquisition & modality,Is an orientation marker (for example an arrow pointing toward the head) visible in the image?,Katragadda 2017,source-supported
+Y015,Acquisition & modality,Is the image a greyscale or single-channel image rather than a colour image?,,not named in sources
+Y016,Acquisition & modality,Is the image a narrow-band or multispectral channel image rather than a standard RGB photograph?,Moncrieff 2002; Hosking 2019,source-supported
+Y017,Acquisition & modality,"Is the image a reflectance confocal microscopy (horizontal, cellular-resolution) section?",Dinnes 2018d; Pellacani 2022,source-supported
+Y018,Acquisition & modality,Is the image an OCT or line-field confocal OCT cross-section?,Ferrante di Ruffano 2018; Cinotti 2023,source-supported
+Y019,Acquisition & modality,Is the image a high-frequency ultrasound scan of the lesion?,Sellyn 2025,source-supported
+Y020,Acquisition & modality,Is the image a SIAscopy-style parametric chromophore map rather than a colour photograph?,Moncrieff 2002; Claridge 2003,source-supported
+Y021,Acquisition & modality,Does the image appear to be synthetically generated (GAN or diffusion) rather than photographed?,Bissoto 2021; Izu-Belloso 2025,source-supported
+Y022,Acquisition & modality,"Does the image show signs of digital post-processing such as super-resolution, denoising or colour standardization?",Izu-Belloso 2025,source-supported
+Y023,Acquisition & modality,Is the lesion lit by a direct on-camera flash that produces a hard reflection?,,not named in sources
+Y024,Acquisition & modality,"Is illumination uneven across the lesion, with one side noticeably darker than the other?",Katragadda 2017,source-supported
+Y025,Acquisition & modality,Does the image appear to be magnified roughly 10x or more relative to a standard close-up?,,standard term
+Y026,Acquisition & modality,"Is the skin surface viewed at a markedly oblique angle, causing perspective distortion of the lesion?",Katragadda 2017,source-supported
+Y027,Acquisition & modality,Does the image show the lesion under transillumination (light passing through tissue from the side)?,D'Alessandro 2012,source-supported
+Y028,Acquisition & modality,Is the image a non-centred skin-region crop containing several candidate lesions?,Saha 2025,source-supported
+Y029,Acquisition & modality,Is the image a still frame captured from video?,,not named in sources
+Y030,Acquisition & modality,Is the lesion photographed under ultraviolet or Wood's lamp illumination?,,standard term
+Y031,Acquisition & modality,Is diascopy (glass pressed on the lesion to blanch it) being performed in the image?,,standard term
+Y032,Acquisition & modality,Is a smartphone dermoscope adapter visible in the frame?,,not named in sources
+Y033,Acquisition & modality,Is the skin being stretched or pinched by fingers during capture?,,not named in sources
+Y034,Acquisition & modality,Is the lesion lit by coloured (non-white) light?,,not named in sources
+Y035,Acquisition & modality,Do some structures appear in only one of a paired polarized and non-polarized image?,Ghosh 2008,source-supported
+Y036,Image quality & artefacts,Is the lesion in sharp focus across most of its area?,Katragadda 2017,source-supported
+Y037,Image quality & artefacts,Is motion blur visible in the image?,,not named in sources
+Y038,Image quality & artefacts,Is the resolution high enough to resolve individual dots a fraction of a millimetre across?,Katragadda 2017,source-supported
+Y039,Image quality & artefacts,Are hairs lying over the lesion?,Mirikharaji 2023; Combalia 2022,source-supported
+Y040,Image quality & artefacts,Do overlying hairs obscure more than about a quarter of the lesion area?,,not named in sources
+Y041,Image quality & artefacts,Are air bubbles visible in the dermoscopy immersion fluid?,Mirikharaji 2023,source-supported
+Y042,Image quality & artefacts,Are surgical-pen or skin-marker ink marks visible on or near the lesion?,Combalia 2022,source-supported
+Y043,Image quality & artefacts,"Is an adhesive dot, sticker or label visible on the skin?",,not named in sources
+Y044,Image quality & artefacts,Are blown-out (overexposed) highlights present within the lesion?,,not named in sources
+Y045,Image quality & artefacts,Is the image underexposed so that structures in dark regions of the lesion are lost?,,not named in sources
+Y046,Image quality & artefacts,Does the image have an obvious colour cast (for example strongly yellow or blue white balance)?,Katragadda 2017,source-supported
+Y047,Image quality & artefacts,Are JPEG compression blocks or colour banding visible?,,not named in sources
+Y048,Image quality & artefacts,"Is the lesion partly hidden by clothing, jewellery, a glove or fingers?",,not named in sources
+Y049,Image quality & artefacts,Is a tattoo visible within or immediately adjacent to the lesion?,,not named in sources
+Y050,Image quality & artefacts,Are smears or streaks of dermoscopy gel obscuring structures?,,not named in sources
+Y051,Image quality & artefacts,"Is visible makeup, cream or sunscreen residue present on the skin?",Weyrich 2006,source-supported
+Y052,Image quality & artefacts,"Does the skin look wet or sweaty, adding extra specular reflection?",Weyrich 2006,source-supported
+Y053,Image quality & artefacts,Is lesion-to-skin contrast so low that the lesion edge is hard to locate?,Mirikharaji 2023,source-supported
+Y054,Image quality & artefacts,"Is blanching from dermoscope contact pressure visible, potentially hiding vessels?",,standard term
+Y055,Image quality & artefacts,Would a reader likely judge the image unevaluable for diagnosis?,Chuchu 2018b,source-supported
+Y056,Image quality & artefacts,"Is a biopsy site, scar or suture from a previous procedure visible on the lesion?",,not named in sources
+Y057,Image quality & artefacts,"Are text annotations, watermarks or timestamps burned into the image?",,not named in sources
+Y058,Image quality & artefacts,Is the image a composite or collage of several views?,,not named in sources
+Y059,Image quality & artefacts,Are de-identification masks (blurred or blacked-out regions) visible in the image?,Primiero 2024,source-supported
+Y060,Image quality & artefacts,Are vertical or horizontal sensor-noise streaks visible across the image?,,not named in sources
+Y061,Image quality & artefacts,Is chromatic aberration (coloured fringes at high-contrast edges) visible?,,not named in sources
+Y062,Image quality & artefacts,Is there visible digital zoom pixelation around the lesion?,,not named in sources
+Y063,Image quality & artefacts,Is depth of field so shallow that part of a raised lesion is out of focus?,,not named in sources
+Y064,Image quality & artefacts,Are reflections from the dermoscope's LED ring visible?,,not named in sources
+Y065,Image quality & artefacts,Is high-ISO sensor noise (grain) visible?,,not named in sources
+Y066,Image quality & artefacts,Is the lesion near an image corner where lens distortion is greatest?,,not named in sources
+Y067,Image quality & artefacts,Is the lesion fewer than about 100 pixels across in the image?,,not named in sources
+Y068,Image quality & artefacts,Is the image mirrored or flipped (for example reversed text)?,,not named in sources
+Y069,Image quality & artefacts,"Are unmasked patient identifiers (face, identifying tattoo, name tag) visible?",Primiero 2024,source-supported
+Y070,Anatomical site,Is the lesion located on the face?,Zalaudek 2012; Forsea 2026,source-supported
+Y071,Anatomical site,Is the lesion located on the scalp?,,standard term
+Y072,Anatomical site,Is the lesion located on the ear?,,standard term
+Y073,Anatomical site,Is the lesion located on the neck?,,standard term
+Y074,Anatomical site,Is the lesion located on the trunk?,Fernandez 2023,source-supported
+Y075,Anatomical site,Is the lesion located on an upper limb?,,standard term
+Y076,Anatomical site,Is the lesion located on a lower limb?,Fernandez 2023,source-supported
+Y077,Anatomical site,Is the lesion on acral volar skin (palm or sole)?,Fernandez 2023,source-supported
+Y078,Anatomical site,Does the image show the nail apparatus?,Hernández-Pérez 2024,source-supported
+Y079,Anatomical site,"Is the lesion on mucosal or mucocutaneous skin (lip, oral, genital)?",Hernández-Pérez 2024,source-supported
+Y080,Anatomical site,Is the lesion on a chronically sun-exposed site such as the dorsal hand or forearm?,Forsea 2026; Kandolf 2024,source-supported
+Y081,Anatomical site,Can the anatomical site be identified from landmarks visible in the image?,Saha 2025,source-supported
+Y082,Anatomical site,Is the lesion in a skin fold or intertriginous area?,,standard term
+Y083,Anatomical site,Is the lesion on the breast or nipple-areola region?,,standard term
+Y084,Anatomical site,Is the lesion on the shin (pretibial skin)?,,standard term
+Y085,Anatomical site,Is the lesion arising within a burn scar or chronic wound?,,standard term
+Y086,Anatomical site,Is the lesion on the eyelid or eyelid margin?,,standard term
+Y087,Anatomical site,Is the lesion in an interdigital (between fingers or toes) space?,,standard term
+Y088,Anatomical site,Is the lesion on the heel or another weight-bearing acral site?,,standard term
+Y089,Anatomical site,Is the lesion on genital skin?,,standard term
+Y090,Global category gestalt,"Does the lesion appear melanocytic (network, globules, streaks, homogeneous blue or parallel pattern)?",,standard term
+Y091,Global category gestalt,Does the lesion appear keratinocytic rather than melanocytic?,,standard term
+Y092,Global category gestalt,Does the lesion appear primarily vascular?,,standard term
+Y093,Global category gestalt,Does the lesion appear inflammatory rather than neoplastic?,,standard term
+Y094,Global category gestalt,"Does the lesion appear infectious (e.g., wart, molluscum, fungal or bacterial)?",,standard term
+Y095,Primary morphology,"Does the lesion appear flat, as a macule or patch?",Nast 2016,source-supported
+Y096,Primary morphology,Does the lesion appear as a small raised papule (under about 1 cm)?,Nast 2016,source-supported
+Y097,Primary morphology,Does the lesion appear as a plaque (raised and broader than it is tall)?,Nast 2016,source-supported
+Y098,Primary morphology,"Does the lesion appear as a nodule (raised, about 1 cm or more, with apparent depth)?",Nast 2016,source-supported
+Y099,Primary morphology,Are vesicles (small fluid-filled blisters) present?,Nast 2016,source-supported
+Y100,Primary morphology,Are bullae (blisters larger than about 1 cm) present?,,standard term
+Y101,Primary morphology,Are pustules present?,,standard term
+Y102,Primary morphology,"Does the lesion look like a wheal (oedematous, pale-centred swelling)?",,standard term
+Y103,Primary morphology,Does the lesion look cystic?,,standard term
+Y104,Primary morphology,Is the lesion pedunculated (attached by a narrow stalk)?,,standard term
+Y105,Primary morphology,Is the lesion dome-shaped?,,standard term
+Y106,Primary morphology,Is the lesion verrucous (warty) on its surface?,,standard term
+Y107,Primary morphology,Is the lesion umbilicated (has a central depression)?,,standard term
+Y108,Primary morphology,Is there a focal raised component within an otherwise flat lesion?,,standard term
+Y109,Primary morphology,Is the lesion depressed below the surrounding skin surface?,,standard term
+Y110,Primary morphology,Are several similar lesions grouped in a cluster?,,standard term
+Y111,Primary morphology,Are lesions arranged in a line?,,standard term
+Y112,Primary morphology,Is the lesion annular (ring-shaped with a clearer centre)?,,standard term
+Y113,Primary morphology,Does the lesion have a targetoid configuration (concentric rings of colour)?,,standard term
+Y114,Primary morphology,"Is the lesion centrally raised with a flat pigmented rim (""fried-egg"" appearance)?",,standard term
+Y115,Primary morphology,Does the lesion appear to be a flat-topped polygonal papule?,,standard term
+Y116,Primary morphology,Is the lesion filiform (thread-like projections)?,,standard term
+Y117,Primary morphology,Is the lesion sessile (broad-based) and exophytic?,,standard term
+Y118,Primary morphology,Is a central punctum visible?,,standard term
+Y119,Primary morphology,"Does the lesion appear as a burrow (thin, wavy, greyish track)?",,standard term
+Y120,Primary morphology,Does the lesion look keloidal or like a hypertrophic scar?,,standard term
+Y121,Primary morphology,Are separate satellite papules present within about 2 cm of the main lesion?,,standard term
+Y122,Surface & secondary changes,Is ulceration present?,Menzies 2000; Rogers 2016; Zalaudek 2012,source-supported
+Y123,Surface & secondary changes,Is a superficial erosion present without full ulceration?,,standard term
+Y124,Surface & secondary changes,Is haemorrhagic (dark red-black) crust present?,,standard term
+Y125,Surface & secondary changes,Is yellow serous or honey-coloured crust present?,,standard term
+Y126,Surface & secondary changes,Is active oozing or exudate visible?,MacKie 1990,source-supported
+Y127,Surface & secondary changes,Is fresh bleeding visible from the lesion?,,standard term
+Y128,Surface & secondary changes,Is any surface scale present?,Zalaudek 2012,source-supported
+Y129,Surface & secondary changes,"Does the lesion have a translucent, pearly sheen?",,standard term
+Y130,Surface & secondary changes,Is the surface papillomatous (cerebriform folds)?,,standard term
+Y131,Surface & secondary changes,Is a fissure or crack visible in the surface?,,standard term
+Y132,Surface & secondary changes,Is lichenification (thickened skin with exaggerated markings) present?,,standard term
+Y133,Surface & secondary changes,"Does the lesion show atrophy (thin, finely wrinkled, shiny skin)?",,standard term
+Y134,Surface & secondary changes,Is a cutaneous horn (projecting column of keratin) present?,,standard term
+Y135,Surface & secondary changes,Are excoriations (scratch marks) present?,,standard term
+Y136,Surface & secondary changes,Is the lesion surface rougher than the surrounding skin?,Linming 2018,source-supported
+Y137,Surface & secondary changes,Is a white crust or scale layer covering most of the lesion so that underlying structures cannot be seen?,,not named in sources
+Y138,Surface & secondary changes,Are punctate haemorrhages (pinpoint blood spots) visible within the lesion?,,standard term
+Y139,Surface & secondary changes,Is the surface glossy and taut as if stretched over a swelling?,,not named in sources
+Y140,Surface & secondary changes,Is the lesion surface finely pitted?,,standard term
+Y141,Surface & secondary changes,Is the lesion surface lobulated (several rounded bumps)?,,standard term
+Y142,Surface & secondary changes,Is the surface covered by a thick black eschar?,,standard term
+Y143,Size & shape,Is the lesion's largest diameter greater than 6 mm?,Friedman 1985; Abbasi 2004,source-supported
+Y144,Size & shape,Is the lesion smaller than 2 mm in largest diameter?,Betz-Stablein 2022,source-supported
+Y145,Size & shape,Is the lesion outline asymmetric about at least one axis?,Friedman 1985; Nachbar 1994; Soyer 2004,source-supported
+Y146,Size & shape,Is the lesion outline asymmetric about both of two perpendicular axes?,,standard term
+Y147,Size & shape,"Is the arrangement of internal structures asymmetric (asymmetry of pattern, not just of outline)?",Menzies 1996; Henning 2007,source-supported
+Y148,Size & shape,Is the distribution of colours asymmetric across the lesion?,,standard term
+Y149,Size & shape,Is the lesion round or oval in outline?,,standard term
+Y150,Size & shape,Does the outline have several lobes (polycyclic)?,,standard term
+Y151,Size & shape,Is the long axis more than twice the short axis (markedly elongated)?,,not named in sources
+Y152,Size & shape,Does the outline contain marked concavities (low solidity relative to its convex hull)?,,not named in sources
+Y153,Size & shape,Are there detached pigmented islands separate from the main lesion body?,,not named in sources
+Y154,Size & shape,Is the lesion's long axis aligned with the local skin creases or cleavage lines?,,standard term
+Y155,Size & shape,Is the lesion's area more than half of the visible image area?,,not named in sources
+Y156,Size & shape,Is the lesion triangular or wedge-shaped?,,not named in sources
+Y157,Size & shape,Is the perimeter-to-area ratio high compared with a circle of the same area (high irregularity index)?,,standard term
+Y158,Size & shape,Does the lesion look taller than it is wide (tall exophytic papule)?,,not named in sources
+Y159,Border,Is the border irregular?,Friedman 1985; Nachbar 1994,source-supported
+Y160,Border,Is the pigment pattern abruptly cut off at the border in at least one segment?,,standard term
+Y161,Border,"Is the border ill-defined, fading gradually into surrounding skin over most of the perimeter?",Forsea 2026,source-supported
+Y162,Border,Is the border notched?,,standard term
+Y163,Border,Is the border sharply demarcated around the entire perimeter?,,standard term
+Y164,Border,"Is there a rolled, raised border?",,standard term
+Y165,Border,Is there a red inflammatory halo around the lesion?,MacKie 1990,source-supported
+Y166,Border,Is the border sharper on one side of the lesion than on the other?,,not named in sources
+Y167,Border,"Does the border have a 'moth-eaten' (finely eroded, concave) outline?",,standard term
+Y168,Border,Is any segment of the border straight or angular?,,not named in sources
+Y169,Colour,Does the lesion contain three or more distinct colours?,Friedman 1985; Nachbar 1994,source-supported
+Y170,Colour,Is the lesion a single colour throughout?,Menzies 1996,source-supported
+Y171,Colour,Is light brown present?,,standard term
+Y172,Colour,Is dark brown present?,,standard term
+Y173,Colour,Is black present?,,standard term
+Y174,Colour,Is blue-grey present?,Rogers 2016; Rosendahl 2011,source-supported
+Y175,Colour,Is red or pink present within the lesion?,,standard term
+Y176,Colour,Is white (scar-like or milky) colour present?,,standard term
+Y177,Colour,Is yellow or orange colour present that is not due to scale?,,standard term
+Y178,Colour,Is a purple or violaceous tone present?,,standard term
+Y179,Colour,Is the lesion largely non-pigmented (amelanotic or hypomelanotic)?,Hernández-Pérez 2024,source-supported
+Y180,Colour,Is the lesion's mean lightness (L*) clearly lower than that of the surrounding skin?,Lipnick 2026,source-supported
+Y181,Colour,Is redness (CIELAB a*) clearly higher in the lesion than in the surrounding skin?,,standard term
+Y182,Colour,Is the spread of colours within the lesion (in CIELAB) unusually wide?,,not named in sources
+Y183,Colour,Is the lesion uniformly steel-blue?,,standard term
+Y184,Colour,Do the lesion's colours change gradually from centre to edge (radial colour gradient)?,,not named in sources
+Y185,Colour,"Is the dominant hue of the lesion outside the brown range (for example red, blue or yellow)?",,not named in sources
+Y186,Colour,"Is chalky or porcelain-white colour present, distinct from shiny white structures?",,standard term
+Y187,Colour,Is yellowness (CIELAB b*) clearly higher in the lesion than in the surrounding skin?,,standard term
+Y188,Colour,Is colour saturation markedly higher in the lesion than in the surrounding skin?,,not named in sources
+Y189,Colour,Does erythema appear violaceous or dark brown rather than red because of the background skin tone?,,standard term
+Y190,Colour,Is rust-brown (haemosiderin-like) staining visible?,,standard term
+Y191,Colour,Is grey colour present without a blue tint?,,standard term
+Y192,Pigment distribution & global pattern,Is pigmentation homogeneous across the lesion?,Henning 2007,source-supported
+Y193,Pigment distribution & global pattern,Is there eccentric (off-centre) hyperpigmentation?,,standard term
+Y194,Pigment distribution & global pattern,Is there central hyperpigmentation with a lighter periphery?,,standard term
+Y195,Pigment distribution & global pattern,Is there peripheral hyperpigmentation with a lighter centre?,,standard term
+Y196,Pigment distribution & global pattern,Are there multiple scattered foci of hyper- and hypopigmentation?,,standard term
+Y197,Pigment distribution & global pattern,Are irregular blotches (dark structureless areas) present?,,standard term
+Y198,Pigment distribution & global pattern,Is the global pattern reticular?,,standard term
+Y199,Pigment distribution & global pattern,Is the global pattern globular?,,standard term
+Y200,Pigment distribution & global pattern,Is the global pattern starburst (symmetric radial lines or dots around the whole perimeter)?,Rogers 2016,source-supported
+Y201,Pigment distribution & global pattern,Is the global pattern multicomponent (three or more distinct zones)?,,standard term
+Y202,Pigment distribution & global pattern,Is the global pattern two-component (for example reticular plus globular)?,,standard term
+Y203,Pigment distribution & global pattern,Does the lesion show architectural disorder (chaotic arrangement of structures)?,Rogers 2016; Rosendahl 2011; Henning 2007,source-supported
+Y204,Pigment distribution & global pattern,Does the lesion show no specific dermoscopic structures at all (featureless)?,Kittler 2006; Menzies 1996,source-supported
+Y205,Pigment distribution & global pattern,Is a reticular-network rim present around a structureless centre?,,standard term
+Y206,Pigment distribution & global pattern,Is there a focal area that looks distinctly more atypical than the rest of the lesion (a biopsy target)?,Forsea 2026,source-supported
+Y207,Pigment distribution & global pattern,Is the darkest area of the lesion also its most elevated area?,,not named in sources
+Y208,Network & lines,Is a pigment network present?,Menzies 2000,source-supported
+Y209,Network & lines,"Is the pigment network atypical (irregular holes and thickened, darkened lines)?",Argenziano 1998; Soyer 2004,source-supported
+Y210,Network & lines,Does the network fade out gradually toward the periphery?,,standard term
+Y211,Network & lines,Is a negative (inverse) network present?,,standard term
+Y212,Network & lines,Is the network confined to only part of the lesion?,,standard term
+Y213,Network & lines,Are lines present (in descriptive terminology)?,Kittler 2016,source-supported
+Y214,Network & lines,Are circles present (in descriptive terminology)?,Kittler 2016,source-supported
+Y215,Network & lines,Are branched streaks present?,,standard term
+Y216,Network & lines,Are dots located in the centre of the network holes (target network)?,,standard term
+Y217,Network & lines,Is the network delicate and light brown throughout?,,standard term
+Y218,Network & lines,Are network lines broken into segments rather than continuous?,,standard term
+Y219,Network & lines,Are network holes markedly variable in size?,,standard term
+Y220,"Dots, globules & clods",Are dots present?,Kittler 2016,source-supported
+Y221,"Dots, globules & clods",Are clods (globules) present?,Kittler 2016,source-supported
+Y222,"Dots, globules & clods","Are dots or globules irregular in size, shape or distribution?",,standard term
+Y223,"Dots, globules & clods",Are globules arranged as a rim at the periphery?,,standard term
+Y224,"Dots, globules & clods",Are black dots present at the periphery?,,standard term
+Y225,"Dots, globules & clods",Are globules arranged in a cobblestone pattern?,,standard term
+Y226,"Dots, globules & clods",Are dots arranged in lines (linear arrangement of dots)?,,standard term
+Y227,"Dots, globules & clods",Are brown clods polygonal (angular) rather than round?,,standard term
+Y228,Streaks & peripheral projections,Are streaks or pseudopods present at the periphery?,,standard term
+Y229,Streaks & peripheral projections,Are streaks present only in part of the perimeter (irregular streaks)?,,standard term
+Y230,Streaks & peripheral projections,Do peripheral lines have bulbous ends (pseudopods)?,,standard term
+Y231,"Structureless areas, veils & regression",Is a blue-white veil present?,Argenziano 1998,source-supported
+Y232,"Structureless areas, veils & regression",Is blue-grey peppering (fine grey granules) present?,,standard term
+Y233,"Structureless areas, veils & regression","Are shiny white structures (white lines, chrysalis) visible under polarized light?",Rogers 2016; Rosendahl 2011; Kittler 2016,source-supported
+Y234,"Structureless areas, veils & regression",Are rosettes (four bright dots in a square) visible?,,standard term
+Y235,"Structureless areas, veils & regression",Is a structureless brown area present?,,standard term
+Y236,"Structureless areas, veils & regression",Is a white structureless area present?,Zalaudek 2012,source-supported
+Y237,"Structureless areas, veils & regression",Is a peripheral tan structureless zone present?,,standard term
+Y238,"Structureless areas, veils & regression",Is a blue-black colour present in a raised part of the lesion (blue-black sign)?,,standard term
+Y239,"Structureless areas, veils & regression",Do structureless areas occupy more than half of the lesion?,,not named in sources
+Y240,Vascular structures,Are any vessels visible within the lesion?,Argenziano 1998,source-supported
+Y241,Vascular structures,Is the vascular pattern atypical?,Argenziano 1998; Rogers 2016,source-supported
+Y242,Vascular structures,Are arborizing (tree-like branching) vessels present?,Menzies 2000,source-supported
+Y243,Vascular structures,Are dotted vessels present?,Zalaudek 2012,source-supported
+Y244,Vascular structures,Are glomerular (coiled) vessels present?,Zalaudek 2012,source-supported
+Y245,Vascular structures,Are hairpin vessels present?,Zalaudek 2012,source-supported
+Y246,Vascular structures,Are linear-irregular vessels present?,Zalaudek 2012,source-supported
+Y247,Vascular structures,Are comma-shaped vessels present?,,standard term
+Y248,Vascular structures,"Are crown vessels present (around the periphery, not crossing the centre)?",,standard term
+Y249,Vascular structures,Are polymorphous vessels (two or more vessel types) present?,,standard term
+Y250,Vascular structures,Are short fine superficial telangiectasias present?,,standard term
+Y251,Vascular structures,Are vessels arranged as strings of pearls?,,standard term
+Y252,Vascular structures,Are vessels surrounded by a white halo?,,standard term
+Y253,Vascular structures,Are the vessels sharply in focus rather than blurred?,,standard term
+Y254,Vascular structures,Are vessels evenly distributed across the lesion?,,standard term
+Y255,Vascular structures,Are milky-red areas present?,,standard term
+Y256,Vascular structures,Are corkscrew vessels present?,,standard term
+Y257,Vascular structures,Are telangiectasias visible on the skin around the lesion?,,standard term
+Y258,Vascular structures,Are vessels confined to the centre of the lesion?,,not named in sources
+Y259,Vascular structures,Are spermatozoa-like (dotted plus short linear) vessels present?,,standard term
+Y260,Vascular structures,Are rainbow-pattern colours visible under polarized light?,,standard term
+Y261,Vascular structures,Are vessels visible beneath a translucent or shiny surface?,,standard term
+Y262,Basal cell carcinoma clues,Are large blue-grey ovoid nests present?,Menzies 2000,source-supported
+Y263,Basal cell carcinoma clues,Are multiple blue-grey globules present?,Menzies 2000,source-supported
+Y264,Basal cell carcinoma clues,Are leaf-like areas present?,Menzies 2000,source-supported
+Y265,Basal cell carcinoma clues,Are spoke-wheel areas present?,Menzies 2000; Kittler 2016,source-supported
+Y266,Basal cell carcinoma clues,Are concentric structures (a globule inside a globule) present?,,standard term
+Y267,Basal cell carcinoma clues,Are multiple small erosions present?,,standard term
+Y268,Basal cell carcinoma clues,Are blue-grey dots in sharp focus?,,standard term
+Y269,Basal cell carcinoma clues,"In an LC-OCT image, is a ""millefeuille"" lobular pattern visible?",Mtimet 2025,source-supported
+Y270,Basal cell carcinoma clues,Is pigment present only as blue-grey structures with no brown network?,Menzies 2000,source-supported
+Y271,"Keratinocyte lesion clues (AK, Bowen disease, SCC)",Is a red pseudonetwork (strawberry pattern) present?,Zalaudek 2012,source-supported
+Y272,"Keratinocyte lesion clues (AK, Bowen disease, SCC)",Is yellow scale present?,Zalaudek 2012,source-supported
+Y273,"Keratinocyte lesion clues (AK, Bowen disease, SCC)",Is a central keratin mass present?,Zalaudek 2012,source-supported
+Y274,"Keratinocyte lesion clues (AK, Bowen disease, SCC)",Are white circles around follicular openings present?,,standard term
+Y275,"Keratinocyte lesion clues (AK, Bowen disease, SCC)",Are keratin plugs (white or yellow dots) visible in follicular openings?,,standard term
+Y276,"Keratinocyte lesion clues (AK, Bowen disease, SCC)",Does the lesion look very thick and hyperkeratotic (Olsen grade III appearance)?,Olsen 1991 (metadata_only),source-supported
+Y277,"Keratinocyte lesion clues (AK, Bowen disease, SCC)",Are several AK-like lesions visible on the surrounding sun-damaged skin (field cancerization)?,Kandolf 2024,source-supported
+Y278,"Keratinocyte lesion clues (AK, Bowen disease, SCC)",Does the lesion have a central keratin-filled crater (keratoacanthoma-like)?,,standard term
+Y279,"Keratinocyte lesion clues (AK, Bowen disease, SCC)",Are blood spots visible within keratin or scale?,,standard term
+Y280,"Keratinocyte lesion clues (AK, Bowen disease, SCC)",Are brown dots arranged linearly at the periphery (pigmented Bowen pattern)?,,standard term
+Y281,"Keratinocyte lesion clues (AK, Bowen disease, SCC)",Are glomerular vessels clustered in groups across the lesion?,,standard term
+Y282,"Keratinocyte lesion clues (AK, Bowen disease, SCC)","Is the lesion barely visible, with only faint erythema or scale (Olsen grade I appearance)?",Olsen 1991 (metadata_only),source-supported
+Y283,"Keratinocyte lesion clues (AK, Bowen disease, SCC)",Does the lesion look moderately thick (Olsen grade II appearance)?,Olsen 1991 (metadata_only),source-supported
+Y284,"Keratinocyte lesion clues (AK, Bowen disease, SCC)",Are white structureless round areas (keratin pearls) present?,,standard term
+Y285,Benign-lesion clues,"Are red, blue or purple lacunae present (angioma pattern)?",Rogers 2016,source-supported
+Y286,Benign-lesion clues,Is there a central white patch with a delicate peripheral network (dermatofibroma pattern)?,Rogers 2016,source-supported
+Y287,Benign-lesion clues,Are milia-like cysts present?,,standard term
+Y288,Benign-lesion clues,Are comedo-like openings present?,,standard term
+Y289,Benign-lesion clues,Are fissures and ridges (brain-like pattern) present?,,standard term
+Y290,Benign-lesion clues,Are fingerprint-like curved parallel lines present?,,standard term
+Y291,Benign-lesion clues,"Does the lesion look ""stuck-on"" to the skin?",,standard term
+Y292,Benign-lesion clues,Is there a halo of depigmentation around the lesion?,,standard term
+Y293,Benign-lesion clues,Are terminal hairs more numerous within the lesion than around it?,,standard term
+Y294,Benign-lesion clues,Are regularly spaced red or black dots surrounded by white halos within papillae (wart pattern)?,,standard term
+Y295,Benign-lesion clues,"Is the lesion a uniformly light-brown, sharply demarcated flat patch (café-au-lait-like)?",,standard term
+Y296,Benign-lesion clues,"Does the lesion look clearly benign at first glance (angioma, dermatofibroma or seborrhoeic keratosis)?",Rogers 2016,source-supported
+Y297,Benign-lesion clues,Are yellow lobular structures with crown vessels present (sebaceous hyperplasia pattern)?,,standard term
+Y298,Benign-lesion clues,Are dark red-black lacunae present (thrombosed angioma)?,,standard term
+Y299,Benign-lesion clues,Is a white collarette with reddish homogeneous centre present (pyogenic granuloma pattern)?,,standard term
+Y300,Benign-lesion clues,Are ring-like globules present at the periphery of a pale centre?,,standard term
+Y301,Benign-lesion clues,Is the lesion dome-shaped and soft-looking with comma vessels (dermal nevus pattern)?,,standard term
+Y302,Benign-lesion clues,Is there a white-yellow structureless area with central pore (molluscum-like)?,,standard term
+Y303,Benign-lesion clues,"Are thick, curved, finger-like lines (""fat fingers"") present?",,standard term
+Y304,Benign-lesion clues,"Is a translucent light-brown, jelly-like structureless area present?",,standard term
+Y305,Benign-lesion clues,Is a central dimple visible where the skin is pinched around the lesion?,,standard term
+Y306,Other entity-specific clues,"Is the lesion bordered by a thin, double-edged white keratin ridge (porokeratosis-type cornoid track)?",,standard term
+Y307,Other entity-specific clues,Is a delta-wing (jet-with-contrail) structure present?,,standard term
+Y308,Other entity-specific clues,Is an arthropod or part of one visible in the lesion?,,standard term
+Y309,Other entity-specific clues,"Is a yellow-orange ""setting sun"" pattern present?",,standard term
+Y310,Other entity-specific clues,"Are vessels arranged around pink-white clods (poroma-type ""frog-spawn"" pattern)?",,standard term
+Y311,Other entity-specific clues,Are clear or whitish-yellow lacunae present (lymphangioma pattern)?,,standard term
+Y312,Other entity-specific clues,Does pigment lie within or extend beyond a linear surgical scar?,,standard term
+Y313,Other entity-specific clues,Is a central blue structureless area surrounded by a brown network or globules (combined-nevus pattern)?,,standard term
+Y314,Other entity-specific clues,"Is a black, bizarre ""ink-spot"" reticular network present?",,standard term
+Y315,Other entity-specific clues,Does the lesion look like a collision of two different lesion types?,,standard term
+Y316,Other entity-specific clues,Is blue-black pigment arranged in geometric or linear shapes suggesting exogenous material?,,standard term
+Y317,Other entity-specific clues,Are red-black globules with a sharp distal edge present on acral skin (subcorneal haematoma pattern)?,,standard term
+Y318,Other entity-specific clues,Is a central dark structureless area combined with symmetric peripheral pseudopods (Reed-type pattern)?,,standard term
+Y319,Other entity-specific clues,Is a pink lesion with a white negative network and dotted vessels present (Spitz-type pattern)?,,standard term
+Y320,Other entity-specific clues,Is a yellowish-white structureless area with linear branching vessels present (sebaceous-neoplasm pattern)?,,standard term
+Y321,Other entity-specific clues,Are dark lacunae linked in chains under a whitish veil (angiokeratoma pattern)?,,standard term
+Y322,"Acral, nail, facial and mucosal patterns",Is a parallel-furrow pattern present on acral skin?,,standard term
+Y323,"Acral, nail, facial and mucosal patterns",Is a parallel-ridge pattern present on acral skin?,,standard term
+Y324,"Acral, nail, facial and mucosal patterns",Is a lattice-like pattern present on acral skin?,,standard term
+Y325,"Acral, nail, facial and mucosal patterns",Is a fibrillar pattern present on acral skin?,,standard term
+Y326,"Acral, nail, facial and mucosal patterns",Is irregular diffuse pigmentation present on acral skin?,,standard term
+Y327,"Acral, nail, facial and mucosal patterns",Is a longitudinal melanonychia band present?,,standard term
+Y328,"Acral, nail, facial and mucosal patterns",Is the melanonychia band wider than about 3 mm?,,standard term
+Y329,"Acral, nail, facial and mucosal patterns","Are the lines within the nail band irregular in colour, thickness or spacing?",,standard term
+Y330,"Acral, nail, facial and mucosal patterns",Is pigment visible on the periungual skin (Hutchinson sign)?,,standard term
+Y331,"Acral, nail, facial and mucosal patterns",Is the nail plate dystrophic or split?,,standard term
+Y332,"Acral, nail, facial and mucosal patterns",Is the melanonychia band wider at its proximal end (triangular)?,,standard term
+Y333,"Acral, nail, facial and mucosal patterns",Are asymmetric pigmented follicular openings present on facial skin?,,standard term
+Y334,"Acral, nail, facial and mucosal patterns",Is an annular-granular pattern present around follicles?,,standard term
+Y335,"Acral, nail, facial and mucosal patterns",Are rhomboidal structures present?,,standard term
+Y336,"Acral, nail, facial and mucosal patterns",Is a circle-within-circle pattern present?,,standard term
+Y337,"Acral, nail, facial and mucosal patterns",Are follicular openings obliterated by pigment?,,standard term
+Y338,"Acral, nail, facial and mucosal patterns",Is a facial pseudonetwork (pigment interrupted by follicles) present?,,standard term
+Y339,"Acral, nail, facial and mucosal patterns",Are angulated lines or polygons present?,,standard term
+Y340,"Acral, nail, facial and mucosal patterns","Is a structureless pattern with grey, blue or white areas present on mucosa?",,standard term
+Y341,"Acral, nail, facial and mucosal patterns",Do acral furrow lines show dots on the ridges rather than in the furrows?,,standard term
+Y342,"Acral, nail, facial and mucosal patterns",Is a pink-red nail bed discoloration or longitudinal erythronychia present?,,standard term
+Y343,"Acral, nail, facial and mucosal patterns",Is pigment visible at the free edge of the nail plate?,,standard term
+Y344,"Acral, nail, facial and mucosal patterns",Is a ring-like pattern present on mucosa?,,standard term
+Y345,"Acral, nail, facial and mucosal patterns",Is a fish-scale-like pattern present on mucosa?,,standard term
+Y346,"Acral, nail, facial and mucosal patterns","Is a ""peas-in-a-pod"" pattern (globules aligned along acral furrows) present?",,standard term
+Y347,"Acral, nail, facial and mucosal patterns",Is the nail band black rather than grey or light brown?,,standard term
+Y348,"Acral, nail, facial and mucosal patterns",Are splinter haemorrhages present in the nail?,,standard term
+Y349,"Acral, nail, facial and mucosal patterns",Are the borders of the melanonychia band blurred?,,standard term
+Y350,Hair & follicles,Do hair shafts emerge normally through the lesion?,,standard term
+Y351,Hair & follicles,Are follicular openings preserved within the pigmented area?,,standard term
+Y352,Hair & follicles,Are hairs absent within the lesion compared with the surrounding skin?,,standard term
+Y353,Hair & follicles,Are black dots (broken hairs at the follicle opening) visible?,,standard term
+Y354,Context & intra-patient comparison,Are other nevi visible in the image for comparison?,Grob 1998; Rotemberg 2021,source-supported
+Y355,Context & intra-patient comparison,Does the lesion look markedly different from the other nevi visible (ugly duckling)?,Grob 1998; Gaudy-Marqueste 2017,source-supported
+Y356,Context & intra-patient comparison,Is the lesion the darkest of the lesions visible?,,not named in sources
+Y357,Context & intra-patient comparison,Is the lesion the largest of the lesions visible?,,not named in sources
+Y358,Context & intra-patient comparison,Are many nevi (roughly ten or more) visible in the field?,Betz-Stablein 2022; Primiero 2024,source-supported
+Y359,Context & intra-patient comparison,Are multiple seborrhoeic keratoses visible in the field?,Betz-Stablein 2022,source-supported
+Y360,Context & intra-patient comparison,Are solar lentigines visible on the surrounding skin?,,standard term
+Y361,Context & intra-patient comparison,Is the lesion the only pigmented lesion in the field?,,not named in sources
+Y362,Context & intra-patient comparison,Do the other visible nevi share a common pattern (signature nevus)?,,standard term
+Y363,Context & intra-patient comparison,Are similar lesions distributed symmetrically on both sides of the body?,,standard term
+Y364,Context & intra-patient comparison,Are surgical scars elsewhere in the field suggesting previous excisions?,,not named in sources
+Y365,Context & intra-patient comparison,Is the lesion located within a larger congenital nevus?,,standard term
+Y366,Context & intra-patient comparison,Are several atypical-looking nevi present in the field?,,standard term
+Y367,Context & intra-patient comparison,Is the lesion the only raised lesion in the field?,,not named in sources
+Y368,Context & intra-patient comparison,Are numerous small red papules (cherry angiomas) present in the field?,,standard term
+Y369,Change over time (sequential images),Are sequential images of the same lesion available?,Kittler 2006; Salerni 2013,source-supported
+Y370,Change over time (sequential images),Has the lesion grown between images?,Abbasi 2004; MacKie 1990,source-supported
+Y371,Change over time (sequential images),Was the enlargement asymmetric?,Kittler 2006,source-supported
+Y372,Change over time (sequential images),Has the lesion's shape changed?,MacKie 1990; Abbasi 2004,source-supported
+Y373,Change over time (sequential images),Has the lesion's colour changed?,MacKie 1990; Abbasi 2004,source-supported
+Y374,Change over time (sequential images),Have new dermoscopic structures appeared?,Kittler 2006,source-supported
+Y375,Change over time (sequential images),Have previously present structures disappeared or regressed?,,standard term
+Y376,Change over time (sequential images),"Has the surface changed (for example new elevation, scale or ulceration)?",Abbasi 2004,source-supported
+Y377,Change over time (sequential images),Do the paired images span at least about 4.5 months?,Kittler 2006,source-supported
+Y378,Change over time (sequential images),Has a new lesion appeared in the imaged region since the earlier image?,,standard term
+Y379,Change over time (sequential images),Can the lesion be matched confidently between the earlier and later images?,Huang 2026,source-supported
+Y380,Change over time (sequential images),Were the paired images acquired with comparable magnification and lighting?,Katragadda 2017,source-supported
+Y381,Change over time (sequential images),Has the lesion become lighter overall between images?,,not named in sources
+Y382,Change over time (sequential images),Has the vascular pattern changed between images?,,standard term
+Y383,Change over time (sequential images),Has the lesion's border become less sharp between images?,,not named in sources
+Y384,Change over time (sequential images),Has the global pattern shifted between images (for example from globular to reticular)?,,standard term
+Y385,Background skin & skin tone,Is the surrounding skin dark (roughly Monk 7-10)?,Weir 2025; Mehta 2025,source-supported
+Y386,Background skin & skin tone,Is the surrounding skin very light (roughly Monk 1-3)?,Weir 2025; Mehta 2025,source-supported
+Y387,Background skin & skin tone,Would the surrounding skin's individual typology angle (ITA) fall below about -30 degrees?,Chardon 1991; Lipnick 2026,source-supported
+Y388,Background skin & skin tone,"Does the surrounding skin show signs of chronic sun damage (mottled pigmentation, solar elastosis)?",Saha 2025; Primiero 2024; Forsea 2026,source-supported
+Y389,Background skin & skin tone,Are freckles (ephelides) visible on the surrounding skin?,,standard term
+Y390,Background skin & skin tone,Is the surrounding skin visibly tanned relative to adjacent covered skin?,Primiero 2024,source-supported
+Y391,Background skin & skin tone,Is the surrounding skin wrinkled or visibly aged?,Iglesias-Guitian 2015; Linming 2018,source-supported
+Y392,Background skin & skin tone,Are enlarged pores visible on the surrounding skin?,Linming 2018,source-supported
+Y393,Background skin & skin tone,Is post-inflammatory hyperpigmentation visible around the lesion?,,standard term
+Y394,Background skin & skin tone,Is depigmented (vitiligo-like) skin present near the lesion?,,standard term
+Y395,Background skin & skin tone,Is the lesion on skin with a visible pattern of photodamage such as poikiloderma?,,standard term
+Y396,Background skin & skin tone,Is the surrounding skin intermediate in tone (roughly Monk 4-6)?,Weir 2025; Mehta 2025,source-supported
+Y397,Background skin & skin tone,Is acne or folliculitis present on the surrounding skin?,,not named in sources
+Y398,Background skin & skin tone,Are striae or unrelated scars present on the surrounding skin?,,not named in sources
+Y399,Inflammation & reactive changes,Is diffuse erythema present within the lesion?,Kim 2024a,source-supported
+Y400,Inflammation & reactive changes,Is surrounding oedema or swelling visible?,,standard term
+Y401,Inflammation & reactive changes,Is purpura (non-blanching haemorrhage) visible in or around the lesion?,,standard term
+Y402,Inflammation & reactive changes,Are Wickham-striae-like white lines present on a violaceous papule?,,standard term
+Y403,Inflammation & reactive changes,Is perilesional eczematous change (scaly erythema) present?,,standard term
+Y404,Inflammation & reactive changes,Is a yellowish or orange background suggestive of granulomatous infiltrate present?,,standard term
+Y405,Chromophore & optical properties,Would a melanin map show concentration in the lesion markedly above the surrounding skin?,Tsumura 1999; Claridge 2003,source-supported
+Y406,Chromophore & optical properties,Would a haemoglobin map show elevated haemoglobin within the lesion?,Tsumura 1999; Claridge 2003,source-supported
+Y407,Chromophore & optical properties,Is haemoglobin distributed irregularly within the lesion?,Claridge 2003,source-supported
+Y408,Chromophore & optical properties,Is there evidence of dermal melanin (pigment appearing blue-grey because it lies deep)?,Claridge 2003; Moncrieff 2002,source-supported
+Y409,Chromophore & optical properties,Is haemoglobin displaced or reduced in the lesion centre?,Claridge 2003,source-supported
+Y410,Chromophore & optical properties,Are collagen holes visible on a collagen map?,Moncrieff 2002,source-supported
+Y411,Chromophore & optical properties,Is an erythematous blush visible at the lesion periphery on a haemoglobin map?,Moncrieff 2002,source-supported
+Y412,Chromophore & optical properties,"Does the lesion contain keratin, scale or ulceration likely to violate a two-pigment (melanin plus haemoglobin) model?",Tsumura 1999,source-supported
+Y413,Chromophore & optical properties,Is the lesion's haemoglobin signal likely to be masked by high melanin?,Pryor 2026,source-supported
+Y414,Chromophore & optical properties,Is a bluish deoxygenated-blood component visible distinct from bright red oxygenated blood?,Spigulis 2015,source-supported
+Y415,Chromophore & optical properties,"Is increased tissue scattering suggested by a whitish, low-absorption area?",Livecchi 2024; Jacques 2013,source-supported
+Y416,Chromophore & optical properties,Does a melanin map show melanin both in the epidermal plane and in a deeper dermal component?,Claridge 2003,source-supported
+Y417,Chromophore & optical properties,Would the estimated blood-layer thickness under the lesion be greater than in surrounding skin?,D'Alessandro 2012,source-supported
+Y418,Chromophore & optical properties,Would an optical-density independent-component map reveal structures not visible in the RGB image?,,not named in sources
+Y419,Chromophore & optical properties,Is the lesion edge sharper on a melanin map than in the colour image?,,not named in sources
+Y420,Chromophore & optical properties,Does a haemoglobin map show a ring of reduced haemoglobin around the lesion?,,not named in sources
+Y421,Chromophore & optical properties,"Is subsurface-scattering blur (soft, glowing edges around pigment structures) evident?",Jensen 2001; Donner 2005,source-supported
+Y422,Chromophore & optical properties,Are black surface flakes or dots suggesting melanin in the stratum corneum present?,,standard term
+Y423,Chromophore & optical properties,Is the lesion more conspicuous in the blue channel than in the red channel (suggesting superficial pigment)?,,not named in sources
+Y424,Surface topography & reflectance,Are specular highlights visible on the lesion surface?,Graham 2013; Ghosh 2008,source-supported
+Y425,Surface topography & reflectance,Are specular highlights broken into fragments by irregular microrelief?,Graham 2013,source-supported
+Y426,Surface topography & reflectance,Is the normal skin microrelief (fine furrow grid) visible on surrounding skin?,Sohaib 2013; Graham 2013,source-supported
+Y427,Surface topography & reflectance,Is the skin microrelief effaced over the lesion?,Sohaib 2013,source-supported
+Y428,Surface topography & reflectance,Does the lesion cast a visible shadow indicating elevation?,Sohaib 2013,source-supported
+Y429,Surface topography & reflectance,Do skin furrows pass continuously through the lesion?,,standard term
+Y430,Texture analysis,Is grey-level co-occurrence (GLCM) contrast higher within the lesion than in the surrounding skin?,Celebi 2019,source-supported
+Y431,Texture analysis,Is GLCM homogeneity of the lesion low?,,standard term
+Y432,Texture analysis,Is GLCM entropy of the lesion high?,,standard term
+Y433,Texture analysis,Is GLCM correlation of the lesion low?,,standard term
+Y434,Texture analysis,Is the texture anisotropic (with a strong dominant orientation)?,,standard term
+Y435,Texture analysis,Does texture differ markedly between the lesion centre and its periphery?,,not named in sources
+Y436,Texture analysis,Does texture differ markedly between the two halves of the lesion?,,not named in sources
+Y437,Texture analysis,Is the local binary pattern (LBP) histogram dominated by edge and corner patterns rather than flat patterns?,,standard term
+Y438,Texture analysis,Is the lesion texture coarse (large texture elements) rather than fine?,,standard term
+Y439,Texture analysis,Is the fractal dimension of the lesion border high?,,standard term
+Y440,Texture analysis,Is the lacunarity of the lesion texture high (gappy distribution)?,,standard term
+Y441,Texture analysis,Is fine-scale (high-frequency) wavelet energy elevated in the lesion relative to surrounding skin?,,standard term
+Y442,Texture analysis,"Does the texture show a periodic, repeating spatial frequency?",,standard term
+Y443,Texture analysis,Are long homogeneous grey-level runs common (high long-run emphasis)?,,standard term
+Y444,Texture analysis,Does the lesion have a fine granular (speckled) texture?,,standard term
+Y445,Texture analysis,Are many blob-like features detected inside the lesion at the scale of globules?,,standard term
+Y446,Texture analysis,Is edge density (fraction of edge pixels) high inside the lesion?,,not named in sources
+Y447,Texture analysis,Is the lesion's intensity histogram multimodal?,,standard term
+Y448,Texture analysis,Is the lesion's intensity histogram strongly skewed toward dark values?,,standard term
+Y449,Texture analysis,Is the structure-tensor coherence high (well-aligned linear features)?,,standard term
+Y450,Texture analysis,Is Laws texture energy for spot-like masks high within the lesion?,,standard term
+Y451,Texture analysis,Does granulometry show a dominant structure size (one prevailing particle size)?,,standard term
+Y452,Texture analysis,Is the slope of the radially averaged power spectrum shallow (relatively more fine detail)?,,standard term
+Y453,Texture analysis,Does local entropy vary strongly across the lesion (heterogeneous local entropy map)?,,not named in sources
+Y454,Texture analysis,Is histogram-of-oriented-gradients (HOG) energy concentrated in a few orientations?,,standard term
+Y455,Texture analysis,Is texture in the red channel markedly different from texture in the blue channel?,,not named in sources
+Y456,Texture analysis,Is GLCM dissimilarity higher at short pixel offsets than at long offsets?,,standard term
+Y457,Texture analysis,Are rotation-invariant uniform LBP patterns rare (many non-uniform patterns)?,,standard term
+Y458,Texture analysis,Is the Gabor filter energy high at the spatial scale of network holes?,,standard term
+Y459,Texture analysis,Is Haralick cluster shade strongly non-zero (asymmetric co-occurrence distribution)?,,standard term
+Y460,Texture analysis,Is the variance of local mean intensity high within the lesion?,,not named in sources
+Y461,Texture analysis,Is local contrast highest along the lesion border?,,not named in sources
+Y462,Texture analysis,Is the Hessian-based ridge (vesselness) filter response high within the lesion?,,standard term
+Y463,Texture analysis,Is the box-counting fractal dimension of the lesion's internal texture high?,,standard term
+Y464,Texture analysis,Is the grey-level size-zone matrix dominated by small zones?,,standard term
+Y465,Texture analysis,Is neighbourhood grey-tone difference (NGTDM) busyness high within the lesion?,,standard term
+Y466,Texture analysis,Is opponent-colour co-occurrence contrast high within the lesion?,,standard term
+Y467,"RCM, OCT & ultrasound features","In an RCM image, are pagetoid cells visible in the epidermis?",,standard term
+Y468,"RCM, OCT & ultrasound features","In an RCM image, are atypical nucleated cells visible at the dermoepidermal junction?",,standard term
+Y469,"RCM, OCT & ultrasound features","In an RCM image, are non-edged dermal papillae visible?",,standard term
+Y470,"RCM, OCT & ultrasound features","In an RCM image, is the epidermal honeycomb pattern disarranged?",,standard term
+Y471,"RCM, OCT & ultrasound features","In an RCM image, are edged papillae (ring pattern) visible?",,standard term
+Y472,"RCM, OCT & ultrasound features","In an RCM image, are dense, compact melanocytic nests visible?",,standard term
+Y473,"RCM, OCT & ultrasound features","In an RCM image, are plump bright cells (melanophages) visible in the dermis?",,standard term
+Y474,"RCM, OCT & ultrasound features","In an RCM image, are dendritic cells visible?",,standard term
+Y475,"RCM, OCT & ultrasound features","In an RCM image, are tumour islands with peripheral palisading visible?",,standard term
+Y476,"RCM, OCT & ultrasound features","In an RCM image, are dark silhouettes visible?",,standard term
+Y477,"RCM, OCT & ultrasound features","In an OCT image, are dark ovoid lobules (basaloid nests) visible in the dermis?",,standard term
+Y478,"RCM, OCT & ultrasound features","In an OCT image, is the dermoepidermal junction disrupted?",,standard term
+Y479,"RCM, OCT & ultrasound features","In an OCT image, is the epidermis thickened?",,standard term
+Y480,"RCM, OCT & ultrasound features","In an HFUS image, does the hypoechoic lesion extend deeper than about 0.75 mm?",Sellyn 2025,source-supported
+Y481,"RCM, OCT & ultrasound features","In an HFUS image, is the lower boundary of the lesion irregular?",,standard term
+Y482,"RCM, OCT & ultrasound features","In an RCM image, are bright spindle-shaped cells with streaming (polarized) nuclei visible?",,standard term
+Y483,"RCM, OCT & ultrasound features","In an RCM image, are bright inflammatory cells visible in the epidermis?",,standard term
+Y484,"RCM, OCT & ultrasound features","In an RCM image, is a junctional meshwork pattern visible?",,standard term
+Y485,"RCM, OCT & ultrasound features","In an HFUS image, is increased internal vascular signal visible on Doppler?",,standard term
+Y486,"RCM, OCT & ultrasound features","In an OCT image, is a dark peritumoral cleft around tumour nests visible?",,standard term
+Y487,"RCM, OCT & ultrasound features","In an RCM image, are cerebriform clusters of bright dermal nests visible?",,standard term
+Y488,"RCM, OCT & ultrasound features","In an OCT image, are hyporeflective vertical structures (dilated vessels) visible?",,standard term
+Y489,"RCM, OCT & ultrasound features","In an HFUS image, is the lesion homogeneously hypoechoic?",,standard term
+Y490,Dataset & AI-robustness flags,Does the lesion appear to belong to a category outside the seven common pigmented-lesion classes?,Combalia 2022; Tschandl 2018,source-supported
+Y491,Dataset & AI-robustness flags,"Is the image style (camera, framing, lighting) unlike standard dermoscopic benchmark images?",Combalia 2022; Menzies 2023,source-supported
+Y492,Dataset & AI-robustness flags,"Does the lesion appear texture-pasted or recoloured, with shading inconsistent with the surrounding skin?",Sinha 2024; Rezk 2022,source-supported
+Y493,Dataset & AI-robustness flags,Would the appearance support a non-pigmented or hard-site class poorly represented in public datasets?,Hernández-Pérez 2024; Wen 2022,source-supported
+Y494,Dataset & AI-robustness flags,"Are lesion structures repeated in an implausibly regular, tiled way?",,not named in sources
+Y495,Dataset & AI-robustness flags,Do hairs or pores show warping or discontinuities typical of generative-model output?,,not named in sources
+Y496,Dataset & AI-robustness flags,Is the 3D-TBP crop resolution too low to resolve dermoscopic substructures?,Kurtansky 2024,source-supported
+Y497,Dataset & AI-robustness flags,"Is the lesion on strongly curved anatomy, causing foreshortening in a 3D-TBP view?",,not named in sources
+Y498,Dataset & AI-robustness flags,Would presence of individual dermoscopic criteria in this image likely be ambiguous between readers?,Carrera 2016; Argenziano 2003,source-supported
+Y499,Dataset & AI-robustness flags,Is a mesh seam or texture-stitching artefact visible in a 3D-TBP crop?,,not named in sources
+Y500,Dataset & AI-robustness flags,Is the patient's apparent skin tone under-represented in public dermatology datasets?,Wen 2022; Daneshjou 2022a,source-supported

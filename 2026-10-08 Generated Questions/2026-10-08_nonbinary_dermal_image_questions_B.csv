@@ -1,0 +1,501 @@
+id,section,question,grounding_sources
+Q001,Image modality and acquisition,"Is this a clinical (macroscopic) photograph, a dermoscopic image, or a different imaging modality altogether?",Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q002,Image modality and acquisition,"If dermoscopic, does the image look like it was captured in polarized rather than non-polarized mode?",Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q003,Image modality and acquisition,Does a circular vignette or dark corners betray a contact dermatoscope lens?,Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q004,Image modality and acquisition,Can you see signs of immersion fluid or a glass contact plate flattening the skin surface?,Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q005,Image modality and acquisition,"Which device class most plausibly produced the image: smartphone, DSLR, or dedicated dermatoscope attachment?",Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q006,Image modality and acquisition,"Was a flash fired, judging by hard shadows or a central bright hot spot?",Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q007,Image modality and acquisition,Could this be a grayscale en-face reflectance confocal microscopy mosaic rather than a photograph?,Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q008,Image modality and acquisition,Might this be a cross-sectional OCT or high-frequency ultrasound frame rather than a surface view?,Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q009,Image modality and acquisition,Is the image a crop or tile taken from a 3D total-body photography avatar?,Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q010,Image modality and acquisition,"Is the field of view a close-up, a regional body view, or a whole-body overview?",Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q011,Image modality and acquisition,Roughly what magnification does the image represent relative to naked-eye viewing?,Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q012,Image modality and acquisition,"Is the lighting diffuse and even, or directional and raking?",Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q013,Image modality and acquisition,"Does the capture look multispectral or single-band (grayscale, UV, infrared) rather than standard RGB?",Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q014,Image modality and acquisition,Is Wood's-lamp or ultraviolet-induced fluorescence apparent?,Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q015,Image modality and acquisition,"For a clinical photo, does the absence of surface glare suggest a cross-polarizing filter was used?",Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q016,Image modality and acquisition,"Was the camera axis perpendicular to the skin, or is the lesion viewed obliquely?",Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q017,Image modality and acquisition,"Does film grain, dust, or halftone dotting suggest a scanned print or slide?",Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q018,Image modality and acquisition,Does the setting look like a clinical exam room or like a patient's home snapshot?,Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q019,Image modality and acquisition,"Are device overlays, timestamps, or software interface elements visible in the frame?",Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q020,Image modality and acquisition,Does the image appear to be one member of a sequential digital dermoscopy pair or series?,Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q021,Image modality and acquisition,"Has the image been digitally zoomed, showing pixelation without additional optical detail?",Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q022,Image modality and acquisition,"Are there telltale signs of HDR processing, beauty filters, or aggressive smartphone sharpening?",Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q023,Image modality and acquisition,Is this a composite placing clinical and dermoscopic views of the same lesion side by side?,Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q024,Image modality and acquisition,Could this be a still grabbed from video rather than a native photograph?,Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q025,Image modality and acquisition,"Is the illuminant colour temperature warm (yellowish), neutral, or cool (bluish)?",Katragadda 2017; Kittler 2016; Pacheco 2020; Ghosh 2008; Cerminara 2023; Dinnes 2018d
+Q026,"Image quality, artefacts and acquisition standards",Is the lesion in sharp focus across its entire extent?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q027,"Image quality, artefacts and acquisition standards",Does motion blur degrade the image?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q028,"Image quality, artefacts and acquisition standards",Is the depth of field so shallow that parts of the lesion edge fall out of focus?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q029,"Image quality, artefacts and acquisition standards",Are highlights clipped (overexposed) in the lesion or surrounding skin?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q030,"Image quality, artefacts and acquisition standards",Is the image underexposed so that dark structures merge into shadow?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q031,"Image quality, artefacts and acquisition standards",How much sensor noise or grain is visible in uniform skin regions?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q032,"Image quality, artefacts and acquisition standards",Are JPEG block artefacts or colour banding visible?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q033,"Image quality, artefacts and acquisition standards",Approximately how many pixels span the lesion's longest axis?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q034,"Image quality, artefacts and acquisition standards",Do terminal hairs overlie and obscure part of the lesion?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q035,"Image quality, artefacts and acquisition standards",Are air bubbles from the immersion medium sitting over the lesion?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q036,"Image quality, artefacts and acquisition standards",Do glare spots or specular reflections hide surface detail?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q037,"Image quality, artefacts and acquisition standards","Are surgical-pen lines, drawn circles, or ink marks visible on the skin?",Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q038,"Image quality, artefacts and acquisition standards",Is a ruler or other physical size reference included in the frame?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q039,"Image quality, artefacts and acquisition standards",Does a colour-calibration chart or grey card appear in the image?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q040,"Image quality, artefacts and acquisition standards","Does a white-balance cast make normal skin look unnaturally green, blue, or magenta?",Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q041,"Image quality, artefacts and acquisition standards","Is the background uniform and non-distracting, as acquisition guidelines recommend?",Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q042,"Image quality, artefacts and acquisition standards",Is the lesion centred in the frame?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q043,"Image quality, artefacts and acquisition standards",Does any part of the lesion run off the image edge?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q044,"Image quality, artefacts and acquisition standards","Are dressings, adhesive tape, or electrodes visible?",Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q045,"Image quality, artefacts and acquisition standards","Is identifying content such as a face, tattoo, jewellery, or a text label in view?",Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q046,"Image quality, artefacts and acquisition standards",Has gel or fluid smeared to create streaking artefacts?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q047,"Image quality, artefacts and acquisition standards",Could pressure from the dermatoscope plate have blanched the lesion and hidden vessels?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q048,"Image quality, artefacts and acquisition standards","Do lens dirt, scratches, or condensation spots mar the image?",Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q049,"Image quality, artefacts and acquisition standards",Is chromatic aberration (colour fringing at high-contrast edges) present?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q050,"Image quality, artefacts and acquisition standards",Has the image been stretched or squashed out of its native aspect ratio?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q051,"Image quality, artefacts and acquisition standards",Would a dermatologist judge this image adequate for diagnostic interpretation?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q052,"Image quality, artefacts and acquisition standards","Have arrows, segmentation outlines, or text annotations been drawn over the image?",Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q053,"Image quality, artefacts and acquisition standards",Is there an illumination falloff gradient from the centre to the edges of the frame?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q054,"Image quality, artefacts and acquisition standards","Are shadows from fingers, instruments, or the dermatoscope housing present?",Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q055,"Image quality, artefacts and acquisition standards",Has colour saturation been boosted so that reds look artificially vivid?,Katragadda 2017; Finnane 2017; Mirikharaji 2023; Caffery 2018; Celebi 2019
+Q056,"Anatomic site, framing and scale","Which broad region is shown: head/neck, trunk, upper limb, lower limb, acral, genital, or mucosal?",Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q057,"Anatomic site, framing and scale",Does the lesion sit on chronically sun-exposed skin?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q058,"Anatomic site, framing and scale",Is the lesion on a palm or a sole?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q059,"Anatomic site, framing and scale",Does the lesion involve the nail unit?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q060,"Anatomic site, framing and scale",Is the lesion on the central face (the 'H-zone')?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q061,"Anatomic site, framing and scale","Is the lesion on the scalp, partly hidden by hair?",Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q062,"Anatomic site, framing and scale",Does the lesion lie on mucosa or the lip vermilion?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q063,"Anatomic site, framing and scale",Is the lesion located in an intertriginous fold?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q064,"Anatomic site, framing and scale",Is the ear the site of the lesion?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q065,"Anatomic site, framing and scale",Is the lesion on the lower leg?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q066,"Anatomic site, framing and scale",Are anatomic landmarks visible that would allow localisation without metadata?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q067,"Anatomic site, framing and scale",How many discrete lesions can be counted in the frame?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q068,"Anatomic site, framing and scale","Is one lesion clearly the subject, or are several candidates equally prominent?",Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q069,"Anatomic site, framing and scale",What fraction of the image area does the lesion occupy?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q070,"Anatomic site, framing and scale","Using any scale present, what is the estimated maximum diameter in millimetres?",Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q071,"Anatomic site, framing and scale",Does the lesion straddle a joint or flexural crease that distorts its outline?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q072,"Anatomic site, framing and scale",Is the lesion within or next to a scar?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q073,"Anatomic site, framing and scale",Is the lesion inside or adjacent to a tattoo?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q074,"Anatomic site, framing and scale",Is the site densely covered with pigmented hair that might mimic lesion structures?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q075,"Anatomic site, framing and scale","Is the lesion on the back, a site that is hard to self-examine?",Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q076,"Anatomic site, framing and scale",Are neighbouring naevi included in the photograph for comparison?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q077,"Anatomic site, framing and scale","Is the image orientation recoverable (e.g., is 'up' cranial)?",Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q078,"Anatomic site, framing and scale",Is the lesion on the breast or nipple–areola complex?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q079,"Anatomic site, framing and scale",Does the lesion involve the eyelid or periocular skin?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q080,"Anatomic site, framing and scale",Do body proportions or skin texture suggest a paediatric patient?,Katragadda 2017; Fernandez 2023; Hernández-Pérez 2024; Rotemberg 2021; Grob 1998
+Q081,Primary lesion morphology (ILDS terms),Does the lesion appear flat and non-palpable (macule or patch)?,Nast 2016; Kittler 2016
+Q082,Primary lesion morphology (ILDS terms),"If flat, is it under 1 cm (macule) or 1 cm or larger (patch)?",Nast 2016; Kittler 2016
+Q083,Primary lesion morphology (ILDS terms),Is the lesion raised as a papule (<1 cm) or as a broad plaque (≥1 cm)?,Nast 2016; Kittler 2016
+Q084,Primary lesion morphology (ILDS terms),Does it present as a nodule with apparent depth and a rounded profile?,Nast 2016; Kittler 2016
+Q085,Primary lesion morphology (ILDS terms),"Is there a fluid-filled blister, and is it a vesicle or a bulla?",Nast 2016; Kittler 2016
+Q086,Primary lesion morphology (ILDS terms),Is the cavity filled with pus (pustule)?,Nast 2016; Kittler 2016
+Q087,Primary lesion morphology (ILDS terms),Could the lesion be a transient oedematous wheal?,Nast 2016; Kittler 2016
+Q088,Primary lesion morphology (ILDS terms),"Does it look like a cyst: smooth, dome-shaped, perhaps with a punctum?",Nast 2016; Kittler 2016
+Q089,Primary lesion morphology (ILDS terms),Is a central punctum or dilated pore visible?,Nast 2016; Kittler 2016
+Q090,Primary lesion morphology (ILDS terms),"Is the lesion pedunculated, hanging on a narrow stalk?",Nast 2016; Kittler 2016
+Q091,Primary lesion morphology (ILDS terms),"Does it sit on a broad, sessile base?",Nast 2016; Kittler 2016
+Q092,Primary lesion morphology (ILDS terms),Is the profile dome-shaped?,Nast 2016; Kittler 2016
+Q093,Primary lesion morphology (ILDS terms),"Is the top flat, plateau-like?",Nast 2016; Kittler 2016
+Q094,Primary lesion morphology (ILDS terms),Is the surface papillomatous or verrucous?,Nast 2016; Kittler 2016
+Q095,Primary lesion morphology (ILDS terms),Is there a central umbilication?,Nast 2016; Kittler 2016
+Q096,Primary lesion morphology (ILDS terms),Does the lesion grow outward (exophytic) or lie depressed below the surface?,Nast 2016; Kittler 2016
+Q097,Primary lesion morphology (ILDS terms),Does it resemble non-blanching purpura or petechiae?,Nast 2016; Kittler 2016
+Q098,Primary lesion morphology (ILDS terms),Is it a cherry-red vascular papule?,Nast 2016; Kittler 2016
+Q099,Primary lesion morphology (ILDS terms),Is the lesion one of a cluster (herpetiform or grouped) rather than solitary?,Nast 2016; Kittler 2016
+Q100,Primary lesion morphology (ILDS terms),"Are multiple lesions arranged linearly, annularly, or in arcs?",Nast 2016; Kittler 2016
+Q101,Primary lesion morphology (ILDS terms),Does the distribution follow a dermatome or segment?,Nast 2016; Kittler 2016
+Q102,Primary lesion morphology (ILDS terms),Is the lesion annular with central clearing?,Nast 2016; Kittler 2016
+Q103,Primary lesion morphology (ILDS terms),Does a target-like set of concentric zones appear?,Nast 2016; Kittler 2016
+Q104,Primary lesion morphology (ILDS terms),Is the lesion polypoid?,Nast 2016; Kittler 2016
+Q105,Primary lesion morphology (ILDS terms),Can a burrow or serpiginous track be seen?,Nast 2016; Kittler 2016
+Q106,Primary lesion morphology (ILDS terms),"Are thin, finger-like filiform projections present?",Nast 2016; Kittler 2016
+Q107,Primary lesion morphology (ILDS terms),"Is the overall configuration round, oval, or irregular/geographic?",Nast 2016; Kittler 2016
+Q108,Primary lesion morphology (ILDS terms),Is the lesion part of a confluent eruption rather than discrete?,Nast 2016; Kittler 2016
+Q109,Primary lesion morphology (ILDS terms),Is a satellite lesion present near the main lesion?,Nast 2016; Kittler 2016
+Q110,Primary lesion morphology (ILDS terms),Does a horn-like keratin projection (cutaneous horn) arise from the lesion?,Nast 2016; Kittler 2016
+Q111,Secondary changes and surface features,Is scale present on the surface?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q112,Secondary changes and surface features,"If scaly, is the scale fine/powdery, plate-like, or thick and adherent?",Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q113,Secondary changes and surface features,Is there a peripheral collarette of scale?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q114,Secondary changes and surface features,Is haemorrhagic or serous crust present?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q115,Secondary changes and surface features,Is the lesion ulcerated?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q116,Secondary changes and surface features,Is there superficial erosion without full-thickness ulceration?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q117,Secondary changes and surface features,Is fresh blood or active bleeding visible?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q118,Secondary changes and surface features,Does the lesion ooze or carry exudate?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q119,Secondary changes and surface features,Is there a central keratin plug or mass?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q120,Secondary changes and surface features,Are skin markings thickened and accentuated (lichenification)?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q121,Secondary changes and surface features,Are excoriations (scratch marks) present?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q122,Secondary changes and surface features,"Is the skin atrophic — thin, finely wrinkled, and shiny?",Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q123,Secondary changes and surface features,Are open comedones visible on the surrounding skin?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q124,Secondary changes and surface features,Is the surface fissured?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q125,Secondary changes and surface features,Does the lesion look indurated or infiltrated?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q126,Secondary changes and surface features,Is the lesion surrounded by an inflammatory erythematous halo?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q127,Secondary changes and surface features,Is a depigmented white halo present around the lesion?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q128,Secondary changes and surface features,"Does the lesion have a rolled, raised border?",Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q129,Secondary changes and surface features,Does the lesion look sclerotic or scar-like?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q130,Secondary changes and surface features,Is there black necrotic eschar?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q131,Secondary changes and surface features,Is the skin macerated (white and sodden)?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q132,Secondary changes and surface features,"Is the surface cerebriform, with brain-like ridges and fissures?",Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q133,Secondary changes and surface features,Does the lesion appear 'stuck on' the skin?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q134,Secondary changes and surface features,Is hyperkeratosis confined to the lesion margin?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q135,Secondary changes and surface features,Does the surrounding skin appear oedematous?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q136,Secondary changes and surface features,"Are there signs of prior biopsy or treatment (sutures, curettage scar, cryotherapy blister)?",Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q137,Secondary changes and surface features,Are there signs of secondary infection such as honey-coloured crust?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q138,Secondary changes and surface features,Does the lesion look friable?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q139,Secondary changes and surface features,Is the overlying epidermis smooth and stretched?,Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q140,Secondary changes and surface features,"Are follicular openings preserved, plugged, or effaced within the lesion?",Nast 2016; Rosendahl 2011; MacKie 1990; Walter 2013
+Q141,"Shape, size, symmetry and border","Is the silhouette asymmetric about zero, one, or two perpendicular axes?",Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q142,"Shape, size, symmetry and border",Are colours and structures distributed asymmetrically across perpendicular axes?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q143,"Shape, size, symmetry and border",Is the outline smooth and regular?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q144,"Shape, size, symmetry and border","Is the border notched, scalloped, or ragged?",Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q145,"Shape, size, symmetry and border",Does pigment stop abruptly at the border or fade gradually into normal skin?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q146,"Shape, size, symmetry and border",In how many of eight peripheral segments is there an abrupt pigment cut-off (TDS border score)?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q147,"Shape, size, symmetry and border",Is the border blurred and poorly defined all the way around?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q148,"Shape, size, symmetry and border",Does the diameter exceed 6 mm?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q149,"Shape, size, symmetry and border",Is the diameter 7 mm or more (Glasgow minor criterion)?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q150,"Shape, size, symmetry and border",What is the ratio of the longest to the shortest axis?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q151,"Shape, size, symmetry and border",Is the outline compact and blob-like rather than lobulated or branching?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q152,"Shape, size, symmetry and border",How convex is the outline relative to its convex hull?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q153,"Shape, size, symmetry and border","Is the lesion bilobed, as if two lobes have merged?",Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q154,"Shape, size, symmetry and border",Is the long axis aligned with skin tension lines or dermatoglyphics?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q155,"Shape, size, symmetry and border",Is the shape nearly a perfect circle?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q156,"Shape, size, symmetry and border",Are islands of pigment separated from the main lesion body?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q157,"Shape, size, symmetry and border","Is the shape geographic, like a map?",Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q158,"Shape, size, symmetry and border","Would you call the lesion small (<3 mm), medium, or large (>15 mm)?",Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q159,"Shape, size, symmetry and border",Does a focal bulge in the outline suggest localised growth?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q160,"Shape, size, symmetry and border",Is the silhouette symmetric while the internal structure is asymmetric?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q161,"Shape, size, symmetry and border",Is the rim hypopigmented relative to the centre?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q162,"Shape, size, symmetry and border",Is the periphery darker than the centre?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q163,"Shape, size, symmetry and border",Is there a peripheral rim of tan structureless pigment?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q164,"Shape, size, symmetry and border",How would symmetry score on the CASH 0–2 scale?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q165,"Shape, size, symmetry and border",Is the border markedly more irregular on one side than the other?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q166,"Shape, size, symmetry and border",Are there concave indentations in the outline?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q167,"Shape, size, symmetry and border",Is the lesion reniform or crescent-shaped?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q168,"Shape, size, symmetry and border",Is the transition zone between lesion and skin narrow or wide?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q169,"Shape, size, symmetry and border",Does the outline contain sharp angular corners?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q170,"Shape, size, symmetry and border",Is the lesion more elevated on one side than the other?,Friedman 1985; Abbasi 2004; Nachbar 1994; Henning 2007; Celebi 2019
+Q171,Colour,"How many of the six dermoscopic colours (white, red, light brown, dark brown, blue-grey, black) are present?",Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q172,Colour,Is the lesion uniform in colour?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q173,Colour,Is black present anywhere?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q174,Colour,Is any blue-grey colour present?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q175,Colour,Do any white areas appear?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q176,Colour,Is red present?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q177,Colour,Is the lesion predominantly light brown or tan?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q178,Colour,Is dark brown the predominant colour?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q179,Colour,"Is the lesion skin-coloured, i.e., amelanotic or hypomelanotic?",Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q180,Colour,Is the lesion pink without visible pigment?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q181,Colour,Is there a violaceous or purple hue?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q182,Colour,Does the lesion appear yellow or yellow-orange?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q183,Colour,Is a greenish tinge visible?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q184,Colour,Are colours arranged symmetrically or eccentrically?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q185,Colour,"Is the pigment darkest centrally, peripherally, or off-centre?",Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q186,Colour,Does dark brown-to-black colour cover more than half of the lesion?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q187,Colour,Is the colour pattern reticular rather than homogeneous?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q188,Colour,Are multiple shades of brown present?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q189,Colour,Does the lesion look translucent?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q190,Colour,Is there a pearly-white sheen?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q191,Colour,Is redness diffuse (erythema) or confined to vessels?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q192,Colour,How strong is the colour contrast between lesion and surrounding skin?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q193,Colour,Is the lesion lighter than the surrounding skin?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q194,Colour,Is the skin around the lesion hyperpigmented?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q195,Colour,Is a grey-brown (taupe) tone present?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q196,Colour,Do colour zones blend gradually or change abruptly?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q197,Colour,Are orange structureless areas visible?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q198,Colour,Does a homogeneous blue colour cover the entire lesion?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q199,Colour,Does colour change in concentric rings?,Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q200,Colour,"In one word, what is the lesion's dominant hue?",Nachbar 1994; Henning 2007; Argenziano 1998; Menzies 1996; Soyer 2004
+Q201,Dermoscopic structures of melanocytic lesions,Is a pigment network present?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q202,Dermoscopic structures of melanocytic lesions,"Is the network typical (thin, regular, fading peripherally) or atypical (thick, irregular, ending abruptly)?",Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q203,Dermoscopic structures of melanocytic lesions,Is a negative (inverse) network visible?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q204,Dermoscopic structures of melanocytic lesions,"Are dots present, and are they regularly or irregularly distributed?",Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q205,Dermoscopic structures of melanocytic lesions,Can globules (clods) be identified?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q206,Dermoscopic structures of melanocytic lesions,"Do globules form a peripheral rim, suggesting radial growth?",Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q207,Dermoscopic structures of melanocytic lesions,Are radial streaks (lines) present?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q208,Dermoscopic structures of melanocytic lesions,Are bulbous pseudopods present at the periphery?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q209,Dermoscopic structures of melanocytic lesions,Are streaks distributed around the full circumference (starburst) or only focally?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q210,Dermoscopic structures of melanocytic lesions,Is a blue-white veil present?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q211,Dermoscopic structures of melanocytic lesions,"Are regression structures (white scar-like areas, blue-grey peppering) seen?",Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q212,Dermoscopic structures of melanocytic lesions,Are shiny white structures (crystalline/chrysalis lines) visible?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q213,Dermoscopic structures of melanocytic lesions,Does structureless (homogeneous) area occupy more than 10% of the lesion?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q214,Dermoscopic structures of melanocytic lesions,"Which global pattern fits best: reticular, globular, homogeneous, starburst, multicomponent, or nonspecific?",Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q215,Dermoscopic structures of melanocytic lesions,Does the lesion combine three or more distinct dermoscopic patterns?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q216,Dermoscopic structures of melanocytic lesions,Does the lesion show a single colour with a symmetric pattern (both Menzies negative features)?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q217,Dermoscopic structures of melanocytic lesions,Are multiple blue-grey dots present?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q218,Dermoscopic structures of melanocytic lesions,Are broadened network lines present?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q219,Dermoscopic structures of melanocytic lesions,Are angulated lines forming polygons (zig-zag pattern) visible?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q220,Dermoscopic structures of melanocytic lesions,Is there an off-centre hyperpigmented blotch?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q221,Dermoscopic structures of melanocytic lesions,Is there an eccentric peripheral structureless zone?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q222,Dermoscopic structures of melanocytic lesions,"How many differential structures (network, dots, globules, streaks, structureless areas) are present?",Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q223,Dermoscopic structures of melanocytic lesions,How disordered is the architecture on the CASH 0–2 scale?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q224,Dermoscopic structures of melanocytic lesions,How homogeneous are the structures (CASH homogeneity score)?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q225,Dermoscopic structures of melanocytic lesions,"Is there 'chaos', i.e., asymmetry of structure or colour?",Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q226,Dermoscopic structures of melanocytic lesions,Is a cobblestone pattern of large angulated clods present?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q227,Dermoscopic structures of melanocytic lesions,Does the network show central hyperpigmentation fading towards the edge?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q228,Dermoscopic structures of melanocytic lesions,Are peripheral brown structureless areas present?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q229,Dermoscopic structures of melanocytic lesions,Is a target network (network holes containing dots) present?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q230,Dermoscopic structures of melanocytic lesions,Are the network holes roughly uniform in size?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q231,Dermoscopic structures of melanocytic lesions,Do pigmented line segments end abruptly at the edge?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q232,Dermoscopic structures of melanocytic lesions,Is there a blue structureless area without an overlying whitish veil?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q233,Dermoscopic structures of melanocytic lesions,Does the lesion show a spitzoid pattern?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q234,Dermoscopic structures of melanocytic lesions,Are tiny pigmented dots aligned along network lines?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q235,Dermoscopic structures of melanocytic lesions,Does the lesion have a 'fried-egg' configuration with a papillated centre and flat pigmented rim?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q236,Dermoscopic structures of melanocytic lesions,Is perifollicular hypopigmentation present within the network?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q237,Dermoscopic structures of melanocytic lesions,Are ring-like pigmented structures seen around follicles on non-facial skin?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q238,Dermoscopic structures of melanocytic lesions,"Using the Menzies colour count, are five or more colours present?",Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q239,Dermoscopic structures of melanocytic lesions,"Would the 3-point checklist be positive (at least two of asymmetry, atypical network, blue-white structures)?",Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q240,Dermoscopic structures of melanocytic lesions,Would the dermoscopic 7-point checklist score reach 3 or more?,Argenziano 1998; Menzies 1996; Kittler 2016; Soyer 2004; Henning 2007; Nachbar 1994; Argenziano 2003
+Q241,Vascular structures,Are any blood vessels visible?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q242,Vascular structures,"Are sharply focused, branching arborising vessels present?",Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q243,Vascular structures,Are dotted vessels present?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q244,Vascular structures,Are glomerular (coiled) vessels present?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q245,Vascular structures,Are hairpin (looped) vessels present?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q246,Vascular structures,Are linear-irregular vessels present?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q247,Vascular structures,Are comma-shaped vessels present?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q248,Vascular structures,Are corkscrew vessels present?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q249,Vascular structures,Are two or more vessel types present (polymorphous vessels)?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q250,Vascular structures,Are vessels evenly distributed or randomly scattered?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q251,Vascular structures,Do vessels crown the periphery of the lesion?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q252,Vascular structures,Are vessels arranged like a string of pearls?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q253,Vascular structures,Do hairpin vessels carry a whitish halo?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q254,Vascular structures,Are milky-red areas present?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q255,Vascular structures,Are well-demarcated red-blue lacunae present?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q256,Vascular structures,Is a red pseudonetwork around follicles (strawberry pattern) present?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q257,Vascular structures,"Do vessels form a reticular, net-like pattern?",Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q258,Vascular structures,Are dark red-black thrombosed lacunae present?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q259,Vascular structures,Are vessels concentrated centrally?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q260,Vascular structures,Are vessels crisp (superficial) or blurred (deeper)?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q261,Vascular structures,How thick is the widest vessel relative to lesion size?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q262,Vascular structures,Are vessels dilated and tortuous at the lesion edge?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q263,Vascular structures,Do vessels radiate from the centre?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q264,Vascular structures,Does diffuse erythema obscure vessel morphology?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q265,Vascular structures,Is vessel visibility likely limited by high background melanin?,Rosendahl 2011; Zalaudek 2012; Menzies 2000; Kittler 2016
+Q266,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)","Is a pigment network absent, as required by the Menzies BCC criteria?",Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q267,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Are leaf-like areas present?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q268,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Are spoke-wheel areas present?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q269,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Are large blue-grey ovoid nests present?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q270,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Are multiple non-aggregated blue-grey globules present?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q271,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Are shiny white-red structureless areas present?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q272,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Are there multiple small erosions or a small ulceration?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q273,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Are short fine superficial telangiectasias present at the margin?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q274,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Are concentric structures present?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q275,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Are milia-like cysts visible?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q276,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Are comedo-like openings present?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q277,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)","Is there a light-brown structureless centre with a sharp edge, as in a flat seborrhoeic keratosis or lentigo?",Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q278,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Is the border sharply demarcated and moth-eaten?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q279,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Are fingerprint-like structures present?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q280,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Is there background erythema with yellow-white follicular scale?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q281,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)","What Olsen keratotic grade fits (I: barely visible, II: moderate, III: thick hyperkeratotic)?",Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q282,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Are white circles around follicles present?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q283,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Are clustered glomerular vessels with surface scale present?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q284,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Is there a central keratin mass surrounded by white structureless zones?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q285,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Are blood spots embedded in keratin?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q286,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Are rosettes (four white points in a square) visible?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q287,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Is there a central white scar-like patch with a delicate peripheral network?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q288,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Is there a white collarette around a red vascular blush?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q289,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Is a yellowish lobular structure with crown vessels present?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q290,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)","Does a soft, skin-coloured lesion with a wrinkled surface suggest a dermal naevus or neurofibroma?",Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q291,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Are brown dots or globules arranged in lines within a scaly patch?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q292,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Does a scaly plaque with evenly distributed dotted vessels suggest an inflammatory dermatosis rather than a tumour?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q293,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Does the lesion fit along the AK–Bowen–SCC continuum of increasing thickness and ulceration?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q294,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Are scattered brown dots on a pink background present?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q295,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Is there a peripheral erythematous rim around a keratotic centre?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q296,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)","Is the lesion a pink, scaly, well-demarcated plaque?",Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q297,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)",Is the lesion consistent with a vascular tumour rather than a keratinocytic one?,Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q298,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)","Are black areas sitting within blue lacunae, raising thrombosed angioma versus nodular melanoma?",Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q299,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)","Are thick curved 'fat fingers' present, as seen in seborrhoeic keratosis?",Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q300,"Non-melanocytic lesion criteria (BCC, AK/Bowen/SCC, seborrhoeic keratosis, others)","Which category fits best: melanocytic, keratinocytic, vascular, adnexal, fibrous, or inflammatory?",Menzies 2000; Zalaudek 2012; Kandolf 2024; Stratigos 2026; Rosendahl 2011; Olsen 1991
+Q301,"Site-specific patterns (acral, facial, nail, mucosal)","On acral skin, does pigment follow the furrows (parallel furrow pattern)?",Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q302,"Site-specific patterns (acral, facial, nail, mucosal)",Does pigment lie on the ridges (parallel ridge pattern)?,Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q303,"Site-specific patterns (acral, facial, nail, mucosal)",Is a lattice-like pattern present?,Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q304,"Site-specific patterns (acral, facial, nail, mucosal)",Is a fibrillar pattern present?,Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q305,"Site-specific patterns (acral, facial, nail, mucosal)",Is there diffuse irregular pigmentation on acral skin?,Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q306,"Site-specific patterns (acral, facial, nail, mucosal)","On facial skin, do follicular openings create a pseudonetwork?",Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q307,"Site-specific patterns (acral, facial, nail, mucosal)",Are pigmented follicular openings asymmetric?,Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q308,"Site-specific patterns (acral, facial, nail, mucosal)",Is an annular-granular pattern present around follicles?,Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q309,"Site-specific patterns (acral, facial, nail, mucosal)",Are rhomboidal structures present?,Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q310,"Site-specific patterns (acral, facial, nail, mucosal)",Are follicular openings obliterated by pigment?,Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q311,"Site-specific patterns (acral, facial, nail, mucosal)",Is a grey 'circle within a circle' pattern visible?,Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q312,"Site-specific patterns (acral, facial, nail, mucosal)",Is there a longitudinal melanonychia band in a nail?,Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q313,"Site-specific patterns (acral, facial, nail, mucosal)","Is the band 3 mm or wider, or more than one-third of the nail width?",Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q314,"Site-specific patterns (acral, facial, nail, mucosal)","Are the lines in the band regular in colour, spacing, and thickness?",Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q315,"Site-specific patterns (acral, facial, nail, mucosal)",Is Hutchinson's sign (periungual pigment) present?,Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q316,"Site-specific patterns (acral, facial, nail, mucosal)",Is the nail plate dystrophic or destroyed?,Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q317,"Site-specific patterns (acral, facial, nail, mucosal)",Are red-purple globules with proximal clearing suggestive of subungual haemorrhage?,Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q318,"Site-specific patterns (acral, facial, nail, mucosal)","On mucosa, are structureless grey or blue areas present?",Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q319,"Site-specific patterns (acral, facial, nail, mucosal)","On the scalp, is pigment interrupted by hair follicles?",Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q320,"Site-specific patterns (acral, facial, nail, mucosal)","On the heel or sole, do blood spots suggest traumatic haemorrhage?",Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q321,"Site-specific patterns (acral, facial, nail, mucosal)","On the lip, is there a well-circumscribed brown macule?",Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q322,"Site-specific patterns (acral, facial, nail, mucosal)",Are dermatoglyphic lines visible running through the lesion?,Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q323,"Site-specific patterns (acral, facial, nail, mucosal)",Is there granulation-like tissue at the nail fold?,Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q324,"Site-specific patterns (acral, facial, nail, mucosal)","On the face, is the lesion a light-brown macule with fine reticulation?",Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q325,"Site-specific patterns (acral, facial, nail, mucosal)","On genital skin, does the lesion show ring-like or parallel line patterns?",Forsea 2026; Fernandez 2023; Enechukwu 2023; Kittler 2016
+Q326,"Triage, gestalt and evolution","At a glance, does the lesion look clearly benign (TADA step 1)?",Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q327,"Triage, gestalt and evolution",Is the lesion the 'ugly duckling' among the patient's naevi?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q328,"Triage, gestalt and evolution",Is it the only pigmented lesion with a different colour from the rest?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q329,"Triage, gestalt and evolution",Would two independent experts likely agree on the diagnosis for this image?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q330,"Triage, gestalt and evolution","Is the lesion pigmented, non-pigmented, or partly pigmented, determining which algorithm applies?",Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q331,"Triage, gestalt and evolution",Would a non-expert using this image refer the patient?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q332,"Triage, gestalt and evolution",Is suspicion driven mainly by colour or mainly by structure?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q333,"Triage, gestalt and evolution","Compared with a prior image, if available, is there evidence of change?",Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q334,"Triage, gestalt and evolution",Has the lesion grown asymmetrically relative to baseline?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q335,"Triage, gestalt and evolution",Have new colours emerged since baseline?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q336,"Triage, gestalt and evolution",Have new structures emerged since baseline?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q337,"Triage, gestalt and evolution","Is the lesion new, absent from the baseline image?",Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q338,"Triage, gestalt and evolution",Does the lesion lack specific features yet still raise concern?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q339,"Triage, gestalt and evolution","Is this a pink, raised lesion requiring separate triage?",Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q340,"Triage, gestalt and evolution","Does the lesion fit the EFG rule (elevated, firm, growing)?",Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q341,"Triage, gestalt and evolution",Could this be a nodular melanoma that would fail ABCD criteria?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q342,"Triage, gestalt and evolution",Would a primary-care clinician and a dermatologist triage this image differently?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q343,"Triage, gestalt and evolution",Does the lesion share a 'signature' pattern with the patient's other naevi?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q344,"Triage, gestalt and evolution","How confident would you be in a benign versus malignant call: low, moderate, or high?",Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q345,"Triage, gestalt and evolution",Would the weighted Glasgow 7-point checklist total reach 4?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q346,"Triage, gestalt and evolution","On a 5-point suspicion scale, would you rate the lesion 4 or 5?",Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q347,"Triage, gestalt and evolution","Should site-specific (acral, facial, nail) rather than trunk algorithms be applied?",Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q348,"Triage, gestalt and evolution","Is dermoscopy needed to judge this lesion, or is the clinical image sufficient?",Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q349,"Triage, gestalt and evolution",Would the lesion be considered equivocal enough to warrant adjunct imaging such as RCM?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q350,"Triage, gestalt and evolution",Might this be a collision lesion with two different components?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q351,"Triage, gestalt and evolution",Is the lesion one of many similar seborrhoeic keratoses (an eruptive pattern)?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q352,"Triage, gestalt and evolution","Is the lesion solitary on otherwise unblemished skin, making intra-patient comparison impossible?",Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q353,"Triage, gestalt and evolution",Are halo naevi or regressing lesions visible elsewhere in the frame?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q354,"Triage, gestalt and evolution",Would 'chaos and clues' be positive (chaos plus at least one clue)?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q355,"Triage, gestalt and evolution",Could BLINCK's patient-concern or change factors be inferred from the image at all?,Grob 1998; Gaudy-Marqueste 2017; Rogers 2016; Rosendahl 2011; Bourne 2012; Kittler 2006; MacKie 1990; Walter 2013; Argenziano 2003
+Q356,Skin tone and background skin,Where does the background skin fall on the 10-point Monk Skin Tone scale?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q357,Skin tone and background skin,"What Fitzpatrick type might be guessed, bearing in mind it encodes sunburn propensity rather than colour?",Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q358,Skin tone and background skin,"Would the ITA° of normal skin be very light, light, intermediate, tan, brown, or dark?",Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q359,Skin tone and background skin,Is the surrounding skin evenly pigmented or mottled?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q360,Skin tone and background skin,"Is erythema visible on surrounding skin, or could melanin be masking it?",Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q361,Skin tone and background skin,"Does inflammation appear violaceous, grey, or dark brown rather than red?",Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q362,Skin tone and background skin,Is post-inflammatory hyperpigmentation present nearby?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q363,Skin tone and background skin,Is post-inflammatory hypopigmentation present nearby?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q364,Skin tone and background skin,Are ephelides (freckles) visible on surrounding skin?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q365,Skin tone and background skin,Are solar lentigines visible on surrounding skin?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q366,Skin tone and background skin,Does the surrounding skin show chronic sun damage such as wrinkling and mottled pigmentation?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q367,Skin tone and background skin,Is poikiloderma present?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q368,Skin tone and background skin,"Can veins be seen through the skin, suggesting thin, fair skin?",Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q369,Skin tone and background skin,Is a tan line visible?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q370,Skin tone and background skin,Are there vitiligo-like depigmented areas?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q371,Skin tone and background skin,Is a pigmentary demarcation (Futcher) line visible?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q372,Skin tone and background skin,Does the background skin look oily or shiny?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q373,Skin tone and background skin,Is the background skin dry and flaking?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q374,Skin tone and background skin,Is the background densely hair-bearing?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q375,Skin tone and background skin,Is lesion–skin contrast reduced because lesion and skin pigment are similar?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q376,Skin tone and background skin,Might high baseline melanin make the pigment network look more prominent than in fair skin?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q377,Skin tone and background skin,Does the white balance make skin-tone estimation unreliable?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q378,Skin tone and background skin,Would the same skin map to a different Monk category under another illuminant?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q379,Skin tone and background skin,Are small porcelain-white macules (guttate hypomelanosis) scattered on surrounding skin?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q380,Skin tone and background skin,Are dermatosis papulosa nigra–like papules present nearby?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q381,Skin tone and background skin,Is the volar skin visibly lighter than the dorsal skin?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q382,Skin tone and background skin,Are blue-grey background areas of dermal melanocytosis unrelated to the lesion present?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q383,Skin tone and background skin,Is enough non-lesional skin visible to estimate skin tone reliably?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q384,Skin tone and background skin,Is there rosacea-like baseline redness on surrounding skin?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q385,Skin tone and background skin,Does the skin tone belong to a group underrepresented in public datasets (Monk 7–10 / Fitzpatrick V–VI)?,Ware 2020; Weir 2025; Lipnick 2026; Pryor 2026; Chardon 1991; Groh 2021; Daneshjou 2022a; Wen 2022
+Q386,Chromophores and optical properties,"Does the pigment look brown (epidermal melanin) or blue-grey (dermal melanin, Tyndall effect)?",Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q387,Chromophores and optical properties,Would a melanin-concentration map show a focal maximum?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q388,Chromophores and optical properties,Would a haemoglobin map show increased blood within the lesion?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q389,Chromophores and optical properties,Does the lesion centre show blood displacement (reduced haemoglobin)?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q390,Chromophores and optical properties,Is there a whitish zone suggesting altered dermal collagen scattering?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q391,Chromophores and optical properties,Does the lesion scatter light more (look milkier) than surrounding skin?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q392,Chromophores and optical properties,"In optical-density space, does the lesion separate along the melanin axis, the haemoglobin axis, or both?",Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q393,Chromophores and optical properties,Would comparing short- and long-wavelength bands help separate melanin from haemoglobin here?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q394,Chromophores and optical properties,"Does the lesion show raised melanin but normal blood, i.e., pigmented without inflammation?",Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q395,Chromophores and optical properties,Does subsurface scattering soften the lesion edges?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q396,Chromophores and optical properties,"Is the colour explainable by a two-chromophore (melanin + haemoglobin) model, or do other absorbers seem involved?",Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q397,Chromophores and optical properties,Do pigment structures appear weaker in the red channel than in the blue channel?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q398,Chromophores and optical properties,Is the green channel the highest-contrast channel for vessels?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q399,Chromophores and optical properties,Is the lesion visible in all three RGB channels?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q400,Chromophores and optical properties,Does the blood look oxygenated (bright red) or deoxygenated (dark purple-blue)?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q401,Chromophores and optical properties,Is there rust-brown colouring suggesting haemosiderin deposition?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q402,Chromophores and optical properties,"Is exogenous pigment (tattoo ink, graphite, amalgam) likely?",Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q403,Chromophores and optical properties,Is the lesion translucent enough for underlying vessels to show through?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q404,Chromophores and optical properties,"Does pigment seem to sit within the stratum corneum (crisp, dark, superficial) rather than deeper?",Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q405,Chromophores and optical properties,"Judging by colour, does the lesion look optically superficial or deep?",Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q406,Chromophores and optical properties,"Does the lesion absorb strongly across all wavelengths, appearing near-black and neutral?",Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q407,Chromophores and optical properties,Is chromophore concentration spatially heterogeneous (mottled) or homogeneous?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q408,Chromophores and optical properties,Could illumination assumptions plausibly bias a melanin estimate in this image?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q409,Chromophores and optical properties,Would scale or keratin create a whitish layer that violates linear chromophore-separation assumptions?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q410,Chromophores and optical properties,Do ulceration or crust make chromophore inversion unreliable for this lesion?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q411,Chromophores and optical properties,Is there a bright superficial reflection from a thin epidermis?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q412,Chromophores and optical properties,"Is there a depth gradient, e.g., a brown centre with a bluish periphery?",Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q413,Chromophores and optical properties,"Is hue saturation high, consistent with concentrated melanin?",Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q414,Chromophores and optical properties,Would appearance change substantially between polarized and non-polarized illumination?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q415,Chromophores and optical properties,Do apparent chromophore levels fall outside physiological ranges (implausible colour)?,Tsumura 1999; Tsumura 2003; Claridge 2003; Moncrieff 2002; Donner 2008; Jensen 2001; Kuzmina 2022; Glud 2009
+Q416,"Surface microrelief, texture and reflectance",Is the fine furrow network of skin microrelief visible across the lesion?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q417,"Surface microrelief, texture and reflectance",Does the lesion efface the normal skin furrows?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q418,"Surface microrelief, texture and reflectance",Do the furrows deviate around the lesion?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q419,"Surface microrelief, texture and reflectance","Are specular highlights present, indicating a moist or shiny surface?",Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q420,"Surface microrelief, texture and reflectance",Are highlights broad (smooth surface) or fragmented (rough surface)?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q421,"Surface microrelief, texture and reflectance",Would the surface likely feel rough to the touch?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q422,"Surface microrelief, texture and reflectance",Are the pores around the lesion visible and enlarged?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q423,"Surface microrelief, texture and reflectance",Do wrinkles cross the lesion?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q424,"Surface microrelief, texture and reflectance",Does raking light reveal elevation through cast shadows?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q425,"Surface microrelief, texture and reflectance",Could height (topography) be inferred from shading cues?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q426,"Surface microrelief, texture and reflectance",Does the surface look wet from exudate or applied ointment?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q427,"Surface microrelief, texture and reflectance",Is surface texture uniform or heterogeneous?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q428,"Surface microrelief, texture and reflectance",Is the surface pitted with small depressions?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q429,"Surface microrelief, texture and reflectance",Is the surface shiny and taut over a nodule?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q430,"Surface microrelief, texture and reflectance",Does the dermatoscope's light ring reflect as concentric rings on the surface?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q431,"Surface microrelief, texture and reflectance",Does glare differ between lesion and surrounding skin?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q432,"Surface microrelief, texture and reflectance",Is there a granular texture?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q433,"Surface microrelief, texture and reflectance",Is the surface cobbled or lobulated?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q434,"Surface microrelief, texture and reflectance",Do furrows form a cross-hatched pattern?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q435,"Surface microrelief, texture and reflectance",Does the surface look velvety?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q436,"Surface microrelief, texture and reflectance",Is the lesion flat enough for uniform contact dermoscopy?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q437,"Surface microrelief, texture and reflectance",Does the texture have a preferred orientation (anisotropic grain)?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q438,"Surface microrelief, texture and reflectance",Is there peau d'orange dimpling?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q439,"Surface microrelief, texture and reflectance",Is fine vellus hair visible on the lesion?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q440,"Surface microrelief, texture and reflectance",Does texture differ between the lesion centre and its periphery?,Ghosh 2008; Sohaib 2013; Graham 2013; Linming 2018; Weyrich 2006
+Q441,Computational image features,Could the lesion be segmented automatically as a single clean closed boundary?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q442,Computational image features,Is lesion–background contrast high enough for threshold-based segmentation?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q443,Computational image features,Would hair-removal preprocessing be needed before segmentation?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q444,Computational image features,Is the boundary ambiguous enough that annotators would disagree?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q445,Computational image features,Is GLCM contrast (texture heterogeneity) within the lesion high?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q446,Computational image features,Is texture entropy within the lesion high?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q447,Computational image features,Is the lesion texture homogeneous (high GLCM homogeneity/energy)?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q448,Computational image features,How large is the colour variance inside the lesion mask?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q449,Computational image features,Is mean lesion colour distinct from mean skin colour in a perceptual space (large ΔE)?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q450,Computational image features,Does the colour histogram show multiple modes?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q451,Computational image features,Is there a radial intensity gradient from centre to edge?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q452,Computational image features,Is the intensity gradient across the boundary steep or shallow?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q453,Computational image features,How high is the fractal dimension or irregularity index of the border?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q454,Computational image features,Is the geometric centroid offset from the pigment-weighted centre of mass?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q455,Computational image features,"Does the image contain spurious cues (rulers, markers) a CNN could exploit as shortcuts?",Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q456,Computational image features,Would concept-scoring models flag concepts such as ulceration or erythema in this image?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q457,Computational image features,Would saturated-pixel regions corrupt colour features?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q458,Computational image features,Is colour-constancy normalisation needed before feature extraction?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q459,Computational image features,Would rotating the image change its interpretation?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q460,Computational image features,Would key structures survive downsampling to a standard CNN input size such as 224 px?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q461,Computational image features,Is periodic texture (network) detectable through frequency analysis?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q462,Computational image features,"Would a local texture descriptor (e.g., LBP) distinguish the lesion centre from its rim?",Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q463,Computational image features,Are there enough background-skin pixels to compute normalisation statistics?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q464,Computational image features,Does the image require multi-lesion rather than single-lesion segmentation?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q465,Computational image features,Would a saliency map likely concentrate on the lesion rather than on artefacts?,Celebi 2019; Codella 2018; Mirikharaji 2023; Kim 2024a (MONET); Nachbar 1994
+Q466,"Dataset provenance, synthetic data and ML suitability",Does the image match the visual style of ISIC/HAM10000 dermoscopic images?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q467,"Dataset provenance, synthetic data and ML suitability",Does it resemble smartphone clinical images such as those in PAD-UFES-20?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q468,"Dataset provenance, synthetic data and ML suitability",Is the lesion type likely absent from typical training data (out-of-distribution)?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q469,"Dataset provenance, synthetic data and ML suitability",Does the image show generative-model artefacts such as repeated texture or implausible hair?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q470,"Dataset provenance, synthetic data and ML suitability",Are there blending seams typical of physics-based or 3D-rendered synthetic lesions?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q471,"Dataset provenance, synthetic data and ML suitability",Does the lesion look pasted onto skin with mismatched lighting?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q472,"Dataset provenance, synthetic data and ML suitability",Are watermarks or textbook/atlas styling present?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q473,"Dataset provenance, synthetic data and ML suitability","Does the image look web-scraped from a clinical atlas, as in Fitzpatrick17k?",Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q474,"Dataset provenance, synthetic data and ML suitability",Is the image an educational figure with captions or panel letters?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q475,"Dataset provenance, synthetic data and ML suitability",Would the label for this image more likely be histopathology-confirmed or clinical consensus?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q476,"Dataset provenance, synthetic data and ML suitability",Would per-feature labels for this image be unreliable because the features are ambiguous?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q477,"Dataset provenance, synthetic data and ML suitability",Does the image depict a rare diagnostic class?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q478,"Dataset provenance, synthetic data and ML suitability",Would the image serve as a skin-tone fairness benchmark case?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q479,"Dataset provenance, synthetic data and ML suitability",Does the image look like it came from a biopsy-selected clinic population?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q480,"Dataset provenance, synthetic data and ML suitability","Has the image been heavily augmented (rotation, colour jitter, flipping)?",Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q481,"Dataset provenance, synthetic data and ML suitability",Is the image a near-duplicate of another view of the same lesion?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q482,"Dataset provenance, synthetic data and ML suitability",Does the crop omit context needed for patient-level analysis?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q483,"Dataset provenance, synthetic data and ML suitability",Are demographic cues visible that could confound a classifier?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q484,"Dataset provenance, synthetic data and ML suitability","Does the image appear style-transferred, e.g., with artificially darkened skin?",Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q485,"Dataset provenance, synthetic data and ML suitability",Has the image been anonymised by blurring?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q486,"Dataset provenance, synthetic data and ML suitability","Does lesion texture resolution mismatch skin texture resolution, suggesting a generated region?",Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q487,"Dataset provenance, synthetic data and ML suitability",Does the image appear upscaled by super-resolution?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q488,"Dataset provenance, synthetic data and ML suitability",Is this a hard case comparable to BCN20000's difficult anatomical sites?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q489,"Dataset provenance, synthetic data and ML suitability",Would this image belong to a non-lesion or 'other' category?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q490,"Dataset provenance, synthetic data and ML suitability",Is the image cropped to the fixed square size typical of challenge datasets?,Tschandl 2018; Pacheco 2020; Groh 2021; Hernández-Pérez 2024; Combalia 2022; Bissoto 2021; Sinha 2024; Kim 2024b; Rezk 2022; Daneshjou 2022b
+Q491,"3D, total-body and longitudinal imaging",Is the image a textured 3D total-body mesh with visible texture seams?,Cerminara 2023; Kittler 2006; Salerni 2013; Soyer 2025; Primiero 2024
+Q492,"3D, total-body and longitudinal imaging",Is the lesion mapped to a coordinate on a body avatar?,Cerminara 2023; Kittler 2006; Salerni 2013; Soyer 2025; Primiero 2024
+Q493,"3D, total-body and longitudinal imaging",Could the lesion be matched across visits using surrounding landmarks?,Cerminara 2023; Kittler 2006; Salerni 2013; Soyer 2025; Primiero 2024
+Q494,"3D, total-body and longitudinal imaging","For a dated pair, is the follow-up interval short-term (~3 months) or long-term (≥6 months)?",Cerminara 2023; Kittler 2006; Salerni 2013; Soyer 2025; Primiero 2024
+Q495,"3D, total-body and longitudinal imaging",Could apparent change between images be explained by angle or lighting rather than true growth?,Cerminara 2023; Kittler 2006; Salerni 2013; Soyer 2025; Primiero 2024
+Q496,"3D, total-body and longitudinal imaging",Does a 3D view reveal the lesion's elevation profile?,Cerminara 2023; Kittler 2006; Salerni 2013; Soyer 2025; Primiero 2024
+Q497,"3D, total-body and longitudinal imaging",Is the naevus count in the visible region high?,Cerminara 2023; Kittler 2006; Salerni 2013; Soyer 2025; Primiero 2024
+Q498,"3D, total-body and longitudinal imaging",Is the texture resolution of a total-body crop adequate for dermoscopic-level features?,Cerminara 2023; Kittler 2006; Salerni 2013; Soyer 2025; Primiero 2024
+Q499,"3D, total-body and longitudinal imaging",Does body-surface curvature distort the apparent lesion shape?,Cerminara 2023; Kittler 2006; Salerni 2013; Soyer 2025; Primiero 2024
+Q500,"3D, total-body and longitudinal imaging",Is the lesion visible in multiple overlapping camera views?,Cerminara 2023; Kittler 2006; Salerni 2013; Soyer 2025; Primiero 2024

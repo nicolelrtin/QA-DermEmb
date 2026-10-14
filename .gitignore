@@ -2,3 +2,11 @@
 __pycache__/
 *.pyc
 data/
+.DS_Store
+# Fetched by setup_derm1m.sh
+third_party/
+# Script outputs (embeddings, plots); regenerate on the workstation
+outputs/
+# Generated per machine by `hf skills add`
+.agents/
+.claude/
