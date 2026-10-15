@@ -44,6 +44,13 @@ def load_dermlip(device: str):
     open_clip = _import_fork()
     model, _, preprocess = open_clip.create_model_and_transforms(MODEL_ID)
     tokenizer = open_clip.get_tokenizer(MODEL_ID)
+
+        # transformers 5 removed batch_encode_plus, which the Derm1M fork still calls.
+    # Calling the tokenizer directly takes the same arguments and returns the same result.
+    hf_tok = getattr(tokenizer, "tokenizer", None)
+    if hf_tok is not None and not hasattr(hf_tok, "batch_encode_plus"):
+        hf_tok.batch_encode_plus = hf_tok.__call__
+        
     return model.to(device).eval(), preprocess, tokenizer
 
 

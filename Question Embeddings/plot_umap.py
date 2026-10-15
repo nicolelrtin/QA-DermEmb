@@ -28,7 +28,7 @@ MODEL_TITLES = {
     "skingpt": "SkinGPT-R1 (LLM hidden states)",
 }
 # Categorical slots 1-4 (validated for CVD separation); marker shape is the secondary encoding.
-SET_STYLE = [("#2a78d6", "o"), ("#eb6834", "s"), ("#1baf7a", "^"), ("#eda100", "D")]
+SET_STYLE = [("#51bbf7", "o"), ("#eebd08", "o"), ("#a1c423", "o"), ("#c34f3a", "o")]
 SURFACE, TEXT, TEXT_2, CONTEXT_GRAY = "#fcfcfb", "#0b0b0b", "#52514e", "#d8d7d2"
 
 
@@ -57,26 +57,20 @@ def draw_by_set(coords: np.ndarray, sets: pd.Series, title: str, path: Path):
         ax.scatter(coords[m, 0], coords[m, 1], s=16, c=color, marker=marker, alpha=0.85,
                    edgecolors=SURFACE, linewidths=0.4)
         style_axes(ax, f"{label} (n={m.sum()})")
-    fig.suptitle(f"{title}: each set highlighted over the others", color=TEXT, x=0.01, ha="left", fontsize=12)
+    fig.suptitle(f"{title}: each question set against full set", color=TEXT, x=0.01, ha="left", fontsize=12)
     fig.tight_layout(rect=(0, 0, 1, 0.95))
     fig.savefig(path, dpi=200)
     plt.close(fig)
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--out", type=Path, default=HERE / "outputs")
-    parser.add_argument("--n-neighbors", type=int, default=15)
-    parser.add_argument("--min-dist", type=float, default=0.1)
-    parser.add_argument("--seed", type=int, default=42)
-    args = parser.parse_args()
+def plot_umap(args):
+    questions = pd.read_csv(args.out / "questions.csv") # from em
 
-    questions = pd.read_csv(args.out / "questions.csv")
     models = [m for m in MODEL_TITLES if (args.out / f"emb_{m}.npy").exists()]
     if not models:
         raise SystemExit(f"No emb_*.npy in {args.out}; run embed_questions.py first.")
 
-    table = questions[["set", "qid", "section", "question"]].copy()
+    table = questions[["set", "qid", "section", "topic", "question"]].copy()
     fig, axes = plt.subplots(1, len(models), figsize=(5.5 * len(models), 5.5), facecolor=SURFACE, squeeze=False)
     for ax, name in zip(axes[0], models):
         emb = np.load(args.out / f"emb_{name}.npy")
@@ -102,6 +96,16 @@ def main():
     fig.savefig(args.out / "umap_all.png", dpi=200)
     table.to_csv(args.out / "umap_coords.csv", index=False)
     print("saved umap_all.png and umap_coords.csv")
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--out", type=Path, default=HERE / "outputs")
+    parser.add_argument("--n-neighbors", type=int, default=10)
+    parser.add_argument("--min-dist", type=float, default=0.1)
+    parser.add_argument("--seed", type=int, default=42)
+    args = parser.parse_args()
+
+    plot_umap(args)
 
 
 if __name__ == "__main__":

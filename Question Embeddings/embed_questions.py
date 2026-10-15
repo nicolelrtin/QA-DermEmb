@@ -97,7 +97,7 @@ def embed_skingpt(texts: list[str], device: str, batch_size: int = 16) -> np.nda
     for i in tqdm(range(0, len(texts), batch_size), desc="SkinGPT-R1"):
         batch = tokenizer(texts[i : i + batch_size], padding=True, return_tensors="pt").to(model.device)
         hidden = model.model(input_ids=batch.input_ids, attention_mask=batch.attention_mask).last_hidden_state
-        mask = batch.attention_mask.unsqueeze(-1).to(hidden.dtype)
+        mask = batch.attention_mask.unsqueeze(-1).to(device=hidden.device, dtype=hidden.dtype)
         pooled = (hidden * mask).sum(1) / mask.sum(1)  # mean over real tokens
         out.append(torch.nn.functional.normalize(pooled.float(), dim=-1).cpu())
     return torch.cat(out).numpy()
