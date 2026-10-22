@@ -1,0 +1,86 @@
+section,topic,note
+Dermoscopy algorithms for melanoma,Dermoscopy algorithms for melanoma,auto-grouped; rename topic
+Lesion-specific dermoscopic criteria,Lesion-specific dermoscopic criteria,auto-grouped; rename topic
+Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Lesion-specific dermoscopic criteria,auto-grouped; rename topic
+Dermoscopy terminology consensus,Lesion-specific dermoscopic criteria,auto-grouped; rename topic
+Morphology vocabulary and lesion description,Morphology vocabulary and lesion description,auto-grouped; rename topic
+Vascular structures in dermoscopy,Vascular structures in dermoscopy,auto-grouped; rename topic
+"Special sites (acral, face/LM, nail, mucosa)",Lesion-specific dermoscopic criteria,auto-grouped; rename topic
+ILDS morphology / lesion terminology,Morphology vocabulary and lesion description,auto-grouped; rename topic
+Seborrhoeic keratosis & benign mimics,Lesion-specific dermoscopic criteria,auto-grouped; rename topic
+Spitz / pink / amelanotic & paediatric lesions,Lesion-specific dermoscopic criteria,auto-grouped; rename topic
+Inflammatory dermoscopy & general dermatology,Inflammatory dermoscopy & general dermatology,auto-grouped; rename topic
+RCM / OCT / LC-OCT imaging,RCM / OCT / LC-OCT imaging,auto-grouped; rename topic
+Colour constancy & acquisition standards,Colour constancy & acquisition standards,auto-grouped; rename topic
+"Shortcut / artefact learning (markings, rulers, hair)",Colour constancy & acquisition standards,auto-grouped; rename topic
+Texture descriptors & radiomics for lesions,Texture descriptors & radiomics for lesions,auto-grouped; rename topic
+Segmentation & handcrafted ABCD features,Texture descriptors & radiomics for lesions,auto-grouped; rename topic
+Special anatomic sites,Special anatomic sites,auto-grouped; rename topic
+"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Dermoscopy algorithms for melanoma,auto-grouped; rename topic
+Anatomic site & body-region lesion density,Morphology vocabulary and lesion description,auto-grouped; rename topic
+Skin of colour presentation,Inflammatory dermoscopy & general dermatology,auto-grouped; rename topic
+Photoaging scales & image grading,Photoaging scales & image grading,auto-grouped; rename topic
+Congenital nevi & vascular anomalies/birthmarks,Congenital nevi & vascular anomalies/birthmarks,auto-grouped; rename topic
+Sequential digital dermoscopy & lesion change,Morphology vocabulary and lesion description,auto-grouped; rename topic
+Nevus count & atypical mole phenotype,Congenital nevi & vascular anomalies/birthmarks,auto-grouped; rename topic
+"Distribution & configuration (Blaschko, segmental, mosaic)",Congenital nevi & vascular anomalies/birthmarks,auto-grouped; rename topic
+"Datasets, benchmarks and their biases",Colour constancy & acquisition standards,auto-grouped; rename topic
+"Skin tone measurement (Fitzpatrick, Monk, ITA)",Photoaging scales & image grading,auto-grouped; rename topic
+Melanin/haemoglobin decomposition of RGB images,Texture descriptors & radiomics for lesions,auto-grouped; rename topic
+"Naked-eye rules: ABCDE, ugly duckling",Morphology vocabulary and lesion description,auto-grouped; rename topic
+Distribution and mosaic patterns,Congenital nevi & vascular anomalies/birthmarks,auto-grouped; rename topic
+Histopathologic correlates of dermoscopic structures,Lesion-specific dermoscopic criteria,auto-grouped; rename topic
+Field cancerization & actinic damage scoring,Photoaging scales & image grading,auto-grouped; rename topic
+Colour constancy and acquisition standards,Colour constancy & acquisition standards,auto-grouped; rename topic
+Skin surface texture & microrelief,Photoaging scales & image grading,auto-grouped; rename topic
+Multispectral / hyperspectral lesion imaging,Texture descriptors & radiomics for lesions,auto-grouped; rename topic
+Nevus phenotypes / signature nevus / ugly duckling,Congenital nevi & vascular anomalies/birthmarks,auto-grouped; rename topic
+Anatomic site shapes priors,Morphology vocabulary and lesion description,auto-grouped; rename topic
+Skin tone and skin of colour,Photoaging scales & image grading,auto-grouped; rename topic
+Total body photography & 3D TBP,Texture descriptors & radiomics for lesions,auto-grouped; rename topic
+Smartphone / consumer apps & teledermatology,Colour constancy & acquisition standards,auto-grouped; rename topic
+Lesion-body context & patient-level AI,Texture descriptors & radiomics for lesions,auto-grouped; rename topic
+"Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)",Texture descriptors & radiomics for lesions,auto-grouped; rename topic
+Skin optical properties & chromophores,Dermoscopy algorithms for melanoma,auto-grouped; rename topic
+Dermoscopy terminology and accuracy,Dermoscopy terminology and accuracy,auto-grouped; rename topic
+Public datasets & challenges,Dermoscopy terminology and accuracy,auto-grouped; rename topic
+Congenital nevi and vascular anomalies,Congenital nevi & vascular anomalies/birthmarks,auto-grouped; rename topic
+Skin rendering & appearance models (computer graphics),Photoaging scales & image grading,auto-grouped; rename topic
+"Texture, microrelief and radiomics",Photoaging scales & image grading,auto-grouped; rename topic
+Synthetic data: 3D rendering & generative models,Colour constancy & acquisition standards,auto-grouped; rename topic
+Melanoma diagnostic guidelines,Morphology vocabulary and lesion description,auto-grouped; rename topic
+Keratinocyte carcinoma guidelines,Morphology vocabulary and lesion description,auto-grouped; rename topic
+Dermoscopy diagnostic accuracy (SR/MA),Dermoscopy terminology and accuracy,auto-grouped; rename topic
+"Domain shift, OOD & generalisation",Colour constancy & acquisition standards,auto-grouped; rename topic
+Fairness & skin-tone bias,Colour constancy & acquisition standards,auto-grouped; rename topic
+Field cancerization and actinic damage,Photoaging scales & image grading,auto-grouped; rename topic
+Adversarial / pixel perturbation attacks,Colour constancy & acquisition standards,auto-grouped; rename topic
+Monte Carlo light transport in skin,Photoaging scales & image grading,auto-grouped; rename topic
+Concept-based explanations,Colour constancy & acquisition standards,auto-grouped; rename topic
+Nevus count and atypical phenotype,Congenital nevi & vascular anomalies/birthmarks,auto-grouped; rename topic
+Shortcut learning in skin lesions,Colour constancy & acquisition standards,auto-grouped; rename topic
+Landmark dermatologist-level CNNs,Texture descriptors & radiomics for lesions,auto-grouped; rename topic
+Prospective & real-world AI evaluation,Texture descriptors & radiomics for lesions,auto-grouped; rename topic
+Photoaging grading remains heterogeneous,Photoaging scales & image grading,auto-grouped; rename topic
+Human-AI collaboration,Texture descriptors & radiomics for lesions,auto-grouped; rename topic
+Auditing classifiers / Clever Hans,Colour constancy & acquisition standards,auto-grouped; rename topic
+Foundation & vision-language models,Colour constancy & acquisition standards,auto-grouped; rename topic
+"Saliency method validity (sanity checks, evaluation)",Colour constancy & acquisition standards,auto-grouped; rename topic
+Chromophores and optical properties,Photoaging scales & image grading,auto-grouped; rename topic
+Systematic reviews of AI diagnostic accuracy,Dermoscopy terminology and accuracy,auto-grouped; rename topic
+Regulatory / cleared devices,Dermoscopy terminology and accuracy,auto-grouped; rename topic
+Clinician evaluation of explanations,Dermoscopy terminology and accuracy,auto-grouped; rename topic
+Algorithms versus pattern analysis,Dermoscopy algorithms for melanoma,auto-grouped; rename topic
+Reporting standards for derm AI,Colour constancy & acquisition standards,auto-grouped; rename topic
+Total body photography: modest evidence,Texture descriptors & radiomics for lesions,auto-grouped; rename topic
+Ugly duckling at body scale,Dermoscopy algorithms for melanoma,auto-grouped; rename topic
+source-supported,Photoaging scales & image grading,auto-grouped; rename topic
+XAI reviews in dermatology,Dermoscopy terminology and accuracy,auto-grouped; rename topic
+Fairness and skin tone,Colour constancy & acquisition standards,auto-grouped; rename topic
+Smartphone and consumer apps,Dermoscopy terminology and accuracy,auto-grouped; rename topic
+Chromophore decomposition from RGB,Photoaging scales & image grading,auto-grouped; rename topic
+Sequential monitoring detects change,Dermoscopy algorithms for melanoma,auto-grouped; rename topic
+Patient-level and wide-field AI,Texture descriptors & radiomics for lesions,auto-grouped; rename topic
+"Adjunct imaging: RCM, LC-OCT",RCM / OCT / LC-OCT imaging,auto-grouped; rename topic
+Attribution methods: a taxonomy,Texture descriptors & radiomics for lesions,auto-grouped; rename topic
+Graphics appearance and spectral models,Colour constancy & acquisition standards,auto-grouped; rename topic

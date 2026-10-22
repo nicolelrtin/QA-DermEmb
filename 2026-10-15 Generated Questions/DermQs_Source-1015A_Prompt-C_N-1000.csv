@@ -1,0 +1,1001 @@
+﻿Question ID,Topic,Question,Sources Cited (Local ID),Grounding
+DQ0001,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is the lesion outline asymmetric about at least one axis?,DL039; DL124; DL057; DL071,source-supported
+DQ0002,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is the lesion outline asymmetric about both perpendicular axes?,DL039; DL124; DL057; DL071,source-supported
+DQ0003,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is the colour distribution within the lesion asymmetric?,DL039; DL124; DL057; DL071,source-supported
+DQ0004,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is the distribution of dermoscopic structures within the lesion asymmetric?,DL039; DL051; DL071; DL069,source-supported
+DQ0005,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)","Is the lesion border irregular, notched or scalloped?",DL039; DL124; DL057; DL071,source-supported
+DQ0006,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Does the border show an abrupt cut-off of pigment along part of the periphery?,DL039; DL124; DL057; DL071,source-supported
+DQ0007,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Does the lesion contain three or more distinct colours?,DL082; DL039; DL124; DL057,source-supported
+DQ0008,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Does the lesion show colour variegation across its surface?,DL082; DL124; DL068; DL096,source-supported
+DQ0009,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Does the lesion contain both light-brown and dark-brown areas?,DL058; DL137; DL067; DL111,source-supported
+DQ0010,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is black colour present anywhere within the lesion?,DL049; DL063; DL103; DL109,source-supported
+DQ0011,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is any blue or blue-grey colour present within the lesion?,DL051; DL007; DL063; DL073,source-supported
+DQ0012,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is any white colour present within the lesion?,DL007; DL022; DL036; DL049,source-supported
+DQ0013,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is any red colour present within the lesion?,DL023; DL049; DL035; DL424,source-supported
+DQ0014,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)","Is the lesion diameter greater than 6 mm, judged against a scale reference?",DL082; DL124; DL057; DL071,source-supported
+DQ0015,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is the lesion diameter less than 5 mm (a small-diameter lesion)?,DL082; DL124; DL057; DL071,source-supported
+DQ0016,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is the lesion visibly elevated rather than flat?,DL137; DL183; DL155; DL407,source-supported
+DQ0017,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Does the lesion look firm and nodular (consistent with the EFG criteria)?,DL104; DL137; DL183; DL155,source-supported
+DQ0018,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Does the lesion stand out from the patient's other visible nevi (ugly duckling sign)?,DL057; DL071; DL124; DL133,source-supported
+DQ0019,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is the lesion noticeably darker than the patient's other visible nevi?,DL057; DL071; DL124; DL133,source-supported
+DQ0020,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is the lesion noticeably larger than the patient's other visible nevi?,DL057; DL071; DL124; DL133,source-supported
+DQ0021,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is the lesion the only pink or non-pigmented lesion among otherwise pigmented nevi?,DL057; DL071; DL124; DL133,source-supported
+DQ0022,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)","Is the lesion smaller but markedly different from neighbouring nevi (a ""little red riding hood"" outlier)?",,standard term
+DQ0023,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Does the image include enough surrounding skin to compare the lesion with other nevi of the same patient?,DL057; DL071; DL124; DL133,source-supported
+DQ0024,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Would the lesion likely score above 5.45 on the dermoscopic ABCD rule (total dermoscopy score)?,DL039; DL051; DL057; DL068,source-supported
+DQ0025,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)","Does the lesion have a ""funny looking"" appearance compared with typical nevi?",DL057,source-supported
+DQ0026,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Does a paired earlier image show a change in the lesion's shape?,DL082; DL289; DL091; DL114,source-supported
+DQ0027,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Does a paired earlier image show a change in the lesion's colour?,DL082; DL039; DL124; DL057,source-supported
+DQ0028,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Does a paired earlier image show an increase in the lesion's size?,DL082; DL194; DL212; DL173,source-supported
+DQ0029,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is there a new surface change such as crusting or bleeding?,DL055; DL082,source-supported
+DQ0030,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is the lesion uniformly coloured with a single shade of brown?,DL194; DL198; DL029; DL201,source-supported
+DQ0031,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)","Is the lesion round or oval with a smooth, regular outline?",DL026; DL118; DL157; DL122,source-supported
+DQ0032,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Does the lesion have a symmetric shape and structure overall?,DL026; DL157; DL122; DL213,source-supported
+DQ0033,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Does the lesion show a dark central area with irregular extensions?,DL051; DL124; DL082; DL068,source-supported
+DQ0034,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)","Is the lesion a symmetric, uniformly brown nevus with a regular border?",DL157,source-supported
+DQ0035,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is black colour located at the lesion periphery?,DL049; DL063; DL103; DL109,source-supported
+DQ0036,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is black colour located eccentrically (off-centre) within the lesion?,DL049; DL063; DL103; DL109,source-supported
+DQ0037,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is blue-grey colour located at the lesion periphery?,DL007; DL067; DL064; DL065,source-supported
+DQ0038,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is blue-grey colour located eccentrically (off-centre) within the lesion?,DL007; DL067; DL064; DL065,source-supported
+DQ0039,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is white colour located at the lesion periphery?,DL007; DL022; DL036; DL049,source-supported
+DQ0040,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is white colour located eccentrically (off-centre) within the lesion?,DL007; DL022; DL036; DL049,source-supported
+DQ0041,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is red colour located at the lesion periphery?,DL023; DL049; DL035; DL424,source-supported
+DQ0042,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is red colour located eccentrically (off-centre) within the lesion?,DL023; DL049; DL035; DL424,source-supported
+DQ0043,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is dark brown colour located at the lesion periphery?,DL137,source-supported
+DQ0044,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is dark brown colour located eccentrically (off-centre) within the lesion?,DL137,source-supported
+DQ0045,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is light brown colour located at the lesion periphery?,,standard term
+DQ0046,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is light brown colour located eccentrically (off-centre) within the lesion?,,standard term
+DQ0047,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)","Does the lesion show more than one shade of the same colour (e.g., several browns)?",DL058; DL137; DL067; DL082,source-supported
+DQ0048,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)","Does the lesion border show indistinct, blurred segments alternating with sharp segments?",DL039; DL124; DL057; DL071,source-supported
+DQ0049,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Does the lesion contain a dark dot or nodule within a lighter background?,DL051; DL023; DL026; DL065,source-supported
+DQ0050,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",Is the lesion outline highly irregular with deep notches?,DL051; DL124; DL082; DL068,source-supported
+DQ0051,Dermoscopy algorithms for melanoma,Would the lesion reach 3 or more points on the 7-point checklist?,DL119; DL051; DL063; DL334,source-supported
+DQ0052,Dermoscopy algorithms for melanoma,Is an atypical vascular pattern present (a 7-point checklist major criterion)?,DL128; DL085; DL051,source-supported
+DQ0053,Dermoscopy algorithms for melanoma,Are irregular pigmentation areas present (a 7-point checklist minor criterion)?,DL137; DL051,source-supported
+DQ0054,Dermoscopy algorithms for melanoma,Does the lesion show symmetry of pattern and only one colour (Menzies negative features)?,DL240; DL048; DL403,source-supported
+DQ0055,Dermoscopy algorithms for melanoma,"Does the lesion meet the 3-point checklist (asymmetry, atypical network, blue-white structures)?",DL240; DL406,source-supported
+DQ0056,Dermoscopy algorithms for melanoma,Does the lesion show at least one melanoma-specific dermoscopic structure?,DL194; DL201; DL073; DL081,source-supported
+DQ0057,Dermoscopy algorithms for melanoma,"Does the lesion show structural or colour asymmetry (""chaos"") in a chaos-and-clues assessment?",,standard term
+DQ0058,Dermoscopy algorithms for melanoma,Are grey or blue structures present as a clue to malignancy?,DL007; DL348; DL058; DL067,source-supported
+DQ0059,Dermoscopy algorithms for melanoma,Are polymorphous vessels present?,DL035; DL022; DL122; DL007,source-supported
+DQ0060,Dermoscopy algorithms for melanoma,Are white lines present as a clue to malignancy?,DL104,source-supported
+DQ0061,Dermoscopy algorithms for melanoma,"Does the lesion show criteria of a melanocytic lesion (network, aggregated globules, streaks, homogeneous blue or parallel pattern)?",DL119; DL039; DL048; DL051,source-supported
+DQ0062,Dermoscopy algorithms for melanoma,Does the lesion lack all criteria of a melanocytic lesion?,DL066; DL253; DL048; DL270,source-supported
+DQ0063,Dermoscopy algorithms for melanoma,"Does the non-pigmented lesion show ulceration, white lines, white circles or white structureless areas?",DL104; DL059; DL022,source-supported
+DQ0064,Dermoscopy algorithms for melanoma,Is surface keratin visible on a non-pigmented lesion?,DL097; DL104; DL016; DL059,source-supported
+DQ0065,Dermoscopy algorithms for melanoma,"Is the lesion nodular and non-pigmented, requiring vessel pattern analysis?",DL026; DL104; DL103; DL002,source-supported
+DQ0066,Dermoscopy algorithms for melanoma,Is a single colour present across the whole lesion?,DL091; DL060; DL120; DL010,source-supported
+DQ0067,Dermoscopy algorithms for melanoma,"Are five or six colours present (light brown, dark brown, black, blue-grey, red, white)?",DL091; DL060; DL120; DL010,source-supported
+DQ0068,Dermoscopy algorithms for melanoma,Is a prominent or broadened network present without other suspicious features?,DL091; DL060; DL070; DL316,source-supported
+DQ0069,Dermoscopy algorithms for melanoma,Is the lesion pattern organised rather than disorganised?,DL104; DL048; DL051; DL006,source-supported
+DQ0070,Dermoscopy algorithms for melanoma,Does the lesion lack specific dermoscopic structures (featureless)?,DL060; DL157; DL311; DL006,source-supported
+DQ0071,Dermoscopy algorithms for melanoma,Does the lesion show a combination of network and structureless areas (reticular-homogeneous)?,DL198,source-supported
+DQ0072,Dermoscopy algorithms for melanoma,Does the lesion meet the ASAP-type triage features (asymmetry or suspicious pigment pattern)?,DL119,source-supported
+DQ0073,Dermoscopy algorithms for melanoma,Are telangiectases visible in a pigmented lesion?,DL060; DL077; DL007; DL062,source-supported
+DQ0074,Dermoscopy algorithms for melanoma,Is the lesion heavily pigmented overall?,DL298; DL085,source-supported
+DQ0075,Dermoscopy algorithms for melanoma,Does the lesion show blue-white structures (veil or regression)?,DL063; DL073; DL069; DL075,source-supported
+DQ0076,Dermoscopy algorithms for melanoma,Is an atypical network combined with irregular dots or globules?,DL023; DL051; DL346; DL128,source-supported
+DQ0077,Dermoscopy algorithms for melanoma,Is the lesion pattern predominantly structureless with a peripheral rim of brown network?,DL189,source-supported
+DQ0078,Dermoscopy diagnostic accuracy (SR/MA),"Is the image a dermoscopic (magnified, illuminated) image rather than a clinical photograph?",DL001; DL006; DL014; DL016,source-supported
+DQ0079,Dermoscopy diagnostic accuracy (SR/MA),"Is the image a clinical (naked-eye, close-up) photograph?",DL006; DL016; DL249; DL266,source-supported
+DQ0080,Dermoscopy diagnostic accuracy (SR/MA),Is the lesion captured in both a clinical and a dermoscopic view?,DL001; DL006; DL016; DL014,source-supported
+DQ0081,Dermoscopy diagnostic accuracy (SR/MA),"Is histopathology the likely reference standard for this lesion (e.g., an excised, biopsy-scarred lesion)?",DL006; DL046; DL042; DL153,source-supported
+DQ0082,Dermoscopy diagnostic accuracy (SR/MA),Is the lesion a melanocytic lesion rather than a keratinocytic one?,DL016; DL006; DL039; DL048,source-supported
+DQ0083,Dermoscopy diagnostic accuracy (SR/MA),Is the lesion a keratinocytic lesion rather than a melanocytic one?,DL016; DL097; DL211; DL225,source-supported
+DQ0084,Dermoscopy diagnostic accuracy (SR/MA),"Does the lesion appear to be in a high-prevalence referral-type case mix (e.g., large, clearly atypical lesion)?",DL001; DL224; DL029; DL179,source-supported
+DQ0085,Dermoscopy diagnostic accuracy (SR/MA),"Is the lesion an equivocal or ""doubtful"" melanocytic lesion rather than clearly benign or clearly malignant?",DL046; DL039; DL051; DL047,source-supported
+DQ0086,Dermoscopy terminology consensus,Are reticular lines forming a pigment network visible?,DL063; DL075; DL091; DL060,source-supported
+DQ0087,Dermoscopy terminology consensus,"Is the pigment network atypical (thickened lines, irregular holes, uneven distribution)?",DL085; DL346; DL051; DL091,source-supported
+DQ0088,Dermoscopy terminology consensus,Does the pigment network end abruptly at the lesion periphery?,DL063; DL075; DL091; DL060,source-supported
+DQ0089,Dermoscopy terminology consensus,Does the pigment network fade gradually at the lesion periphery?,DL063; DL075; DL091; DL060,source-supported
+DQ0090,Dermoscopy terminology consensus,Is a negative (inverse) pigment network present?,DL075,source-supported
+DQ0091,Dermoscopy terminology consensus,Are branched streaks present?,DL063; DL107; DL111; DL022,source-supported
+DQ0092,Dermoscopy terminology consensus,Are radial streaks (radial lines at the periphery) present?,DL063; DL107; DL111; DL022,source-supported
+DQ0093,Dermoscopy terminology consensus,Are pseudopods (bulbous projections) present at the periphery?,DL049; DL063,source-supported
+DQ0094,Dermoscopy terminology consensus,Are dots visible within the lesion?,DL031; DL049; DL023; DL065,source-supported
+DQ0095,Dermoscopy terminology consensus,"Are dots and globules irregular in size, shape and distribution?",DL346; DL069; DL051,source-supported
+DQ0096,Dermoscopy terminology consensus,Are globules (clods) visible within the lesion?,DL049; DL058; DL189; DL194,source-supported
+DQ0097,Dermoscopy terminology consensus,Are dermoscopic circles visible?,DL049; DL059; DL104; DL022,source-supported
+DQ0098,Dermoscopy terminology consensus,Is a structureless (homogeneous) area present?,DL049; DL022; DL189; DL023,source-supported
+DQ0099,Dermoscopy terminology consensus,Is a dark structureless blotch present?,DL062; DL127,source-supported
+DQ0100,Dermoscopy terminology consensus,Is the blotch located eccentrically rather than centrally?,DL062; DL127,source-supported
+DQ0101,Dermoscopy terminology consensus,Is a blue-white veil present?,DL063; DL073; DL069; DL075,source-supported
+DQ0102,Dermoscopy terminology consensus,Are regression structures (white scar-like areas and/or blue-grey peppering) present?,DL085; DL108; DL069; DL051,source-supported
+DQ0103,Dermoscopy terminology consensus,Is fine blue-grey peppering (granularity) present?,DL108; DL064; DL069; DL100,source-supported
+DQ0104,Dermoscopy terminology consensus,Are shiny white lines or structures visible under polarized light?,DL007; DL022; DL035; DL036,source-supported
+DQ0105,Dermoscopy terminology consensus,Are white rosettes (four-point clover-leaf structures) visible?,DL065; DL007,source-supported
+DQ0106,Dermoscopy terminology consensus,Does the lesion show a multicomponent pattern (three or more distinct zones)?,DL029; DL075,source-supported
+DQ0107,Dermoscopy terminology consensus,Is the global dermoscopic pattern reticular?,DL198; DL026; DL029,source-supported
+DQ0108,Dermoscopy terminology consensus,Is the global dermoscopic pattern globular?,DL194; DL198; DL026; DL029,source-supported
+DQ0109,Dermoscopy terminology consensus,Is the global dermoscopic pattern homogeneous?,DL194; DL034; DL198; DL111,source-supported
+DQ0110,Dermoscopy terminology consensus,Is the global dermoscopic pattern starburst?,DL026,source-supported
+DQ0111,Dermoscopy terminology consensus,Is the global dermoscopic pattern reticular-globular?,DL198,source-supported
+DQ0112,Dermoscopy terminology consensus,Is the global dermoscopic pattern complex (more than two patterns)?,DL189; DL198,source-supported
+DQ0113,Dermoscopy terminology consensus,"Is pigmentation interrupted by follicular openings, forming a pseudonetwork?",DL062; DL100,source-supported
+DQ0114,Dermoscopy terminology consensus,Are angulated lines (zig-zag or polygonal lines) visible?,DL069; DL091,source-supported
+DQ0115,Dermoscopy terminology consensus,Are milky-red globules or milky-red areas visible?,DL049; DL035; DL023,source-supported
+DQ0116,Dermoscopy terminology consensus,Are black dots or small black clods present at the periphery?,DL049; DL063; DL103; DL109,source-supported
+DQ0117,Dermoscopy terminology consensus,Are follicular plugs visible?,DL049; DL023; DL107; DL065,source-supported
+DQ0118,Dermoscopy terminology consensus,Is a perivascular white halo visible around vessels?,DL049; DL022; DL108,source-supported
+DQ0119,Dermoscopy terminology consensus,Are erosions or ulceration visible on dermoscopy?,DL049; DL007; DL022; DL104,source-supported
+DQ0120,Dermoscopy terminology consensus,"Is the lesion best described using descriptive terms such as lines, dots, clods, circles and structureless?",DL004; DL049; DL033; DL216,source-supported
+DQ0121,Dermoscopy terminology consensus,Are pink structureless zones visible?,DL049; DL067; DL134; DL135,source-supported
+DQ0122,Dermoscopy terminology consensus,Are parallel lines visible within the lesion?,DL029; DL127,source-supported
+DQ0123,Dermoscopy terminology consensus,Are curved lines visible within the lesion?,,standard term
+DQ0124,Dermoscopy terminology consensus,Are clods of more than one colour present?,DL049,source-supported
+DQ0125,Dermoscopy terminology consensus,Are white lines arranged in parallel orthogonal crossing (chrysalis) pattern?,DL007; DL022; DL035; DL036,source-supported
+DQ0126,Dermoscopy terminology consensus,Are dots arranged in lines or rows?,DL031; DL049; DL023; DL065,source-supported
+DQ0127,Dermoscopy terminology consensus,Are dots arranged around follicles (perifollicular dots)?,DL031; DL010; DL049; DL023,source-supported
+DQ0128,Dermoscopy terminology consensus,Are clods concentrated at the periphery?,DL049; DL037; DL201; DL122,source-supported
+DQ0129,Dermoscopy terminology consensus,Are structureless areas brown?,DL049; DL022; DL189; DL023,source-supported
+DQ0130,Dermoscopy terminology consensus,Are structureless areas blue?,DL049; DL022; DL189; DL023,source-supported
+DQ0131,Dermoscopy terminology consensus,Are structureless areas white?,DL022; DL059; DL104,source-supported
+DQ0132,Dermoscopy terminology consensus,Are structureless areas pink or red?,DL049; DL022; DL189; DL023,source-supported
+DQ0133,Dermoscopy terminology consensus,Is pigment distributed in a reticular pattern only at the periphery with central structureless areas?,,standard term
+DQ0134,Dermoscopy terminology consensus,Is pigment distributed in a central network with a structureless periphery?,,not named in sources
+DQ0135,Dermoscopy terminology consensus,Are pseudopods or streaks present along only part of the lesion circumference?,DL049; DL063; DL107; DL111,source-supported
+DQ0136,Dermoscopy terminology consensus,Are pseudopods or streaks present along the entire lesion circumference?,DL026,source-supported
+DQ0137,Dermoscopy terminology consensus,Is the pigment network located mainly at the lesion periphery?,DL063; DL075; DL091; DL060,source-supported
+DQ0138,Dermoscopy terminology consensus,Is the pigment network located mainly in the lesion centre?,DL063; DL075; DL091; DL060,source-supported
+DQ0139,Dermoscopy terminology consensus,Does the pigment network cover more than half of the lesion area?,DL063; DL075; DL091; DL060,source-supported
+DQ0140,Dermoscopy terminology consensus,Is the pigment network confined to a small focal area (less than about 10% of the lesion)?,DL063; DL075; DL091; DL060,source-supported
+DQ0141,Dermoscopy terminology consensus,Is the blue-white veil located mainly at the lesion periphery?,DL063; DL073; DL069; DL075,source-supported
+DQ0142,Dermoscopy terminology consensus,Is the blue-white veil located mainly in the lesion centre?,DL063; DL073; DL069; DL075,source-supported
+DQ0143,Dermoscopy terminology consensus,Does the blue-white veil cover more than half of the lesion area?,DL063; DL073; DL069; DL075,source-supported
+DQ0144,Dermoscopy terminology consensus,Is the blue-white veil confined to a small focal area (less than about 10% of the lesion)?,DL063; DL073; DL069; DL075,source-supported
+DQ0145,Dermoscopy terminology consensus,Are regression structures located mainly at the lesion periphery?,DL085; DL108; DL069; DL051,source-supported
+DQ0146,Dermoscopy terminology consensus,Are regression structures located mainly in the lesion centre?,DL085; DL108; DL069; DL051,source-supported
+DQ0147,Dermoscopy terminology consensus,Do regression structures cover more than half of the lesion area?,DL085; DL108; DL069; DL051,source-supported
+DQ0148,Dermoscopy terminology consensus,Are regression structures confined to a small focal area (less than about 10% of the lesion)?,DL085; DL108; DL069; DL051,source-supported
+DQ0149,Dermoscopy terminology consensus,Are dots and globules located mainly at the lesion periphery?,DL049; DL058; DL189; DL194,source-supported
+DQ0150,Dermoscopy terminology consensus,Are dots and globules located mainly in the lesion centre?,DL049; DL058; DL189; DL194,source-supported
+DQ0151,Dermoscopy terminology consensus,Do dots and globules cover more than half of the lesion area?,DL049; DL058; DL189; DL194,source-supported
+DQ0152,Dermoscopy terminology consensus,Are dots and globules confined to a small focal area (less than about 10% of the lesion)?,DL049; DL058; DL189; DL194,source-supported
+DQ0153,Dermoscopy terminology consensus,Are streaks located mainly at the lesion periphery?,DL063; DL107; DL111; DL022,source-supported
+DQ0154,Dermoscopy terminology consensus,Are streaks located mainly in the lesion centre?,DL063; DL107; DL111; DL022,source-supported
+DQ0155,Dermoscopy terminology consensus,Do streaks cover more than half of the lesion area?,DL063; DL107; DL111; DL022,source-supported
+DQ0156,Dermoscopy terminology consensus,Are streaks confined to a small focal area (less than about 10% of the lesion)?,DL063; DL107; DL111; DL022,source-supported
+DQ0157,Dermoscopy terminology consensus,Is the dark blotch located mainly at the lesion periphery?,DL062; DL127,source-supported
+DQ0158,Dermoscopy terminology consensus,Is the dark blotch located mainly in the lesion centre?,DL062; DL127,source-supported
+DQ0159,Dermoscopy terminology consensus,Does the dark blotch cover more than half of the lesion area?,DL062; DL127,source-supported
+DQ0160,Dermoscopy terminology consensus,Is the dark blotch confined to a small focal area (less than about 10% of the lesion)?,DL062; DL127,source-supported
+DQ0161,Dermoscopy terminology consensus,Are shiny white structures located mainly at the lesion periphery?,DL007; DL022; DL035; DL036,source-supported
+DQ0162,Dermoscopy terminology consensus,Are shiny white structures located mainly in the lesion centre?,DL007; DL022; DL035; DL036,source-supported
+DQ0163,Dermoscopy terminology consensus,Do shiny white structures cover more than half of the lesion area?,DL007; DL022; DL035; DL036,source-supported
+DQ0164,Dermoscopy terminology consensus,Are shiny white structures confined to a small focal area (less than about 10% of the lesion)?,DL007; DL022; DL035; DL036,source-supported
+DQ0165,Dermoscopy terminology consensus,Is the negative pigment network located mainly at the lesion periphery?,DL075,source-supported
+DQ0166,Dermoscopy terminology consensus,Is the negative pigment network located mainly in the lesion centre?,DL075,source-supported
+DQ0167,Dermoscopy terminology consensus,Does the negative pigment network cover more than half of the lesion area?,DL075,source-supported
+DQ0168,Dermoscopy terminology consensus,Is the negative pigment network confined to a small focal area (less than about 10% of the lesion)?,DL075,source-supported
+DQ0169,Histopathologic correlates of dermoscopic structures,Are blue-grey dots visible (suggesting dermal melanophages)?,DL065; DL064; DL069; DL007,source-supported
+DQ0170,Histopathologic correlates of dermoscopic structures,Are brown dots visible (suggesting epidermal melanin)?,DL111; DL065; DL137,source-supported
+DQ0171,Histopathologic correlates of dermoscopic structures,Are owl's-eye structures visible?,DL062,source-supported
+DQ0172,Histopathologic correlates of dermoscopic structures,Is a Chinese-letter pattern of pigment visible?,DL062; DL149,source-supported
+DQ0173,Histopathologic correlates of dermoscopic structures,Do pigment dots or blotches spare the eccrine and follicular openings?,DL062; DL337; DL260; DL370,source-supported
+DQ0174,Histopathologic correlates of dermoscopic structures,Is a blue colour visible that suggests deep dermal pigment?,DL036; DL065; DL075; DL007,source-supported
+DQ0175,Histopathologic correlates of dermoscopic structures,Are structures suggestive of melanin incontinence (blue-grey granules) present?,DL062; DL065; DL108,source-supported
+DQ0176,Histopathologic correlates of dermoscopic structures,Are dark silhouettes or tumour islands suggested by dermoscopic blue structures?,DL036,source-supported
+DQ0177,Histopathologic correlates of dermoscopic structures,Is a white structureless area suggestive of fibrosis present?,DL036; DL065; DL075; DL111,source-supported
+DQ0178,Histopathologic correlates of dermoscopic structures,Are white streaks visible in a lesion (short white streaks)?,DL111; DL107; DL022,source-supported
+DQ0179,Histopathologic correlates of dermoscopic structures,Is a perifollicular whitish halo visible?,DL065; DL023,source-supported
+DQ0180,Histopathologic correlates of dermoscopic structures,Is a keratotic follicular plug visible?,DL065; DL049; DL023; DL107,source-supported
+DQ0181,Histopathologic correlates of dermoscopic structures,Does the pigment network appear as regular brown lines corresponding to pigmented rete ridges?,DL075; DL362; DL052,source-supported
+DQ0182,Histopathologic correlates of dermoscopic structures,Are blue globules visible suggesting nests of pigmented melanocytes in the dermis?,DL007; DL064; DL081; DL054,source-supported
+DQ0183,Histopathologic correlates of dermoscopic structures,Is a homogeneous blue area visible suggesting dermal melanocytic proliferation (blue nevus-like)?,DL036; DL065; DL075; DL007,source-supported
+DQ0184,Histopathologic correlates of dermoscopic structures,Are brown globules visible corresponding to junctional nests?,DL036; DL058,source-supported
+DQ0185,Histopathologic correlates of dermoscopic structures,Do shiny white lines suggest altered dermal collagen (fibrosis)?,DL036; DL075; DL007; DL379,source-supported
+DQ0186,ILDS morphology / lesion terminology,Is the lesion flat and level with the surrounding skin (macule or patch)?,DL062; DL153; DL182; DL117,source-supported
+DQ0187,ILDS morphology / lesion terminology,Does the lesion appear raised above the surrounding skin surface?,DL078; DL055; DL137; DL123,source-supported
+DQ0188,ILDS morphology / lesion terminology,Is the lesion a solid raised papule smaller than about 1 cm?,DL078; DL055; DL123; DL103,source-supported
+DQ0189,ILDS morphology / lesion terminology,Is the lesion a deep-seated or bulky raised nodule larger than about 1 cm?,DL078; DL026; DL103; DL064,source-supported
+DQ0190,ILDS morphology / lesion terminology,Does the lesion contain clear fluid-filled vesicles?,DL055,source-supported
+DQ0191,ILDS morphology / lesion terminology,Are pus-filled pustules visible on or around the lesion?,DL055; DL078; DL123,source-supported
+DQ0192,ILDS morphology / lesion terminology,Is there a crust or scab on the lesion surface?,DL055,source-supported
+DQ0193,ILDS morphology / lesion terminology,"Is there a superficial erosion (moist, shallow loss of surface) within the lesion?",DL055; DL007; DL049,source-supported
+DQ0194,ILDS morphology / lesion terminology,Is there a frank ulcer with a visible base within the lesion?,DL078; DL055; DL007; DL022,source-supported
+DQ0195,ILDS morphology / lesion terminology,Does the lesion surface show visible scale?,DL022; DL058; DL023; DL123,source-supported
+DQ0196,ILDS morphology / lesion terminology,"Is the lesion an elevated, flat-topped plaque broader than it is tall?",DL078; DL103; DL207; DL137,source-supported
+DQ0197,ILDS morphology / lesion terminology,Are open comedones (blackheads) visible in or around the lesion?,DL078; DL073; DL063; DL108,source-supported
+DQ0198,ILDS morphology / lesion terminology,Is the lesion solitary within the field of view?,DL052; DL135; DL142; DL322,source-supported
+DQ0199,ILDS morphology / lesion terminology,Are multiple morphologically similar lesions visible in the image?,DL007; DL376; DL083; DL145,source-supported
+DQ0200,ILDS morphology / lesion terminology,Are lesions arranged in an annular (ring-shaped) configuration?,DL069,source-supported
+DQ0201,ILDS morphology / lesion terminology,Are the lesions grouped or clustered together?,DL348; DL393; DL128; DL217,source-supported
+DQ0202,ILDS morphology / lesion terminology,Does the eruption look morbilliform (widespread small red macules and papules)?,DL055,source-supported
+DQ0203,ILDS morphology / lesion terminology,Is there visible scarring at or adjacent to the lesion?,DL055; DL107; DL135; DL165,source-supported
+DQ0204,ILDS morphology / lesion terminology,Is a draining tunnel or sinus-tract opening visible on the skin surface?,DL078; DL402,source-supported
+DQ0205,ILDS morphology / lesion terminology,Does the lesion show a central umbilication or depression?,,standard term
+DQ0206,ILDS morphology / lesion terminology,Is the lesion pedunculated (attached by a narrow stalk)?,,standard term
+DQ0207,ILDS morphology / lesion terminology,Is there lichenification (thickened skin with exaggerated skin markings)?,,standard term
+DQ0208,ILDS morphology / lesion terminology,Are excoriations or linear scratch marks visible?,,standard term
+DQ0209,ILDS morphology / lesion terminology,Is a fluctuant-looking swelling suggestive of an abscess visible?,DL078,source-supported
+DQ0210,ILDS morphology / lesion terminology,Is the lesion dome-shaped in profile?,,standard term
+DQ0211,ILDS morphology / lesion terminology,Does the lesion surface look verrucous or papillomatous (wart-like)?,DL084; DL108; DL207,source-supported
+DQ0212,ILDS morphology / lesion terminology,"Does the lesion surface look atrophic (thin, shiny, finely wrinkled)?",DL203; DL211,source-supported
+DQ0213,ILDS morphology / lesion terminology,"Is there an oedematous, wheal-like (urticarial) plaque?",,standard term
+DQ0214,ILDS morphology / lesion terminology,Are non-blanching red-purple spots (petechiae or purpura) visible?,DL165,source-supported
+DQ0215,ILDS morphology / lesion terminology,Are bullae (blisters larger than about 1 cm) visible?,,standard term
+DQ0216,ILDS morphology / lesion terminology,Is the lesion border sharply demarcated from the surrounding skin?,DL394; DL408; DL328; DL140,source-supported
+DQ0217,ILDS morphology / lesion terminology,"Is the lesion border ill-defined, fading gradually into normal skin?",DL166; DL337; DL037; DL064,source-supported
+DQ0218,ILDS morphology / lesion terminology,"Does the lesion have a smooth, glossy surface?",DL007; DL035; DL022; DL036,source-supported
+DQ0219,ILDS morphology / lesion terminology,Does the lesion appear translucent or pearly?,DL376; DL107; DL374,source-supported
+DQ0220,ILDS morphology / lesion terminology,Is the lesion surface rough to visual inspection?,DL377; DL346; DL376; DL416,source-supported
+DQ0221,ILDS morphology / lesion terminology,Is the lesion surface eroded or weeping (exudative)?,,standard term
+DQ0222,ILDS morphology / lesion terminology,Are hemorrhagic crusts (dark red-black dried blood) present?,DL059; DL385; DL099; DL369,source-supported
+DQ0223,ILDS morphology / lesion terminology,Is the lesion skin-coloured (similar in hue to surrounding skin)?,DL056; DL061; DL381; DL080,source-supported
+DQ0224,ILDS morphology / lesion terminology,Is the lesion predominantly pink or red?,DL022; DL023; DL049; DL067,source-supported
+DQ0225,ILDS morphology / lesion terminology,Is the lesion predominantly brown?,DL058; DL137; DL067; DL111,source-supported
+DQ0226,ILDS morphology / lesion terminology,Is the lesion predominantly black?,DL049; DL063; DL103; DL109,source-supported
+DQ0227,ILDS morphology / lesion terminology,Is the lesion predominantly blue or blue-grey?,DL007; DL063; DL073; DL067,source-supported
+DQ0228,ILDS morphology / lesion terminology,Is the lesion predominantly yellow or orange?,DL022; DL107; DL369; DL111,source-supported
+DQ0229,ILDS morphology / lesion terminology,Is the lesion predominantly white or depigmented?,DL007; DL022; DL036; DL049,source-supported
+DQ0230,ILDS morphology / lesion terminology,Is the lesion hypopigmented relative to the surrounding skin?,DL114; DL208; DL135,source-supported
+DQ0231,ILDS morphology / lesion terminology,Is the lesion hyperpigmented relative to the surrounding skin?,DL062; DL182; DL121; DL208,source-supported
+DQ0232,ILDS morphology / lesion terminology,"Does the lesion appear to be a cyst (smooth, rounded, dome-shaped with a central punctum)?",DL108; DL073; DL063; DL137,source-supported
+DQ0233,ILDS morphology / lesion terminology,Is a central keratin-filled punctum or pore visible?,DL059; DL122,source-supported
+DQ0234,ILDS morphology / lesion terminology,Is erythema (redness) visible in the surrounding skin?,DL023; DL065; DL077; DL103,source-supported
+DQ0235,ILDS morphology / lesion terminology,Is there a surrounding halo of depigmentation around the lesion?,DL022; DL194; DL049; DL023,source-supported
+DQ0236,ILDS morphology / lesion terminology,Does the lesion look like a mpox-type umbilicated vesicopustule?,DL055; DL358,source-supported
+DQ0237,ILDS morphology / lesion terminology,"Are lesions present at different stages (vesicles, pustules and crusts together)?",DL055; DL005; DL011; DL020,source-supported
+DQ0238,ILDS morphology / lesion terminology,Do lesion features suggest an irritant contact pattern confined to a sharply bordered contact area?,DL102; DL383; DL165; DL023,source-supported
+DQ0239,ILDS morphology / lesion terminology,Is the lesion annular with central clearing?,DL069,source-supported
+DQ0240,ILDS morphology / lesion terminology,Is the lesion target-like with concentric colour zones?,DL007; DL065,source-supported
+DQ0241,ILDS morphology / lesion terminology,"Is the lesion serpiginous (snake-like, wavy outline)?",,standard term
+DQ0242,ILDS morphology / lesion terminology,Is the lesion polycyclic (made of merging arcs)?,,standard term
+DQ0243,ILDS morphology / lesion terminology,Is the lesion arciform (arc-shaped)?,,standard term
+DQ0244,ILDS morphology / lesion terminology,Is the lesion follicular (centred on hair follicles)?,DL027; DL031; DL065; DL069,source-supported
+DQ0245,ILDS morphology / lesion terminology,"Is the lesion confluent, formed by merging smaller lesions?",,standard term
+DQ0246,ILDS morphology / lesion terminology,Is the lesion a filiform (thread-like) projection?,,standard term
+DQ0247,ILDS morphology / lesion terminology,Is the lesion surface eroded with a glistening red base?,DL055; DL007; DL049,source-supported
+DQ0248,ILDS morphology / lesion terminology,Is the lesion firm-appearing with a puckered (dimpled) surrounding skin?,,standard term
+DQ0249,ILDS morphology / lesion terminology,Is the lesion violaceous (purple) in colour?,DL035,source-supported
+DQ0250,ILDS morphology / lesion terminology,Is the lesion grey in colour?,DL007; DL348; DL058; DL067,source-supported
+DQ0251,ILDS morphology / lesion terminology,Is the lesion lobulated (made of rounded lobes)?,DL074,source-supported
+DQ0252,ILDS morphology / lesion terminology,"Does the lesion have rolled, raised edges?",,standard term
+DQ0253,ILDS morphology / lesion terminology,Is the lesion depressed below the surrounding skin surface?,DL203; DL211,source-supported
+DQ0254,ILDS morphology / lesion terminology,Is there a crust at the lesion centre with a raised rim (crateriform)?,,standard term
+DQ0255,Inflammatory dermoscopy & general dermatology,Are vessels distributed uniformly across the lesion (inflammatory pattern)?,DL010; DL226; DL255; DL052,source-supported
+DQ0256,Inflammatory dermoscopy & general dermatology,Are white scales visible?,DL023; DL123; DL010; DL022,source-supported
+DQ0257,Inflammatory dermoscopy & general dermatology,Are yellow scales or crusts visible?,DL022; DL369; DL111; DL063,source-supported
+DQ0258,Inflammatory dermoscopy & general dermatology,Is the scale distributed diffusely rather than peripherally?,DL123; DL023; DL371; DL062,source-supported
+DQ0259,Inflammatory dermoscopy & general dermatology,Is the scale located at the lesion periphery?,DL201; DL037; DL122; DL183,source-supported
+DQ0260,Inflammatory dermoscopy & general dermatology,Are Wickham striae (white reticular lines) visible?,DL043,source-supported
+DQ0261,Inflammatory dermoscopy & general dermatology,Are orange structureless areas or orange globules visible?,DL107; DL424,source-supported
+DQ0262,Inflammatory dermoscopy & general dermatology,Are follicular red dots visible?,DL031; DL065,source-supported
+DQ0263,Inflammatory dermoscopy & general dermatology,Is perifollicular scale visible?,DL123; DL031,source-supported
+DQ0264,Inflammatory dermoscopy & general dermatology,Are broken hairs visible?,DL031,source-supported
+DQ0265,Inflammatory dermoscopy & general dermatology,Is perifollicular erythema visible?,DL123; DL023; DL031,source-supported
+DQ0266,Inflammatory dermoscopy & general dermatology,Are white polygonal structures visible?,DL023,source-supported
+DQ0267,Inflammatory dermoscopy & general dermatology,Is diffuse erythema visible across the region?,DL023; DL123; DL065; DL077,source-supported
+DQ0268,Inflammatory dermoscopy & general dermatology,Are inflammatory papules or pustules visible?,DL123; DL055; DL078; DL103,source-supported
+DQ0269,Inflammatory dermoscopy & general dermatology,Is the lesion psoriasiform (well-demarcated plaque with silvery scale)?,DL041; DL023; DL088; DL207,source-supported
+DQ0270,Inflammatory dermoscopy & general dermatology,Are nail changes such as pitting or onycholysis visible?,DL041; DL092; DL109; DL131,source-supported
+DQ0271,Inflammatory dermoscopy & general dermatology,Is a central scar-like area visible?,DL107; DL103,source-supported
+DQ0272,Inflammatory dermoscopy & general dermatology,Are follicular openings obliterated?,DL031; DL069,source-supported
+DQ0273,Inflammatory dermoscopy & general dermatology,Is the region hair-bearing scalp with visible perifollicular features?,DL023; DL123; DL027; DL035,source-supported
+DQ0274,Inflammatory dermoscopy & general dermatology,Does the image show features of a granulomatous dermatosis (translucent orange globules)?,DL107; DL424,source-supported
+DQ0275,Inflammatory dermoscopy & general dermatology,Are telangiectatic vessels arranged in a polygonal network (rosacea-like)?,DL123; DL023; DL077,source-supported
+DQ0276,Inflammatory dermoscopy & general dermatology,Are dotted vessels uniformly distributed across a scaly red plaque (psoriasis-like)?,,standard term
+DQ0277,Inflammatory dermoscopy & general dermatology,Are dotted vessels distributed in patches or clusters (eczema-like)?,DL023; DL103; DL022; DL035,source-supported
+DQ0278,Inflammatory dermoscopy & general dermatology,Is yellowish-orange background colour visible (granulomatous pattern)?,DL107; DL022; DL369; DL111,source-supported
+DQ0279,Inflammatory dermoscopy & general dermatology,Are linear vessels visible along with yellow-orange areas (granulomatous dermatosis)?,DL107; DL424,source-supported
+DQ0280,Inflammatory dermoscopy & general dermatology,Is a collarette of scale visible around a pink oval lesion (pityriasis rosea-like)?,DL121,source-supported
+DQ0281,Inflammatory dermoscopy & general dermatology,Are white crossing lines (Wickham-like) visible in a violaceous papule?,DL041; DL043; DL116; DL211,source-supported
+DQ0282,Inflammatory dermoscopy & general dermatology,Is scale arranged at the lesion border in an annular lesion (tinea-like)?,DL023; DL123; DL010; DL022,source-supported
+DQ0283,Inflammatory dermoscopy & general dermatology,Are blue-grey dots visible in an inflammatory lesion (post-inflammatory pigment)?,DL065; DL007,source-supported
+DQ0284,Inflammatory dermoscopy & general dermatology,Are red loops (twisted capillary loops) visible on the scalp?,DL023,source-supported
+DQ0285,Inflammatory dermoscopy & general dermatology,Is a well-demarcated pink-red patch with red dots on the scalp visible?,DL023; DL123; DL035; DL171,source-supported
+DQ0286,Inflammatory dermoscopy & general dermatology,Does the lesion show white structureless areas after inflammation resolves (scarring)?,DL107; DL023; DL055; DL123,source-supported
+DQ0287,Inflammatory dermoscopy & general dermatology,Is scale located mainly in the lesion centre?,DL023; DL123; DL010; DL022,source-supported
+DQ0288,Inflammatory dermoscopy & general dermatology,Does scale cover more than half of the lesion area?,DL023; DL123; DL010; DL022,source-supported
+DQ0289,Inflammatory dermoscopy & general dermatology,Is scale confined to a small focal area (less than about 10% of the lesion)?,DL023; DL123; DL010; DL022,source-supported
+DQ0290,Inflammatory dermoscopy & general dermatology,Is scale white and thick on a red plaque?,DL010; DL022; DL031; DL369,source-supported
+DQ0291,Inflammatory dermoscopy & general dermatology,Is the erythema well demarcated rather than diffuse?,DL394,source-supported
+DQ0292,Inflammatory dermoscopy & general dermatology,Are pustules arranged around follicles (folliculitis-like)?,DL123,source-supported
+DQ0293,Inflammatory dermoscopy & general dermatology,Are papules and pustules located on the central face without comedones (rosacea-like)?,DL123; DL077,source-supported
+DQ0294,Inflammatory dermoscopy & general dermatology,Are vessels arranged in a reticular net-like pattern on the face?,DL026,source-supported
+DQ0295,Keratinocyte carcinoma guidelines,Is the tumour's visible diameter larger than 2 cm?,DL038; DL082; DL166; DL124,source-supported
+DQ0296,Keratinocyte carcinoma guidelines,"Is the tumour on a high-risk facial site (central face, eyelids, nose, lips, ears)?",DL002; DL008,source-supported
+DQ0297,Keratinocyte carcinoma guidelines,Are the clinical borders of the tumour poorly defined?,DL166; DL037,source-supported
+DQ0298,Keratinocyte carcinoma guidelines,Is the tumour arising within a scar or site of previous treatment (recurrent-looking)?,DL009; DL044; DL002; DL008,source-supported
+DQ0299,Keratinocyte carcinoma guidelines,Are multiple basal cell carcinoma-like lesions visible in one image (suggesting a syndrome)?,DL008; DL002,source-supported
+DQ0300,Keratinocyte carcinoma guidelines,Are palmar pits visible on the hand?,,standard term
+DQ0301,Keratinocyte carcinoma guidelines,Is the tumour exophytic and fungating?,,standard term
+DQ0302,Keratinocyte carcinoma guidelines,Is the tumour fixed-looking or deeply infiltrating into underlying tissue?,DL038; DL185; DL037; DL065,source-supported
+DQ0303,Keratinocyte carcinoma guidelines,"Is the tumour a thick, ulcerated nodule on sun-damaged skin (invasive SCC-like)?",DL024; DL042; DL013; DL044,source-supported
+DQ0304,Keratinocyte carcinoma guidelines,"Is the lesion on the lip, ear or another site at higher risk for SCC recurrence or metastasis?",DL002; DL013; DL008; DL234,source-supported
+DQ0305,Keratinocyte carcinoma guidelines,"Does the lesion appear to be on immunosuppressed-looking skin with many keratotic lesions (e.g., transplant recipient)?",DL024; DL044; DL013; DL042,source-supported
+DQ0306,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are large blue-grey ovoid nests visible?,DL007,source-supported
+DQ0307,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are multiple blue-grey globules visible?,DL007,source-supported
+DQ0308,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are leaf-like structures visible at the periphery?,DL007,source-supported
+DQ0309,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are spoke-wheel structures visible?,DL007,source-supported
+DQ0310,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are concentric structures (dot within a globule) visible?,DL007,source-supported
+DQ0311,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are multiple small erosions visible?,DL007; DL049; DL055,source-supported
+DQ0312,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are porcelain-white (ivory) areas visible?,DL007; DL036; DL122,source-supported
+DQ0313,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is a shiny white-red structureless area visible?,DL007; DL036,source-supported
+DQ0314,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is a central keratin mass or plug visible?,DL059; DL122,source-supported
+DQ0315,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is white-yellow surface scale visible?,DL022; DL059; DL031; DL369,source-supported
+DQ0316,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are white circles around follicles visible?,DL059; DL022; DL104,source-supported
+DQ0317,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are blood spots (haemorrhage in keratin) visible?,DL059,source-supported
+DQ0318,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is a white structureless zone visible?,DL022; DL059; DL104,source-supported
+DQ0319,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is a red pseudo-network (red areas around follicles) visible?,DL100,source-supported
+DQ0320,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are rosettes visible on an actinic background?,DL007; DL065,source-supported
+DQ0321,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is an ivory-white peripheral zone surrounding a central keratin plug visible?,DL122,source-supported
+DQ0322,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),"Does the lesion show a layered architecture (central keratin, peripheral vessels)?",DL376; DL366; DL370; DL398,source-supported
+DQ0323,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are brown dots or grey dots arranged in lines?,DL128,source-supported
+DQ0324,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is the lesion a scaly erythematous patch with glomerular vessels (Bowen-like)?,DL058; DL059; DL122; DL128,source-supported
+DQ0325,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Does the lesion show pigmented scales?,DL128,source-supported
+DQ0326,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is the lesion a rapidly growing crateriform nodule with central keratin (keratoacanthoma-like)?,DL059; DL083; DL122; DL084,source-supported
+DQ0327,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Does the lesion show a pinkish-red background with whitish-yellow colours (lip SCC/actinic cheilitis)?,DL022; DL135,source-supported
+DQ0328,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are prominent follicles with white circles visible on a red background?,DL023; DL027; DL085; DL128,source-supported
+DQ0329,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is the lesion pigmented basal cell carcinoma-like with blue-grey structures but no network?,DL007; DL119; DL064,source-supported
+DQ0330,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is the lesion superficial and flat with fine telangiectasias and erosions (superficial BCC-like)?,DL007; DL008; DL002; DL047,source-supported
+DQ0331,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is the lesion nodular with arborizing vessels (nodular BCC-like)?,DL007; DL103; DL008; DL026,source-supported
+DQ0332,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),"Is the lesion scar-like, white, with fine arborizing vessels (morphoeic BCC-like)?",DL007; DL010; DL022; DL052,source-supported
+DQ0333,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is hyperkeratosis visible on the lesion surface?,DL142; DL063; DL121,source-supported
+DQ0334,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),"Is a ""strawberry"" pattern of erythema with keratotic follicular openings visible?",DL128,source-supported
+DQ0335,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Do arborizing vessels show a sharp focus and bright red colour?,DL007; DL035; DL103; DL114,source-supported
+DQ0336,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are blue-grey structures located within a non-pigmented nodule?,DL007; DL067; DL064; DL065,source-supported
+DQ0337,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are white shiny streaks visible in a pink tumour?,DL007; DL022; DL107; DL111,source-supported
+DQ0338,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is a pigmented lesion showing leaf-like areas without pigment network?,DL007,source-supported
+DQ0339,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is a white keratin mass covering more than half the lesion?,DL059; DL089; DL022; DL016,source-supported
+DQ0340,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),"Does the AK show grade 1 features (faint erythema, red pseudo-network, fine scale)?",DL186; DL191; DL177; DL412,source-supported
+DQ0341,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Does the AK show grade 3 features (enlarged follicles filled with keratin plugs over a scaly white-yellow surface)?,DL186; DL191; DL177; DL412,source-supported
+DQ0342,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is the lesion a pigmented actinic keratosis on the face (grey dots around follicles)?,DL128,source-supported
+DQ0343,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),"Is the lesion a thick, hyperkeratotic cutaneous horn?",,standard term
+DQ0344,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are blue-grey ovoid nests located mainly at the lesion periphery?,DL007,source-supported
+DQ0345,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are blue-grey ovoid nests located mainly in the lesion centre?,DL007,source-supported
+DQ0346,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Do blue-grey ovoid nests cover more than half of the lesion area?,DL007,source-supported
+DQ0347,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are blue-grey ovoid nests confined to a small focal area (less than about 10% of the lesion)?,DL007,source-supported
+DQ0348,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is ulceration located mainly at the lesion periphery?,DL007; DL022; DL104; DL049,source-supported
+DQ0349,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is ulceration located mainly in the lesion centre?,DL007; DL022; DL104; DL049,source-supported
+DQ0350,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Does ulceration cover more than half of the lesion area?,DL007; DL022; DL104; DL049,source-supported
+DQ0351,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is ulceration confined to a small focal area (less than about 10% of the lesion)?,DL007; DL022; DL104; DL049,source-supported
+DQ0352,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are white structureless areas located mainly at the lesion periphery?,DL022; DL059; DL104,source-supported
+DQ0353,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are white structureless areas located mainly in the lesion centre?,DL022; DL059; DL104,source-supported
+DQ0354,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Do white structureless areas cover more than half of the lesion area?,DL022; DL059; DL104,source-supported
+DQ0355,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are white structureless areas confined to a small focal area (less than about 10% of the lesion)?,DL022; DL059; DL104,source-supported
+DQ0356,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),"Is the lesion a thin, pink scaly patch on the face (AK-like)?",DL089; DL142; DL100; DL150,source-supported
+DQ0357,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),"Is the lesion a raised, keratotic, pink-white nodule (well-differentiated SCC-like)?",DL059; DL089; DL022; DL016,source-supported
+DQ0358,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is the lesion a red nodule without keratin and with chaotic vessels (poorly differentiated SCC-like)?,DL038; DL122; DL128,source-supported
+DQ0359,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Are white circles visible around dilated follicular openings in a keratotic lesion?,DL059; DL022; DL104,source-supported
+DQ0360,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is a translucent pearly papule with telangiectasias visible on the face?,DL007; DL376; DL077; DL107,source-supported
+DQ0361,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),Is a pigmented nodule with blue-black globules and shiny white areas visible?,DL007; DL022; DL035; DL036,source-supported
+DQ0362,Melanoma diagnostic guidelines,Does the lesion appear thick or nodular enough to suggest a tumour thickness above 0.8 mm?,DL011; DL018; DL030; DL003,source-supported
+DQ0363,Melanoma diagnostic guidelines,Is ulceration visible on a suspected primary melanoma?,DL007; DL022; DL104; DL049,source-supported
+DQ0364,Melanoma diagnostic guidelines,Are small pigmented or pink nodules visible near the lesion that could be satellite or in-transit metastases?,DL009; DL011; DL013; DL018,source-supported
+DQ0365,Melanoma diagnostic guidelines,Is a prior excision scar visible with pigment re-emerging within or beside it?,DL020; DL055; DL107; DL009,source-supported
+DQ0366,Melanoma diagnostic guidelines,"Does the lesion resemble a superficial spreading melanoma (flat, irregular, multicoloured)?",DL081,source-supported
+DQ0367,Melanoma diagnostic guidelines,"Does the lesion resemble a nodular melanoma (symmetric, elevated, uniformly dark or pink nodule)?",,standard term
+DQ0368,Melanoma diagnostic guidelines,"Does the lesion resemble a lentigo maligna (large, flat, irregular brown patch on sun-damaged face)?",DL037; DL178; DL005; DL118,source-supported
+DQ0369,Melanoma diagnostic guidelines,Is a raised (invasive-looking) area arising within an otherwise flat pigmented lesion?,DL038; DL161; DL060; DL185,source-supported
+DQ0370,Melanoma diagnostic guidelines,Is the lesion amenable to complete excisional biopsy based on its visible size?,DL005; DL011; DL020; DL030,source-supported
+DQ0371,Melanoma diagnostic guidelines,"Is the lesion within a region that would make wide surgical margins difficult (face, ear, digit)?",DL005; DL011; DL030; DL018,source-supported
+DQ0372,Melanoma diagnostic guidelines,Does the lesion show bleeding or oozing from its surface?,DL082,source-supported
+DQ0373,Melanoma diagnostic guidelines,Does the lesion appear flat (likely in situ) rather than raised?,DL068; DL005; DL175; DL186,source-supported
+DQ0374,Melanoma diagnostic guidelines,Is a pink or amelanotic nodule arising within a pigmented lesion visible?,DL019; DL085; DL130; DL117,source-supported
+DQ0375,Melanoma diagnostic guidelines,Is a vertical-growth component suggested by a palpable-appearing papule within a flat lesion?,DL078; DL053; DL055; DL123,source-supported
+DQ0376,RCM / OCT / LC-OCT imaging,Is the image a reflectance confocal microscopy (RCM) section rather than a surface photograph?,DL032; DL053; DL054; DL072,source-supported
+DQ0377,RCM / OCT / LC-OCT imaging,Does the RCM image show an atypical honeycomb pattern of the epidermis?,DL054; DL100; DL081,source-supported
+DQ0378,RCM / OCT / LC-OCT imaging,Does the RCM/LC-OCT image show pagetoid cells in the upper epidermis?,DL054,source-supported
+DQ0379,RCM / OCT / LC-OCT imaging,Does the image show dermal nests of melanocytes?,DL054; DL081,source-supported
+DQ0380,RCM / OCT / LC-OCT imaging,Does the RCM image show bright dendritic cells?,DL064; DL081; DL069,source-supported
+DQ0381,RCM / OCT / LC-OCT imaging,Does the RCM image show tumour islands with peripheral palisading?,DL064,source-supported
+DQ0382,RCM / OCT / LC-OCT imaging,Does the RCM image show streaming or cord-like structures?,DL064; DL036; DL148,source-supported
+DQ0383,RCM / OCT / LC-OCT imaging,Is the image an optical coherence tomography (OCT) cross-section?,DL032; DL047; DL053; DL054,source-supported
+DQ0384,RCM / OCT / LC-OCT imaging,"Does the LC-OCT image show lobules with a ""millefeuille"" pattern?",DL074,source-supported
+DQ0385,RCM / OCT / LC-OCT imaging,Is the dermal-epidermal junction disrupted or poorly defined in the cross-sectional image?,DL081,source-supported
+DQ0386,RCM / OCT / LC-OCT imaging,Does the cross-sectional image show epidermal thickening?,DL379; DL121; DL370,source-supported
+DQ0387,RCM / OCT / LC-OCT imaging,Does the cross-sectional image show a dark hyporeflective band below the epidermis?,DL406; DL412; DL421; DL400,source-supported
+DQ0388,RCM / OCT / LC-OCT imaging,Are bright refractile melanin granules visible?,DL064; DL117,source-supported
+DQ0389,RCM / OCT / LC-OCT imaging,Is the cobblestone pattern of the basal layer regular?,DL081,source-supported
+DQ0390,RCM / OCT / LC-OCT imaging,Does the cross-sectional image show nests at the dermal-epidermal junction that are irregular in size and distribution?,DL064; DL054; DL007; DL081,source-supported
+DQ0391,RCM / OCT / LC-OCT imaging,Does the RCM image show roundish atypical melanocytes at the dermal-epidermal junction?,DL081; DL069,source-supported
+DQ0392,RCM / OCT / LC-OCT imaging,Does the RCM image show bright suprabasal (pagetoid) cells in a facial lesion?,DL054; DL075,source-supported
+DQ0393,RCM / OCT / LC-OCT imaging,Does the cross-sectional image show tumour lobules connected to the epidermis?,DL074,source-supported
+DQ0394,RCM / OCT / LC-OCT imaging,Does the OCT/LC-OCT image show dark-rimmed lobules (BCC-like)?,DL074; DL347; DL397; DL137,source-supported
+DQ0395,Seborrhoeic keratosis & benign mimics,Are milia-like cysts visible?,DL108; DL073; DL063; DL137,source-supported
+DQ0396,Seborrhoeic keratosis & benign mimics,Are comedo-like openings visible?,DL073; DL063; DL108; DL137,source-supported
+DQ0397,Seborrhoeic keratosis & benign mimics,Are fissures and ridges (cerebriform or brain-like pattern) visible?,DL063; DL108; DL029; DL075,source-supported
+DQ0398,Seborrhoeic keratosis & benign mimics,Is a moth-eaten border visible?,DL288; DL111,source-supported
+DQ0399,Seborrhoeic keratosis & benign mimics,"Does the lesion appear ""stuck-on"" with a sharply demarcated edge?",DL394; DL408; DL328,source-supported
+DQ0400,Seborrhoeic keratosis & benign mimics,Are fingerprint-like structures visible?,,standard term
+DQ0401,Seborrhoeic keratosis & benign mimics,Is a yellow opaque homogeneous background visible?,DL063; DL022; DL369; DL111,source-supported
+DQ0402,Seborrhoeic keratosis & benign mimics,Are hairpin vessels with white halos visible in a keratotic lesion?,DL084; DL108; DL022; DL114,source-supported
+DQ0403,Seborrhoeic keratosis & benign mimics,Is a granular or peppered pattern visible (regressing lentigo or lichen planus-like keratosis)?,DL108; DL069; DL100,source-supported
+DQ0404,Seborrhoeic keratosis & benign mimics,Is a central white patch with peripheral delicate network visible (dermatofibroma-like)?,DL121; DL226; DL135,source-supported
+DQ0405,Seborrhoeic keratosis & benign mimics,Is a collarette of scale around the lesion visible?,DL121,source-supported
+DQ0406,Seborrhoeic keratosis & benign mimics,"Is the lesion a flat, uniformly light-brown macule on sun-exposed skin (solar lentigo-like)?",DL116; DL226; DL069,source-supported
+DQ0407,Seborrhoeic keratosis & benign mimics,Does the keratotic lesion also show any melanoma-specific structure such as pigment network or streaks?,DL063; DL073; DL081; DL137,source-supported
+DQ0408,Seborrhoeic keratosis & benign mimics,Does the keratotic lesion show a blue-black colour?,DL063; DL103,source-supported
+DQ0409,Seborrhoeic keratosis & benign mimics,Does the lesion show a bluish hue suggesting inflammation of a keratosis?,DL084,source-supported
+DQ0410,Seborrhoeic keratosis & benign mimics,Is the lesion surface scaly or hyperkeratotic?,DL063; DL058; DL121; DL142,source-supported
+DQ0411,Seborrhoeic keratosis & benign mimics,Is a lacunar red-purple pattern consistent with a haemangioma or angiokeratoma visible?,DL050; DL099; DL203; DL218,source-supported
+DQ0412,Seborrhoeic keratosis & benign mimics,"Is a dense ""dermatosis papulosa nigra""-like cluster of small dark papules visible on the face?",DL103,source-supported
+DQ0413,Seborrhoeic keratosis & benign mimics,Does the lesion show the classic seborrhoeic keratosis criteria of milia-like cysts and comedo-like openings together?,DL063; DL073; DL108; DL137,source-supported
+DQ0414,Seborrhoeic keratosis & benign mimics,Does the lesion show sharply demarcated borders with a light-brown fingerprint pattern (flat SK or solar lentigo)?,DL073; DL081; DL084; DL108,source-supported
+DQ0415,Seborrhoeic keratosis & benign mimics,Is the lesion a lichen planus-like keratosis (grey granular pattern on a sun-exposed site)?,DL116; DL226; DL065,source-supported
+DQ0416,Seborrhoeic keratosis & benign mimics,Does the lesion show peripheral delicate network with central scar-like white patch and a dimple (dermatofibroma)?,DL121; DL226; DL135,source-supported
+DQ0417,Seborrhoeic keratosis & benign mimics,Is the lesion a blue nevus (homogeneous steel-blue colour)?,,standard term
+DQ0418,Seborrhoeic keratosis & benign mimics,Does the lesion show ring-like globules or a haemosiderotic red-brown hue?,DL121,source-supported
+DQ0419,Seborrhoeic keratosis & benign mimics,Are milia-like cysts located mainly at the lesion periphery?,DL108; DL073; DL063; DL137,source-supported
+DQ0420,Seborrhoeic keratosis & benign mimics,Are milia-like cysts located mainly in the lesion centre?,DL108; DL073; DL063; DL137,source-supported
+DQ0421,Seborrhoeic keratosis & benign mimics,Do milia-like cysts cover more than half of the lesion area?,DL108; DL073; DL063; DL137,source-supported
+DQ0422,Seborrhoeic keratosis & benign mimics,Are milia-like cysts confined to a small focal area (less than about 10% of the lesion)?,DL108; DL073; DL063; DL137,source-supported
+DQ0423,Seborrhoeic keratosis & benign mimics,Is the lesion waxy and stuck-on with a verrucous surface?,DL084; DL207,source-supported
+DQ0424,Seborrhoeic keratosis & benign mimics,Are multiple seborrhoeic keratoses visible in the surrounding skin?,DL073; DL081; DL084; DL108,source-supported
+DQ0425,Seborrhoeic keratosis & benign mimics,Is the lesion an irritated seborrhoeic keratosis with crust and vessels?,DL084,source-supported
+DQ0426,Seborrhoeic keratosis & benign mimics,Is the lesion a clonal seborrhoeic keratosis with globule-like structures?,DL108; DL186; DL202; DL211,source-supported
+DQ0427,Skin of colour presentation,"Is the lesion on the palm, sole or nail of a darker-skinned patient?",DL086; DL112; DL125; DL019,source-supported
+DQ0428,Skin of colour presentation,Does erythema appear violaceous or dusky brown rather than bright red on darker skin?,DL077; DL103; DL023; DL065,source-supported
+DQ0429,Skin of colour presentation,Is the lesion pigmented and nodular (a common BCC presentation in skin of colour)?,DL103,source-supported
+DQ0430,Skin of colour presentation,Is the lesion ulcerated in darker skin?,DL103; DL007; DL022; DL104,source-supported
+DQ0431,Skin of colour presentation,"Are blue, black or grey dots visible in a lesion on darker skin?",DL103; DL128; DL065; DL007,source-supported
+DQ0432,Skin of colour presentation,"Is physiologic background pigmentation (e.g., pigmented network of normal dark skin) visible?",DL086; DL381; DL056; DL401,source-supported
+DQ0433,Skin of colour presentation,Is post-inflammatory hyperpigmentation visible around the lesion?,DL062; DL103; DL182; DL121,source-supported
+DQ0434,Skin of colour presentation,Is the lesion scar-like on darker skin?,DL103; DL055; DL107; DL135,source-supported
+DQ0435,Skin of colour presentation,Is hypopigmentation more evident than erythema in an inflammatory lesion on darker skin?,DL114; DL208; DL135,source-supported
+DQ0436,Skin of colour presentation,"Is phymatous change (thickened, bulbous skin) visible?",DL077,source-supported
+DQ0437,Skin of colour presentation,Is the lesion an acral pigmented lesion on dark skin showing a parallel ridge pattern?,DL029; DL127,source-supported
+DQ0438,Skin of colour presentation,"Is pigmentation in the lesion only slightly darker than the patient's background skin, reducing contrast?",DL076; DL086; DL077; DL056,source-supported
+DQ0439,Skin of colour presentation,Is the lesion a pigmented BCC with blue-grey dots on darker skin?,DL103; DL223; DL226; DL227,source-supported
+DQ0440,"Skin tone measurement (Fitzpatrick, Monk, ITA)",Is the surrounding skin very light (Fitzpatrick type I–II appearance)?,DL113; DL277; DL080; DL126,source-supported
+DQ0441,"Skin tone measurement (Fitzpatrick, Monk, ITA)",Is the surrounding skin intermediate in tone (Fitzpatrick type III–IV appearance)?,DL113; DL277; DL080; DL126,source-supported
+DQ0442,"Skin tone measurement (Fitzpatrick, Monk, ITA)",Is the surrounding skin dark (Fitzpatrick type V–VI appearance)?,DL113; DL277; DL080; DL126,source-supported
+DQ0443,"Skin tone measurement (Fitzpatrick, Monk, ITA)",Would the surrounding skin fall in the lighter half of the Monk Skin Tone scale (tones 1–5)?,DL277; DL087; DL055; DL261,source-supported
+DQ0444,"Skin tone measurement (Fitzpatrick, Monk, ITA)",Would the surrounding skin fall in the darker half of the Monk Skin Tone scale (tones 6–10)?,DL277; DL087; DL055; DL261,source-supported
+DQ0445,"Skin tone measurement (Fitzpatrick, Monk, ITA)","Is the individual typology angle (ITA) of the surrounding skin likely above 41° (""very light"")?",DL056; DL281; DL391; DL115,source-supported
+DQ0446,"Skin tone measurement (Fitzpatrick, Monk, ITA)","Is the individual typology angle of the surrounding skin likely below −30° (""dark"")?",DL056; DL281; DL391; DL115,source-supported
+DQ0447,"Skin tone measurement (Fitzpatrick, Monk, ITA)",Is there enough unaffected skin in the image to estimate skin tone?,DL277; DL087; DL250; DL267,source-supported
+DQ0448,"Skin tone measurement (Fitzpatrick, Monk, ITA)",Is the CIELAB lightness (L*) of the surrounding skin high?,DL061,source-supported
+DQ0449,"Skin tone measurement (Fitzpatrick, Monk, ITA)",Does the surrounding skin show a reddish hue (high a* value)?,DL061; DL023; DL065; DL077,source-supported
+DQ0450,"Skin tone measurement (Fitzpatrick, Monk, ITA)",Does the surrounding skin show a yellowish hue (high b* value)?,DL061; DL022; DL122; DL369,source-supported
+DQ0451,"Skin tone measurement (Fitzpatrick, Monk, ITA)",Does visible tanning (a tan line or uneven tan) affect the skin colour around the lesion?,DL061; DL381; DL310; DL161,source-supported
+DQ0452,"Skin tone measurement (Fitzpatrick, Monk, ITA)",Is the skin tone of the surrounding skin uniform across the image?,DL277; DL087; DL250; DL314,source-supported
+DQ0453,"Skin tone measurement (Fitzpatrick, Monk, ITA)",Do lighting conditions make the skin tone appear different from its true tone?,DL277; DL087; DL396; DL381,source-supported
+DQ0454,"Skin tone measurement (Fitzpatrick, Monk, ITA)",Is sunburn (acute erythema) visible on the surrounding skin?,DL056; DL126; DL129,source-supported
+DQ0455,"Skin tone measurement (Fitzpatrick, Monk, ITA)",Is the lesion colour measurable relative to a clear area of unaffected skin?,DL056; DL061; DL277; DL080,source-supported
+DQ0456,"Skin tone measurement (Fitzpatrick, Monk, ITA)",Is the skin tone in the image consistent across clinical and dermoscopic views?,DL277; DL087; DL250; DL267,source-supported
+DQ0457,"Skin tone measurement (Fitzpatrick, Monk, ITA)",Is the skin in the image tanned compared with the patient's constitutive pigmentation?,DL056; DL061; DL381; DL310,source-supported
+DQ0458,"Skin tone measurement (Fitzpatrick, Monk, ITA)",Is the image colour accurate enough to classify skin tone from the photograph alone?,DL277; DL006; DL016; DL146,source-supported
+DQ0459,"Skin tone measurement (Fitzpatrick, Monk, ITA)",Does the skin tone vary noticeably across different parts of the visible body area?,DL087; DL056; DL277; DL166,source-supported
+DQ0460,"Special sites (acral, face/LM, nail, mucosa)",Is the lesion located on acral skin (palm or sole)?,DL019; DL029; DL105; DL127,source-supported
+DQ0461,"Special sites (acral, face/LM, nail, mucosa)",Does the acral lesion show a parallel ridge pattern (pigment on the ridges)?,DL029,source-supported
+DQ0462,"Special sites (acral, face/LM, nail, mucosa)",Does the acral lesion show a parallel furrow pattern (pigment in the furrows)?,DL029; DL127,source-supported
+DQ0463,"Special sites (acral, face/LM, nail, mucosa)",Does the acral lesion show a lattice-like pattern?,DL029,source-supported
+DQ0464,"Special sites (acral, face/LM, nail, mucosa)",Does the acral lesion show a fibrillar pattern?,DL029; DL127,source-supported
+DQ0465,"Special sites (acral, face/LM, nail, mucosa)",Does the acral lesion show an irregular blotch?,DL127; DL062,source-supported
+DQ0466,"Special sites (acral, face/LM, nail, mucosa)",Does the acral lesion show asymmetry of structures or colours?,DL127; DL069; DL105; DL026,source-supported
+DQ0467,"Special sites (acral, face/LM, nail, mucosa)",Is the acral lesion's largest diameter above 7 mm?,,standard term
+DQ0468,"Special sites (acral, face/LM, nail, mucosa)",Is a longitudinal pigmented band visible in a nail plate (longitudinal melanonychia)?,DL092; DL109; DL131; DL086,source-supported
+DQ0469,"Special sites (acral, face/LM, nail, mucosa)",Is the nail band wider than 3 mm?,DL092; DL109; DL131; DL412,source-supported
+DQ0470,"Special sites (acral, face/LM, nail, mucosa)",Is the nail band irregular in colour or line spacing?,DL092; DL109; DL069; DL105,source-supported
+DQ0471,"Special sites (acral, face/LM, nail, mucosa)",Does pigment extend onto the periungual skin (Hutchinson sign)?,,standard term
+DQ0472,"Special sites (acral, face/LM, nail, mucosa)",Is there nail plate dystrophy or destruction associated with the pigmented band?,DL109; DL037; DL123; DL002,source-supported
+DQ0473,"Special sites (acral, face/LM, nail, mucosa)","Does the nail discoloration look red-purple to black and globular, consistent with subungual haemorrhage?",DL131,source-supported
+DQ0474,"Special sites (acral, face/LM, nail, mucosa)",Is the lesion located on the face?,DL069; DL258; DL371; DL392,source-supported
+DQ0475,"Special sites (acral, face/LM, nail, mucosa)",Does the facial lesion show asymmetric pigmented follicular openings?,DL069; DL031; DL062,source-supported
+DQ0476,"Special sites (acral, face/LM, nail, mucosa)",Does the facial lesion show annular-granular structures around follicles?,DL069; DL100; DL108,source-supported
+DQ0477,"Special sites (acral, face/LM, nail, mucosa)",Does the facial lesion show rhomboidal structures or follicular obliteration?,DL069; DL031,source-supported
+DQ0478,"Special sites (acral, face/LM, nail, mucosa)",Does the facial lesion show grey dots or grey circles around follicles?,DL007; DL348; DL058; DL067,source-supported
+DQ0479,"Special sites (acral, face/LM, nail, mucosa)","Is the lesion located on a mucosal surface (lip, oral, genital)?",DL086; DL125; DL251; DL101,source-supported
+DQ0480,"Special sites (acral, face/LM, nail, mucosa)",Is the lesion located on the lip vermilion?,DL022,source-supported
+DQ0481,"Special sites (acral, face/LM, nail, mucosa)",Is the lesion located on the scalp?,DL023; DL123; DL035; DL171,source-supported
+DQ0482,"Special sites (acral, face/LM, nail, mucosa)",Is the lesion located under or around the nail (subungual or periungual)?,DL092; DL109; DL131; DL019,source-supported
+DQ0483,"Special sites (acral, face/LM, nail, mucosa)",Is the acral lesion amelanotic (pink or skin-coloured) and possibly mimicking an ulcer or wart?,DL019; DL085; DL130; DL117,source-supported
+DQ0484,"Special sites (acral, face/LM, nail, mucosa)",Is the acral lesion on a weight-bearing part of the sole?,DL019; DL105; DL112; DL322,source-supported
+DQ0485,"Special sites (acral, face/LM, nail, mucosa)",Does the lesion show a structureless pattern on an acral site?,DL029; DL022; DL049; DL194,source-supported
+DQ0486,"Special sites (acral, face/LM, nail, mucosa)",Does the lesion follow skin markings (dermatoglyphics) on acral skin?,DL105; DL330; DL111,source-supported
+DQ0487,"Special sites (acral, face/LM, nail, mucosa)",Is the lesion on the face of a person with visible chronic sun damage (lentigo maligna context)?,DL037; DL069; DL178; DL118,source-supported
+DQ0488,"Special sites (acral, face/LM, nail, mucosa)","Is the facial lesion large, flat and irregularly pigmented in a lentiginous way?",DL037; DL105; DL029; DL069,source-supported
+DQ0489,"Special sites (acral, face/LM, nail, mucosa)",Is the acral pigmentation located mainly on the dermatoglyphic ridges?,DL029; DL127; DL063; DL075,source-supported
+DQ0490,"Special sites (acral, face/LM, nail, mucosa)",Does the acral lesion show multiple colours?,DL127; DL010; DL034; DL041,source-supported
+DQ0491,"Special sites (acral, face/LM, nail, mucosa)",Is the acral lesion symmetric in both shape and structure?,DL026; DL157; DL122; DL213,source-supported
+DQ0492,"Special sites (acral, face/LM, nail, mucosa)",Does the nail plate show a triangular band wider at the base (proximal widening)?,DL092; DL109; DL131; DL412,source-supported
+DQ0493,"Special sites (acral, face/LM, nail, mucosa)",Are micro-Hutchinson pigment flecks visible on the cuticle under dermoscopy?,,standard term
+DQ0494,"Special sites (acral, face/LM, nail, mucosa)",Is the lesion on the palm or sole but located in a non-weight-bearing area?,DL019; DL105; DL112; DL052,source-supported
+DQ0495,"Special sites (acral, face/LM, nail, mucosa)",Is the lesion on the eyelid margin or conjunctiva?,DL113; DL200; DL153; DL324,source-supported
+DQ0496,"Special sites (acral, face/LM, nail, mucosa)",Is the mucosal lesion multifocal (several separate macules)?,DL086; DL125; DL186; DL198,source-supported
+DQ0497,"Special sites (acral, face/LM, nail, mucosa)",Does the mucosal lesion show a structureless blue or grey area?,,standard term
+DQ0498,"Special sites (acral, face/LM, nail, mucosa)",Is the subungual lesion associated with nail plate elevation or a mass?,DL131; DL019; DL092,source-supported
+DQ0499,"Special sites (acral, face/LM, nail, mucosa)",Does the nail band show grey colour rather than brown (non-melanocytic activation)?,DL092; DL109; DL131; DL086,source-supported
+DQ0500,Spitz / pink / amelanotic & paediatric lesions,Does the lesion show a starburst pattern with symmetric peripheral streaks or pseudopods?,DL026,source-supported
+DQ0501,Spitz / pink / amelanotic & paediatric lesions,Does the lesion show regularly distributed dotted vessels on a pink background?,DL026; DL035; DL075; DL114,source-supported
+DQ0502,Spitz / pink / amelanotic & paediatric lesions,Does the lesion show reticular depigmentation (a white negative network)?,DL026; DL075; DL347,source-supported
+DQ0503,Spitz / pink / amelanotic & paediatric lesions,Is the lesion a symmetric pink papule in a child?,DL275; DL092; DL106; DL167,source-supported
+DQ0504,Spitz / pink / amelanotic & paediatric lesions,Is the lesion amelanotic or hypomelanotic (little or no visible pigment)?,DL130; DL117; DL135; DL019,source-supported
+DQ0505,Spitz / pink / amelanotic & paediatric lesions,Is residual faint pigment visible at the edge of an otherwise pink lesion?,DL130; DL117; DL134; DL223,source-supported
+DQ0506,Spitz / pink / amelanotic & paediatric lesions,Is the lesion pink or red with no pigment structures at all?,DL134; DL135; DL117; DL049,source-supported
+DQ0507,Spitz / pink / amelanotic & paediatric lesions,Does the pink lesion show a mixture of vessel types (polymorphous vessels)?,DL035; DL022; DL122; DL007,source-supported
+DQ0508,Spitz / pink / amelanotic & paediatric lesions,Does the pink lesion show milky-red areas?,DL049; DL035; DL023,source-supported
+DQ0509,Spitz / pink / amelanotic & paediatric lesions,Is the lesion a rapidly growing pink nodule (judging from serial images)?,DL083; DL137; DL035,source-supported
+DQ0510,Spitz / pink / amelanotic & paediatric lesions,Does the lesion appear to be a solitary hypopigmented papule or nodule?,DL135; DL114; DL208,source-supported
+DQ0511,Spitz / pink / amelanotic & paediatric lesions,"Does the lesion look like a cherry angioma (bright red, well circumscribed)?",DL135; DL203,source-supported
+DQ0512,Spitz / pink / amelanotic & paediatric lesions,"Does the lesion show the ""string of pearls"" vessel arrangement of clear cell acanthoma?",DL135,source-supported
+DQ0513,Spitz / pink / amelanotic & paediatric lesions,"Does the lesion look like a dermal nevus (soft, skin-coloured, with comma vessels)?",DL135,source-supported
+DQ0514,Spitz / pink / amelanotic & paediatric lesions,"Does the lesion look like a scar or keloid (firm, shiny, white or pink)?",DL135; DL055; DL107; DL165,source-supported
+DQ0515,Spitz / pink / amelanotic & paediatric lesions,"Is the lesion a dark, black-brown, symmetric pigmented Reed (Spitz) nevus?",DL026,source-supported
+DQ0516,Spitz / pink / amelanotic & paediatric lesions,Is the lesion nodular rather than flat or slightly raised?,DL026; DL103; DL104; DL002,source-supported
+DQ0517,Spitz / pink / amelanotic & paediatric lesions,"Is the patient a child or adolescent, judging from the image context?",DL275; DL092; DL106; DL167,source-supported
+DQ0518,Spitz / pink / amelanotic & paediatric lesions,Does the lesion show a globular pattern with a central blue-grey hue?,DL026; DL194; DL198; DL029,source-supported
+DQ0519,Spitz / pink / amelanotic & paediatric lesions,Does the lesion show a homogeneous pink pattern without vessels?,DL134; DL135; DL117; DL049,source-supported
+DQ0520,Spitz / pink / amelanotic & paediatric lesions,Does the pink lesion show a central white network?,DL026; DL075; DL347,source-supported
+DQ0521,Spitz / pink / amelanotic & paediatric lesions,Is the lesion a symmetric pigmented lesion with peripheral globules (growing nevus pattern)?,DL201,source-supported
+DQ0522,Spitz / pink / amelanotic & paediatric lesions,Does the lesion show globules of variable size at the periphery?,DL026; DL049; DL058; DL189,source-supported
+DQ0523,Spitz / pink / amelanotic & paediatric lesions,Are milky-red areas located mainly at the lesion periphery?,DL049; DL035; DL023,source-supported
+DQ0524,Spitz / pink / amelanotic & paediatric lesions,Are milky-red areas located mainly in the lesion centre?,DL049; DL035; DL023,source-supported
+DQ0525,Spitz / pink / amelanotic & paediatric lesions,Do milky-red areas cover more than half of the lesion area?,DL049; DL035; DL023,source-supported
+DQ0526,Spitz / pink / amelanotic & paediatric lesions,Are milky-red areas confined to a small focal area (less than about 10% of the lesion)?,DL049; DL035; DL023,source-supported
+DQ0527,Spitz / pink / amelanotic & paediatric lesions,Does the lesion show a central hyperpigmented area with peripheral globules and a pink background?,DL026; DL049; DL058; DL189,source-supported
+DQ0528,Spitz / pink / amelanotic & paediatric lesions,Is the lesion a dark-brown to black flat lesion with peripheral streaks in a young patient?,DL026; DL063; DL107; DL111,source-supported
+DQ0529,Systematic reviews of AI diagnostic accuracy,Is the image from the same device/setting typically used in hold-out test sets (curated dermoscopy)?,DL229; DL226; DL251; DL255,source-supported
+DQ0530,Systematic reviews of AI diagnostic accuracy,"Does the image include patient metadata cues (age, site) visible in the image?",DL229; DL362; DL278; DL193,source-supported
+DQ0531,Vascular structures in dermoscopy,Are arborizing (tree-like branching) vessels visible?,DL035; DL114; DL007; DL103,source-supported
+DQ0532,Vascular structures in dermoscopy,Are dotted vessels visible?,DL035; DL114; DL026; DL075,source-supported
+DQ0533,Vascular structures in dermoscopy,Are glomerular (coiled) vessels visible?,DL058; DL035; DL122; DL128,source-supported
+DQ0534,Vascular structures in dermoscopy,Are hairpin (looped) vessels visible?,DL114; DL122; DL022; DL084,source-supported
+DQ0535,Vascular structures in dermoscopy,Are comma-shaped vessels visible?,DL114,source-supported
+DQ0536,Vascular structures in dermoscopy,Are linear irregular vessels visible?,DL035; DL067; DL100; DL107,source-supported
+DQ0537,Vascular structures in dermoscopy,Are serpentine vessels visible?,DL022; DL023,source-supported
+DQ0538,Vascular structures in dermoscopy,Are crown vessels around the lesion edge visible?,DL114,source-supported
+DQ0539,Vascular structures in dermoscopy,Are short fine telangiectasias visible?,DL114; DL077; DL007; DL060,source-supported
+DQ0540,Vascular structures in dermoscopy,Are polymorphous (two or more types of) vessels present?,DL035; DL122; DL022; DL007,source-supported
+DQ0541,Vascular structures in dermoscopy,Is the vascular pattern monomorphous (one vessel type)?,DL022,source-supported
+DQ0542,Vascular structures in dermoscopy,Are vessels arranged in clusters?,DL128; DL348; DL393; DL217,source-supported
+DQ0543,Vascular structures in dermoscopy,Are vessels arranged in a regular (uniform) distribution?,DL058; DL137,source-supported
+DQ0544,Vascular structures in dermoscopy,Are vessels concentrated at the lesion centre?,DL099; DL122; DL107; DL059,source-supported
+DQ0545,Vascular structures in dermoscopy,Are vessels arranged in a string-of-pearls (linear-serpiginous) pattern?,,standard term
+DQ0546,Vascular structures in dermoscopy,Are hairpin vessels surrounded by a white halo?,DL022; DL049; DL108,source-supported
+DQ0547,Vascular structures in dermoscopy,Is a milky-red background visible?,DL035; DL049; DL023,source-supported
+DQ0548,Vascular structures in dermoscopy,"Is the vessel calibre large (thick, in-focus vessels)?",DL038,source-supported
+DQ0549,Vascular structures in dermoscopy,Are vessels in focus and sharp (suggesting superficial vessels)?,DL170; DL002; DL047; DL182,source-supported
+DQ0550,Vascular structures in dermoscopy,Are red lacunae (well-demarcated red-purple lagoons) visible?,DL023,source-supported
+DQ0551,Vascular structures in dermoscopy,Are red dots and globules visible?,DL023; DL031; DL065,source-supported
+DQ0552,Vascular structures in dermoscopy,Is a structureless pink-red area visible?,DL067; DL099; DL023; DL049,source-supported
+DQ0553,Vascular structures in dermoscopy,Is the vessel pattern chaotic rather than organised?,DL122,source-supported
+DQ0554,Vascular structures in dermoscopy,Are lace-like vessels visible?,DL023,source-supported
+DQ0555,Vascular structures in dermoscopy,Do vessels branch and intertwine extensively?,DL099; DL089; DL282; DL091,source-supported
+DQ0556,Vascular structures in dermoscopy,Is vessel density high across the lesion?,DL099; DL175; DL161; DL185,source-supported
+DQ0557,Vascular structures in dermoscopy,Is the lesion a pink-red nodule with a polymorphous vascular pattern on a milky-red background (Merkel cell carcinoma-like)?,DL035; DL067; DL076,source-supported
+DQ0558,Vascular structures in dermoscopy,Are vessels in the lesion arranged radially at the periphery?,DL114,source-supported
+DQ0559,Vascular structures in dermoscopy,Are vessels thick at the base and branching into thinner calibre?,DL035; DL099; DL114; DL007,source-supported
+DQ0560,Vascular structures in dermoscopy,Is a well-circumscribed red-purple lesion composed of lacunae visible (haemangioma or angioma)?,DL203; DL135,source-supported
+DQ0561,Vascular structures in dermoscopy,Are short linear vessels arranged in parallel along skin lines?,DL035; DL067; DL107; DL207,source-supported
+DQ0562,Vascular structures in dermoscopy,Are vessels in the lesion visible only at the periphery?,DL122; DL201; DL037; DL183,source-supported
+DQ0563,Vascular structures in dermoscopy,Are dotted vessels arranged in lines (linear arrangement)?,DL035; DL114; DL022; DL062,source-supported
+DQ0564,Vascular structures in dermoscopy,Are arborizing vessels located mainly at the lesion periphery?,DL035; DL114; DL007; DL103,source-supported
+DQ0565,Vascular structures in dermoscopy,Are arborizing vessels located mainly in the lesion centre?,DL035; DL114; DL007; DL103,source-supported
+DQ0566,Vascular structures in dermoscopy,Do arborizing vessels cover more than half of the lesion area?,DL035; DL114; DL007; DL103,source-supported
+DQ0567,Vascular structures in dermoscopy,Are arborizing vessels confined to a small focal area (less than about 10% of the lesion)?,DL035; DL114; DL007; DL103,source-supported
+DQ0568,Vascular structures in dermoscopy,Are dotted vessels located mainly at the lesion periphery?,DL035; DL114; DL026; DL075,source-supported
+DQ0569,Vascular structures in dermoscopy,Are dotted vessels located mainly in the lesion centre?,DL035; DL114; DL026; DL075,source-supported
+DQ0570,Vascular structures in dermoscopy,Do dotted vessels cover more than half of the lesion area?,DL035; DL114; DL026; DL075,source-supported
+DQ0571,Vascular structures in dermoscopy,Are dotted vessels confined to a small focal area (less than about 10% of the lesion)?,DL035; DL114; DL026; DL075,source-supported
+DQ0572,Vascular structures in dermoscopy,Are glomerular vessels located mainly at the lesion periphery?,DL058; DL035; DL122; DL128,source-supported
+DQ0573,Vascular structures in dermoscopy,Are glomerular vessels located mainly in the lesion centre?,DL058; DL035; DL122; DL128,source-supported
+DQ0574,Vascular structures in dermoscopy,Do glomerular vessels cover more than half of the lesion area?,DL058; DL035; DL122; DL128,source-supported
+DQ0575,Vascular structures in dermoscopy,Are glomerular vessels confined to a small focal area (less than about 10% of the lesion)?,DL058; DL035; DL122; DL128,source-supported
+DQ0576,Vascular structures in dermoscopy,Is the lesion a soft blue-purple papule with whitish veil (angiokeratoma-like)?,,standard term
+DQ0577,Vascular structures in dermoscopy,Are vessels at the lesion border radiating toward the centre (crown-like)?,DL114,source-supported
+DQ0578,Anatomic site & body-region lesion density,Is the lesion on the trunk?,DL161; DL188; DL171; DL196,source-supported
+DQ0579,Anatomic site & body-region lesion density,Is the lesion on the back?,DL175; DL198; DL155,source-supported
+DQ0580,Anatomic site & body-region lesion density,Is the lesion on the head or neck?,DL185; DL161; DL178,source-supported
+DQ0581,Anatomic site & body-region lesion density,Is the lesion on an upper limb?,DL161; DL385,source-supported
+DQ0582,Anatomic site & body-region lesion density,Is the lesion on a lower limb?,DL161; DL196; DL198; DL019,source-supported
+DQ0583,Anatomic site & body-region lesion density,Is the lesion on the hip or thigh?,DL196,source-supported
+DQ0584,Anatomic site & body-region lesion density,Is the lesion on the ear?,DL171; DL185,source-supported
+DQ0585,Anatomic site & body-region lesion density,Is the lesion on the nose?,DL185; DL377,source-supported
+DQ0586,Anatomic site & body-region lesion density,"Is the lesion on a site of intermittent sun exposure (trunk, limbs)?",DL175; DL188; DL171; DL197,source-supported
+DQ0587,Anatomic site & body-region lesion density,Is the lesion on the chest?,DL155; DL312,source-supported
+DQ0588,Anatomic site & body-region lesion density,Is the lesion on the anterior lower leg (shin)?,DL161; DL196; DL198; DL050,source-supported
+DQ0589,Anatomic site & body-region lesion density,Is the lesion on the eyelid or periocular skin?,DL200,source-supported
+DQ0590,Anatomic site & body-region lesion density,Is the lesion on the genital or perianal skin?,,standard term
+DQ0591,Anatomic site & body-region lesion density,Is the lesion on the dorsum of the hand?,DL175; DL356,source-supported
+DQ0592,Anatomic site & body-region lesion density,Is the lesion on the cheek?,DL185; DL377,source-supported
+DQ0593,Anatomic site & body-region lesion density,Is the lesion on the forehead or temple?,DL200; DL203; DL377,source-supported
+DQ0594,Anatomic site & body-region lesion density,Is the anatomical site identifiable from the image?,DL162; DL171; DL185; DL197,source-supported
+DQ0595,Anatomic site & body-region lesion density,Is the lesion on the scalp in an area with hair loss?,DL123,source-supported
+DQ0596,Anatomic site & body-region lesion density,Is the lesion on the neck?,DL185; DL178; DL161; DL171,source-supported
+DQ0597,Anatomic site & body-region lesion density,Is the lesion on the shoulder?,DL377,source-supported
+DQ0598,Anatomic site & body-region lesion density,Is the lesion on the abdomen?,DL202; DL407; DL312,source-supported
+DQ0599,Congenital nevi & vascular anomalies/birthmarks,"Does the pigmented lesion appear congenital (large, with hypertrichosis or rugose surface)?",DL187; DL212; DL199; DL211,source-supported
+DQ0600,Congenital nevi & vascular anomalies/birthmarks,Is the congenital nevus larger than 20 cm in projected adult size?,DL212,source-supported
+DQ0601,Congenital nevi & vascular anomalies/birthmarks,Are satellite nevi visible around a large congenital nevus?,DL212,source-supported
+DQ0602,Congenital nevi & vascular anomalies/birthmarks,Is a nodule arising within a congenital nevus visible?,,standard term
+DQ0603,Congenital nevi & vascular anomalies/birthmarks,"Is a flat, pink-red to purple patch consistent with a port-wine birthmark visible?",DL200; DL203,source-supported
+DQ0604,Congenital nevi & vascular anomalies/birthmarks,Does a facial vascular birthmark involve the forehead or upper eyelid?,DL200; DL203; DL377,source-supported
+DQ0605,Congenital nevi & vascular anomalies/birthmarks,Does the vascular birthmark follow a unilateral hemifacial distribution?,DL203; DL153; DL213,source-supported
+DQ0606,Congenital nevi & vascular anomalies/birthmarks,"Is a raised, bright-red lobulated lesion consistent with an infantile haemangioma visible?",DL205; DL148,source-supported
+DQ0607,Congenital nevi & vascular anomalies/birthmarks,Is the haemangioma segmental (covering a broad territory) rather than focal?,DL205; DL148; DL153; DL215,source-supported
+DQ0608,Congenital nevi & vascular anomalies/birthmarks,Is a lumbosacral segmental haemangioma visible?,DL148,source-supported
+DQ0609,Congenital nevi & vascular anomalies/birthmarks,Is ulceration present within a haemangioma?,DL148,source-supported
+DQ0610,Congenital nevi & vascular anomalies/birthmarks,"Is a bluish, compressible-looking lesion consistent with a venous malformation visible?",DL140; DL203,source-supported
+DQ0611,Congenital nevi & vascular anomalies/birthmarks,"Is a firm, purpuric, violaceous plaque consistent with a vascular tumour visible?",DL143; DL149; DL210; DL140,source-supported
+DQ0612,Congenital nevi & vascular anomalies/birthmarks,"Do the vascular lesion features suggest a fast-flow lesion (warmth, pulsation cues not visible in still image)?",DL143,source-supported
+DQ0613,Congenital nevi & vascular anomalies/birthmarks,Is the birthmark located on the head or face?,DL205; DL140; DL258; DL371,source-supported
+DQ0614,Congenital nevi & vascular anomalies/birthmarks,Does the congenital nevus show coarse hairs (hypertrichosis)?,,standard term
+DQ0615,Congenital nevi & vascular anomalies/birthmarks,Does the congenital nevus show a cobblestone or globular dermoscopic pattern?,,standard term
+DQ0616,Congenital nevi & vascular anomalies/birthmarks,Is the congenital nevus surface rugose or papillomatous?,DL108,source-supported
+DQ0617,Congenital nevi & vascular anomalies/birthmarks,Is the vascular birthmark flat with hypertrophic nodules (adult port-wine stain)?,DL200; DL203,source-supported
+DQ0618,Congenital nevi & vascular anomalies/birthmarks,Is the infantile haemangioma superficial (bright red) rather than deep (bluish)?,DL205; DL148,source-supported
+DQ0619,"Distribution & configuration (Blaschko, segmental, mosaic)","Do lesions follow the lines of Blaschko (linear, S-shaped or V-shaped streaks)?",DL199; DL202; DL207; DL211,source-supported
+DQ0620,"Distribution & configuration (Blaschko, segmental, mosaic)",Do lesions follow a V-shape on the back or an S-shape on the abdomen?,DL202,source-supported
+DQ0621,"Distribution & configuration (Blaschko, segmental, mosaic)",Are lesions confined to one side of the body midline?,DL153; DL213; DL205; DL203,source-supported
+DQ0622,"Distribution & configuration (Blaschko, segmental, mosaic)",Do lesions follow a dermatomal distribution?,DL153; DL199; DL202; DL023,source-supported
+DQ0623,"Distribution & configuration (Blaschko, segmental, mosaic)",Is pigmentation arranged in a segmental block-like pattern?,DL148; DL153; DL215; DL213,source-supported
+DQ0624,"Distribution & configuration (Blaschko, segmental, mosaic)",Is linear hyperpigmentation visible?,DL208; DL153; DL062; DL121,source-supported
+DQ0625,"Distribution & configuration (Blaschko, segmental, mosaic)",Is linear hypopigmentation visible?,DL208,source-supported
+DQ0626,"Distribution & configuration (Blaschko, segmental, mosaic)",Are both hypo- and hyperpigmented streaks present (cutis tricolor-like)?,DL208,source-supported
+DQ0627,"Distribution & configuration (Blaschko, segmental, mosaic)",Are lesions distributed symmetrically on both sides of the body?,DL213; DL157; DL122; DL346,source-supported
+DQ0628,"Distribution & configuration (Blaschko, segmental, mosaic)","Are chalky-white, non-scaly depigmented macules visible?",DL213; DL194; DL215; DL026,source-supported
+DQ0629,"Distribution & configuration (Blaschko, segmental, mosaic)",Is the depigmentation band-shaped and unilateral (segmental vitiligo-like)?,DL148; DL153; DL213; DL215,source-supported
+DQ0630,"Distribution & configuration (Blaschko, segmental, mosaic)",Is there a linear lesion arising at a site of trauma (Koebner phenomenon)?,DL207,source-supported
+DQ0631,"Distribution & configuration (Blaschko, segmental, mosaic)",Are multiple lentigines clustered in one body segment?,DL153; DL086; DL105; DL112,source-supported
+DQ0632,"Distribution & configuration (Blaschko, segmental, mosaic)",Are café-au-lait macules visible?,DL153,source-supported
+DQ0633,"Distribution & configuration (Blaschko, segmental, mosaic)",Are lesions linear following a cleavage line (Langer's lines) rather than Blaschko lines?,DL199; DL064,source-supported
+DQ0634,"Distribution & configuration (Blaschko, segmental, mosaic)",Is the configuration whorled or swirled?,DL202,source-supported
+DQ0635,"Distribution & configuration (Blaschko, segmental, mosaic)",Are lesions grouped in a zosteriform band?,,standard term
+DQ0636,"Distribution & configuration (Blaschko, segmental, mosaic)",Do lesions show a reticulate (net-like) arrangement?,DL062,source-supported
+DQ0637,"Distribution & configuration (Blaschko, segmental, mosaic)",Are lesions concentrated in skin folds (intertriginous distribution)?,DL016; DL171; DL058; DL172,source-supported
+DQ0638,"Distribution & configuration (Blaschko, segmental, mosaic)",Are lesions distributed in a photo-distributed (sun-exposed only) pattern?,DL146; DL151; DL034; DL152,source-supported
+DQ0639,Field cancerization & actinic damage scoring,Is the surrounding skin visibly sun-damaged (photodamaged)?,DL218; DL216; DL177; DL186,source-supported
+DQ0640,Field cancerization & actinic damage scoring,Are multiple actinic keratoses visible in the same field?,DL186; DL142; DL206; DL007,source-supported
+DQ0641,Field cancerization & actinic damage scoring,Is diffuse erythema with scale visible across a broad field?,DL142; DL150; DL176; DL186,source-supported
+DQ0642,Field cancerization & actinic damage scoring,Are hyperkeratotic (thick) actinic keratoses present?,DL142; DL063; DL121,source-supported
+DQ0643,Field cancerization & actinic damage scoring,"Is the lesion on chronically sun-exposed skin (face, scalp, dorsal hands)?",DL218; DL186; DL150; DL174,source-supported
+DQ0644,Field cancerization & actinic damage scoring,Do more than 10 discrete actinic lesions appear in the image?,DL177; DL142; DL139; DL361,source-supported
+DQ0645,Field cancerization & actinic damage scoring,Is the background skin rough and scaly to visual inspection?,DL142; DL377; DL063; DL346,source-supported
+DQ0646,Field cancerization & actinic damage scoring,Does the field show mixed pigmented and erythematous macules?,DL037; DL153; DL165; DL178,source-supported
+DQ0647,Field cancerization & actinic damage scoring,Is a dominant lesion visible that is thicker or more indurated than the surrounding actinic lesions?,DL142; DL063; DL065; DL121,source-supported
+DQ0648,Field cancerization & actinic damage scoring,Is there a background of telangiectasia in the sun-exposed field?,DL077; DL007; DL060; DL062,source-supported
+DQ0649,Field cancerization & actinic damage scoring,Is the field showing confluent erythematous scaly areas rather than discrete lesions?,DL142; DL150; DL176; DL186,source-supported
+DQ0650,Field cancerization & actinic damage scoring,Is the treated field showing post-treatment erythema or crusting?,DL142; DL204; DL206; DL150,source-supported
+DQ0651,Field cancerization & actinic damage scoring,Do visible actinic lesions cover more than 25 cm² of skin?,DL142; DL150; DL176; DL186,source-supported
+DQ0652,Field cancerization & actinic damage scoring,Is the skin in the field showing visible pigmentary mottling in addition to scaly lesions?,DL037; DL153; DL165; DL178,source-supported
+DQ0653,Field cancerization & actinic damage scoring,Is the field cancerization area located on a bald scalp?,DL023; DL123; DL035; DL171,source-supported
+DQ0654,Landmark dermatologist-level CNNs,Is the lesion a benign seborrhoeic keratosis-appearing lesion on clinical photography?,DL225; DL073; DL081; DL084,source-supported
+DQ0655,Landmark dermatologist-level CNNs,Is the lesion a combined nevus (blue and brown components) that might simulate melanoma?,,standard term
+DQ0656,Landmark dermatologist-level CNNs,Is the lesion a nonpigmented skin lesion requiring classification from vascular features alone?,DL249; DL095; DL104; DL134,source-supported
+DQ0657,Landmark dermatologist-level CNNs,Does a close-up clinical image accompany the dermoscopic image?,DL249; DL273,source-supported
+DQ0658,Landmark dermatologist-level CNNs,"Is the lesion one of the seven common dermatoscopic categories (BCC, intraepithelial carcinoma, benign keratosis, dermatofibroma, melanoma, nevus, vascular)?",DL226; DL121; DL135,source-supported
+DQ0659,Landmark dermatologist-level CNNs,Is the lesion a vascular lesion such as an angioma or angiokeratoma?,DL226; DL338; DL140; DL210,source-supported
+DQ0660,Lesion-body context & patient-level AI,Does the image show other nevi of the same patient that look similar to each other but different from the index lesion?,DL158; DL145; DL151; DL172,source-supported
+DQ0661,Lesion-body context & patient-level AI,Does the image include the patient's surrounding skin field (enabling lesion-in-context assessment)?,DL145; DL158; DL151; DL219,source-supported
+DQ0662,Lesion-body context & patient-level AI,Is the lesion location relative to body landmarks visible?,DL086; DL201; DL149; DL335,source-supported
+DQ0663,Lesion-body context & patient-level AI,Are many lesions of the same type visible in the image (suggesting a patient-level phenotype)?,DL193; DL209; DL174; DL187,source-supported
+DQ0664,Lesion-body context & patient-level AI,Is the image a wide-field view where the lesion is one of many candidate lesions?,DL172; DL219,source-supported
+DQ0665,Nevus count & atypical mole phenotype,Are more than 50 nevi visible in the image?,DL168; DL183; DL144; DL190,source-supported
+DQ0666,Nevus count & atypical mole phenotype,Are more than 100 nevi visible in the image?,DL168; DL144; DL190; DL183,source-supported
+DQ0667,Nevus count & atypical mole phenotype,Are any clinically atypical nevi visible in the image?,DL144; DL155; DL190; DL169,source-supported
+DQ0668,Nevus count & atypical mole phenotype,Are multiple nevi larger than 5 mm visible?,DL166; DL188; DL160; DL075,source-supported
+DQ0669,Nevus count & atypical mole phenotype,Are nevi present on normally covered sites such as the buttocks?,DL169,source-supported
+DQ0670,Nevus count & atypical mole phenotype,Do most visible nevi share the same dermoscopic pattern (a signature nevus pattern)?,DL198; DL170; DL393; DL136,source-supported
+DQ0671,Nevus count & atypical mole phenotype,Is the predominant nevus pattern reticular?,DL198; DL026; DL029,source-supported
+DQ0672,Nevus count & atypical mole phenotype,Is the predominant nevus pattern globular?,DL198; DL194; DL026; DL029,source-supported
+DQ0673,Nevus count & atypical mole phenotype,Do visible nevi show multifocal hyperpigmentation?,DL198; DL186,source-supported
+DQ0674,Nevus count & atypical mole phenotype,Is the lesion one of many dysplastic-appearing nevi with irregular borders?,DL166; DL169; DL214; DL139,source-supported
+DQ0675,Nevus count & atypical mole phenotype,"Are nevi concentrated on sun-exposed sites (back, chest, limbs)?",DL155; DL198; DL174; DL175,source-supported
+DQ0676,Nevus count & atypical mole phenotype,Is the lesion a halo nevus (central nevus with a white depigmented rim)?,DL022; DL194; DL049; DL023,source-supported
+DQ0677,Nevus count & atypical mole phenotype,Is the halo surrounding the nevus symmetric?,DL022; DL194; DL049; DL023,source-supported
+DQ0678,Nevus count & atypical mole phenotype,Is the lesion larger than the patient's typical nevus size?,DL155; DL190; DL194; DL212,source-supported
+DQ0679,Nevus count & atypical mole phenotype,Do several visible nevi show irregular borders and colour variation (atypical mole phenotype)?,DL166; DL183; DL214; DL124,source-supported
+DQ0680,Nevus count & atypical mole phenotype,Is the lesion on the scalp of a person with many nevi?,DL023; DL123; DL035; DL171,source-supported
+DQ0681,Nevus count & atypical mole phenotype,"Are nevi with a fried-egg appearance (raised centre, flat pigmented rim) visible?",,standard term
+DQ0682,Nevus count & atypical mole phenotype,Are eruptive (many recently appearing) nevi visible?,,standard term
+DQ0683,Nevus phenotypes / signature nevus / ugly duckling,Is the lesion an outlier relative to its neighbouring lesions in colour?,DL170; DL136; DL219; DL057,source-supported
+DQ0684,Nevus phenotypes / signature nevus / ugly duckling,Is the lesion an outlier relative to its neighbouring lesions in shape?,DL170; DL136; DL219; DL057,source-supported
+DQ0685,Nevus phenotypes / signature nevus / ugly duckling,Is the lesion an outlier relative to its neighbouring lesions in dermoscopic pattern?,DL170; DL136; DL219; DL057,source-supported
+DQ0686,Nevus phenotypes / signature nevus / ugly duckling,Does the lesion's global dermoscopic pattern differ from the patient's predominant nevus pattern?,DL189; DL201; DL198,source-supported
+DQ0687,Nevus phenotypes / signature nevus / ugly duckling,Is the lesion one of several nevi in a cluster that look alike?,DL419; DL174; DL383; DL084,source-supported
+DQ0688,Photoaging scales & image grading,Are fine wrinkles visible?,DL165; DL182; DL156; DL419,source-supported
+DQ0689,Photoaging scales & image grading,Are deep wrinkles visible at rest?,DL165; DL182; DL156; DL419,source-supported
+DQ0690,Photoaging scales & image grading,Is skin sagging visible?,DL156,source-supported
+DQ0691,Photoaging scales & image grading,Is mottled dyspigmentation visible?,DL156; DL165; DL109; DL076,source-supported
+DQ0692,Photoaging scales & image grading,Are solar lentigines visible in the background skin?,DL165; DL182; DL037; DL153,source-supported
+DQ0693,Photoaging scales & image grading,Are freckles visible?,DL165; DL371,source-supported
+DQ0694,Photoaging scales & image grading,"Is a yellowish, thickened (citrine) skin texture visible?",DL165; DL022; DL369; DL111,source-supported
+DQ0695,Photoaging scales & image grading,Is senile purpura visible?,DL165,source-supported
+DQ0696,Photoaging scales & image grading,Are stellate pseudoscars visible?,DL165,source-supported
+DQ0697,Photoaging scales & image grading,"Is xerosis (dry, flaky skin) visible?",DL165,source-supported
+DQ0698,Photoaging scales & image grading,"Is the background skin consistent with a high Glogau photoaging grade (wrinkles at rest, keratoses)?",DL182; DL165,source-supported
+DQ0699,Photoaging scales & image grading,Are hypo- and hyperpigmented macules visible on dermoscopy of the background skin?,DL182; DL153; DL117; DL131,source-supported
+DQ0700,Photoaging scales & image grading,Is overall skin surface texture coarse?,DL156; DL368; DL381; DL383,source-supported
+DQ0701,Photoaging scales & image grading,Is loss of skin elasticity suggested by redundant folds?,DL156; DL165; DL242; DL243,source-supported
+DQ0702,Photoaging scales & image grading,Are telangiectasias visible on the cheeks or nose (photoaging sign)?,DL182; DL077; DL007; DL060,source-supported
+DQ0703,Photoaging scales & image grading,Is there visible actinic purpura on the forearm?,DL165,source-supported
+DQ0704,Photoaging scales & image grading,Is the photoaging pattern consistent with a dorsal (sun-exposed) rather than volar forearm site?,DL217; DL202; DL377,source-supported
+DQ0705,Prospective & real-world AI evaluation,Is the image a real-world clinical capture rather than a curated dataset image?,DL294; DL228; DL146; DL258,source-supported
+DQ0706,Prospective & real-world AI evaluation,Is the lesion in a special anatomical site that is rare in training datasets?,DL256; DL248,source-supported
+DQ0707,Prospective & real-world AI evaluation,Are multiple images of the same lesion taken from slightly different angles available?,DL256; DL349; DL056; DL391,source-supported
+DQ0708,Prospective & real-world AI evaluation,"Is the lesion a rare melanoma subtype (e.g., acral, mucosal, amelanotic)?",DL256; DL007; DL036; DL162,source-supported
+DQ0709,Sequential digital dermoscopy & lesion change,Is a baseline image available for comparison with this lesion?,DL157; DL180; DL423; DL238,source-supported
+DQ0710,Sequential digital dermoscopy & lesion change,Does the follow-up image show asymmetric enlargement of the lesion?,DL157; DL069; DL108; DL346,source-supported
+DQ0711,Sequential digital dermoscopy & lesion change,Does the follow-up image show symmetric enlargement of the lesion?,DL157; DL108; DL122; DL213,source-supported
+DQ0712,Sequential digital dermoscopy & lesion change,Does the follow-up image show new dermoscopic structures?,DL157; DL359; DL155; DL051,source-supported
+DQ0713,Sequential digital dermoscopy & lesion change,"Does the follow-up image show a colour change, such as new blue-grey or black areas?",DL157; DL392; DL300,source-supported
+DQ0714,Sequential digital dermoscopy & lesion change,Does the follow-up image show regression (new white or grey areas)?,DL085; DL108; DL069; DL051,source-supported
+DQ0715,Sequential digital dermoscopy & lesion change,Do peripheral globules still surround the lesion on follow-up?,DL201,source-supported
+DQ0716,Sequential digital dermoscopy & lesion change,Have peripheral globules disappeared on follow-up?,DL201,source-supported
+DQ0717,Sequential digital dermoscopy & lesion change,Does the halo around a halo nevus enlarge on follow-up?,DL194; DL022; DL049; DL023,source-supported
+DQ0718,Sequential digital dermoscopy & lesion change,Are the paired images aligned (same scale and orientation) for comparison?,DL070; DL238; DL326; DL335,source-supported
+DQ0719,Sequential digital dermoscopy & lesion change,Is the lesion appearance stable between sequential images?,DL194; DL078; DL339; DL383,source-supported
+DQ0720,Sequential digital dermoscopy & lesion change,Does the lesion show focal growth in only one segment between images?,DL201; DL070; DL083; DL137,source-supported
+DQ0721,Sequential digital dermoscopy & lesion change,Are new lesions visible in the follow-up image that were absent at baseline?,DL264,source-supported
+DQ0722,Sequential digital dermoscopy & lesion change,Has the lesion's surface area increased by more than 10% between images?,DL201; DL070; DL083; DL137,source-supported
+DQ0723,Sequential digital dermoscopy & lesion change,Is the change between images confined to colour without architectural change?,DL157; DL155; DL166; DL317,source-supported
+DQ0724,Sequential digital dermoscopy & lesion change,"Is the change between images architectural (new network, globules or streaks)?",DL157; DL155; DL166; DL317,source-supported
+DQ0725,Sequential digital dermoscopy & lesion change,Do follow-up images show loss of structure (more structureless area)?,DL022; DL049; DL189; DL023,source-supported
+DQ0726,Sequential digital dermoscopy & lesion change,Is the lesion appearance stable over a long follow-up interval (more than one year)?,DL157; DL164; DL192; DL201,source-supported
+DQ0727,Sequential digital dermoscopy & lesion change,"Do follow-up images differ only by rotation, zoom or lighting rather than true lesion change?",DL159; DL349; DL368; DL069,source-supported
+DQ0728,Sequential digital dermoscopy & lesion change,Is the lesion appearance different in colour between images only because of different lighting?,DL396; DL381; DL388; DL395,source-supported
+DQ0729,Total body photography & 3D TBP,Is the image a wide-field or total-body photograph rather than a single-lesion close-up?,DL152; DL160; DL181; DL184,source-supported
+DQ0730,Total body photography & 3D TBP,Is the image a lesion crop extracted from a 3D total-body photograph?,DL154; DL163; DL306; DL330,source-supported
+DQ0731,Total body photography & 3D TBP,Does the wide-field image allow nevus counting?,DL146; DL160; DL184; DL181,source-supported
+DQ0732,Total body photography & 3D TBP,Are any lesions in the wide-field image flagged as suspicious pigmented lesions?,DL172; DL227; DL222; DL133,source-supported
+DQ0733,Total body photography & 3D TBP,Are the lesions in the 3D image larger than 2 mm?,DL160; DL188; DL370; DL173,source-supported
+DQ0734,Total body photography & 3D TBP,Does the image resolution resemble a smartphone-quality lesion crop?,DL154; DL221; DL231; DL234,source-supported
+DQ0735,Total body photography & 3D TBP,Are seborrhoeic keratoses visible that could be confused with nevi in a count?,DL160; DL073; DL081; DL084,source-supported
+DQ0736,Total body photography & 3D TBP,"Does the TBP image contain body regions that are poorly visualised (e.g., skin folds, scalp)?",DL023; DL123; DL016; DL171,source-supported
+DQ0737,Total body photography & 3D TBP,Is the lesion location on a 3D body map identifiable?,DL238; DL146; DL152; DL154,source-supported
+DQ0738,Total body photography & 3D TBP,Does the image show tattooed skin that may obscure lesions?,,standard term
+DQ0739,Total body photography & 3D TBP,Does the patient-level image set include multiple lesions mapped to the same patient?,DL145; DL193; DL173; DL209,source-supported
+DQ0740,Total body photography & 3D TBP,Does the wide-field image show a lesion that is darker or larger than all other lesions on the same body region?,DL170; DL136; DL219; DL057,source-supported
+DQ0741,Total body photography & 3D TBP,Does the 3D TBP lesion crop show a lesion with irregular colour relative to neighbouring crops?,DL154; DL163; DL306; DL330,source-supported
+DQ0742,Total body photography & 3D TBP,Is the lesion visible across multiple overlapping views of the 3D avatar?,DL238; DL146; DL152; DL154,source-supported
+DQ0743,Total body photography & 3D TBP,Does the 3D TBP image show uneven illumination across curved body surfaces?,DL396; DL418; DL421; DL381,source-supported
+DQ0744,Colour constancy & acquisition standards,Is the image in sharp focus across the lesion?,DL388; DL170; DL347; DL289,source-supported
+DQ0745,Colour constancy & acquisition standards,Is the lesion centred in the frame?,DL388; DL342; DL350; DL307,source-supported
+DQ0746,Colour constancy & acquisition standards,Is the lesion cropped by the image border?,DL388; DL282; DL337; DL342,source-supported
+DQ0747,Colour constancy & acquisition standards,Is the lighting even across the image?,DL396; DL388; DL364; DL366,source-supported
+DQ0748,Colour constancy & acquisition standards,Is there strong glare or specular reflection on the lesion?,DL418; DL384; DL411; DL065,source-supported
+DQ0749,Colour constancy & acquisition standards,Is the image underexposed (too dark)?,DL396; DL388; DL364; DL167,source-supported
+DQ0750,Colour constancy & acquisition standards,Is the image overexposed (washed out)?,DL396; DL388; DL364; DL167,source-supported
+DQ0751,Colour constancy & acquisition standards,"Does the image have a visible colour cast (e.g., yellow, blue or green tint)?",DL409; DL364; DL396; DL336,source-supported
+DQ0752,Colour constancy & acquisition standards,Is a colour calibration chart or grey card visible in the image?,DL396; DL364; DL312; DL368,source-supported
+DQ0753,Colour constancy & acquisition standards,Is the image resolution high enough to resolve fine dermoscopic structures?,DL364; DL388; DL053; DL066,source-supported
+DQ0754,Colour constancy & acquisition standards,Is the image heavily compressed with visible blocking artefacts?,DL364; DL306,source-supported
+DQ0755,Colour constancy & acquisition standards,Is the background behind the body part neutral and uncluttered?,DL364; DL035; DL275; DL337,source-supported
+DQ0756,Colour constancy & acquisition standards,Is the camera roughly perpendicular to the skin surface?,DL364; DL056; DL391; DL253,source-supported
+DQ0757,Colour constancy & acquisition standards,Is the image taken from an appropriate distance (lesion fills a reasonable portion of the frame)?,DL388; DL396; DL423,source-supported
+DQ0758,Colour constancy & acquisition standards,"Does the image appear to have been post-processed (filters, sharpening, saturation boost)?",DL396; DL364,source-supported
+DQ0759,Colour constancy & acquisition standards,Is the white balance consistent with neutral daylight?,DL409,source-supported
+DQ0760,Colour constancy & acquisition standards,Is the image a standard orientation view with recognisable anatomy?,DL364,source-supported
+DQ0761,Colour constancy & acquisition standards,"Does the image contain identifiable features (face, tattoo, jewellery) raising privacy concerns?",DL364; DL312; DL268; DL302,source-supported
+DQ0762,Colour constancy & acquisition standards,Is the image a dermoscopic image with the lesion within the dermatoscope aperture?,DL409; DL364; DL001; DL222,source-supported
+DQ0763,Colour constancy & acquisition standards,Is the colour of normal surrounding skin reproduced plausibly?,DL396,source-supported
+DQ0764,Colour constancy & acquisition standards,Does the image appear to be taken under fluorescent or mixed artificial lighting?,DL396; DL388; DL364; DL381,source-supported
+DQ0765,Colour constancy & acquisition standards,Is a reference colour target in the image correctly exposed?,DL396; DL006; DL221; DL227,source-supported
+DQ0766,Colour constancy & acquisition standards,Is the image noisy (grainy) due to low light?,DL328; DL289; DL296; DL276,source-supported
+DQ0767,Colour constancy & acquisition standards,Is the image saturated so that dark regions lose detail?,DL385; DL370,source-supported
+DQ0768,Colour constancy & acquisition standards,"Is the lesion photographed with a polarised dermatoscope (no surface glare, shiny white lines visible)?",DL137; DL259,source-supported
+DQ0769,Colour constancy & acquisition standards,Is the lesion photographed with a non-polarised contact dermatoscope (surface structures such as milia-like cysts visible)?,DL102; DL383; DL137; DL165,source-supported
+DQ0770,Colour constancy & acquisition standards,Is the image orientation rotated relative to anatomical up?,DL159; DL368; DL349; DL037,source-supported
+DQ0771,Colour constancy & acquisition standards,Is the image a cropped region from a larger photograph?,DL306; DL154; DL163; DL330,source-supported
+DQ0772,Colour constancy & acquisition standards,Is the illumination colour temperature warm (yellow-orange)?,DL396; DL388; DL364; DL381,source-supported
+DQ0773,Colour constancy & acquisition standards,Is the illumination colour temperature cool (bluish)?,DL396; DL388; DL364; DL381,source-supported
+DQ0774,Colour constancy & acquisition standards,Is the image captured with a uniform dark or neutral background behind a limb?,DL364; DL035; DL275; DL337,source-supported
+DQ0775,"Domain shift, OOD & generalisation",Does the image come from a different device or setting than typical dermoscopy datasets?,DL231; DL006; DL224; DL229,source-supported
+DQ0776,"Domain shift, OOD & generalisation","Is the lesion from a child, where lesion types differ from adult datasets?",DL275; DL092; DL148; DL106,source-supported
+DQ0777,"Domain shift, OOD & generalisation",Does the background skin dominate the image relative to the lesion?,DL275; DL336,source-supported
+DQ0778,"Domain shift, OOD & generalisation","Is the image condition out of the usual lesion categories (e.g., a scar, tattoo or non-lesion)?",DL251; DL372; DL339; DL226,source-supported
+DQ0779,"Domain shift, OOD & generalisation",Is the image unusual in magnification or field of view compared with standard dermoscopy?,DL069; DL159; DL349; DL006,source-supported
+DQ0780,Fairness & skin-tone bias,Is the lesion on skin of a tone that is under-represented in typical datasets (darker tones)?,DL250; DL277; DL286; DL291,source-supported
+DQ0781,Fairness & skin-tone bias,Does the visible skin tone make lesion borders harder to see?,DL250; DL277; DL286; DL260,source-supported
+DQ0782,Fairness & skin-tone bias,Is the disease presentation atypical for its appearance on lighter skin?,DL077; DL086; DL308; DL041,source-supported
+DQ0783,Fairness & skin-tone bias,Is the image a clinical photograph rather than dermoscopy (common in diverse-tone datasets)?,DL268; DL266; DL016; DL311,source-supported
+DQ0784,Fairness & skin-tone bias,"Does the image contain cues that reveal demographic attributes (e.g., visible sex characteristics)?",DL255; DL286; DL261; DL263,source-supported
+DQ0785,Foundation & vision-language models,"Can the lesion be described with a short text phrase such as ""pink nodule with arborizing vessels""?",DL257; DL293; DL295; DL156,source-supported
+DQ0786,Foundation & vision-language models,Does the image show a common skin condition rather than a skin tumour?,DL248; DL235; DL165; DL270,source-supported
+DQ0787,Foundation & vision-language models,"Is the imaging modality identifiable from the image itself (dermoscopy, clinical, histology)?",DL257; DL361; DL223; DL406,source-supported
+DQ0788,Human-AI collaboration,"Is the lesion a typical, easy-to-classify example rather than an ambiguous one?",DL241; DL008; DL042; DL231,source-supported
+DQ0789,Human-AI collaboration,Is the lesion appearance ambiguous between two diagnostic classes?,DL299; DL235; DL103; DL248,source-supported
+DQ0790,Human-AI collaboration,Would a content-based image retrieval search likely find visually similar lesions with confirmed diagnoses?,DL265; DL334,source-supported
+DQ0791,Human-AI collaboration,"Is the image one where clinicians' confidence is likely low (e.g., featureless pink lesion)?",DL326; DL280; DL311; DL261,source-supported
+DQ0792,Public datasets & challenges,Is the lesion in a hard-to-image location such as nails or mucosa?,DL251; DL041; DL086; DL092,source-supported
+DQ0793,Public datasets & challenges,Is the lesion too large to fit within the dermatoscope aperture?,DL251,source-supported
+DQ0794,Public datasets & challenges,"Is the lesion hypopigmented, making it hard to capture with standard dermoscopy?",DL251; DL114; DL208; DL135,source-supported
+DQ0795,Public datasets & challenges,"Is the lesion one of the common pigmented lesion categories (nevus, melanoma, keratosis, BCC, dermatofibroma, vascular)?",DL283; DL251; DL223; DL382,source-supported
+DQ0796,Public datasets & challenges,"Does the lesion appear to be an early, thin melanoma rather than an advanced one?",DL283; DL014; DL035; DL068,source-supported
+DQ0797,Public datasets & challenges,Is the image a close-up of a skin region captured by a consumer (non-clinical framing)?,DL261; DL362; DL057; DL342,source-supported
+DQ0798,Public datasets & challenges,Is the image likely from a dermoscopy dataset with expert consensus or histopathology labels?,DL223; DL002; DL003; DL004,source-supported
+DQ0799,Public datasets & challenges,"Does the image show a lesion attribute (network, globules, streaks, milia-like cysts, negative network) that could be annotated?",DL239; DL332; DL255; DL320,source-supported
+DQ0800,Regulatory / cleared devices,"Is the lesion pigmented and suitable for analysis by a pigmented-lesion device (e.g., spectroscopy or multispectral)?",DL242; DL223; DL226; DL227,source-supported
+DQ0801,Regulatory / cleared devices,Is the lesion a new or changing lesion of concern to the patient?,DL264; DL157; DL011; DL371,source-supported
+DQ0802,Regulatory / cleared devices,Is the lesion flat enough to allow full contact imaging by a handheld device?,,not named in sources
+DQ0803,Regulatory / cleared devices,Is the image produced by a multispectral device rather than standard dermoscopy?,DL309; DL378; DL410; DL297,source-supported
+DQ0804,Segmentation & handcrafted ABCD features,Is the lesion boundary clearly distinguishable from surrounding skin?,DL282; DL306; DL279; DL289,source-supported
+DQ0805,Segmentation & handcrafted ABCD features,Is the lesion contrast with surrounding skin low?,DL230; DL306; DL274; DL375,source-supported
+DQ0806,Segmentation & handcrafted ABCD features,Does the lesion touch the image boundary?,DL282; DL279; DL289; DL337,source-supported
+DQ0807,Segmentation & handcrafted ABCD features,Does the lesion have more than one disconnected component?,DL401,source-supported
+DQ0808,Segmentation & handcrafted ABCD features,Is the lesion shape elongated (high eccentricity)?,DL289; DL230; DL279; DL082,source-supported
+DQ0809,Segmentation & handcrafted ABCD features,Is the lesion shape compact (close to circular)?,DL289; DL230; DL279; DL082,source-supported
+DQ0810,Segmentation & handcrafted ABCD features,Is the lesion area large relative to the image (occupying more than half)?,DL289; DL007; DL022; DL023,source-supported
+DQ0811,Segmentation & handcrafted ABCD features,Is the lesion small relative to the image (occupying less than 5%)?,DL289; DL007; DL022; DL023,source-supported
+DQ0812,Segmentation & handcrafted ABCD features,Is the lesion border blurry or fuzzy?,DL279; DL289; DL378; DL137,source-supported
+DQ0813,Segmentation & handcrafted ABCD features,Is the lesion colour variation high across segmented regions?,DL300; DL166; DL155; DL386,source-supported
+DQ0814,Segmentation & handcrafted ABCD features,Is a satellite or separate pigmented spot near the main lesion?,DL212,source-supported
+DQ0815,Segmentation & handcrafted ABCD features,Does the lesion contain holes (enclosed regions of normal-looking skin)?,,standard term
+DQ0816,Segmentation & handcrafted ABCD features,Is the lesion outline concave in parts (indentations)?,DL186,source-supported
+DQ0817,Segmentation & handcrafted ABCD features,Would a simple colour threshold separate the lesion from background skin?,DL288; DL280; DL003; DL160,source-supported
+DQ0818,Segmentation & handcrafted ABCD features,"Is heterogeneous background (other lesions, freckles) present around the lesion?",DL337,source-supported
+DQ0819,Segmentation & handcrafted ABCD features,Is the lesion's boundary smooth enough that a simple contour would fit it well?,DL282; DL279; DL289; DL337,source-supported
+DQ0820,Segmentation & handcrafted ABCD features,Does the lesion shape show low solidity (deep concavities)?,,standard term
+DQ0821,Segmentation & handcrafted ABCD features,Is the lesion's major axis more than twice its minor axis?,,standard term
+DQ0822,Segmentation & handcrafted ABCD features,Is the lesion's colour asymmetric when the lesion is folded along its principal axis?,DL306; DL127; DL026; DL039,source-supported
+DQ0823,Segmentation & handcrafted ABCD features,Does the lesion have a darker rim than its centre?,DL201; DL037; DL122; DL183,source-supported
+DQ0824,Segmentation & handcrafted ABCD features,Does the lesion have a lighter rim than its centre?,DL201; DL037; DL122; DL183,source-supported
+DQ0825,Segmentation & handcrafted ABCD features,Is the lesion's border gradient (sharpness of transition) steep?,DL306; DL317; DL320; DL321,source-supported
+DQ0826,Segmentation & handcrafted ABCD features,Is the lesion's mean colour darker than the surrounding skin by a large margin?,DL288; DL279; DL300; DL010,source-supported
+DQ0827,Segmentation & handcrafted ABCD features,Would hair removal be needed before segmentation?,DL296; DL397; DL406; DL344,source-supported
+DQ0828,Segmentation & handcrafted ABCD features,Is the lesion compact and convex (convexity close to 1)?,DL388,source-supported
+DQ0829,Segmentation & handcrafted ABCD features,Does the lesion show a halo-like transition zone between lesion and skin?,DL022; DL194; DL049; DL023,source-supported
+DQ0830,Segmentation & handcrafted ABCD features,Is the lesion partially obscured by shadows?,DL381; DL376; DL418,source-supported
+DQ0831,Smartphone / consumer apps & teledermatology,Is the image taken with a smartphone camera?,DL221; DL231; DL234; DL246,source-supported
+DQ0832,Smartphone / consumer apps & teledermatology,Was the image taken by the patient rather than a clinician (self-captured framing)?,DL362; DL093; DL424; DL284,source-supported
+DQ0833,Smartphone / consumer apps & teledermatology,Is the photograph unevaluable for diagnosis because of poor quality?,DL234; DL304; DL221; DL147,source-supported
+DQ0834,Smartphone / consumer apps & teledermatology,Is a smartphone dermoscopy attachment visible (circular field with attachment edges)?,DL231; DL292; DL154; DL222,source-supported
+DQ0835,Smartphone / consumer apps & teledermatology,Does the image include a wide view showing the body area as well as the lesion close-up?,DL382,source-supported
+DQ0836,Smartphone / consumer apps & teledermatology,"Is the flash on, producing harsh reflections?",DL253; DL396; DL381; DL388,source-supported
+DQ0837,Smartphone / consumer apps & teledermatology,Is the lesion photographed at an angle rather than straight on?,DL253; DL056; DL391; DL256,source-supported
+DQ0838,Smartphone / consumer apps & teledermatology,Is the lesion image paired with an overview image showing its body location?,DL382; DL203; DL290; DL224,source-supported
+DQ0839,Smartphone / consumer apps & teledermatology,Is the image taken in an outdoor or uncontrolled environment?,DL253; DL231; DL364; DL087,source-supported
+DQ0840,Adversarial / pixel perturbation attacks,Does the image show unusual high-frequency noise or speckle not explained by skin texture?,DL316; DL349; DL328; DL339,source-supported
+DQ0841,Adversarial / pixel perturbation attacks,Is the image rotated or zoomed relative to a standard capture?,DL349; DL159; DL368; DL069,source-supported
+DQ0842,Adversarial / pixel perturbation attacks,Are isolated anomalous pixels or tiny bright specks visible?,DL316; DL318; DL323; DL289,source-supported
+DQ0843,Adversarial / pixel perturbation attacks,"Does the image appear to be an augmented (flipped, colour-jittered) copy of another image?",DL349; DL146; DL372; DL414,source-supported
+DQ0844,Auditing classifiers / Clever Hans,Does the background skin texture differ notably from typical skin around lesions of this type?,DL336,source-supported
+DQ0845,Auditing classifiers / Clever Hans,Does the image colour balance differ strongly from typical images of this lesion type?,DL336,source-supported
+DQ0846,Auditing classifiers / Clever Hans,"Does a non-lesion feature in the image correlate with lesion type (e.g., markings appear only on suspicious lesions)?",DL325; DL348; DL351; DL352,source-supported
+DQ0847,Concept-based explanations,"Is the concept ""irregular streaks"" present in the lesion?",DL346; DL051,source-supported
+DQ0848,Concept-based explanations,"Is the concept ""typical pigment network"" present in the lesion?",DL346; DL063; DL075; DL091,source-supported
+DQ0849,Concept-based explanations,"Is the concept ""regular streaks"" present in the lesion?",DL346; DL063; DL107; DL111,source-supported
+DQ0850,Concept-based explanations,"Is the concept ""regular dots and globules"" present in the lesion?",DL346; DL023; DL065; DL062,source-supported
+DQ0851,Concept-based explanations,Could a non-expert recognise a stripe-like or line-like concept in the lesion?,DL315; DL332; DL342; DL346,source-supported
+DQ0852,Concept-based explanations,Is a human-interpretable concept clearly localised to one region of the lesion?,DL342; DL334; DL350; DL317,source-supported
+DQ0853,"Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)",Is the lesion the most visually salient object in the image?,DL321; DL337; DL318; DL312,source-supported
+DQ0854,"Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)","Is there a non-lesion region (e.g., ruler or marker) that is as salient as the lesion?",DL321; DL337; DL338; DL318,source-supported
+DQ0855,"Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)",Are the clinically relevant structures concentrated in a small part of the lesion?,DL317; DL354; DL342; DL334,source-supported
+DQ0856,"Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)",Is there strong edge content at the lesion border that might dominate gradient-based attribution?,DL337; DL322; DL282; DL100,source-supported
+DQ0857,"Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)",Would occluding the lesion centre remove the most diagnostic structures?,DL318; DL344; DL356; DL275,source-supported
+DQ0858,"Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)",Are diagnostic structures spread across the whole lesion rather than localised?,DL338; DL323; DL356; DL347,source-supported
+DQ0859,"Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)",Is the lesion small enough that a coarse (low-resolution) attribution map would cover surrounding skin too?,DL317; DL364; DL053; DL066,source-supported
+DQ0860,"Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)","Do eye-catching features (black dots, blue areas) draw attention to a specific region of the lesion?",DL338; DL324,source-supported
+DQ0861,"Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)",Is the lesion boundary sharp enough that a class activation map could align with it?,DL312; DL317; DL340; DL338,source-supported
+DQ0862,"Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)","Is a highly salient non-diagnostic feature (e.g., a specular highlight) present within the lesion?",DL321; DL337; DL318; DL312,source-supported
+DQ0863,"Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)",Is the diagnostic signal likely carried by colour rather than shape?,DL340; DL010; DL034; DL041,source-supported
+DQ0864,"Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)",Is the diagnostic signal likely carried by border shape rather than internal structures?,DL337; DL340; DL166; DL143,source-supported
+DQ0865,"Saliency method validity (sanity checks, evaluation)",Is there a clearly bounded region that could serve as a ground-truth location for the diagnostic feature?,DL335; DL276; DL419; DL395,source-supported
+DQ0866,"Saliency method validity (sanity checks, evaluation)",Is the lesion's diagnostic region clearly separable from its surroundings for pointing-game evaluation?,DL335; DL318,source-supported
+DQ0867,"Shortcut / artefact learning (markings, rulers, hair)","Are surgical skin markings (e.g., gentian violet ink) visible near the lesion?",DL330; DL111; DL105; DL221,source-supported
+DQ0868,"Shortcut / artefact learning (markings, rulers, hair)",Is a ruler or measurement scale visible in the image?,DL333; DL344,source-supported
+DQ0869,"Shortcut / artefact learning (markings, rulers, hair)",Are dark corners (dermatoscope vignetting) visible?,DL347,source-supported
+DQ0870,"Shortcut / artefact learning (markings, rulers, hair)",Are hairs overlying the lesion?,DL333; DL344; DL358; DL397,source-supported
+DQ0871,"Shortcut / artefact learning (markings, rulers, hair)",Do hairs obscure more than a quarter of the lesion area?,DL333; DL344; DL358; DL397,source-supported
+DQ0872,"Shortcut / artefact learning (markings, rulers, hair)",Are air bubbles from immersion fluid visible?,DL344; DL230,source-supported
+DQ0873,"Shortcut / artefact learning (markings, rulers, hair)","Are ink marks, dots or arrows drawn on the skin?",DL330; DL344; DL111; DL105,source-supported
+DQ0874,"Shortcut / artefact learning (markings, rulers, hair)",Is a coloured sticker or patch visible in the image?,DL103; DL274; DL213; DL023,source-supported
+DQ0875,"Shortcut / artefact learning (markings, rulers, hair)",Is a dermatoscope gel or fluid sheen visible over the lesion?,DL394; DL060; DL385,source-supported
+DQ0876,"Shortcut / artefact learning (markings, rulers, hair)","Is text, a timestamp or a watermark overlaid on the image?",DL156; DL257; DL367; DL368,source-supported
+DQ0877,"Shortcut / artefact learning (markings, rulers, hair)",Is a black frame or padding around the dermoscopic field visible?,DL347; DL140; DL166; DL337,source-supported
+DQ0878,"Shortcut / artefact learning (markings, rulers, hair)","Is a dressing, bandage or plaster visible near the lesion?",DL196,source-supported
+DQ0879,"Shortcut / artefact learning (markings, rulers, hair)","Is any non-skin object (clothing, jewellery, instrument) visible in the frame?",DL035; DL275; DL337; DL339,source-supported
+DQ0880,"Shortcut / artefact learning (markings, rulers, hair)",Are measurement callipers or a lesion-locating grid visible?,DL333; DL344,source-supported
+DQ0881,"Shortcut / artefact learning (markings, rulers, hair)",Does the image contain artefacts that might act as shortcuts unrelated to lesion biology?,DL347; DL352; DL355; DL344,source-supported
+DQ0882,"Shortcut / artefact learning (markings, rulers, hair)",Is the dermatoscope contact plate pressing visibly on the skin (blanching vessels)?,DL102; DL383; DL165; DL023,source-supported
+DQ0883,"Shortcut / artefact learning (markings, rulers, hair)",Is there a reflection of the light source ring visible in the image?,DL418; DL384; DL411; DL065,source-supported
+DQ0884,"Shortcut / artefact learning (markings, rulers, hair)",Is blood from a recent biopsy or shave visible?,DL339; DL005; DL227; DL141,source-supported
+DQ0885,"Shortcut / artefact learning (markings, rulers, hair)",Do hairs cross directly through the lesion centre?,DL333; DL344; DL358; DL397,source-supported
+DQ0886,"Shortcut / artefact learning (markings, rulers, hair)",Is the hair density over the lesion high (many thick dark hairs)?,DL333; DL344; DL358; DL397,source-supported
+DQ0887,"Shortcut / artefact learning (markings, rulers, hair)","Are thin, light-coloured hairs present that may be hard to distinguish from lesion structures?",DL333; DL344; DL358; DL397,source-supported
+DQ0888,"Shortcut / artefact learning (markings, rulers, hair)",Are dark corner artefacts large enough to overlap the lesion?,DL347,source-supported
+DQ0889,"Shortcut / artefact learning (markings, rulers, hair)",Are surgical markings encircling the lesion?,DL330; DL111; DL105; DL221,source-supported
+DQ0890,"Shortcut / artefact learning (markings, rulers, hair)",Is a ruler located close enough to the lesion to appear within a tight crop?,DL333; DL344,source-supported
+DQ0891,"Shortcut / artefact learning (markings, rulers, hair)",Is the patient's skin oily or wet producing reflections that resemble white structures?,,not named in sources
+DQ0892,"Shortcut / artefact learning (markings, rulers, hair)",Are scratches or dust on the dermatoscope lens visible?,DL222,source-supported
+DQ0893,Melanin/haemoglobin decomposition of RGB images,Would a melanin component map of this image show the lesion as a distinct high-melanin region?,DL381,source-supported
+DQ0894,Melanin/haemoglobin decomposition of RGB images,Would a haemoglobin component map of this image show a red halo around the lesion?,DL381; DL386; DL404,source-supported
+DQ0895,Melanin/haemoglobin decomposition of RGB images,Would a haemoglobin map show increased blood concentration within the lesion?,DL381; DL385; DL386; DL404,source-supported
+DQ0896,Melanin/haemoglobin decomposition of RGB images,Is shading from curvature (uneven illumination) visible that could confound chromophore estimation?,DL381; DL418; DL376,source-supported
+DQ0897,Melanin/haemoglobin decomposition of RGB images,Is the lesion's melanin pattern spatially independent of its haemoglobin pattern?,DL386; DL381; DL404,source-supported
+DQ0898,Melanin/haemoglobin decomposition of RGB images,Does the image show uneven pigment texture in the surrounding skin (age-related pigment spots)?,DL381; DL156; DL165; DL425,source-supported
+DQ0899,Melanin/haemoglobin decomposition of RGB images,Is erythema in the surrounding skin strong enough to mask melanin contrast?,DL417; DL023; DL065; DL077,source-supported
+DQ0900,Melanin/haemoglobin decomposition of RGB images,Is there visible specular highlight that must be removed before chromophore decomposition?,DL418,source-supported
+DQ0901,Melanin/haemoglobin decomposition of RGB images,Does the lesion show high haemoglobin concentration at its border (inflammatory halo)?,DL381; DL385; DL386; DL404,source-supported
+DQ0902,Melanin/haemoglobin decomposition of RGB images,Does the lesion appear dominated by melanin rather than haemoglobin?,DL381; DL385; DL386; DL404,source-supported
+DQ0903,Monte Carlo light transport in skin,Is the lesion imaged under a light source likely to penetrate only superficially (short-wavelength/visible blue)?,DL366; DL413; DL369; DL407,source-supported
+DQ0904,Monte Carlo light transport in skin,Does the image suggest diffuse rather than direct illumination?,DL366; DL371; DL062; DL123,source-supported
+DQ0905,Monte Carlo light transport in skin,Is the angle of incidence of the light on the skin markedly oblique?,DL391; DL366; DL056; DL253,source-supported
+DQ0906,Monte Carlo light transport in skin,Does the visible lateral spread of light around a bright area suggest strong scattering?,DL399; DL365; DL413; DL366,source-supported
+DQ0907,Multispectral / hyperspectral lesion imaging,Is the image a multispectral or hyperspectral capture rather than standard RGB?,DL363; DL378; DL400; DL410,source-supported
+DQ0908,Multispectral / hyperspectral lesion imaging,Does the lesion appear distinct from surrounding skin in near-infrared bands?,DL415; DL398; DL379,source-supported
+DQ0909,Multispectral / hyperspectral lesion imaging,Does the lesion appear distinct in blue/short-wavelength bands (superficial features)?,DL415; DL400; DL393; DL366,source-supported
+DQ0910,Multispectral / hyperspectral lesion imaging,Is the lesion visibly fluorescent under autofluorescence imaging?,DL378,source-supported
+DQ0911,Multispectral / hyperspectral lesion imaging,Is the lesion contrast against normal tissue high in narrow-band views?,DL400; DL412; DL274; DL375,source-supported
+DQ0912,Multispectral / hyperspectral lesion imaging,Does the lesion appear to be a bruise rather than a pigmented lesion?,DL363,source-supported
+DQ0913,Multispectral / hyperspectral lesion imaging,Does the spectral appearance suggest deeper dermal melanocytes?,DL393,source-supported
+DQ0914,Multispectral / hyperspectral lesion imaging,Does the lesion show reduced reflectance at haemoglobin absorption peaks (around 540–580 nm)?,DL393; DL365; DL370; DL381,source-supported
+DQ0915,Multispectral / hyperspectral lesion imaging,Does the lesion show reduced reflectance across all visible bands (melanin absorption)?,DL381; DL384; DL385; DL386,source-supported
+DQ0916,Multispectral / hyperspectral lesion imaging,Does the lesion's spectral signature differ between its centre and edge?,DL393; DL400; DL373; DL380,source-supported
+DQ0917,Multispectral / hyperspectral lesion imaging,Does the lesion appear differently under ultraviolet or Wood's lamp-type illumination?,DL365; DL188; DL394; DL310,source-supported
+DQ0918,Skin optical properties & chromophores,Does the lesion show a brown colour suggesting melanin in the epidermis?,DL370; DL384; DL379; DL115,source-supported
+DQ0919,Skin optical properties & chromophores,Does the lesion show a blue-grey colour suggesting melanin deep in the dermis (Tyndall effect)?,DL370; DL407; DL222; DL230,source-supported
+DQ0920,Skin optical properties & chromophores,Does the lesion show red colour suggesting increased haemoglobin?,DL407; DL370; DL381; DL385,source-supported
+DQ0921,Skin optical properties & chromophores,"Does the lesion appear purple or dark red, suggesting deoxygenated blood?",DL370; DL385; DL421,source-supported
+DQ0922,Skin optical properties & chromophores,"Does the lesion look yellow, suggesting lipids, bilirubin or keratin?",DL369; DL379; DL407; DL022,source-supported
+DQ0923,Skin optical properties & chromophores,"Is the lesion pale compared with surrounding skin, suggesting reduced blood or increased scattering?",DL369; DL370; DL379; DL407,source-supported
+DQ0924,Skin optical properties & chromophores,Does the lesion appear more translucent than the surrounding skin?,DL369; DL370; DL379; DL407,source-supported
+DQ0925,Skin optical properties & chromophores,"Does the lesion appear to have a thickened epidermis (whiter, more opaque surface)?",DL407; DL370; DL379; DL283,source-supported
+DQ0926,Skin optical properties & chromophores,Does the surrounding skin show visible subsurface blood vessels?,DL369; DL379; DL007; DL022,source-supported
+DQ0927,Skin optical properties & chromophores,Is the colour of the lesion consistent with a high melanin concentration?,DL384; DL126; DL385; DL392,source-supported
+DQ0928,Skin optical properties & chromophores,Does the lesion appear to have a heterogeneous (patchy) melanin distribution?,DL384; DL337; DL386; DL256,source-supported
+DQ0929,Skin optical properties & chromophores,Is there visible orange-red diffuse light bleeding around bright areas (subsurface scattering)?,DL369; DL370; DL379; DL407,source-supported
+DQ0930,Skin optical properties & chromophores,"Does the lesion appear white because of increased light scattering (e.g., keratin or fibrosis)?",DL369; DL370; DL379; DL407,source-supported
+DQ0931,Skin optical properties & chromophores,Does the lesion colour change between central and peripheral zones consistent with depth variation of pigment?,DL370; DL053; DL366; DL379,source-supported
+DQ0932,Skin optical properties & chromophores,Does the background skin show a pinkish tone suggesting high dermal blood content?,DL369; DL379; DL059; DL385,source-supported
+DQ0933,Skin optical properties & chromophores,Is water or oedema making the lesion look swollen and pale?,DL369; DL407; DL419,source-supported
+DQ0934,Skin optical properties & chromophores,Does the lesion's colour appear grey-blue because of melanin at mid-dermal depth?,DL370; DL379,source-supported
+DQ0935,Skin optical properties & chromophores,"Is the epidermis over the lesion visibly thinned, letting vessels show through?",DL370; DL379; DL384; DL407,source-supported
+DQ0936,Skin rendering & appearance models (computer graphics),Does the skin surface show a specular sheen distinct from its diffuse colour?,DL371; DL418,source-supported
+DQ0937,Skin rendering & appearance models (computer graphics),Does the image show strong subsurface-scattering softness at edges of shadows?,DL371; DL374; DL373,source-supported
+DQ0938,Skin rendering & appearance models (computer graphics),Are moles or freckles visible in the surrounding skin texture?,DL371; DL166; DL169; DL183,source-supported
+DQ0939,Skin rendering & appearance models (computer graphics),"Does sweat, cold-induced redness or makeup alter the skin appearance?",DL371; DL383,source-supported
+DQ0940,Skin rendering & appearance models (computer graphics),Is there facial blushing or dynamic redness affecting skin colour?,DL392; DL381; DL385; DL386,source-supported
+DQ0941,Skin rendering & appearance models (computer graphics),"Are fine hairs (vellus hair, eyebrow or beard) visible on the skin surface?",DL398; DL333; DL344; DL397,source-supported
+DQ0942,Skin rendering & appearance models (computer graphics),"Does the skin look waxy or plastic, lacking realistic subsurface translucency?",DL371; DL374; DL376; DL373,source-supported
+DQ0943,Skin rendering & appearance models (computer graphics),Is the skin colour within the natural range of human skin tones?,DL398; DL250; DL267; DL271,source-supported
+DQ0944,Skin surface texture & microrelief,Are skin surface lines (microrelief) visible around the lesion?,DL383; DL423; DL425; DL419,source-supported
+DQ0945,Skin surface texture & microrelief,Is the skin microrelief disrupted or effaced within the lesion?,DL383; DL423; DL425; DL419,source-supported
+DQ0946,Skin surface texture & microrelief,Are skin furrows deeper than in normal-appearing skin?,DL423; DL425; DL029; DL053,source-supported
+DQ0947,Skin surface texture & microrelief,Are polygonal skin texture cells (between furrows) larger than usual?,DL419; DL425; DL002; DL007,source-supported
+DQ0948,Skin surface texture & microrelief,Are wrinkles long and continuous across the region?,DL419; DL425; DL416; DL423,source-supported
+DQ0949,Skin surface texture & microrelief,Are enlarged pores visible?,DL383; DL416,source-supported
+DQ0950,Skin surface texture & microrelief,Is visible sebum or skin oiliness causing shine?,DL416,source-supported
+DQ0951,Skin surface texture & microrelief,Is the skin surface roughness high?,DL377; DL416; DL423; DL346,source-supported
+DQ0952,Skin surface texture & microrelief,Are sweat pores resolvable in the image?,DL383,source-supported
+DQ0953,Skin surface texture & microrelief,Is the surface texture anisotropic (lines running mainly in one direction)?,DL383; DL425; DL419; DL420,source-supported
+DQ0954,Skin surface texture & microrelief,Are wrinkle cells in the surface texture regular in shape?,DL419; DL425; DL002; DL007,source-supported
+DQ0955,Skin surface texture & microrelief,Is the skin surface texture irregular in the vicinity of the lesion only?,DL383; DL425; DL419; DL420,source-supported
+DQ0956,Skin surface texture & microrelief,Is skin surface topography visible as shadowed relief under oblique lighting?,DL416; DL377,source-supported
+DQ0957,Skin surface texture & microrelief,"Is the skin surface glossy with flattened microrelief (e.g., over a nodule)?",DL423,source-supported
+DQ0958,Skin surface texture & microrelief,Is wrinkle depth deeper adjacent to the lesion than further away?,DL419; DL423; DL425; DL416,source-supported
+DQ0959,Synthetic data: 3D rendering & generative models,Does the image appear synthetic or AI-generated rather than a real photograph?,DL372; DL389; DL390; DL414,source-supported
+DQ0960,Synthetic data: 3D rendering & generative models,Does the image show implausible anatomy or texture typical of generative models?,,not named in sources
+DQ0961,Synthetic data: 3D rendering & generative models,Does the image look like a 3D-rendered body surface with a blended lesion?,DL395; DL238; DL146; DL147,source-supported
+DQ0962,Synthetic data: 3D rendering & generative models,"Does the lesion show seamless blending with surrounding skin, or a visible pasted boundary?",DL395; DL308,source-supported
+DQ0963,Synthetic data: 3D rendering & generative models,Is the camera viewpoint oblique relative to the body surface?,DL395; DL364; DL396; DL419,source-supported
+DQ0964,Synthetic data: 3D rendering & generative models,"Is the background scene (room, clothing) visible around the body part?",DL395; DL035; DL275; DL337,source-supported
+DQ0965,Texture descriptors & radiomics for lesions,Does the lesion show coarse texture (large uniform blobs) rather than fine texture?,DL367; DL368; DL422; DL403,source-supported
+DQ0966,Texture descriptors & radiomics for lesions,Is the lesion texture homogeneous (high GLCM homogeneity)?,DL422; DL406; DL424; DL367,source-supported
+DQ0967,Texture descriptors & radiomics for lesions,Does the lesion show high-contrast texture (strong local grey-level differences)?,DL422; DL406; DL274; DL375,source-supported
+DQ0968,Texture descriptors & radiomics for lesions,Does the lesion show strong directional (oriented) texture?,DL403; DL315; DL112; DL297,source-supported
+DQ0969,Texture descriptors & radiomics for lesions,"Does the lesion show repetitive, periodic texture elements?",DL367; DL368; DL422; DL403,source-supported
+DQ0970,Texture descriptors & radiomics for lesions,Would local binary patterns in the lesion be dominated by uniform (edge and flat) patterns?,DL368; DL403,source-supported
+DQ0971,Texture descriptors & radiomics for lesions,Does the lesion texture look the same when rotated (rotation-invariant appearance)?,DL368,source-supported
+DQ0972,Texture descriptors & radiomics for lesions,"Does the lesion border have a high fractal dimension (very complex, jagged outline)?",DL403,source-supported
+DQ0973,Texture descriptors & radiomics for lesions,Does the lesion texture differ markedly between its centre and its periphery?,DL367; DL368; DL422; DL403,source-supported
+DQ0974,Texture descriptors & radiomics for lesions,Is the lesion's grey-level histogram broad (many intensity levels)?,DL403; DL217; DL288; DL409,source-supported
+DQ0975,Texture descriptors & radiomics for lesions,Is the lesion's grey-level histogram skewed towards dark values?,DL403; DL217; DL288; DL409,source-supported
+DQ0976,Texture descriptors & radiomics for lesions,"Does the lesion show high entropy (disordered, unpredictable texture)?",DL367; DL368; DL422; DL403,source-supported
+DQ0977,Texture descriptors & radiomics for lesions,Would Gabor filters at fine scales respond strongly within the lesion?,DL403,source-supported
+DQ0978,Texture descriptors & radiomics for lesions,Is the lesion texture granular (many small specks)?,DL064; DL069; DL100; DL108,source-supported
+DQ0979,Texture descriptors & radiomics for lesions,Does the red channel show more lesion contrast than the blue channel?,DL422,source-supported
+DQ0980,Texture descriptors & radiomics for lesions,"Does the lesion show many detectable keypoints (corners, blobs)?",DL422,source-supported
+DQ0981,Texture descriptors & radiomics for lesions,Is the lesion texture smooth (low variance) in the green channel?,DL422; DL282; DL289; DL360,source-supported
+DQ0982,Texture descriptors & radiomics for lesions,Does the texture show a Markov-type local dependency (similar neighbouring pixels)?,DL403,source-supported
+DQ0983,Texture descriptors & radiomics for lesions,Is the lesion texture coarser at its periphery than at its centre?,DL367; DL368; DL422; DL403,source-supported
+DQ0984,Texture descriptors & radiomics for lesions,Does the lesion show blob-like structures at multiple scales (multiresolution texture)?,DL368; DL274; DL360; DL423,source-supported
+DQ0985,Texture descriptors & radiomics for lesions,Is the GLCM energy (uniformity) of the lesion likely high?,DL422; DL406; DL367,source-supported
+DQ0986,Texture descriptors & radiomics for lesions,Is the GLCM correlation of the lesion likely high (linear grey-level dependency)?,DL422; DL406; DL338; DL182,source-supported
+DQ0987,Texture descriptors & radiomics for lesions,Are texture differences between the lesion and the surrounding skin large?,DL367; DL368; DL422; DL403,source-supported
+DQ0988,Texture descriptors & radiomics for lesions,Does the lesion show strong edges internally (many sharp transitions)?,DL322; DL282; DL100; DL337,source-supported
+DQ0989,Texture descriptors & radiomics for lesions,Is the lesion's colour distribution multimodal (several clearly different colour clusters)?,DL422; DL403; DL406; DL010,source-supported
+DQ0990,Texture descriptors & radiomics for lesions,Does the lesion show high variance in the blue channel?,DL422; DL007; DL063; DL282,source-supported
+DQ0991,Texture descriptors & radiomics for lesions,Would wavelet decomposition show strong high-frequency detail within the lesion?,,standard term
+DQ0992,Texture descriptors & radiomics for lesions,Does the lesion show lacunarity (gaps and holes in its texture)?,,standard term
+DQ0993,Texture descriptors & radiomics for lesions,Would the lesion's run-length texture show long runs of uniform intensity?,,standard term
+DQ0994,Texture descriptors & radiomics for lesions,Does the lesion's texture look self-similar at different magnifications?,DL403,source-supported
+DQ0995,Texture descriptors & radiomics for lesions,Is the lesion texture rotationally anisotropic (strong dominant orientation)?,DL403; DL037,source-supported
+DQ0996,Texture descriptors & radiomics for lesions,Is the lesion intensity skewed (asymmetrical histogram) in grayscale?,DL403; DL217; DL288; DL409,source-supported
+DQ0997,Texture descriptors & radiomics for lesions,Is the lesion's kurtosis high (peaked intensity distribution)?,,standard term
+DQ0998,Texture descriptors & radiomics for lesions,Does the lesion's grey-level texture appear blotchy (large regions of differing intensity)?,DL367; DL368; DL422; DL403,source-supported
+DQ0999,Texture descriptors & radiomics for lesions,Does the lesion contain fine dot-like texture elements across its surface?,DL023; DL065; DL062; DL346,source-supported
+DQ1000,Texture descriptors & radiomics for lesions,Is the lesion's texture different in each quadrant?,DL403; DL127; DL026; DL039,source-supported

@@ -7,6 +7,7 @@ data/
 third_party/
 # Script outputs (embeddings, plots); regenerate on the workstation
 outputs/
+Question Embeddings/2026-10-15_outputs/
 # Generated per machine by `hf skills add`
 .agents/
 .claude/

@@ -1,0 +1,101 @@
+Question ID,Topic,Question,Sources cited (Local ID)
+Q001,Morphology vocabulary and lesion description,"Is the lesion raised above the surrounding skin (papule, plaque or nodule) rather than flat (macule or patch)?",DL078; DL121; DL055
+Q002,Morphology vocabulary and lesion description,Is visible scale present on the lesion surface?,DL123; DL043; DL065; DL034
+Q003,Morphology vocabulary and lesion description,Is a crust or scab present on the lesion?,DL034; DL055; DL123
+Q004,Morphology vocabulary and lesion description,Is there an ulceration or erosion (visible loss of the skin surface) within the lesion?,DL034; DL099; DL104
+Q005,Morphology vocabulary and lesion description,"Is the lesion fluid-filled, appearing as a vesicle, bulla or pustule?",DL055; DL123; DL078
+Q006,Morphology vocabulary and lesion description,Does the lesion have a central depression (umbilication)?,DL055; DL121
+Q007,Morphology vocabulary and lesion description,Is the lesion exophytic or pedunculated (growing outward on a stalk or broad base)?,DL121; DL106; DL122
+Q008,Morphology vocabulary and lesion description,"Is an open tunnel, sinus tract or draining pore visible within the lesion?",DL078
+Q009,Morphology vocabulary and lesion description,Do several similar lesions appear grouped or clustered in the same area?,DL107; DL034
+Q010,"Naked-eye rules: ABCDE, ugly duckling",Is the lesion asymmetric in shape about at least one axis?,DL340; DL106; DL071
+Q011,"Naked-eye rules: ABCDE, ugly duckling","Is the lesion border irregular, notched or blurred rather than smooth and sharp?",DL340; DL071; DL163; DL314
+Q012,"Naked-eye rules: ABCDE, ugly duckling",Does the lesion contain three or more distinct colours?,DL340; DL396; DL106; DL092
+Q013,"Naked-eye rules: ABCDE, ugly duckling",Does the lesion appear larger than 6 mm in diameter relative to a visible scale or known reference?,DL106; DL071; DL256
+Q014,"Naked-eye rules: ABCDE, ugly duckling",Does the lesion look different from the other moles visible in the same image (an 'ugly duckling')?,DL071; DL158; DL154; DL209
+Q015,Sequential monitoring detects change,"Does a prior image of the same lesion show a change in size, shape or colour?",DL192; DL184; DL195
+Q016,Dermoscopy terminology and accuracy,Is a pigment network (a grid of brown reticular lines) visible within the lesion?,DL034; DL346; DL075
+Q017,Dermoscopy terminology and accuracy,"Does the lesion contain an atypical pigment network, with thickened or irregular lines that end abruptly at the periphery?",DL091; DL346; DL071
+Q018,Dermoscopy terminology and accuracy,Are dots or globules present within the lesion?,DL034; DL346; DL065
+Q019,Dermoscopy terminology and accuracy,"Are dots or globules irregular in size, shape or distribution?",DL346; DL081; DL069
+Q020,Dermoscopy terminology and accuracy,Are streaks or pseudopods present at the lesion periphery?,DL346; DL034; DL091
+Q021,Dermoscopy terminology and accuracy,Is a blue-white veil (confluent blue pigment with a whitish ground-glass haze) present?,DL034; DL106; DL065
+Q022,Dermoscopy terminology and accuracy,"Are regression structures present, such as white scar-like areas or blue-grey peppering?",DL346; DL049; DL034
+Q023,Dermoscopy terminology and accuracy,Are shiny white lines or chrysalis structures visible under polarized light?,DL007; DL035; DL034; DL004
+Q024,Dermoscopy terminology and accuracy,"Is a negative (inverse) pigment network present, with light lines surrounding darker areas?",DL075; DL135; DL034
+Q025,Dermoscopy terminology and accuracy,Does the lesion contain structureless (homogeneous) areas without discernible structures?,DL034; DL049; DL035
+Q026,Dermoscopy terminology and accuracy,Is an eccentrically located dark blotch present?,DL097; DL034; DL069
+Q027,Lesion-specific dermoscopic criteria,Is a starburst pattern (regular radial streaks around the full circumference) present?,DL106; DL075; DL034
+Q028,Algorithms versus pattern analysis,Does the lesion show more than one global pattern in different zones (multicomponent pattern)?,DL106; DL075
+Q029,Algorithms versus pattern analysis,"Is the lesion non-pigmented, appearing pink or skin-coloured without visible brown, black or blue pigment?",DL104; DL019; DL135
+Q030,Lesion-specific dermoscopic criteria,Are arborizing (tree-like branching) vessels visible?,DL099; DL007; DL035
+Q031,Lesion-specific dermoscopic criteria,Are blue-grey ovoid nests or blue-grey globules visible?,DL007; DL099; DL034; DL097
+Q032,Lesion-specific dermoscopic criteria,Are leaf-like areas present at the lesion edge?,DL007; DL034; DL099
+Q033,Lesion-specific dermoscopic criteria,Are spoke-wheel areas (radial projections around a dark central hub) present?,DL007; DL034; DL135
+Q034,Lesion-specific dermoscopic criteria,Are short fine superficial telangiectasias visible?,DL007; DL099; DL034
+Q035,Lesion-specific dermoscopic criteria,Are multiple small erosions visible on the lesion surface?,DL007; DL034; DL097
+Q036,Lesion-specific dermoscopic criteria,Is a central mass of keratin visible?,DL122; DL121; DL089
+Q037,Lesion-specific dermoscopic criteria,Are white circles around follicular openings visible?,DL122; DL104; DL034
+Q038,Lesion-specific dermoscopic criteria,Are glomerular (coiled) vessels visible?,DL122; DL099; DL035
+Q039,Lesion-specific dermoscopic criteria,Are hairpin (looped) vessels visible?,DL099; DL122; DL034
+Q040,Lesion-specific dermoscopic criteria,Is a red pseudonetwork surrounding follicular openings (strawberry pattern) visible?,DL135; DL089; DL069; DL004
+Q041,Lesion-specific dermoscopic criteria,Are rosettes (four white points arranged in a square) visible under polarized light?,DL065; DL035; DL007
+Q042,Lesion-specific dermoscopic criteria,Are red-to-dark blood spots or haemorrhagic areas visible on the lesion surface?,DL122; DL034; DL121
+Q043,Lesion-specific dermoscopic criteria,Are milia-like cysts (white or yellow round bright spots) visible?,DL034; DL073; DL069
+Q044,Lesion-specific dermoscopic criteria,Are comedo-like openings (dark keratin-filled pores) visible?,DL034; DL073; DL049
+Q045,Lesion-specific dermoscopic criteria,Does the surface show a cerebriform pattern of fissures and ridges?,DL073; DL004; DL034
+Q046,Lesion-specific dermoscopic criteria,Is the lesion edge sharply demarcated with a moth-eaten border?,DL004; DL049; DL034
+Q047,Lesion-specific dermoscopic criteria,Are fingerprint-like parallel fine brown lines visible?,DL073; DL034
+Q048,Lesion-specific dermoscopic criteria,Are dotted (pinpoint) vessels visible?,DL099; DL075; DL035
+Q049,Lesion-specific dermoscopic criteria,Are two or more different vessel types present (polymorphous vessels)?,DL104; DL035; DL122
+Q050,Lesion-specific dermoscopic criteria,Are milky-red or pink structureless areas present?,DL035; DL099; DL049; DL106
+Q051,Lesion-specific dermoscopic criteria,Are linear irregular (serpentine) vessels visible?,DL122; DL035; DL099
+Q052,Lesion-specific dermoscopic criteria,Is the lesion predominantly pink or red in colour?,DL135; DL099; DL106
+Q053,Lesion-specific dermoscopic criteria,Is there a central white scar-like patch surrounded by a delicate peripheral network?,DL121; DL135; DL107
+Q054,Lesion-specific dermoscopic criteria,Are fine white crossing lines (Wickham striae) visible?,DL043; DL104
+Q055,Lesion-specific dermoscopic criteria,Are orange or yellow-orange structureless areas visible?,DL107; DL034
+Q056,Lesion-specific dermoscopic criteria,Are follicular keratotic plugs visible?,DL065; DL034; DL123
+Q057,Special anatomic sites,Is the pigment concentrated on the ridges of the skin markings (parallel ridge pattern)?,DL034; DL097; DL049
+Q058,Special anatomic sites,Is the pigment concentrated in the furrows of the skin markings (parallel furrow pattern)?,DL034; DL049
+Q059,Special anatomic sites,Is a lattice-like or fibrillar pigment pattern visible?,DL034; DL049
+Q060,Special anatomic sites,Are follicular openings asymmetrically pigmented?,DL069; DL049
+Q061,Special anatomic sites,Are angulated lines or rhomboidal structures surrounding follicles visible?,DL069; DL037; DL004
+Q062,Special anatomic sites,Are grey dots or annular-granular structures around follicular openings visible?,DL069; DL037
+Q063,Special anatomic sites,Are any follicular openings obliterated by pigment?,DL069; DL037; DL097
+Q064,Special anatomic sites,Is a longitudinal pigmented band visible in a nail plate (melanonychia)?,DL109; DL092; DL041
+Q065,Special anatomic sites,Does pigment extend from the nail onto the surrounding periungual skin (Hutchinson sign)?,DL092; DL109
+Q066,Special anatomic sites,"Is the lesion on acral skin (palm, sole or digit)?",DL112; DL019; DL092
+Q067,Fairness and skin tone,Is the surrounding skin dark (Fitzpatrick type IV–VI or an equivalent deep tone)?,DL266; DL281; DL277; DL298
+Q068,Skin tone and skin of colour,Are black dots or black globules present within the lesion?,DL049; DL034; DL326
+Q069,Skin tone and skin of colour,Is a white halo visible around the vessels (perivascular halo)?,DL049; DL122; DL034
+Q070,Nevus count and atypical phenotype,"Are many moles (for example, more than about 50) visible in the image?",DL144; DL188; DL190; DL183
+Q071,Nevus count and atypical phenotype,Are any of the other visible moles large or clinically atypical?,DL144; DL190; DL183
+Q072,Field cancerization and actinic damage,"Does the surrounding skin show multiple rough, scaly or red patches suggestive of field damage?",DL206; DL177; DL218
+Q073,Photoaging grading remains heterogeneous,Does the surrounding skin show wrinkling or coarse texture consistent with photoaging?,DL165; DL416; DL423
+Q074,Photoaging grading remains heterogeneous,Are solar lentigines or mottled pigmentation visible on the surrounding skin?,DL165; DL116; DL153
+Q075,Nevus count and atypical phenotype,Are freckles visible on the surrounding skin?,DL190; DL183; DL153
+Q076,Distribution and mosaic patterns,"Do the lesions follow a linear, segmental or Blaschko-line distribution?",DL153; DL207; DL215; DL213
+Q077,Distribution and mosaic patterns,Is the lesion distributed along a line of trauma or a scratch (Koebner phenomenon)?,DL207; DL213
+Q078,Distribution and mosaic patterns,Are sharply bordered depigmented (milk-white) patches visible?,DL213; DL215
+Q079,Distribution and mosaic patterns,Are multiple lentigines confined to one side or segment of the body?,DL153
+Q080,Congenital nevi and vascular anomalies,Does the lesion appear to be a large congenital pigmented naevus covering a broad body area?,DL187
+Q081,Congenital nevi and vascular anomalies,"Is the lesion a red-to-violaceous vascular patch or plaque, such as a haemangioma or port-wine stain?",DL205; DL143; DL034
+Q082,Anatomic site shapes priors,Is the lesion located on the head or neck?,DL178; DL188; DL009
+Q083,Anatomic site shapes priors,Is the lesion located on the trunk?,DL188; DL178
+Q084,Patient-level and wide-field AI,"Does the image capture a wide body region (for example, a total-body photograph) showing multiple lesions in context?",DL151; DL209; DL154; DL184
+Q085,Shortcut learning in skin lesions,Is a ruler or measurement scale visible in the image?,DL355; DL352; DL267
+Q086,Shortcut learning in skin lesions,Are skin-marker ink markings visible near the lesion?,DL355; DL352; DL344
+Q087,Shortcut learning in skin lesions,Does the image have dark corners or a circular vignette from the dermoscope field?,DL355; DL352; DL251
+Q088,Shortcut learning in skin lesions,Does hair cover or cross part of the lesion?,DL344; DL296; DL358; DL355
+Q089,Shortcut learning in skin lesions,Are air bubbles or immersion-fluid artifacts visible over the lesion?,DL355; DL352; DL306
+Q090,Colour constancy and acquisition standards,Is a colour-calibration chart or reference patch visible in the image?,DL396; DL087; DL306
+Q091,Colour constancy and acquisition standards,Is the lesion in sharp focus without motion or defocus blur?,DL388; DL382; DL396
+Q092,Colour constancy and acquisition standards,Is the whole lesion contained in the frame with a margin of surrounding normal skin?,DL388; DL251; DL154
+Q093,"Datasets, benchmarks and their biases","Is the image a dermoscopic (magnified, illuminated) view rather than a standard clinical photograph?",DL396; DL220; DL248; DL014
+Q094,Chromophores and optical properties,Does the lesion contain blue or blue-grey colour suggestive of deep dermal pigment?,DL073; DL065
+Q095,Chromophores and optical properties,Is there diffuse redness (erythema) of the skin surrounding the lesion?,DL123; DL065; DL206
+Q096,Lesion-specific dermoscopic criteria,Does the lesion have a pearly or translucent appearance?,DL121; DL043
+Q097,"Texture, microrelief and radiomics",Are the normal fine skin surface lines (microrelief) preserved across the lesion?,DL423; DL243; DL416
+Q098,"Texture, microrelief and radiomics",Is the lesion's internal texture visibly heterogeneous in brightness or pattern?,DL422; DL361; DL306
+Q099,Lesion-specific dermoscopic criteria,Does the lesion contain yellow colour or yellow structures?,DL034; DL122; DL043
+Q100,Lesion-specific dermoscopic criteria,Does the lesion contain purple or violaceous colour?,DL035; DL034; DL043

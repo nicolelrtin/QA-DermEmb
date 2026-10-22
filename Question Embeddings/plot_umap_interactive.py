@@ -1,7 +1,8 @@
 """Interactive UMAP explorer: one self-contained HTML file, no server or internet needed.
 
 Run after plot_umap.py (it reads the UMAP coordinates that script saves, so the static and
-interactive plots show the same maps):
+interactive plots show the same maps). Topics are looked up fresh from topic_map.csv, so
+after editing the map you only need to re-run this script:
   python "Question Embeddings/plot_umap_interactive.py"
 
 Writes outputs/umap_interactive.html. Open it in any browser (in VS Code: right-click the
@@ -18,6 +19,8 @@ from pathlib import Path
 
 import pandas as pd
 
+from topics import attach_topics, topic_order
+
 HERE = Path(__file__).resolve().parent
 MODEL_TITLES = {
     "qwen3": "Qwen3-Embedding (general SOTA)",
@@ -27,14 +30,15 @@ MODEL_TITLES = {
 
 
 def build_payload(coords: pd.DataFrame) -> dict:
-    if "topic" not in coords.columns:
-        raise SystemExit("umap_coords.csv has no topic column; re-run embed_questions.py and plot_umap.py.")
+    coords = attach_topics(coords)
     models = [m for m in MODEL_TITLES if f"{m}_x" in coords.columns]
     if not models:
         raise SystemExit("umap_coords.csv has no <model>_x/_y columns; run plot_umap.py first.")
     sets = list(dict.fromkeys(coords["set"]))
-    topic_order = list(dict.fromkeys(pd.read_csv(HERE / "topic_map.csv")["topic"]))
-    topics = [t for t in topic_order if t in set(coords["topic"])]
+    topics = topic_order(coords["topic"])
+    if len(topics) > 16:
+        print(f"warning: {len(topics)} topics but only 16 distinct topic colours (8 filled + 8 hollow); "
+              "colours will repeat. Group them with group_topics.py / topic_map.csv.")
     return {
         "models": [{"key": m, "title": MODEL_TITLES[m]} for m in models],
         "sets": sets,
@@ -169,7 +173,7 @@ th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--gri
 th { color: var(--text-secondary); font-weight: 600; position: sticky; top: 0; background: var(--surface-1); }
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 tr.total td { font-weight: 600; border-top: 1px solid var(--border); }
-.cell-key { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+.cell-key { display: inline-block; box-sizing: border-box; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
 </style>
 </head>
 <body>
@@ -212,9 +216,16 @@ tr.total td { font-weight: 600; border-top: 1px solid var(--border); }
 (() => {
   const D = JSON.parse(document.getElementById("data").textContent);
   const W = 1000, H = 680, PAD = 24, R = 4.6, HIT_PX = 24;
-  const SHAPES = ["circle", "square", "triangle", "diamond"];
+  const SHAPES = ["circle", "square", "triangle", "diamond", "triangle-down", "plus"];
   const NS = "http://www.w3.org/2000/svg";
   const color = i => `var(--c${(i % 8) + 1})`;
+  // Only 8 hues stay distinguishable, so categories 9-16 reuse hues 1-8 as hollow marks.
+  const hollow = i => i % 16 >= 8;
+  function paint(node, i) {
+    node.style.fill = hollow(i) ? "var(--surface-1)" : color(i);
+    node.style.stroke = hollow(i) ? color(i) : "";
+    node.style.strokeWidth = hollow(i) ? "1.6" : "";
+  }
 
   const state = {
     model: 0, colorBy: "set", query: "",
@@ -227,6 +238,9 @@ tr.total td { font-weight: 600; border-top: 1px solid var(--border); }
       case "square":   { const s = r * 0.9; return `M${-s},${-s}H${s}V${s}H${-s}Z`; }
       case "triangle": { const s = r * 1.2; return `M0,${-s}L${s * 0.95},${s * 0.7}H${-s * 0.95}Z`; }
       case "diamond":  { const s = r * 1.2; return `M0,${-s}L${s},0L0,${s}L${-s},0Z`; }
+      case "triangle-down": { const s = r * 1.2; return `M0,${s}L${s * 0.95},${-s * 0.7}H${-s * 0.95}Z`; }
+      case "plus":     { const a = r * 1.1, b = r * 0.38;
+                         return `M${-b},${-a}H${b}V${-b}H${a}V${b}H${b}V${a}H${-b}V${b}H${-a}V${-b}H${-b}Z`; }
       default:         return `M${r},0A${r},${r} 0 1 1 ${-r},0A${r},${r} 0 1 1 ${r},0Z`;
     }
   }
@@ -235,7 +249,8 @@ tr.total td { font-weight: 600; border-top: 1px solid var(--border); }
     s.setAttribute("width", 14); s.setAttribute("height", 14); s.setAttribute("viewBox", "-7 -7 14 14");
     s.setAttribute("aria-hidden", "true");
     const p = document.createElementNS(NS, "path");
-    p.setAttribute("d", shapePath(kind, 5)); p.style.fill = fill;
+    p.setAttribute("d", shapePath(kind, 5));
+    typeof fill === "number" ? paint(p, fill) : (p.style.fill = fill);
     s.appendChild(p); return s;
   }
   function el(tag, attrs = {}, text) {
@@ -307,7 +322,7 @@ tr.total td { font-weight: 600; border-top: 1px solid var(--border); }
   const syncSetLegend = legend("legend-sets", D.sets, state.setOn,
     i => swatch(SHAPES[i % SHAPES.length], state.colorBy === "set" ? color(i) : "var(--text-secondary)"));
   const syncTopicLegend = legend("legend-topics", D.topics, state.topicOn,
-    i => swatch("circle", state.colorBy === "topic" ? color(i) : "var(--mark-muted)"));
+    i => swatch("circle", state.colorBy === "topic" ? i : "var(--mark-muted)"));
 
   // Tooltip
   const tip = document.getElementById("tip"), wrap = document.getElementById("plot-wrap");
@@ -387,7 +402,8 @@ tr.total td { font-weight: 600; border-top: 1px solid var(--border); }
     D.topics.forEach((name, ti) => {
       if (!state.topicOn[ti]) return;
       const tr = el("tr"), td = el("td"), key = el("span", { class: "cell-key" });
-      key.style.background = color(ti); td.append(key, document.createTextNode(name)); tr.appendChild(td);
+      if (hollow(ti)) key.style.border = `2px solid ${color(ti)}`; else key.style.background = color(ti);
+      td.append(key, document.createTextNode(name)); tr.appendChild(td);
       let rowTot = 0;
       sets.forEach((si, c) => { const v = counts[si][ti]; rowTot += v; colTot[c] += v; tr.appendChild(el("td", { class: "num" }, v)); });
       tr.appendChild(el("td", { class: "num" }, rowTot)); tbody.appendChild(tr);
@@ -429,7 +445,7 @@ tr.total td { font-weight: 600; border-top: 1px solid var(--border); }
       n.classList.toggle("off", !on);
       n.classList.toggle("dim", on && !match);
       n.style.transform = `translate(${xy[i][0]}px, ${xy[i][1]}px)`;
-      n.style.fill = color(state.colorBy === "set" ? p.s : p.t);
+      paint(n, state.colorBy === "set" ? p.s : p.t);
       // Legend counts follow search and the *other* legend's toggles, so they read as
       // "how many questions would appear if this entry were on".
       if (match && state.topicOn[p.t]) setCounts[p.s]++;
