@@ -11,3 +11,4 @@ Question Embeddings/2026-10-15_outputs/
 # Generated per machine by `hf skills add`
 .agents/
 .claude/
+handoff/
