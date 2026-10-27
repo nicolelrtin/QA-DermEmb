@@ -1,0 +1,2 @@
+# Set questions.selected_from=<model dir>/selected_questions.csv on the CLI.
+questions: {scope: null, ids: null, selected_from: ???}

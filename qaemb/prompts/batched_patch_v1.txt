@@ -1,0 +1,4 @@
+This is an image of skin. Answer about this region only.
+Answer each numbered question with Yes or No.
+{questions}
+Reply with a JSON object that maps each question number to "Yes" or "No".

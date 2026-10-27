@@ -1,0 +1,1 @@
+feat: {source: adj, kind: prob}   # p_adj = P(yes|original) - P(yes|complement), in [-1, 1]

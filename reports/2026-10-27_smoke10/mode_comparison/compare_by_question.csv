@@ -1,0 +1,501 @@
+question_id,question,topic,mean_p_adj__stateless,mean_p_adj__topic,mean_p_adj__all,contradiction_rate__stateless,contradiction_rate__topic,contradiction_rate__all
+DQ001,Is the lesion diameter larger than 6 mm?,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",0.1708,0.1227,0.1927,0.5,0.3,0.6
+DQ002,Is the lesion border irregular?,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",0.2559,0.3167,0.4156,0.5,0.3,0.5
+DQ003,Is the lesion colour heterogeneous?,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",0.7377,0.3947,0.5864,0.1,0.3,0.4
+DQ004,Is the lesion outline asymmetric?,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",-0.0228,0.2887,0.5484,0.9,0.3,0.4
+DQ005,Does the lesion have a hazy (ill-defined) border?,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",0.2598,0.1494,0.2401,0.4,0.4,0.9
+DQ006,Is the pigmented lesion at least 5 mm in diameter with irregular pigmentation?,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",0.3114,0.149,0.2818,0.6,0.5,0.7
+DQ007,Is the lesion elevated above the skin surface?,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",-0.3003,-0.0431,0.0218,0.3,0.9,1.0
+DQ008,Does the lesion present as a red nodule?,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",-0.0234,-0.0297,-0.0072,1.0,1.0,1.0
+DQ009,Does one pigmented lesion in the image look different from the other naevi visible in the same image?,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",0.6419,0.1905,0.0486,0.0,0.5,1.0
+DQ010,"Do the naevi visible in the image resemble one another in colour, shape, size and pattern?","Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",-0.2186,-0.0823,-0.0099,0.6,0.9,1.0
+DQ011,Is an atypical pigment network present?,Dermoscopy algorithms for melanoma,0.069,-0.0561,-0.0002,0.8,0.8,1.0
+DQ012,Is a blue-white veil present?,Dermoscopy algorithms for melanoma,-0.126,-0.121,-0.0027,0.9,0.9,1.0
+DQ013,Is an atypical vascular pattern present?,Dermoscopy algorithms for melanoma,0.2452,-0.071,0.0018,0.7,0.9,1.0
+DQ014,Are irregular dots or globules present?,Dermoscopy algorithms for melanoma,0.599,-0.0229,0.0208,0.3,0.9,1.0
+DQ015,Are irregular streaks present?,Dermoscopy algorithms for melanoma,0.4833,-0.1021,0.0048,0.4,0.9,1.0
+DQ016,Is an irregular blotch present?,Dermoscopy algorithms for melanoma,0.7742,-0.0799,0.0023,0.0,0.9,1.0
+DQ017,Are regression structures present?,Dermoscopy algorithms for melanoma,0.0592,-0.1196,0.0004,1.0,0.9,1.0
+DQ018,Is there asymmetry in the distribution of dermoscopic structures?,Dermoscopy algorithms for melanoma,0.281,0.0441,0.0435,0.5,0.8,1.0
+DQ019,Does the lesion show a multicomponent global pattern?,Dermoscopy algorithms for melanoma,0.1096,-0.1831,0.0259,0.8,0.9,1.0
+DQ020,Does the lesion show a pigmented homogeneous global pattern?,Dermoscopy algorithms for melanoma,-0.2182,-0.0492,-0.0005,0.9,0.9,1.0
+DQ021,Are areas of irregular homogeneous pigmentation present?,Dermoscopy algorithms for melanoma,0.2318,-0.0758,0.0236,0.8,0.9,1.0
+DQ022,Does the lesion contain more than two colours?,Dermoscopy algorithms for melanoma,0.367,-0.0352,0.1953,0.5,0.9,0.9
+DQ023,Is light brown colour present in the lesion?,Dermoscopy algorithms for melanoma,0.4524,0.0711,0.1135,0.3,1.0,1.0
+DQ024,Is dark brown or black colour present in the lesion?,Dermoscopy algorithms for melanoma,0.3325,0.1133,0.094,0.5,1.0,1.0
+DQ025,Is pink colour present in a pigmented lesion?,Dermoscopy algorithms for melanoma,0.1775,-0.027,0.0291,0.9,1.0,1.0
+DQ026,Are shiny white structures present?,Dermoscopy algorithms for melanoma,0.282,-0.0542,0.0104,0.6,1.0,1.0
+DQ027,Is a patchy (discontinuous) pigment network present?,Dermoscopy algorithms for melanoma,0.1967,-0.0217,0.0052,0.8,1.0,1.0
+DQ028,Does the lesion score 3 or more on the revised 7-point checklist?,Dermoscopy algorithms for melanoma,0.3161,-0.0284,0.03,0.5,0.9,1.0
+DQ029,Is at least one major 7-point checklist criterion present?,Dermoscopy algorithms for melanoma,0.1302,0.0783,0.0276,0.9,0.9,1.0
+DQ030,Does a blue-white veil cover at least 30% of the lesion area?,Dermoscopy algorithms for melanoma,-0.1047,-0.0583,0.0015,0.9,1.0,1.0
+DQ031,Is grey colour present in the lesion?,Dermoscopy algorithms for melanoma,0.1268,-0.008,0.0013,0.9,1.0,1.0
+DQ032,Is the pigment network irregular in line thickness or hole size?,Dermoscopy algorithms for melanoma,0.2815,0.0321,0.0212,0.7,1.0,1.0
+DQ033,Are dotted vessels visible within a pigment network?,Dermoscopy algorithms for melanoma,0.3386,-0.0148,-0.0001,0.3,1.0,1.0
+DQ034,Are comedo-like openings present in a lesion that also shows a pigment network?,Dermoscopy algorithms for melanoma,0.0599,-0.0139,-0.0017,0.9,1.0,1.0
+DQ035,Is perifollicular pigmentation present in a flat pigmented lesion?,Dermoscopy algorithms for melanoma,0.2507,-0.0064,-0.0017,0.7,1.0,1.0
+DQ036,Does the lesion appear as a flat pigmented macule with an irregular border?,Dermoscopy algorithms for melanoma,0.0828,0.0508,0.0258,0.3,1.0,1.0
+DQ037,Are irregular dots and globules the dominant structure of the lesion?,Dermoscopy algorithms for melanoma,-0.1778,-0.0405,-0.0029,0.4,1.0,1.0
+DQ038,Is colour variegation present across the lesion?,Dermoscopy algorithms for melanoma,0.6578,-0.0114,0.0104,0.1,1.0,1.0
+DQ039,Is the overall global dermoscopic pattern of the lesion reticular?,Dermoscopy algorithms for melanoma,-0.0894,-0.0367,-0.008,1.0,1.0,1.0
+DQ040,Is the overall global dermoscopic pattern of the lesion globular?,Dermoscopy algorithms for melanoma,-0.1397,-0.0391,0.0036,0.9,1.0,1.0
+DQ041,Are brown reticular lines (a pigment network) present in the lesion?,Dermoscopy terminology consensus,0.0292,0.053,0.004,0.8,0.8,1.0
+DQ042,Are radial lines converging to a central dot or clod present in the lesion?,Dermoscopy terminology consensus,0.0828,-0.006,-0.0028,0.9,0.9,1.0
+DQ043,Are white dots or clods clustered or disseminated across the lesion?,Dermoscopy terminology consensus,0.2049,-0.042,-0.0012,0.6,1.0,1.0
+DQ044,"Are brown, yellow or orange clods present in the lesion?",Dermoscopy terminology consensus,0.0421,0.0043,-0.0003,0.9,1.0,1.0
+DQ045,"Are large polygonal clods, brown or skin-coloured, present in the lesion?",Dermoscopy terminology consensus,-0.4744,-0.0383,-0.0007,0.4,1.0,1.0
+DQ046,Are grey or blue dots arranged in a peripheral clustered or linear pattern?,Dermoscopy terminology consensus,-0.0103,-0.018,-0.0007,1.0,1.0,1.0
+DQ047,Are thick curved lines (a cerebriform pattern) present in the lesion?,Dermoscopy terminology consensus,-0.1652,-0.0332,-0.0006,0.5,1.0,1.0
+DQ048,Are concentric clods (a clod within a clod) present in the lesion?,Dermoscopy terminology consensus,0.0419,-0.0294,-0.0004,1.0,1.0,1.0
+DQ049,"Are grey, blue or black dots in a peppering pattern present in the lesion?",Dermoscopy terminology consensus,0.0667,-0.0045,-0.0014,0.9,1.0,1.0
+DQ050,"Are grey, blue or black circles present in the lesion?",Dermoscopy terminology consensus,-0.0474,-0.0009,-0.0035,0.9,1.0,1.0
+DQ051,Is a polychromatic structureless zone present in the lesion?,Dermoscopy terminology consensus,0.1299,-0.0317,-0.0024,0.9,1.0,1.0
+DQ052,Is a red structureless zone interrupted by follicular openings present?,Dermoscopy terminology consensus,0.1784,-0.0148,-0.0016,0.9,1.0,1.0
+DQ053,Are small black clods (black globules) present in the lesion?,Dermoscopy terminology consensus,0.1046,-0.0063,-0.0017,0.8,1.0,1.0
+DQ054,Are small pink clods (milky-red globules) present in the lesion?,Dermoscopy terminology consensus,0.1135,-0.0056,-0.0006,0.9,1.0,1.0
+DQ055,Is a structureless pink zone (milky-red area) present in the lesion?,Dermoscopy terminology consensus,0.1167,-0.0229,-0.001,0.6,1.0,1.0
+DQ056,Is white colour visible around vessels (a perivascular white halo)?,Dermoscopy terminology consensus,-0.1119,-0.0145,-0.0005,1.0,1.0,1.0
+DQ057,Are follicular plugs present in the lesion?,Dermoscopy terminology consensus,0.1079,-0.0085,-0.0068,1.0,1.0,1.0
+DQ058,Are erosions or ulcerations present in the lesion?,Dermoscopy terminology consensus,-0.015,0.0182,-0.0005,0.8,1.0,1.0
+DQ059,Are dots (structures no wider than a terminal hair) present in the lesion?,Dermoscopy terminology consensus,0.4315,0.0356,-0.0013,0.4,1.0,1.0
+DQ060,Is only one vessel morphology present (a monomorphous vascular pattern)?,Dermoscopy terminology consensus,-0.0509,-0.0368,-0.0102,1.0,1.0,1.0
+DQ061,Are vessels arranged in a serpiginous (string-of-pearls) line?,Dermoscopy terminology consensus,-0.0188,-0.0028,-0.0039,1.0,1.0,1.0
+DQ062,Are vessels arranged radially around the lesion centre?,Dermoscopy terminology consensus,0.1271,0.0507,-0.0005,0.8,0.9,1.0
+DQ063,Are vessels arranged in a branched pattern?,Dermoscopy terminology consensus,0.2937,0.0028,0.0,0.6,1.0,1.0
+DQ064,Are vessels arranged in clusters?,Dermoscopy terminology consensus,0.0806,-0.0038,-0.0011,0.9,1.0,1.0
+DQ065,Are vessels arranged in a reticular (net-like) pattern?,Dermoscopy terminology consensus,0.2111,0.1108,-0.0005,0.6,0.8,1.0
+DQ066,Are vessels distributed randomly without a specific arrangement?,Dermoscopy terminology consensus,-0.0769,0.0447,-0.0032,1.0,1.0,1.0
+DQ067,Are curved vessels present in the lesion?,Dermoscopy terminology consensus,0.195,0.014,0.0004,0.9,1.0,1.0
+DQ068,Are shiny white clods present in the lesion?,Dermoscopy terminology consensus,-0.0003,-0.0033,-0.0007,1.0,1.0,1.0
+DQ069,Are white circles present in the lesion?,Dermoscopy terminology consensus,0.1513,-0.0051,-0.0009,0.8,1.0,1.0
+DQ070,Are brown dots present in the lesion?,Dermoscopy terminology consensus,0.4836,0.0607,0.0167,0.4,1.0,1.0
+DQ071,Is a grey-white structureless zone present in the lesion?,Dermoscopy terminology consensus,-0.0407,0.0008,-0.001,0.9,1.0,1.0
+DQ072,Is a brown structureless area present in the lesion?,Dermoscopy terminology consensus,0.5043,0.0122,-0.0019,0.4,1.0,1.0
+DQ073,Is a grey-black structureless area present in the lesion?,Dermoscopy terminology consensus,0.1381,0.0066,-0.0015,0.5,1.0,1.0
+DQ074,Is a combined brown and blue-grey structureless area present in the lesion?,Dermoscopy terminology consensus,-0.2056,-0.003,-0.014,0.8,1.0,1.0
+DQ075,Are white lines crossing each other at right angles present in the lesion?,Dermoscopy terminology consensus,-0.0322,-0.0045,-0.0021,1.0,1.0,1.0
+DQ076,Is a yellow or yellow-white structureless area present in the lesion?,Dermoscopy terminology consensus,-0.3054,-0.0003,-0.0009,1.0,1.0,1.0
+DQ077,Is a blue structureless area present in the lesion?,Dermoscopy terminology consensus,-0.3854,-0.0005,-0.0007,0.5,1.0,1.0
+DQ078,Are whitish scales present (a correlate of hyperkeratosis)?,Histopathologic correlates of dermoscopic structures,-0.0321,-0.2683,-0.0014,1.0,0.6,1.0
+DQ079,Are blue-grey dots present (a correlate of pigment incontinence)?,Histopathologic correlates of dermoscopic structures,-0.0143,-0.1206,-0.0013,0.9,1.0,1.0
+DQ080,Are white structureless areas present (a correlate of dermal fibrosis)?,Histopathologic correlates of dermoscopic structures,0.0396,-0.1137,-0.0004,1.0,1.0,1.0
+DQ081,Are small surface depressions (dells) visible over hypopigmented lines?,Histopathologic correlates of dermoscopic structures,0.1676,-0.131,-0.0017,1.0,1.0,1.0
+DQ082,Are blue-grey or black ovoid nests of varying size present (correlates of dermal tumour islands)?,Histopathologic correlates of dermoscopic structures,0.0098,-0.1661,-0.0013,1.0,1.0,1.0
+DQ083,Do milky-red areas and blurred vessels suggest deep tumoral vessels?,Histopathologic correlates of dermoscopic structures,-0.2936,-0.2467,-0.0009,0.7,1.0,1.0
+DQ084,Are papules present?,ILDS morphology / lesion terminology,0.412,0.178,-0.0022,0.5,0.7,1.0
+DQ085,Are vesicles or blisters present?,ILDS morphology / lesion terminology,-0.1399,-0.0471,-0.0008,1.0,1.0,1.0
+DQ086,Are pustules present?,ILDS morphology / lesion terminology,-0.0749,-0.0118,-0.0005,0.9,1.0,1.0
+DQ087,Are crusts or scabs present?,ILDS morphology / lesion terminology,-0.1863,0.0568,-0.0002,0.6,0.9,1.0
+DQ088,Is an abscess present?,ILDS morphology / lesion terminology,-0.0811,-0.0092,-0.0003,0.9,1.0,1.0
+DQ089,Is a morbilliform rash present?,ILDS morphology / lesion terminology,0.134,-0.059,-0.0005,0.8,1.0,1.0
+DQ090,Is the lesion a plaque?,ILDS morphology / lesion terminology,-0.0249,-0.0752,0.0001,1.0,1.0,1.0
+DQ091,Is the lesion a flat macule?,ILDS morphology / lesion terminology,-0.0302,0.0429,0.0114,0.8,0.9,1.0
+DQ092,Is the lesion a nodule?,ILDS morphology / lesion terminology,-0.0143,-0.073,0.0126,1.0,1.0,1.0
+DQ093,Is the lesion polypoid or pedunculated?,ILDS morphology / lesion terminology,-0.0597,-0.0162,-0.0006,1.0,1.0,1.0
+DQ094,"Does the lesion have a smooth, shiny surface?",ILDS morphology / lesion terminology,-0.4638,-0.0752,-0.022,0.2,1.0,1.0
+DQ095,Does the lesion have a well-defined edge and a round or oval outline?,ILDS morphology / lesion terminology,-0.3052,0.1032,-0.0053,0.3,0.9,1.0
+DQ096,Are chalky-white macules or patches present?,ILDS morphology / lesion terminology,-0.0236,-0.0486,-0.0088,1.0,1.0,1.0
+DQ097,Is the depigmented lesion free of scale?,ILDS morphology / lesion terminology,-0.0566,-0.0033,-0.0005,0.8,1.0,1.0
+DQ098,Does the lesion present as an ulcer without a raised border?,ILDS morphology / lesion terminology,-0.1106,0.0485,-0.0011,1.0,0.9,1.0
+DQ099,Is the lesion umbilicated (centrally depressed)?,ILDS morphology / lesion terminology,-0.1229,-0.0149,-0.0032,0.8,1.0,1.0
+DQ100,Is the lesion dome-shaped?,ILDS morphology / lesion terminology,-0.0026,-0.0086,-0.0003,1.0,1.0,1.0
+DQ101,Is the lesion verrucous (wart-like)?,ILDS morphology / lesion terminology,-0.6921,-0.0167,-0.0007,0.0,1.0,1.0
+DQ102,Is a fissure present on the lesion surface?,ILDS morphology / lesion terminology,-0.1397,-0.0079,-0.0005,1.0,1.0,1.0
+DQ103,Is lichenification (thickened skin with accentuated markings) present?,ILDS morphology / lesion terminology,0.2853,-0.0037,-0.0006,0.5,1.0,1.0
+DQ104,Are reticulate white lines (Wickham striae) present?,Inflammatory dermoscopy & general dermatology,0.0667,-0.2532,-0.0025,0.9,0.8,1.0
+DQ105,Are Wickham striae yellow or blue rather than white?,Inflammatory dermoscopy & general dermatology,-0.0825,-0.1317,-0.0002,1.0,1.0,1.0
+DQ106,Are white striae arranged in a leaf-venation pattern?,Inflammatory dermoscopy & general dermatology,0.0191,-0.1179,-0.0003,1.0,1.0,1.0
+DQ107,Are white striae arranged as scattered dots in a starry-sky pattern?,Inflammatory dermoscopy & general dermatology,-0.0233,0.0175,-0.0003,1.0,1.0,1.0
+DQ108,Are white striae arranged in an annular or circular pattern?,Inflammatory dermoscopy & general dermatology,-0.021,-0.017,-0.0013,1.0,1.0,1.0
+DQ109,Are comedo-like structures filled with yellow keratinous plugs present?,Inflammatory dermoscopy & general dermatology,-0.0361,-0.0759,-0.0006,1.0,1.0,1.0
+DQ110,Are round white structures (corn pearls) present?,Inflammatory dermoscopy & general dermatology,0.0039,-0.0235,-0.0001,0.9,1.0,1.0
+DQ111,Is diffuse structureless brownish pigmentation present?,Inflammatory dermoscopy & general dermatology,0.3602,0.2115,0.0005,0.4,0.7,1.0
+DQ112,Does the lesion surface appear rippled?,Inflammatory dermoscopy & general dermatology,0.1233,-0.0269,-0.0019,0.1,1.0,1.0
+DQ113,Does an erythematous scaly plaque have a hyperpigmented border?,Inflammatory dermoscopy & general dermatology,0.002,-0.0301,-0.0008,1.0,1.0,1.0
+DQ114,Are perifollicular white halos present?,Inflammatory dermoscopy & general dermatology,-0.1306,-0.0159,-0.0005,1.0,1.0,1.0
+DQ115,Are follicular red dots present?,Inflammatory dermoscopy & general dermatology,0.268,0.041,-0.0003,0.6,1.0,1.0
+DQ116,Are white rosettes (four-dot clods) present?,Inflammatory dermoscopy & general dermatology,-0.0141,-0.0102,-0.0003,1.0,1.0,1.0
+DQ117,Is a honeycomb pigmentation pattern present?,Inflammatory dermoscopy & general dermatology,-0.029,-0.0058,-0.0006,0.9,1.0,1.0
+DQ118,Are telangiectatic vessels present on an inflamed plaque?,Inflammatory dermoscopy & general dermatology,0.2417,-0.0209,-0.0009,0.6,1.0,1.0
+DQ119,Are white scales present on an inflamed plaque?,Inflammatory dermoscopy & general dermatology,-0.0147,-0.006,-0.0003,1.0,1.0,1.0
+DQ120,Is the plaque atrophic and depigmented?,Inflammatory dermoscopy & general dermatology,-0.108,-0.047,-0.0016,0.9,1.0,1.0
+DQ121,Is the plaque covered by adherent scale?,Inflammatory dermoscopy & general dermatology,0.0616,-0.0265,-0.0004,1.0,1.0,1.0
+DQ122,Are grouped translucent orange ovoid structures present?,Inflammatory dermoscopy & general dermatology,0.1482,-0.0197,-0.0007,0.7,1.0,1.0
+DQ123,Is a central scar-like area present?,Inflammatory dermoscopy & general dermatology,0.3253,0.0131,-0.0003,0.5,1.0,1.0
+DQ124,Are bright white streaks present?,Inflammatory dermoscopy & general dermatology,-0.1116,-0.019,-0.0007,1.0,1.0,1.0
+DQ125,Are orange-yellowish areas or globules present?,Inflammatory dermoscopy & general dermatology,0.1283,0.0184,0.0003,0.8,1.0,1.0
+DQ126,Is the lesion annular?,Inflammatory dermoscopy & general dermatology,-0.1812,-0.082,-0.0034,0.7,1.0,1.0
+DQ127,Is diffuse erythema of the scalp present?,Inflammatory dermoscopy & general dermatology,-0.0276,-0.0388,-0.0017,1.0,1.0,1.0
+DQ128,Are non-follicular papules or pustules present on the scalp?,Inflammatory dermoscopy & general dermatology,-0.0944,-0.0461,-0.0008,1.0,1.0,1.0
+DQ129,Are follicle-centred pustules present?,Inflammatory dermoscopy & general dermatology,0.0087,-0.0075,-0.0005,0.9,1.0,1.0
+DQ130,Are dilated capillaries surrounding papules present?,Inflammatory dermoscopy & general dermatology,0.2308,-0.003,-0.0002,0.7,1.0,1.0
+DQ131,Is diffuse silver-white scaling present?,Inflammatory dermoscopy & general dermatology,-0.0905,-0.0114,-0.0005,1.0,1.0,1.0
+DQ132,Is perifollicular scaling present?,Inflammatory dermoscopy & general dermatology,0.13,-0.0032,-0.0006,0.9,1.0,1.0
+DQ133,Are red loops or dotted vessels regularly distributed across the field?,Inflammatory dermoscopy & general dermatology,-0.0575,-0.0214,-0.0048,0.9,1.0,1.0
+DQ134,Is yellow exudate present?,Inflammatory dermoscopy & general dermatology,-0.3152,-0.002,-0.001,0.8,1.0,1.0
+DQ135,Is diffuse white-yellowish scaling present?,Inflammatory dermoscopy & general dermatology,-0.0444,0.0023,-0.0001,1.0,1.0,1.0
+DQ136,Is perifollicular tubular scaling present?,Inflammatory dermoscopy & general dermatology,0.0492,-0.0008,-0.0003,1.0,1.0,1.0
+DQ137,"Are well-demarcated, scaly erythematous plaques present?",Inflammatory dermoscopy & general dermatology,-0.0384,-0.0125,-0.0003,1.0,1.0,1.0
+DQ138,Are pinpoint bleeding points visible where scale has been removed?,Inflammatory dermoscopy & general dermatology,0.349,-0.0055,-0.0013,0.4,1.0,1.0
+DQ139,Does erythema appear violaceous or hyperpigmented rather than red?,Inflammatory dermoscopy & general dermatology,0.0064,-0.0287,-0.0009,1.0,1.0,1.0
+DQ140,"Are thick arborizing vessels (about 0.2 mm or more, branching into thinner ones) present?",Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.165,-0.0293,-0.0028,0.9,1.0,1.0
+DQ141,"Are bright red, sharply focused vessels visible on the lesion surface?",Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.1986,-0.1073,-0.0005,1.0,1.0,1.0
+DQ142,Are leaf-like areas present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.0974,-0.0411,-0.0021,0.9,1.0,1.0
+DQ143,Are large blue-grey ovoid nests present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.054,0.0128,-0.0006,1.0,1.0,1.0
+DQ144,Are spoke-wheel areas present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.0836,0.0027,-0.0003,0.9,1.0,1.0
+DQ145,Are multiple blue-grey dots and globules present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.1024,0.01,-0.0003,0.8,1.0,1.0
+DQ146,Are short white streaks (chrysalis structures) present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.0278,-0.0048,-0.0005,1.0,1.0,1.0
+DQ147,"Is a milky-pink, white-red translucent structureless background present?",Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.5504,0.1163,-0.0015,0.2,0.9,1.0
+DQ148,Are telangiectatic vessels arranged annularly around an ulcer?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.0076,-0.0161,-0.0004,1.0,1.0,1.0
+DQ149,Is annular hypopigmentation present around an ulcer?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.0039,-0.0052,-0.0002,1.0,1.0,1.0
+DQ150,Are comma-shaped vessels present within an ulcerated area?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.1527,-0.0024,-0.0053,0.8,1.0,1.0
+DQ151,Is a pigment network absent in a pigmented lesion?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.0427,-0.2267,0.0028,1.0,1.0,1.0
+DQ152,"Are blue, black and grey dots present together?",Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.4284,-0.0932,-0.0015,0.3,1.0,1.0
+DQ153,Does the lesion appear as a pigmented nodule?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.0128,-0.0185,-0.0009,0.8,1.0,1.0
+DQ154,Does the lesion appear scar-like?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.511,-0.0061,-0.0008,0.3,1.0,1.0
+DQ155,Does the lesion appear as an erythematous plaque or patch?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.055,0.1227,0.0024,0.7,1.0,1.0
+DQ156,Are maple-leaf-like structureless black areas present on a pink background?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.2156,-0.0102,-0.0065,0.7,1.0,1.0
+DQ157,Are multiple small erosions present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.0061,-0.0123,-0.0014,1.0,1.0,1.0
+DQ158,Are brown-grey globules present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.4132,0.011,-0.0008,0.4,1.0,1.0
+DQ159,Are central tumour vessels present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.0371,-0.0094,-0.0009,0.9,1.0,1.0
+DQ160,Is pink coloration sparse or absent in a lesion with BCC-like structures?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.0891,-0.0872,-0.0107,0.8,1.0,1.0
+DQ161,Is the lesion so heavily pigmented that vessels are hidden?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.1422,-0.0129,-0.0008,0.8,1.0,1.0
+DQ162,Are white-to-yellow surface scales present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.0771,-0.0172,-0.0011,1.0,1.0,1.0
+DQ163,Are glomerular vessels arranged in clusters?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.0714,-0.0126,-0.0029,1.0,1.0,1.0
+DQ164,Is a central keratin plug present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.0741,-0.0091,-0.0019,0.6,1.0,1.0
+DQ165,Does the lesion have a crater-like keratin core?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.1455,-0.01,-0.0011,0.3,1.0,1.0
+DQ166,Is an ivory-white peripheral zone present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.1481,-0.0052,-0.0018,0.7,1.0,1.0
+DQ167,Are hairpin or linear vessels radiating symmetrically around a keratin core?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.0343,-0.002,-0.0006,1.0,1.0,1.0
+DQ168,Is a faint whitish halo present at the lesion periphery?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.3112,-0.0011,-0.0012,0.4,1.0,1.0
+DQ169,Are white clods (keratin pearls) present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.0571,-0.0035,-0.0032,0.8,1.0,1.0
+DQ170,Are dark necrotic or blood spots interspersed in the keratin?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.1774,-0.0013,-0.0006,0.7,1.0,1.0
+DQ171,Is a pinkish-white area present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.7384,0.0687,-0.0006,0.2,1.0,1.0
+DQ172,Is structureless pigmentation present in a scaly patch?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.0071,-0.0081,-0.0013,1.0,1.0,1.0
+DQ173,Are brown globules arranged in a patchy distribution?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.4444,-0.0017,-0.0012,0.4,1.0,1.0
+DQ174,Is a double-edge sign present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.2164,-0.0011,-0.0012,1.0,1.0,1.0
+DQ175,Are clusters of brown structureless areas present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.4939,-0.005,-0.0012,0.4,1.0,1.0
+DQ176,Are whitish structureless areas present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.163,-0.0028,-0.0012,0.7,1.0,1.0
+DQ177,Is surface keratin present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.2204,-0.1164,-0.0106,0.1,1.0,1.0
+DQ178,Is a strawberry pattern (pink pseudonetwork around prominent follicles) present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.0633,-0.0127,-0.0017,0.9,1.0,1.0
+DQ179,Is white or white-yellow the predominant colour of the lesion?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.0106,-0.0734,0.0031,1.0,1.0,1.0
+DQ180,Is pink-red the predominant colour of a keratinizing lesion?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.0259,-0.0228,-0.0017,1.0,1.0,1.0
+DQ181,"Does the lesion show nodular, exophytic growth?",Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.5108,-0.0103,-0.0021,0.2,1.0,1.0
+DQ182,Is prominent hyperkeratosis present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.0327,-0.0046,-0.0015,1.0,1.0,1.0
+DQ183,Are polarizing-specific white lines present in a non-pigmented lesion?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.0648,-0.0245,-0.0075,1.0,1.0,1.0
+DQ184,Are clothing fibres or hairs adherent to the lesion surface (a clue to ulceration)?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.2241,-0.0082,-0.0038,0.5,1.0,1.0
+DQ185,Is a non-pigmented lesion raised and firm (nodular)?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.3216,-0.0155,-0.0021,0.6,1.0,1.0
+DQ186,Is ulceration present in a non-pigmented lesion?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.0393,0.007,-0.0044,0.9,1.0,1.0
+DQ187,Is structureless pigmentation combined with dots in a pigmented scaly lesion?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.0967,-0.0122,-0.0025,0.9,1.0,1.0
+DQ188,"Are follicular plugs present in a flat, scaly lesion on sun-damaged skin?",Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.1237,-0.0094,-0.0022,0.9,1.0,1.0
+DQ189,Does the lesion appear as an erythematous nodule?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.1328,-0.0132,-0.0039,0.8,1.0,1.0
+DQ190,Does the lesion have a sharply demarcated border?,Seborrhoeic keratosis & benign mimics,-0.4459,-0.2481,-0.0025,0.3,0.7,1.0
+DQ191,"Are thin, curved, parallel brown lines present?",Seborrhoeic keratosis & benign mimics,0.3037,0.1015,-0.0019,0.5,0.7,1.0
+DQ192,Is a faint criss-cross reticulation present?,Seborrhoeic keratosis & benign mimics,0.3662,0.1496,-0.0004,0.6,0.8,1.0
+DQ193,Does the lesion have a scalloped border?,Seborrhoeic keratosis & benign mimics,-0.4023,-0.0428,-0.0006,0.6,1.0,1.0
+DQ194,Is fine scale present on the lesion surface?,Seborrhoeic keratosis & benign mimics,0.1228,-0.0159,-0.0008,0.9,1.0,1.0
+DQ195,Is a diffuse grey dotted pattern present?,Seborrhoeic keratosis & benign mimics,0.0075,-0.003,-0.0001,0.9,1.0,1.0
+DQ196,Is homogeneous brown pigmentation present?,Seborrhoeic keratosis & benign mimics,0.1096,0.0894,-0.0003,0.7,0.9,1.0
+DQ197,Are fine parallel lines present in a flat brown lesion?,Seborrhoeic keratosis & benign mimics,0.1083,0.0189,-0.0,0.9,1.0,1.0
+DQ198,Is a white network (brown holes intersected by white lines) present?,Seborrhoeic keratosis & benign mimics,0.0948,-0.0274,-0.0022,0.9,1.0,1.0
+DQ199,"Is the lesion a yellow, exophytic or polypoid nodule?",Seborrhoeic keratosis & benign mimics,-0.0108,-0.0965,-0.0018,1.0,1.0,1.0
+DQ200,Is the lesion an erythematous crateriform nodule with central ulceration?,Seborrhoeic keratosis & benign mimics,-0.0829,-0.0274,-0.0009,0.9,1.0,1.0
+DQ201,Is the lesion a hyperkeratotic erythematous papule?,Seborrhoeic keratosis & benign mimics,-0.0098,-0.021,-0.0003,1.0,1.0,1.0
+DQ202,Is the lesion a solitary pinkish-red papule on the lower limb?,Seborrhoeic keratosis & benign mimics,-0.0736,-0.007,-0.0004,1.0,1.0,1.0
+DQ203,Is the lesion a firm-appearing pink to red papule?,Seborrhoeic keratosis & benign mimics,-0.1557,-0.0058,-0.0001,0.8,1.0,1.0
+DQ204,Is a collarette of scale present around the lesion?,Seborrhoeic keratosis & benign mimics,-0.1124,-0.0156,-0.0001,1.0,1.0,1.0
+DQ205,Is the contrast between epidermal structures and background low because of dark skin?,Skin of colour presentation,-0.1118,-0.0732,0.0016,1.0,1.0,1.0
+DQ206,Does a perivascular white halo stand out against dark background skin?,Skin of colour presentation,-0.0962,-0.1196,0.0005,1.0,1.0,1.0
+DQ207,Are well-circumscribed pigmented ovoid areas present on dark skin?,Skin of colour presentation,0.005,-0.0865,-0.0002,1.0,1.0,1.0
+DQ208,Is a blue veil present in a pigmented nodule on dark skin?,Skin of colour presentation,-0.1043,-0.0314,-0.0012,1.0,1.0,1.0
+DQ209,Does the lesion appear as a pigmented patch on dark skin?,Skin of colour presentation,-0.3164,0.0759,0.0065,0.7,1.0,1.0
+DQ210,Is the background skin phototype IV or darker?,Skin of colour presentation,0.0772,0.0102,0.0094,1.0,1.0,1.0
+DQ211,Is erythema less pronounced than expected because of skin pigmentation?,Skin of colour presentation,-0.3214,0.1208,0.0037,0.3,1.0,1.0
+DQ212,Is the lesion on a less pigmented acral site of a person with dark skin?,Skin of colour presentation,-0.0873,-0.0757,0.0018,1.0,1.0,1.0
+DQ213,Are black globules present in a seborrhoeic keratosis-like lesion on dark skin?,Skin of colour presentation,0.0068,-0.0327,-0.001,1.0,1.0,1.0
+DQ214,Does the visible skin match Monk Skin Tone 1–3?,"Skin tone measurement (Fitzpatrick, Monk, ITA)",-0.1587,-0.0391,0.0031,0.8,1.0,1.0
+DQ215,Does the visible skin match Monk Skin Tone 4–7?,"Skin tone measurement (Fitzpatrick, Monk, ITA)",-0.0958,0.2119,-0.0031,0.5,0.9,1.0
+DQ216,Does the visible skin match Monk Skin Tone 8–10?,"Skin tone measurement (Fitzpatrick, Monk, ITA)",-0.1255,0.0624,0.0006,1.0,1.0,1.0
+DQ217,Does the visible skin appear to be Fitzpatrick type I–II?,"Skin tone measurement (Fitzpatrick, Monk, ITA)",-0.1715,-0.239,-0.0004,1.0,1.0,1.0
+DQ218,Does the visible skin appear to be Fitzpatrick type III–IV?,"Skin tone measurement (Fitzpatrick, Monk, ITA)",-0.0247,-0.1759,0.0005,1.0,0.6,1.0
+DQ219,Does the visible skin appear to be Fitzpatrick type V–VI?,"Skin tone measurement (Fitzpatrick, Monk, ITA)",-0.0536,-0.0414,0.0004,1.0,1.0,1.0
+DQ220,Is the individual typology angle (ITA) of the visible normal skin above 28°?,"Skin tone measurement (Fitzpatrick, Monk, ITA)",-0.1264,-0.2005,-0.0034,1.0,1.0,1.0
+DQ221,Is the individual typology angle (ITA) of the visible normal skin below 10°?,"Skin tone measurement (Fitzpatrick, Monk, ITA)",-0.1528,-0.0801,-0.0012,1.0,1.0,1.0
+DQ222,Does the visible skin have a yellow (rather than red) undertone?,"Skin tone measurement (Fitzpatrick, Monk, ITA)",-0.2027,-0.376,-0.0012,0.6,1.0,1.0
+DQ223,Does the lighting visibly alter the apparent skin tone?,"Skin tone measurement (Fitzpatrick, Monk, ITA)",-0.4767,-0.2692,-0.0012,0.1,0.7,1.0
+DQ224,Are asymmetrical pigmented follicular openings present?,"Special sites (acral, face/LM, nail, mucosa)",-0.0162,-0.1007,-0.0009,1.0,1.0,1.0
+DQ225,Is an annular-granular pattern present?,"Special sites (acral, face/LM, nail, mucosa)",0.0844,-0.0156,-0.0008,0.9,1.0,1.0
+DQ226,Are angulated lines present?,"Special sites (acral, face/LM, nail, mucosa)",0.1594,-0.0654,-0.0006,0.5,1.0,1.0
+DQ227,Are rhomboidal structures present around follicles?,"Special sites (acral, face/LM, nail, mucosa)",-0.0073,-0.0652,-0.0003,1.0,1.0,1.0
+DQ228,Is a circle-within-a-circle pattern present?,"Special sites (acral, face/LM, nail, mucosa)",0.2112,-0.0302,-0.0005,0.3,1.0,1.0
+DQ229,Is a zigzag pattern of pigmentation present?,"Special sites (acral, face/LM, nail, mucosa)",-0.5569,-0.02,-0.0003,0.1,1.0,1.0
+DQ230,Are perifollicular linear projections present?,"Special sites (acral, face/LM, nail, mucosa)",0.0775,-0.0324,-0.0001,0.9,1.0,1.0
+DQ231,Is a pseudonetwork (pigmentation interrupted by follicular openings) present?,"Special sites (acral, face/LM, nail, mucosa)",0.1008,0.0964,-0.0002,0.7,0.9,1.0
+DQ232,Are follicular openings obliterated by pigment?,"Special sites (acral, face/LM, nail, mucosa)",-0.0591,0.0879,-0.0003,0.6,1.0,1.0
+DQ233,Are follicular openings obliterated by black or blue blotches?,"Special sites (acral, face/LM, nail, mucosa)",-0.1344,-0.0063,-0.0004,0.9,1.0,1.0
+DQ234,Are grey dots or globules present around follicles?,"Special sites (acral, face/LM, nail, mucosa)",0.116,-0.008,-0.0004,0.9,1.0,1.0
+DQ235,"Are white, wide follicular openings present?","Special sites (acral, face/LM, nail, mucosa)",-0.1672,-0.0129,-0.0003,1.0,1.0,1.0
+DQ236,Are reticular or parallel brown lines present on facial skin?,"Special sites (acral, face/LM, nail, mucosa)",0.0268,-0.0418,-0.0011,0.9,1.0,1.0
+DQ237,Is bluish-grey pigmentation present in a facial macule?,"Special sites (acral, face/LM, nail, mucosa)",-0.4696,-0.0745,-0.0032,0.5,1.0,1.0
+DQ238,Is pigmentation surrounding hair follicles visible?,"Special sites (acral, face/LM, nail, mucosa)",0.3314,0.5645,-0.0006,0.4,0.2,1.0
+DQ239,Are thick parallel lines located on the ridges of acral skin (parallel ridge pattern)?,"Special sites (acral, face/LM, nail, mucosa)",-0.2197,-0.0555,-0.0005,0.8,1.0,1.0
+DQ240,Are thin parallel lines located in the furrows of acral skin (parallel furrow pattern)?,"Special sites (acral, face/LM, nail, mucosa)",0.0344,-0.0029,-0.0002,0.9,1.0,1.0
+DQ241,Are thin lines in the furrows joined by lines crossing the ridges (lattice-like pattern)?,"Special sites (acral, face/LM, nail, mucosa)",-0.2477,-0.0251,-0.0001,0.8,1.0,1.0
+DQ242,Are short parallel lines crossing the ridges (fibrillar pattern) present?,"Special sites (acral, face/LM, nail, mucosa)",0.1364,-0.0051,-0.0001,1.0,1.0,1.0
+DQ243,Does an acral lesion show homogeneous dark brown or black pigmentation?,"Special sites (acral, face/LM, nail, mucosa)",-0.1959,0.0079,-0.0003,0.6,1.0,1.0
+DQ244,Is a pigmented acral lesion symmetric?,"Special sites (acral, face/LM, nail, mucosa)",-0.0575,0.006,0.0003,1.0,1.0,1.0
+DQ245,Is the acral lesion a pink nodule?,"Special sites (acral, face/LM, nail, mucosa)",0.0,-0.007,-0.0006,0.9,1.0,1.0
+DQ246,Does the acral lesion resemble a non-healing ulcer?,"Special sites (acral, face/LM, nail, mucosa)",-0.0138,0.0094,-0.0001,1.0,1.0,1.0
+DQ247,Are milky-red areas present on acral skin?,"Special sites (acral, face/LM, nail, mucosa)",0.1277,-0.0146,-0.0002,0.9,1.0,1.0
+DQ248,Are polymorphous vessels present in an acral lesion?,"Special sites (acral, face/LM, nail, mucosa)",0.1073,-0.0141,-0.0004,1.0,1.0,1.0
+DQ249,Is the lesion located on the heel?,"Special sites (acral, face/LM, nail, mucosa)",-0.0584,-0.0047,-0.0002,1.0,1.0,1.0
+DQ250,Is the lesion located on a fingertip?,"Special sites (acral, face/LM, nail, mucosa)",-0.0102,-0.0027,-0.0005,1.0,1.0,1.0
+DQ251,Is the lesion located on the palm?,"Special sites (acral, face/LM, nail, mucosa)",-0.1822,-0.0149,-0.0007,1.0,1.0,1.0
+DQ252,Is the lesion located on the sole?,"Special sites (acral, face/LM, nail, mucosa)",-0.1187,-0.0021,-0.0,1.0,1.0,1.0
+DQ253,Does an acral lesion lack any pigmented structures?,"Special sites (acral, face/LM, nail, mucosa)",0.0208,0.0467,0.0015,1.0,1.0,1.0
+DQ254,Is a longitudinal pigmented band (melanonychia) present in the nail plate?,"Special sites (acral, face/LM, nail, mucosa)",-0.0816,-0.0215,-0.0002,1.0,1.0,1.0
+DQ255,Is a longitudinal nail band wider than 3 mm present?,"Special sites (acral, face/LM, nail, mucosa)",-0.1845,-0.0163,-0.0002,1.0,1.0,1.0
+DQ256,Does the nail show brown-black discoloration?,"Special sites (acral, face/LM, nail, mucosa)",-0.0729,-0.0029,-0.0004,1.0,1.0,1.0
+DQ257,Does a longitudinal nail band have irregular borders?,"Special sites (acral, face/LM, nail, mucosa)",0.0037,-0.0012,-0.0001,1.0,1.0,1.0
+DQ258,Is a longitudinal nail band heterogeneous in colour?,"Special sites (acral, face/LM, nail, mucosa)",-0.0446,0.0012,-0.0002,1.0,1.0,1.0
+DQ259,Is a longitudinal nail band wider proximally than distally (triangular)?,"Special sites (acral, face/LM, nail, mucosa)",-0.0401,-0.001,-0.0004,1.0,1.0,1.0
+DQ260,Does pigment extend from the nail onto the periungual skin (Hutchinson's sign)?,"Special sites (acral, face/LM, nail, mucosa)",-0.0355,-0.0222,-0.0013,1.0,1.0,1.0
+DQ261,"Does a longitudinal nail band contain lines of irregular colour, spacing or thickness?","Special sites (acral, face/LM, nail, mucosa)",0.0093,-0.0007,-0.0001,1.0,1.0,1.0
+DQ262,"Does a longitudinal nail band have blurred, fading borders?","Special sites (acral, face/LM, nail, mucosa)",-0.0333,-0.0005,-0.0001,1.0,1.0,1.0
+DQ263,Is the nail plate split or notched?,"Special sites (acral, face/LM, nail, mucosa)",-0.0489,-0.0226,-0.0,1.0,1.0,1.0
+DQ264,Is onycholysis (nail plate separation) present?,"Special sites (acral, face/LM, nail, mucosa)",-0.146,-0.0006,-0.0004,1.0,1.0,1.0
+DQ265,Is bleeding visible at the nail unit?,"Special sites (acral, face/LM, nail, mucosa)",-0.1264,-0.0008,-0.0003,1.0,1.0,1.0
+DQ266,Is a longitudinal red band (erythronychia) present in the nail?,"Special sites (acral, face/LM, nail, mucosa)",-0.0576,-0.0006,-0.0001,1.0,1.0,1.0
+DQ267,"Is a pink, red or flesh-coloured papule present in the nail unit?","Special sites (acral, face/LM, nail, mucosa)",0.0333,-0.0043,0.0,1.0,1.0,1.0
+DQ268,Is a whitish or milky-red veil present on the nail bed?,"Special sites (acral, face/LM, nail, mucosa)",-0.0472,-0.0019,-0.0002,1.0,1.0,1.0
+DQ269,Is peripheral yellow-to-brown scaling or crust present on the nail bed?,"Special sites (acral, face/LM, nail, mucosa)",-0.0815,-0.0006,0.0,1.0,1.0,1.0
+DQ270,Are irregular vessels visible in the nail unit?,"Special sites (acral, face/LM, nail, mucosa)",0.0223,-0.002,-0.0001,1.0,1.0,1.0
+DQ271,Is a longitudinal nail band homogeneous in colour intensity?,"Special sites (acral, face/LM, nail, mucosa)",-0.1713,0.0043,0.0001,1.0,1.0,1.0
+DQ272,Is a longitudinal nail band light brown?,"Special sites (acral, face/LM, nail, mucosa)",-0.0326,-0.0009,0.0012,1.0,1.0,1.0
+DQ273,Are splinter haemorrhages visible under the nail?,"Special sites (acral, face/LM, nail, mucosa)",-0.0387,-0.0024,0.0006,1.0,1.0,1.0
+DQ274,Are nail pits visible?,"Special sites (acral, face/LM, nail, mucosa)",-0.0998,-0.0006,0.0,1.0,1.0,1.0
+DQ275,Is subungual hyperkeratosis visible?,"Special sites (acral, face/LM, nail, mucosa)",-0.0698,-0.0002,0.0007,1.0,1.0,1.0
+DQ276,Is hyperpigmentation of the proximal nail fold visible?,"Special sites (acral, face/LM, nail, mucosa)",-0.1088,-0.0027,-0.0007,1.0,1.0,1.0
+DQ277,Are several thin longitudinal grey bands present in one nail?,"Special sites (acral, face/LM, nail, mucosa)",-0.0092,-0.0014,-0.0025,1.0,1.0,1.0
+DQ278,Is the nail surface rough or shiny in a trachyonychia pattern?,"Special sites (acral, face/LM, nail, mucosa)",-0.0243,-0.0009,-0.001,1.0,1.0,1.0
+DQ279,Is the nail plate absent?,"Special sites (acral, face/LM, nail, mucosa)",-0.3757,-0.0042,-0.0031,0.3,1.0,1.0
+DQ280,Is pigmentation of the nail bed visible?,"Special sites (acral, face/LM, nail, mucosa)",-0.2206,0.031,-0.0004,1.0,1.0,1.0
+DQ281,Is the pigmented nail on a thumb?,"Special sites (acral, face/LM, nail, mucosa)",-0.0189,-0.0009,-0.0004,1.0,1.0,1.0
+DQ282,Is the entire nail plate pigmented (complete melanonychia)?,"Special sites (acral, face/LM, nail, mucosa)",-0.1351,-0.0022,0.0,1.0,1.0,1.0
+DQ283,Does the nail plate appear wavy?,"Special sites (acral, face/LM, nail, mucosa)",-0.2243,-0.0022,0.0006,0.9,1.0,1.0
+DQ284,Is linear erythema of the nail bed visible?,"Special sites (acral, face/LM, nail, mucosa)",-0.3707,-0.001,-0.0,0.8,1.0,1.0
+DQ285,Is brown-red discoloration visible proximal to an area of onycholysis?,"Special sites (acral, face/LM, nail, mucosa)",0.3788,-0.0009,-0.0001,0.5,1.0,1.0
+DQ286,Is the nail plate thickened?,"Special sites (acral, face/LM, nail, mucosa)",-0.1711,-0.0072,-0.0003,1.0,1.0,1.0
+DQ287,Is a negative pigment network present?,Spitz / pink / amelanotic & paediatric lesions,-0.093,-0.1057,-0.0009,1.0,1.0,1.0
+DQ288,Is a starburst pattern present?,Spitz / pink / amelanotic & paediatric lesions,0.0477,0.0104,-0.0031,0.8,1.0,1.0
+DQ289,Is a globular pattern with reticular depigmentation present?,Spitz / pink / amelanotic & paediatric lesions,0.1573,-0.0128,-0.0007,0.8,1.0,1.0
+DQ290,Are dotted vessels present together with an inverse (negative) network?,Spitz / pink / amelanotic & paediatric lesions,-0.1602,-0.1108,-0.0005,0.5,1.0,1.0
+DQ291,Is the lesion smaller than 1 cm and elevated?,Spitz / pink / amelanotic & paediatric lesions,-0.3274,-0.1229,-0.0038,0.9,1.0,1.0
+DQ292,Is pink to red the predominant colour of a small elevated lesion?,Spitz / pink / amelanotic & paediatric lesions,-0.0171,-0.056,0.0024,0.9,1.0,1.0
+DQ293,Is a small elevated lesion uniformly black?,Spitz / pink / amelanotic & paediatric lesions,0.0036,-0.096,0.0006,1.0,1.0,1.0
+DQ294,Do shiny white structures coincide with hypopigmented lines in the lesion?,Spitz / pink / amelanotic & paediatric lesions,0.0556,-0.0385,-0.0004,1.0,1.0,1.0
+DQ295,Are dotted vessels located within the brown globular portions of a negative network?,Spitz / pink / amelanotic & paediatric lesions,0.0527,0.0197,-0.0002,1.0,1.0,1.0
+DQ296,Is the lesion a light brown nodule?,Spitz / pink / amelanotic & paediatric lesions,0.0065,-0.053,-0.0009,1.0,1.0,1.0
+DQ297,Does a non-pigmented lesion show polymorphous vessels with milky-red areas?,Spitz / pink / amelanotic & paediatric lesions,0.0009,-0.0228,0.0,1.0,1.0,1.0
+DQ298,Are pigment remnants arranged in a cobblestone pattern?,Spitz / pink / amelanotic & paediatric lesions,0.107,-0.016,-0.0003,0.9,1.0,1.0
+DQ299,"Is the lesion a pinkish, soft papule or nodule?",Spitz / pink / amelanotic & paediatric lesions,-0.0726,-0.0373,-0.0016,0.9,1.0,1.0
+DQ300,Is the lesion flesh-coloured?,Spitz / pink / amelanotic & paediatric lesions,-0.1841,0.0539,-0.002,0.3,1.0,1.0
+DQ301,Does the lesion resemble a vascular lesion?,Spitz / pink / amelanotic & paediatric lesions,-0.074,-0.015,-0.0012,0.2,1.0,1.0
+DQ302,Is a polymorphous vascular pattern present?,Vascular structures in dermoscopy,0.104,-0.005,0.0,0.9,1.0,1.0
+DQ303,Are linear irregular vessels present?,Vascular structures in dermoscopy,0.2241,0.0715,0.001,0.7,0.9,1.0
+DQ304,Is a vascular blush (pink veil) present?,Vascular structures in dermoscopy,0.1594,0.014,0.0016,0.6,1.0,1.0
+DQ305,"Are vessels poorly focused (blurred), suggesting a deep location?",Vascular structures in dermoscopy,-0.2753,-0.1156,-0.0002,0.6,1.0,1.0
+DQ306,Are dotted vessels present?,Vascular structures in dermoscopy,0.4143,0.0148,-0.0003,0.3,1.0,1.0
+DQ307,Are glomerular vessels present?,Vascular structures in dermoscopy,-0.0619,-0.0507,-0.0002,1.0,1.0,1.0
+DQ308,Are hairpin vessels present?,Vascular structures in dermoscopy,0.1606,-0.0124,0.0001,1.0,1.0,1.0
+DQ309,Are comma-like vessels present?,Vascular structures in dermoscopy,0.3505,-0.0037,-0.0001,0.6,1.0,1.0
+DQ310,"Are dotted or glomerular vessels arranged in a curvilinear, necklace-like distribution?",Vascular structures in dermoscopy,0.1361,-0.0309,-0.0001,0.8,1.0,1.0
+DQ311,Does a pink nodule lack any pigmented structures?,Vascular structures in dermoscopy,0.0152,-0.0417,0.0008,1.0,1.0,1.0
+DQ312,Are vessels seen on a milky-red background?,Vascular structures in dermoscopy,0.3522,0.0145,0.0008,0.4,1.0,1.0
+DQ313,"Is there a thick linear vessel with multiple short, thin side branches (caterpillar-like)?",Vascular structures in dermoscopy,0.063,-0.0119,0.0002,0.9,1.0,1.0
+DQ314,Are red dots and globules present?,Vascular structures in dermoscopy,0.4327,-0.0234,0.0001,0.5,1.0,1.0
+DQ315,Are twisted red loops present?,Vascular structures in dermoscopy,0.0283,-0.0044,-0.0,0.9,1.0,1.0
+DQ316,Are punctate haemorrhages (haemorrhagic dots) present?,Vascular structures in dermoscopy,0.3413,-0.0049,0.0001,0.6,1.0,1.0
+DQ317,Are atypical non-branching red vessels present?,Vascular structures in dermoscopy,0.0334,-0.0069,0.0,1.0,1.0,1.0
+DQ318,Are tortuous arborizing vessels present?,Vascular structures in dermoscopy,0.2545,0.0117,0.0006,0.7,1.0,1.0
+DQ319,Are red structureless areas present?,Vascular structures in dermoscopy,0.1693,-0.0094,-0.0003,0.8,1.0,1.0
+DQ320,Are loop vessels present?,Vascular structures in dermoscopy,0.3217,-0.0057,-0.0006,0.7,1.0,1.0
+DQ321,Are only slightly blurred pink vessels of the normal dermal plexus visible?,Vascular structures in dermoscopy,-0.2432,0.0059,-0.0011,0.6,1.0,1.0
+DQ322,Are linear vessels overlying translucent orange structures?,Vascular structures in dermoscopy,0.1282,-0.0232,0.0025,0.8,1.0,1.0
+DQ323,Is the lesion located on the head or neck?,Anatomic site & body-region lesion density,-0.0771,-0.0802,0.0003,1.0,1.0,1.0
+DQ324,Is the lesion located on the trunk?,Anatomic site & body-region lesion density,0.0014,0.0384,0.0049,0.9,1.0,1.0
+DQ325,Is the lesion located on a limb?,Anatomic site & body-region lesion density,-0.0238,-0.0535,0.003,1.0,1.0,1.0
+DQ326,Is the lesion located on the back?,Anatomic site & body-region lesion density,-0.0304,-0.1252,-0.0004,1.0,1.0,1.0
+DQ327,Is the lesion located on the face?,Anatomic site & body-region lesion density,-0.2356,-0.0552,0.0009,0.9,1.0,1.0
+DQ328,Is the lesion located on a non-sun-exposed site?,Anatomic site & body-region lesion density,0.1116,0.3158,0.0014,1.0,0.6,1.0
+DQ329,Are nodules visible within a large congenital naevus?,Congenital nevi & vascular anomalies/birthmarks,0.1206,-0.0948,-0.0035,1.0,1.0,1.0
+DQ330,Is a nodule within a congenital naevus lighter or pinker than the surrounding naevus?,Congenital nevi & vascular anomalies/birthmarks,-0.0449,-0.0672,-0.0001,1.0,1.0,1.0
+DQ331,Is a nodule within a congenital naevus between 0.5 and 2 cm across?,Congenital nevi & vascular anomalies/birthmarks,0.0561,-0.056,-0.0,1.0,1.0,1.0
+DQ332,"Is there a soft, diffuse overgrowth within a congenital naevus?",Congenital nevi & vascular anomalies/birthmarks,0.1096,-0.0025,-0.0,0.9,1.0,1.0
+DQ333,Is a large congenital melanocytic naevus visible?,Congenital nevi & vascular anomalies/birthmarks,0.0489,0.1395,-0.0007,0.6,0.9,1.0
+DQ334,Is a large red plaque-type infantile haemangioma visible?,Congenital nevi & vascular anomalies/birthmarks,-0.286,-0.0422,-0.0002,0.9,1.0,1.0
+DQ335,Does a haemangioma follow a facial segment?,Congenital nevi & vascular anomalies/birthmarks,0.0104,-0.0172,-0.0004,1.0,1.0,1.0
+DQ336,Does a facial haemangioma involve both sides of the face?,Congenital nevi & vascular anomalies/birthmarks,-0.0073,-0.0071,0.0001,1.0,1.0,1.0
+DQ337,Does a haemangioma show a C-shaped pattern on the scalp?,Congenital nevi & vascular anomalies/birthmarks,0.0129,-0.0054,0.0001,1.0,1.0,1.0
+DQ338,Is whitening visible along the midline of a segmental haemangioma?,Congenital nevi & vascular anomalies/birthmarks,-0.0184,-0.0081,0.0,1.0,1.0,1.0
+DQ339,Does a facial haemangioma involve the mandibular (S3) segment?,Congenital nevi & vascular anomalies/birthmarks,-0.0401,-0.0034,-0.0002,1.0,1.0,1.0
+DQ340,Are the lesions confined to one side of the body?,"Distribution & configuration (Blaschko, segmental, mosaic)",-0.0901,-0.0443,-0.0012,1.0,1.0,1.0
+DQ341,Do the lesions follow the lines of Blaschko?,"Distribution & configuration (Blaschko, segmental, mosaic)",-0.0226,-0.0313,-0.0002,1.0,1.0,1.0
+DQ342,Do the lesions follow a dermatomal pattern?,"Distribution & configuration (Blaschko, segmental, mosaic)",-0.0239,-0.0131,0.0,1.0,1.0,1.0
+DQ343,Are the macules 1–5 mm in diameter?,"Distribution & configuration (Blaschko, segmental, mosaic)",0.0455,-0.0613,-0.0014,1.0,1.0,1.0
+DQ344,Are small brown macules arranged in clusters?,"Distribution & configuration (Blaschko, segmental, mosaic)",0.213,0.0604,-0.0041,0.6,0.8,1.0
+DQ345,Are café-au-lait macules visible?,"Distribution & configuration (Blaschko, segmental, mosaic)",-0.2615,-0.2196,0.0006,0.6,1.0,1.0
+DQ346,Are the pigmented macules non-hairy?,"Distribution & configuration (Blaschko, segmental, mosaic)",-0.1221,0.0603,0.0001,0.9,0.9,1.0
+DQ347,Are scaly papules and plaques arranged in a continuous or intermittent line?,"Distribution & configuration (Blaschko, segmental, mosaic)",-0.0366,-0.0261,0.0002,1.0,1.0,1.0
+DQ348,Is depigmentation confined to one body segment?,"Distribution & configuration (Blaschko, segmental, mosaic)",-0.0237,-0.0129,0.0002,1.0,1.0,1.0
+DQ349,Does the eruption stop sharply at the body midline?,"Distribution & configuration (Blaschko, segmental, mosaic)",-0.172,-0.0316,0.0002,1.0,1.0,1.0
+DQ350,Are lesions arranged in a V-shape on the back?,"Distribution & configuration (Blaschko, segmental, mosaic)",0.0804,-0.0044,-0.0,1.0,1.0,1.0
+DQ351,Is erythema present across the sun-exposed skin field?,Field cancerization & actinic damage scoring,0.4111,0.2861,0.0001,0.5,0.7,1.0
+DQ352,Are actinic keratoses thick (raised and hyperkeratotic)?,Field cancerization & actinic damage scoring,-0.1386,-0.1174,0.0008,1.0,1.0,1.0
+DQ353,Are scaly plaques present on sun-exposed skin?,Field cancerization & actinic damage scoring,0.1342,-0.0338,0.0041,0.8,1.0,1.0
+DQ354,Are pigmented scaly papules present on sun-exposed skin?,Field cancerization & actinic damage scoring,0.3501,0.0617,0.0002,0.5,0.9,1.0
+DQ355,Are scaly lesions present on the ear helix?,Field cancerization & actinic damage scoring,-0.0244,-0.0511,-0.0,1.0,1.0,1.0
+DQ356,Are scaly lesions present on the dorsum of the hand?,Field cancerization & actinic damage scoring,0.0145,-0.0191,0.0001,1.0,1.0,1.0
+DQ357,Are scaly lesions present on the scalp?,Field cancerization & actinic damage scoring,-0.0199,-0.0153,0.0002,1.0,1.0,1.0
+DQ358,Do actinic keratoses cover more than 30% of the visible area?,Field cancerization & actinic damage scoring,0.0092,-0.2606,0.0,1.0,1.0,1.0
+DQ359,Are signs of chronic sun damage visible around the lesions?,Field cancerization & actinic damage scoring,0.2425,0.2338,-0.0002,0.6,0.7,1.0
+DQ360,Are multiple actinic keratoses visible in one field?,Field cancerization & actinic damage scoring,0.2489,-0.1389,-0.0001,0.6,0.9,1.0
+DQ361,Are multiple lesions from the same patient visible in the image?,Lesion-body context & patient-level AI,0.1519,0.066,0.0002,0.8,1.0,1.0
+DQ362,Is the image a view of a 3D total-body avatar?,Lesion-body context & patient-level AI,-0.0002,-0.2022,0.0018,1.0,1.0,1.0
+DQ363,Is the skin immediately surrounding the lesion erythematous?,Lesion-body context & patient-level AI,0.2988,0.1956,0.0162,0.7,0.7,1.0
+DQ364,Does the image show more than 50 common naevi?,Nevus count & atypical mole phenotype,-0.2192,-0.2258,-0.0014,1.0,1.0,1.0
+DQ365,Is at least one clinically atypical naevus visible in the image?,Nevus count & atypical mole phenotype,0.285,0.0023,0.0079,0.7,1.0,1.0
+DQ366,Is a naevus of 5 mm or more with irregular pigmentation or a hazy border visible?,Nevus count & atypical mole phenotype,0.1815,-0.0099,0.0174,0.7,1.0,1.0
+DQ367,Is a blue naevus visible in the image?,Nevus count & atypical mole phenotype,-0.1724,-0.0481,0.0036,1.0,1.0,1.0
+DQ368,Is a congenital-appearing naevus visible in the image?,Nevus count & atypical mole phenotype,0.1563,-0.0161,0.0019,0.6,1.0,1.0
+DQ369,Does the image show more than 25 naevi of at least 2 mm?,Nevus count & atypical mole phenotype,-0.055,-0.0837,0.0005,1.0,1.0,1.0
+DQ370,Does the image show any naevus of at least 5 mm?,Nevus count & atypical mole phenotype,0.2467,-0.0715,0.0001,0.6,1.0,1.0
+DQ371,Are most naevi in the image located on sun-exposed skin?,Nevus count & atypical mole phenotype,-0.1978,-0.073,-0.0002,0.6,1.0,1.0
+DQ372,Is fair or red hair visible in the image?,Nevus count & atypical mole phenotype,-0.2237,-0.0628,0.0,0.8,1.0,1.0
+DQ373,Is there a single darker or larger 'ugly duckling' lesion among the naevi visible?,Nevus phenotypes / signature nevus / ugly duckling,0.3263,0.0831,-0.0001,0.5,0.8,1.0
+DQ374,Do the naevi visible in the image share a predominantly reticular pattern?,Nevus phenotypes / signature nevus / ugly duckling,-0.1273,-0.0021,-0.0009,0.9,0.9,1.0
+DQ375,Do the naevi visible in the image share a predominantly globular pattern?,Nevus phenotypes / signature nevus / ugly duckling,-0.2223,-0.3833,-0.0026,0.5,0.5,1.0
+DQ376,Do the naevi in the image show an eclipse pattern (tan centre with a brown rim)?,Nevus phenotypes / signature nevus / ugly duckling,-0.002,-0.159,-0.0015,1.0,1.0,1.0
+DQ377,Is a ring of depigmentation (halo) present around a naevus?,Nevus phenotypes / signature nevus / ugly duckling,-0.2072,-0.087,-0.0009,1.0,1.0,1.0
+DQ378,Are fine wrinkles visible?,Photoaging scales & image grading,0.1737,-0.0068,-0.0012,0.7,1.0,1.0
+DQ379,Are deep wrinkles visible?,Photoaging scales & image grading,-0.303,-0.1284,-0.0002,1.0,1.0,1.0
+DQ380,"Is xerosis (dry, rough skin) visible?",Photoaging scales & image grading,0.1979,0.1604,-0.0003,0.7,1.0,1.0
+DQ381,Does the skin appear thin?,Photoaging scales & image grading,0.0855,-0.0094,-0.0017,1.0,1.0,1.0
+DQ382,Does the skin appear thick and leathery?,Photoaging scales & image grading,-0.8658,-0.0914,-0.0003,0.0,1.0,1.0
+DQ383,Is dyspigmentation visible?,Photoaging scales & image grading,0.7544,0.2168,-0.0017,0.1,0.7,1.0
+DQ384,Are freckles visible?,Photoaging scales & image grading,0.2412,-0.0432,-0.0026,0.6,1.0,1.0
+DQ385,Is melasma visible?,Photoaging scales & image grading,-0.0785,-0.0051,-0.0003,1.0,1.0,1.0
+DQ386,"Is citrine (yellowish, thickened) skin visible?",Photoaging scales & image grading,-0.0175,-0.0118,-0.0001,1.0,1.0,1.0
+DQ387,Is senile purpura visible?,Photoaging scales & image grading,0.0571,-0.0087,-0.0001,1.0,1.0,1.0
+DQ388,Are pseudostellate scars visible?,Photoaging scales & image grading,0.0089,-0.0151,-0.0001,0.9,1.0,1.0
+DQ389,Are small keratotic papules along the hand margins (acrokeratoelastoidosis-like) visible?,Photoaging scales & image grading,0.0812,-0.0127,-0.0001,1.0,1.0,1.0
+DQ390,Are solar lentigines visible?,Photoaging scales & image grading,0.2821,0.021,-0.0002,0.5,1.0,1.0
+DQ391,Are acrochordons (skin tags) visible?,Photoaging scales & image grading,-0.1264,-0.0043,-0.0,1.0,1.0,1.0
+DQ392,Is grey or white hair visible in the image?,Photoaging scales & image grading,0.0545,-0.0421,-0.0001,0.6,1.0,1.0
+DQ393,Does the skin show loss of elasticity (sagging)?,Photoaging scales & image grading,-0.1346,-0.0643,-0.0002,1.0,1.0,1.0
+DQ394,Is the image a lesion crop extracted from a total-body photograph?,Total body photography & 3D TBP,-0.1237,0.1401,0.002,0.5,1.0,1.0
+DQ395,Is the image resolution and detail comparable to a smartphone photograph?,Total body photography & 3D TBP,-0.1258,-0.0245,0.0015,1.0,1.0,1.0
+DQ396,Was the image taken with cross-polarized lighting?,Total body photography & 3D TBP,-0.0643,-0.0833,0.0001,1.0,1.0,1.0
+DQ397,Is the blue-yellow (b*) contrast between lesion and surrounding skin low?,Total body photography & 3D TBP,-0.1802,-0.1087,-0.0003,0.8,1.0,1.0
+DQ398,Is colour variance inside the lesion high?,Total body photography & 3D TBP,0.2994,0.4635,0.0034,0.5,0.5,1.0
+DQ399,Is colour asymmetry within the lesion high?,Total body photography & 3D TBP,-0.2037,0.4728,0.0009,0.7,0.5,1.0
+DQ400,Is the lesion's minor-axis diameter greater than 6 mm?,Total body photography & 3D TBP,0.0925,0.1398,0.0266,1.0,0.9,1.0
+DQ401,Is the lesion border perimeter long relative to the lesion area?,Total body photography & 3D TBP,-0.0532,0.2778,0.0071,1.0,0.8,1.0
+DQ402,"Is the lesion unobstructed by hair, clothing or body folds?",Total body photography & 3D TBP,-0.2216,0.0554,0.0013,0.2,1.0,1.0
+DQ403,Does the image field of view include surrounding skin beyond the lesion?,Total body photography & 3D TBP,0.3386,0.1331,0.0071,0.3,0.9,1.0
+DQ404,Is a colour calibration chart visible in the image?,Colour constancy & acquisition standards,-0.4566,-0.6215,0.0066,0.5,0.3,1.0
+DQ405,Is a grey reference card visible in the image?,Colour constancy & acquisition standards,-0.2001,-0.699,-0.0018,1.0,0.3,1.0
+DQ406,"Is there a visible colour cast (e.g., blue, yellow or green tint) across the image?",Colour constancy & acquisition standards,-0.6083,-0.4455,0.0,0.1,0.3,1.0
+DQ407,Is the dermatoscope illumination visibly uneven across the field?,Colour constancy & acquisition standards,-0.2184,-0.0867,0.0014,0.5,0.9,1.0
+DQ408,"Is the image visibly distorted (e.g., barrel distortion at the edges)?",Colour constancy & acquisition standards,-0.0552,-0.1071,0.0005,1.0,1.0,1.0
+DQ409,Does the image show colour and lighting variation typical of a multi-source dataset?,Colour constancy & acquisition standards,0.3293,-0.2638,0.0015,0.8,1.0,1.0
+DQ410,"Does the image contain visible demographic cues (e.g., age-related skin changes) that a model could exploit?","Domain shift, OOD & generalisation",-0.857,-0.8991,-0.0006,0.0,0.0,1.0
+DQ411,Does the image come from a non-specialist (community or smartphone) setting?,"Domain shift, OOD & generalisation",-0.1681,0.0773,0.0023,0.7,0.2,1.0
+DQ412,Is the skin in the image dark (a group where diagnostic accuracy is lower)?,Fairness & skin-tone bias,-0.0907,-0.1084,0.1735,1.0,1.0,1.0
+DQ413,Does the image show an uncommon disease on dark skin?,Fairness & skin-tone bias,-0.0563,-0.0479,0.0091,1.0,1.0,1.0
+DQ414,Does the image resemble a textbook illustration rather than a clinical photograph?,Fairness & skin-tone bias,-0.1934,-0.1133,-0.0,1.0,1.0,1.0
+DQ415,Is the lesion too large to fit within the dermatoscope aperture?,Public datasets & challenges,-0.0846,0.0232,0.0016,0.9,1.0,1.0
+DQ416,Is the lesion located on a nail or mucosa?,Public datasets & challenges,-0.036,-0.1732,-0.0022,1.0,1.0,1.0
+DQ417,Is the lesion hypopigmented relative to the surrounding skin?,Public datasets & challenges,-0.0599,-0.0369,0.0035,1.0,1.0,1.0
+DQ418,Is the lesion border impossible to delineate (not segmentable)?,Public datasets & challenges,0.0216,0.0191,0.0212,1.0,1.0,1.0
+DQ419,Is the image a dermoscopic (dermatoscopic) image?,Public datasets & challenges,0.0069,0.0325,-0.0282,1.0,0.9,1.0
+DQ420,Is the lesion clearly separable from the background for segmentation?,Public datasets & challenges,-0.1578,0.0419,-0.0033,0.1,1.0,1.0
+DQ421,"Is the melanocytic lesion flat and subtle, without obvious melanoma features?",Public datasets & challenges,0.0122,0.1199,0.0031,0.8,0.9,1.0
+DQ422,Was the image taken with polarized dermoscopy?,Public datasets & challenges,-0.0181,-0.1045,0.0002,1.0,1.0,1.0
+DQ423,Is the lesion border low in contrast with the surrounding skin?,Segmentation & handcrafted ABCD features,0.1048,0.1182,-0.0008,0.6,1.0,1.0
+DQ424,Is the background skin texture prominent?,Segmentation & handcrafted ABCD features,0.3761,0.5289,0.0018,0.1,0.3,1.0
+DQ425,Is the lesion colour distinct from the surrounding skin colour?,Segmentation & handcrafted ABCD features,0.6043,0.5338,0.0018,0.2,0.3,1.0
+DQ426,Is background noise present around the lesion region of interest?,Segmentation & handcrafted ABCD features,0.0487,0.1491,0.0004,1.0,0.9,1.0
+DQ427,Does the lesion occupy more than half of the image area?,Segmentation & handcrafted ABCD features,0.0522,-0.056,0.0009,0.8,1.0,1.0
+DQ428,Does the lesion bounding box cover most of the image?,Segmentation & handcrafted ABCD features,-0.1306,-0.1368,0.0015,0.7,1.0,1.0
+DQ429,Is the lesion diameter large relative to the image width?,Segmentation & handcrafted ABCD features,-0.1215,-0.0518,-0.0001,1.0,1.0,1.0
+DQ430,Is the lesion outline approximately circular?,Segmentation & handcrafted ABCD features,0.1414,0.0008,-0.0,0.6,0.9,1.0
+DQ431,Is the lesion more than twice as long as it is wide?,Segmentation & handcrafted ABCD features,-0.136,-0.103,-0.0002,1.0,1.0,1.0
+DQ432,Does the lesion border contain notches or indentations?,Segmentation & handcrafted ABCD features,-0.1009,-0.0284,0.0016,1.0,1.0,1.0
+DQ433,Does the lesion consist of more than one separate pigmented component?,Segmentation & handcrafted ABCD features,0.127,-0.0667,0.0015,0.8,1.0,1.0
+DQ434,Is the lesion centred in the image?,Segmentation & handcrafted ABCD features,0.0019,0.0031,-0.0005,0.9,1.0,1.0
+DQ435,Does the lesion touch the image edge?,Segmentation & handcrafted ABCD features,-0.2662,0.0231,0.0015,0.9,1.0,1.0
+DQ436,Is the lesion poorly framed in the image?,Smartphone / consumer apps & teledermatology,-0.1811,0.1105,0.0002,0.4,1.0,1.0
+DQ437,Is the lighting poor?,Smartphone / consumer apps & teledermatology,-0.1496,-0.047,-0.0,0.9,1.0,1.0
+DQ438,Is the image blurry?,Smartphone / consumer apps & teledermatology,-0.0563,-0.021,0.0011,1.0,1.0,1.0
+DQ439,Is the image resolution too low to resolve lesion detail?,Smartphone / consumer apps & teledermatology,-0.0425,-0.0379,-0.0003,1.0,1.0,1.0
+DQ440,Was the image taken from too far away?,Smartphone / consumer apps & teledermatology,-0.0502,-0.0083,0.0002,1.0,1.0,1.0
+DQ441,Does the image contain no visible skin?,Smartphone / consumer apps & teledermatology,-0.0226,-0.0251,0.0005,1.0,1.0,1.0
+DQ442,Is only the background blurred while the lesion is in focus?,Smartphone / consumer apps & teledermatology,-0.1485,-0.0094,0.0003,1.0,1.0,1.0
+DQ443,Was the image taken by the patient with a consumer app (non-standard framing and lighting)?,Smartphone / consumer apps & teledermatology,-0.1505,-0.0639,0.0017,0.9,1.0,1.0
+DQ444,Is there a single isolated pixel of unusual colour in the image?,Adversarial / pixel perturbation attacks,-0.0018,-0.0284,-0.0008,1.0,1.0,1.0
+DQ445,Is visible digital noise present across the image?,Adversarial / pixel perturbation attacks,-0.0171,-0.0131,-0.0001,0.9,1.0,1.0
+DQ446,Is there a source tag or watermark in the image that could act as a 'Clever Hans' cue?,Auditing classifiers / Clever Hans,-0.0789,-0.7345,-0.0002,1.0,0.0,1.0
+DQ447,Is the presence of a blue-whitish veil unambiguous in the image?,Concept-based explanations,-0.0229,-0.0507,-0.0016,1.0,0.9,1.0
+DQ448,Is the presence of irregular streaks unambiguous in the image?,Concept-based explanations,-0.0156,0.0781,0.0004,1.0,0.7,1.0
+DQ449,"Can the lesion be described by plain clinical concepts such as asymmetry, irregular border or multiple colours?",Concept-based explanations,0.0697,0.2539,0.3632,1.0,0.6,0.6
+DQ450,Does the lesion contain a stripe-like (linear) texture?,Concept-based explanations,-0.2551,-0.2195,0.0097,0.5,0.9,1.0
+DQ451,Is the lesion composed of a few large regions of uniform colour?,"Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)",-0.0388,-0.0451,0.0059,0.9,1.0,1.0
+DQ452,Is the lesion small enough that a coarse attention map could not localise it within the image?,"Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)",-0.0759,-0.0391,0.002,1.0,1.0,1.0
+DQ453,Is the lesion's appearance dominated by one compact region?,"Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)",0.2133,0.2196,0.0015,0.7,0.6,1.0
+DQ454,Is the lesion's darkest region located off-centre?,"Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)",0.4138,0.2548,0.0017,0.4,0.7,1.0
+DQ455,Are strong edges present outside the lesion?,"Saliency method validity (sanity checks, evaluation)",-0.1901,-0.2842,-0.0013,0.7,0.6,1.0
+DQ456,Are dark corners (vignetting) present?,"Shortcut / artefact learning (markings, rulers, hair)",-0.0378,-0.1439,-0.0005,1.0,1.0,1.0
+DQ457,Is a gel border visible?,"Shortcut / artefact learning (markings, rulers, hair)",0.203,0.0764,-0.0003,0.6,0.8,1.0
+DQ458,Are gel or air bubbles present?,"Shortcut / artefact learning (markings, rulers, hair)",0.3128,0.3522,-0.003,0.4,0.5,1.0
+DQ459,Is a ruler visible?,"Shortcut / artefact learning (markings, rulers, hair)",0.0605,0.1695,-0.0057,0.0,0.3,1.0
+DQ460,Are ink markings or staining present?,"Shortcut / artefact learning (markings, rulers, hair)",0.2171,-0.0438,-0.0001,0.8,1.0,1.0
+DQ461,Is an adhesive patch or sticker visible?,"Shortcut / artefact learning (markings, rulers, hair)",-0.1702,-0.0263,-0.0,0.7,1.0,1.0
+DQ462,Is hair present?,"Shortcut / artefact learning (markings, rulers, hair)",0.5892,0.6594,0.0024,0.0,0.2,1.0
+DQ463,Does hair obscure part of the lesion?,"Shortcut / artefact learning (markings, rulers, hair)",0.1938,0.0547,0.0028,0.5,0.8,1.0
+DQ464,Are many thin hairs crossing the lesion?,"Shortcut / artefact learning (markings, rulers, hair)",-0.1548,0.0801,-0.0026,0.8,1.0,1.0
+DQ465,Do ink markings touch or overlap the lesion?,"Shortcut / artefact learning (markings, rulers, hair)",-0.0532,-0.0372,-0.0002,1.0,1.0,1.0
+DQ466,Does a ruler overlap the lesion?,"Shortcut / artefact learning (markings, rulers, hair)",0.0999,-0.0209,-0.0005,0.8,1.0,1.0
+DQ467,Does a dark-corner vignette cut into the lesion?,"Shortcut / artefact learning (markings, rulers, hair)",0.0495,-0.0524,-0.0001,1.0,1.0,1.0
+DQ468,Do the image borders contain non-lesion content such as frames or text?,"Shortcut / artefact learning (markings, rulers, hair)",-0.2649,-0.2219,-0.0008,0.9,0.8,1.0
+DQ469,Are two or more different artefact types present in the image?,"Shortcut / artefact learning (markings, rulers, hair)",0.2918,0.2857,-0.0012,0.4,0.7,1.0
+DQ470,Does the image show signs of digital hair removal (smudged streaks)?,"Shortcut / artefact learning (markings, rulers, hair)",-0.1292,-0.0784,-0.0009,0.8,1.0,1.0
+DQ471,"Is the lesion redder than the surrounding skin, suggesting higher haemoglobin content?",Melanin/haemoglobin decomposition of RGB images,-0.0243,-0.0021,-0.0008,0.9,1.0,1.0
+DQ472,Does the lesion look like a vascular neoplasm (uniform red to purple colour)?,Melanin/haemoglobin decomposition of RGB images,-0.0178,-0.0636,-0.0,1.0,1.0,1.0
+DQ473,"Is the lesion's pigmentation distribution uneven, with patchy dark and light areas?",Melanin/haemoglobin decomposition of RGB images,0.688,0.5798,0.0455,0.1,0.2,1.0
+DQ474,Does the lesion contain both brown (melanin-like) and red (blood-like) areas?,Melanin/haemoglobin decomposition of RGB images,0.5849,0.6319,0.0077,0.3,0.2,1.0
+DQ475,"Does the lesion appear blue-grey, consistent with pigment located deep in the dermis?",Monte Carlo light transport in skin,-0.0682,-0.0752,-0.0003,0.9,1.0,1.0
+DQ476,Does lesion contrast increase when the RGB image is converted to simulated narrow-band images?,Multispectral / hyperspectral lesion imaging,0.3072,0.1057,-0.0002,0.8,1.0,1.0
+DQ477,Does the skin show a yellowish tint consistent with carotene content?,Skin optical properties & chromophores,-0.3876,-0.5714,-0.0008,0.6,0.3,1.0
+DQ478,Does the lesion appear darker primarily because of melanin (brown-black) rather than blood (red-purple)?,Skin optical properties & chromophores,-0.0678,0.2791,-0.0001,1.0,0.7,1.0
+DQ479,"Does the lesion look bluish-purple, suggesting low blood oxygen saturation?",Skin optical properties & chromophores,-0.0043,-0.0312,0.0083,1.0,0.9,1.0
+DQ480,Is epidermal pigmentation visibly heterogeneous across the normal skin?,Skin optical properties & chromophores,0.2853,-0.2471,0.0005,0.5,0.3,1.0
+DQ481,"Does the image show skin with visible features of obesity (e.g., striae, stretched skin)?",Skin optical properties & chromophores,-0.1807,-0.1874,-0.0002,1.0,1.0,1.0
+DQ482,Does a thick keratin layer make the lesion surface look white or opaque?,Skin optical properties & chromophores,-0.1064,-0.2292,-0.0002,0.9,0.9,1.0
+DQ483,Is a network of skin furrows and ridges visible on the surrounding skin?,Skin surface texture & microrelief,0.0244,-0.0419,-0.0027,0.7,1.0,1.0
+DQ484,Does the skin surface appear rough?,Skin surface texture & microrelief,0.2157,0.1676,-0.0004,0.2,0.9,1.0
+DQ485,Does the image show the microrelief of the dorsal hand?,Skin surface texture & microrelief,-0.0874,-0.1373,-0.0,1.0,1.0,1.0
+DQ486,Are wrinkles closely spaced (short wrinkle pitch)?,Skin surface texture & microrelief,-0.1082,-0.1057,-0.0014,1.0,1.0,1.0
+DQ487,Are skin pores individually visible?,Skin surface texture & microrelief,-0.2936,-0.0771,0.0,0.8,1.0,1.0
+DQ488,Are red areas (diffuse vascular redness) visible on the facial skin?,Skin surface texture & microrelief,0.0527,-0.033,-0.0001,0.9,1.0,1.0
+DQ489,Is facial skin texture uneven?,Skin surface texture & microrelief,0.4675,0.072,0.0011,0.4,0.9,1.0
+DQ490,Are skin markings (furrows) lost over the lesion compared with the surrounding skin?,Skin surface texture & microrelief,-0.3135,0.0736,0.0003,0.2,0.9,1.0
+DQ491,Does the image appear to be synthetic (GAN-generated) rather than a real photograph?,Synthetic data: 3D rendering & generative models,-0.1714,-0.0422,-0.0001,1.0,1.0,1.0
+DQ492,"Does the image show artefacts typical of generative models (repetitive textures, unnatural edges)?",Synthetic data: 3D rendering & generative models,-0.1797,-0.0866,0.0,1.0,1.0,1.0
+DQ493,Is the grey-level co-occurrence contrast of the lesion higher than that of the surrounding skin?,Texture descriptors & radiomics for lesions,-0.1022,0.0,0.0,0.5,1.0,1.0
+DQ494,Is the lesion texture less homogeneous than the surrounding skin texture?,Texture descriptors & radiomics for lesions,-0.1267,0.4777,0.0002,0.9,0.3,1.0
+DQ495,Is the intensity variance inside the lesion higher than in the surrounding skin?,Texture descriptors & radiomics for lesions,-0.0972,0.2584,-0.001,1.0,0.8,1.0
+DQ496,Does the lesion contain many distinctive keypoints (corners and blobs)?,Texture descriptors & radiomics for lesions,-0.1324,-0.2609,0.0001,1.0,1.0,1.0
+DQ497,Does lesion texture differ markedly between the red and blue colour channels?,Texture descriptors & radiomics for lesions,-0.0469,-0.0944,-0.0,1.0,1.0,1.0
+DQ498,Is lesion texture visible in a greyscale version of the image?,Texture descriptors & radiomics for lesions,-0.014,0.5795,-0.0009,1.0,0.0,1.0
+DQ499,"Does the lesion show a periodic, repeating texture?",Texture descriptors & radiomics for lesions,-0.1872,-0.1266,-0.0008,1.0,1.0,1.0
+DQ500,Is the lesion texture coarse rather than fine?,Texture descriptors & radiomics for lesions,-0.2886,0.0938,-0.0024,0.4,0.2,1.0

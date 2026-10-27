@@ -1,0 +1,108 @@
+# Base config for the QA-Emb pipeline. Experiments in conf/exp/<group>/<ID>.yaml override
+# one group each; CLI dotlist overrides (key=value) are applied last.
+seed: 0
+stage: all
+tag: ""
+dry_run: false
+
+paths:
+  out_root: outputs/qaemb        # content-addressed stage dirs: <out_root>/<stage>/<hash>/
+  mlflow_uri: sqlite:///outputs/mlflow.db
+  mlflow_artifacts: outputs/mlruns
+  experiments_log: experiments_log.md
+
+data:
+  name: beta_10class_100each
+  root: "data/train_10class_100each - beta"
+  manifest: manifest.csv
+  path_column: file
+  id_column: isic_id
+  image_ids: null                # optional explicit subset (list of ids)
+  provenance:
+    source: "ISIC Archive images; 10-class beta subset, 100 per class (train_10class_100each - beta)"
+    preprocessing: "Supplied by a colleague; no transform documented. Files appear to be at native ISIC resolution (962x674 to 6721x4521 in the smoke set)."
+    version: beta
+    pipeline_transform: "Aspect-preserving resize to the answerer pixel budget (S1). No other edits."
+
+label:
+  column: label_2c
+  positive: [malignant]
+  negative: [benign]
+  indeterminate_values: [""]     # raw values treated as indeterminate (empty = NaN in label_2c)
+  # holdout: keep through answering/embedding with label -1; excluded from fitting and metrics, scored separately
+  # drop: remove at S0 | benign / malignant: map to 0 / 1
+  indeterminate: holdout
+
+split:
+  strategy: grouped              # grouped | loo
+  group_column: lesion_id        # no patient ID available; lesion_id is the grouping proxy
+  fractions: {train: 0.70, val: 0.15, test: 0.15}
+
+questions:
+  csv: "2026-10-15 Generated Questions/DermQs_Source-1015FT_Prompt-C_N-500_Negated.csv"
+  annotations: "2026-10-15 Generated Questions/DermQs_Source-1015FT_Prompt-C_N-500_annotations.csv"  # scope/kind by Question ID
+  id_column: question id         # matched case-insensitively
+  text_column: question
+  original_column: original      # 1 = question as written, 0 = negated complement (same Question ID)
+  complements: true              # false = ask originals only
+  scope: null                    # e.g. [local]; null = all
+  ids: null                      # explicit subset of question IDs
+  selected_from: null            # path to a W1 selected_questions.csv (Q2_selected)
+
+prepare:
+  max_pixels: 401408             # 512 vision tokens (28x28 px each) for the whole image
+  patch_max_pixels: 401408       # crops are resized to this budget, so the VLM sees a zoom
+  min_pixels: 3136
+
+grid:
+  G: 1                           # 1 = whole image only
+  overlap: 0.0                   # 0.5 = 50% overlap (stride = half a cell)
+  include_whole: true            # patch runs also answer the whole image (patch_id -1)
+
+answerer:
+  id: qwen2.5-vl-7b
+  checkpoint: Qwen/Qwen2.5-VL-7B-Instruct
+  revision: main                 # resolved to a commit hash at run time
+  dtype: float16                 # Turing GPU: no native bf16
+  attn: sdpa                     # sdpa | eager (eager needed for relevance maps)
+  device: cuda
+  yes_tokens: ["Yes", "yes", "YES"]
+  no_tokens: ["No", "no", "NO"]
+
+answer:
+  mode: stateless                # stateless | topic (one prompt per original x topic) | all (one prompt per original)
+  shuffle: false                 # topic/all: shuffle question order inside each prompt (order-effect test)
+  compute_batch: 32              # stateless: independent question sequences per forward pass
+  shard_questions: 100           # checkpoint granularity within a unit
+  threshold: 0.5                 # answer_bin = p_yes >= threshold (applied at S4)
+  adj_threshold: 0.0             # answer_adj_bin = p_adj >= adj_threshold
+  prompts:
+    whole: stateless_whole_v1
+    patch: stateless_patch_v1
+    batched_whole: batched_whole_v1
+    batched_patch: batched_patch_v1
+
+feat:
+  source: adj                    # adj (p_adj = P(yes|original) - P(yes|complement)) | orig | neg
+  kind: prob                     # prob | bin (adj: p_adj >= answer.adj_threshold; orig/neg: p_yes >= answer.threshold)
+
+model:
+  name: null                     # W0 | W1 | P0 | P1 | P2 | P3
+  exclude_kinds: [artefact]      # audit features: dropped from the main classifier
+  exclude_scopes: []
+  sens_at_spec: 0.90
+  ece_bins: 10
+  cv_folds: 5
+  Cs: [0.001, 0.01, 0.1, 1.0, 10.0]
+  # W1
+  l1_ratios: [0.1, 0.5, 0.9]
+  stability_rounds: 50
+  stability_threshold: 0.6
+  # P models
+  aggregator: mean               # mean | max | topk | noisyor | attention
+  topk: 2
+  position_specific: false       # P3
+  epochs: 200
+  lr: 0.01
+  weight_decay: 0.01
+  patience: 30

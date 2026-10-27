@@ -1,0 +1,501 @@
+Question ID,scope,kind,annotation_note
+DQ001,metadata,clinical,
+DQ002,global,clinical,
+DQ003,global,clinical,
+DQ004,global,clinical,
+DQ005,global,clinical,
+DQ006,metadata,clinical,Absolute size (5 mm) needs scale; pigmentation part is global.
+DQ007,global,clinical,Elevation hard to judge in 2D dermoscopy; may need palpation.
+DQ008,global,clinical,Nodularity is lesion-level; elevation hard to judge in dermoscopy.
+DQ009,global,clinical,
+DQ010,global,clinical,
+DQ011,local,clinical,
+DQ012,local,clinical,
+DQ013,local,clinical,
+DQ014,local,clinical,
+DQ015,local,clinical,
+DQ016,local,clinical,
+DQ017,local,clinical,
+DQ018,global,clinical,
+DQ019,global,clinical,
+DQ020,global,clinical,
+DQ021,local,clinical,
+DQ022,global,clinical,
+DQ023,local,clinical,
+DQ024,local,clinical,
+DQ025,local,clinical,
+DQ026,local,clinical,
+DQ027,global,clinical,Patchiness of network is judged across lesion; could be local.
+DQ028,global,clinical,Composite score over several criteria; not a single feature.
+DQ029,local,clinical,Composite: any major criterion; each is locally detectable.
+DQ030,global,clinical,
+DQ031,local,clinical,
+DQ032,local,clinical,Network irregularity can be seen regionally; arguably global.
+DQ033,local,clinical,
+DQ034,local,clinical,
+DQ035,local,clinical,
+DQ036,global,clinical,Flatness hard to judge in dermoscopy.
+DQ037,global,clinical,
+DQ038,global,clinical,
+DQ039,global,clinical,
+DQ040,global,clinical,
+DQ041,local,clinical,
+DQ042,local,clinical,
+DQ043,local,clinical,
+DQ044,local,clinical,
+DQ045,local,clinical,
+DQ046,global,clinical,Peripheral/linear arrangement needs lesion-level layout.
+DQ047,local,clinical,
+DQ048,local,clinical,
+DQ049,local,clinical,
+DQ050,local,clinical,
+DQ051,local,clinical,
+DQ052,local,clinical,
+DQ053,local,clinical,
+DQ054,local,clinical,
+DQ055,local,clinical,
+DQ056,local,clinical,
+DQ057,local,clinical,
+DQ058,local,clinical,
+DQ059,local,clinical,
+DQ060,global,clinical,
+DQ061,local,clinical,
+DQ062,global,clinical,
+DQ063,local,clinical,
+DQ064,local,clinical,
+DQ065,local,clinical,
+DQ066,global,clinical,
+DQ067,local,clinical,
+DQ068,local,clinical,
+DQ069,local,clinical,
+DQ070,local,clinical,
+DQ071,local,clinical,
+DQ072,local,clinical,
+DQ073,local,clinical,
+DQ074,local,clinical,
+DQ075,local,clinical,
+DQ076,local,clinical,
+DQ077,local,clinical,
+DQ078,local,clinical,
+DQ079,local,clinical,
+DQ080,local,clinical,
+DQ081,local,clinical,
+DQ082,local,clinical,
+DQ083,local,clinical,"Interpretive phrasing (""suggest deep vessels""); answerable only as presence."
+DQ084,local,clinical,Papules are raised; elevation hard to judge in dermoscopy.
+DQ085,local,clinical,
+DQ086,local,clinical,
+DQ087,local,clinical,
+DQ088,local,clinical,Abscess mostly diagnosed by palpation/fluctuance; may be metadata.
+DQ089,global,clinical,Rash distribution; not suited to single-lesion dermoscopy.
+DQ090,global,clinical,Plaque vs papule depends on size/elevation; partly metadata.
+DQ091,global,clinical,Flatness hard to judge in dermoscopy.
+DQ092,global,clinical,Nodule vs papule depends on size/depth; partly metadata.
+DQ093,global,clinical,
+DQ094,local,clinical,
+DQ095,global,clinical,
+DQ096,local,clinical,
+DQ097,global,clinical,Explicit absence check needs whole lesion; presence would be local.
+DQ098,global,clinical,
+DQ099,global,clinical,
+DQ100,global,clinical,
+DQ101,local,clinical,"Lesion-level morphology, but verrucous surface visible in a patch."
+DQ102,local,clinical,
+DQ103,local,clinical,
+DQ104,local,clinical,
+DQ105,local,clinical,
+DQ106,local,clinical,
+DQ107,local,clinical,
+DQ108,global,clinical,Annular arrangement needs lesion-level layout.
+DQ109,local,clinical,
+DQ110,local,clinical,
+DQ111,global,clinical,"""Diffuse"" implies lesion-wide extent."
+DQ112,local,clinical,
+DQ113,global,clinical,
+DQ114,local,clinical,
+DQ115,local,clinical,
+DQ116,local,clinical,
+DQ117,local,clinical,
+DQ118,local,clinical,
+DQ119,local,clinical,
+DQ120,global,clinical,Atrophy hard to judge from pixels.
+DQ121,global,clinical,Adherence of scale needs touch; coverage is lesion-wide.
+DQ122,local,clinical,
+DQ123,global,clinical,Central position needs whole-lesion context.
+DQ124,local,clinical,
+DQ125,local,clinical,
+DQ126,global,clinical,
+DQ127,global,clinical,Scalp site implied; may need metadata if not visible.
+DQ128,local,clinical,Scalp site implied; may need metadata if not visible.
+DQ129,local,clinical,
+DQ130,local,clinical,
+DQ131,global,clinical,"""Diffuse"" implies lesion-wide extent."
+DQ132,local,clinical,
+DQ133,global,clinical,
+DQ134,local,clinical,
+DQ135,global,clinical,"""Diffuse"" implies lesion-wide extent."
+DQ136,local,clinical,
+DQ137,global,clinical,
+DQ138,local,clinical,Requires scale removal (Auspitz manoeuvre); rarely in static images.
+DQ139,local,clinical,
+DQ140,local,clinical,Vessel calibre (0.2 mm) needs scale; presence is local.
+DQ141,local,clinical,
+DQ142,local,clinical,
+DQ143,local,clinical,
+DQ144,local,clinical,
+DQ145,local,clinical,
+DQ146,local,clinical,
+DQ147,global,clinical,"Structureless ""background"" is lesion-wide."
+DQ148,local,clinical,
+DQ149,local,clinical,
+DQ150,local,clinical,
+DQ151,global,clinical,Explicit absence check needs whole lesion.
+DQ152,local,clinical,
+DQ153,global,clinical,Nodularity is lesion-level; elevation hard to judge in dermoscopy.
+DQ154,global,clinical,
+DQ155,global,clinical,
+DQ156,local,clinical,
+DQ157,local,clinical,
+DQ158,local,clinical,
+DQ159,global,clinical,Central position needs whole-lesion context.
+DQ160,global,clinical,Sparse/absent colour judged lesion-wide; conditional on BCC structures.
+DQ161,global,clinical,
+DQ162,local,clinical,
+DQ163,local,clinical,
+DQ164,global,clinical,Central position needs whole-lesion context.
+DQ165,global,clinical,
+DQ166,global,clinical,
+DQ167,global,clinical,
+DQ168,global,clinical,
+DQ169,local,clinical,
+DQ170,local,clinical,
+DQ171,local,clinical,
+DQ172,local,clinical,
+DQ173,global,clinical,
+DQ174,global,clinical,Term ambiguous; assumed a border/edge sign.
+DQ175,local,clinical,
+DQ176,local,clinical,
+DQ177,local,clinical,
+DQ178,local,clinical,"Pattern name, but pseudonetwork visible in a patch."
+DQ179,global,clinical,
+DQ180,global,clinical,
+DQ181,global,clinical,
+DQ182,local,clinical,
+DQ183,local,clinical,
+DQ184,local,clinical,"Foreign fibres on lesion; clinical clue, not acquisition artefact."
+DQ185,metadata,clinical,Firmness needs palpation.
+DQ186,local,clinical,
+DQ187,local,clinical,
+DQ188,local,clinical,Sun damage/flatness conditions partly need metadata.
+DQ189,global,clinical,Nodularity is lesion-level; elevation hard to judge in dermoscopy.
+DQ190,global,clinical,
+DQ191,local,clinical,
+DQ192,local,clinical,
+DQ193,global,clinical,
+DQ194,local,clinical,
+DQ195,global,clinical,"""Diffuse"" implies lesion-wide extent."
+DQ196,local,clinical,
+DQ197,local,clinical,
+DQ198,local,clinical,
+DQ199,global,clinical,
+DQ200,global,clinical,
+DQ201,global,clinical,Papule (elevation) hard to judge in dermoscopy.
+DQ202,metadata,clinical,Anatomic site (lower limb) not visible in dermoscopy.
+DQ203,global,clinical,"""Firm-appearing"" implies palpation; visual proxy only."
+DQ204,global,clinical,
+DQ205,global,clinical,Lesion-vs-background contrast; subjective causal attribution to skin tone.
+DQ206,local,clinical,
+DQ207,local,clinical,
+DQ208,local,clinical,
+DQ209,global,clinical,
+DQ210,global,clinical,Phototype is partly metadata; visual proxy from background skin.
+DQ211,global,clinical,"Counterfactual (""less than expected""); hard to answer from pixels."
+DQ212,metadata,clinical,Acral site and patient skin colour beyond the image.
+DQ213,local,clinical,
+DQ214,global,clinical,
+DQ215,global,clinical,
+DQ216,global,clinical,
+DQ217,global,clinical,Fitzpatrick is sun-reactivity (metadata); visual proxy only.
+DQ218,global,clinical,Fitzpatrick is sun-reactivity (metadata); visual proxy only.
+DQ219,global,clinical,Fitzpatrick is sun-reactivity (metadata); visual proxy only.
+DQ220,global,clinical,ITA needs colour-calibrated measurement; approximate from pixels.
+DQ221,global,clinical,ITA needs colour-calibrated measurement; approximate from pixels.
+DQ222,global,clinical,
+DQ223,global,artefact,
+DQ224,local,clinical,
+DQ225,local,clinical,
+DQ226,local,clinical,
+DQ227,local,clinical,
+DQ228,local,clinical,
+DQ229,local,clinical,
+DQ230,local,clinical,
+DQ231,local,clinical,
+DQ232,local,clinical,
+DQ233,local,clinical,
+DQ234,local,clinical,
+DQ235,local,clinical,
+DQ236,local,clinical,Facial site implied; may need metadata.
+DQ237,local,clinical,Facial site implied; may need metadata.
+DQ238,local,clinical,
+DQ239,local,clinical,
+DQ240,local,clinical,
+DQ241,local,clinical,
+DQ242,local,clinical,
+DQ243,global,clinical,
+DQ244,global,clinical,
+DQ245,global,clinical,
+DQ246,global,clinical,"""Non-healing"" implies time course; visual resemblance only."
+DQ247,local,clinical,
+DQ248,global,clinical,Polymorphous = several vessel types across lesion; could be local.
+DQ249,metadata,clinical,
+DQ250,metadata,clinical,
+DQ251,metadata,clinical,
+DQ252,metadata,clinical,
+DQ253,global,clinical,Explicit absence check needs whole lesion.
+DQ254,local,clinical,
+DQ255,metadata,clinical,
+DQ256,local,clinical,
+DQ257,global,clinical,
+DQ258,global,clinical,
+DQ259,global,clinical,
+DQ260,local,clinical,Needs nail and periungual skin in view; relational.
+DQ261,local,clinical,
+DQ262,global,clinical,
+DQ263,local,clinical,
+DQ264,local,clinical,
+DQ265,local,clinical,
+DQ266,local,clinical,
+DQ267,local,clinical,
+DQ268,local,clinical,
+DQ269,global,clinical,
+DQ270,local,clinical,
+DQ271,global,clinical,
+DQ272,local,clinical,
+DQ273,local,clinical,
+DQ274,local,clinical,
+DQ275,local,clinical,
+DQ276,local,clinical,
+DQ277,global,clinical,Counting bands needs whole nail in view.
+DQ278,global,clinical,"Phrasing ""rough or shiny"" is disjunctive/ambiguous."
+DQ279,global,clinical,
+DQ280,local,clinical,
+DQ281,metadata,clinical,
+DQ282,global,clinical,
+DQ283,global,clinical,
+DQ284,local,clinical,
+DQ285,local,clinical,
+DQ286,global,clinical,Nail thickness hard to see from above; may be metadata.
+DQ287,local,clinical,
+DQ288,global,clinical,
+DQ289,global,clinical,
+DQ290,local,clinical,
+DQ291,metadata,clinical,Absolute size (<1 cm) needs scale; elevation hard to judge.
+DQ292,global,clinical,"""Small elevated"" condition needs size/elevation info."
+DQ293,global,clinical,"""Small elevated"" condition needs size/elevation info."
+DQ294,local,clinical,
+DQ295,local,clinical,
+DQ296,global,clinical,Nodularity is lesion-level; elevation hard to judge in dermoscopy.
+DQ297,global,clinical,Polymorphous = several vessel types across lesion; could be local.
+DQ298,local,clinical,
+DQ299,metadata,clinical,Softness needs palpation.
+DQ300,global,clinical,
+DQ301,global,clinical,
+DQ302,global,clinical,Polymorphous = several vessel types across lesion; could be local.
+DQ303,local,clinical,
+DQ304,local,clinical,
+DQ305,local,clinical,"Interpretive clause (""suggesting deep location""); blur may also be focus artefact."
+DQ306,local,clinical,
+DQ307,local,clinical,
+DQ308,local,clinical,
+DQ309,local,clinical,
+DQ310,local,clinical,Necklace arrangement may span lesion; kept local like DQ061.
+DQ311,global,clinical,Explicit absence check needs whole lesion.
+DQ312,local,clinical,
+DQ313,local,clinical,
+DQ314,local,clinical,
+DQ315,local,clinical,
+DQ316,local,clinical,
+DQ317,local,clinical,
+DQ318,local,clinical,
+DQ319,local,clinical,
+DQ320,local,clinical,
+DQ321,global,clinical,"""Only"" requires excluding other vessels across whole image."
+DQ322,local,clinical,
+DQ323,metadata,clinical,
+DQ324,metadata,clinical,
+DQ325,metadata,clinical,
+DQ326,metadata,clinical,
+DQ327,metadata,clinical,
+DQ328,metadata,clinical,
+DQ329,global,clinical,"""Large congenital naevus"" context exceeds dermoscopic field; may be metadata."
+DQ330,global,clinical,
+DQ331,metadata,clinical,
+DQ332,metadata,clinical,Softness needs palpation.
+DQ333,metadata,clinical,"""Large"" CMN is a size criterion needing scale."
+DQ334,metadata,clinical,"""Large"" is a size criterion; plaque-type visible."
+DQ335,metadata,clinical,
+DQ336,metadata,clinical,
+DQ337,metadata,clinical,
+DQ338,global,clinical,Requires segmental haemangioma context beyond dermoscopic field.
+DQ339,metadata,clinical,
+DQ340,metadata,clinical,
+DQ341,metadata,clinical,
+DQ342,metadata,clinical,
+DQ343,metadata,clinical,
+DQ344,global,clinical,Multi-lesion arrangement; suited to clinical not dermoscopic images.
+DQ345,global,clinical,Café-au-lait is a lesion-level diagnosis; often exceeds dermoscopic field.
+DQ346,local,clinical,
+DQ347,global,clinical,Linear body-level arrangement; may be metadata.
+DQ348,metadata,clinical,
+DQ349,metadata,clinical,
+DQ350,metadata,clinical,
+DQ351,global,clinical,"Field-level erythema; ""sun-exposed"" site is metadata."
+DQ352,global,clinical,Thickness/elevation hard to judge in dermoscopy.
+DQ353,local,clinical,"""Sun-exposed"" site condition needs metadata."
+DQ354,local,clinical,"""Sun-exposed"" site condition needs metadata."
+DQ355,metadata,clinical,Lesion visible but site needs metadata.
+DQ356,metadata,clinical,Lesion visible but site needs metadata.
+DQ357,metadata,clinical,Lesion visible but site needs metadata.
+DQ358,global,clinical,
+DQ359,global,clinical,Perilesional background assessment.
+DQ360,global,clinical,Multi-lesion field question; suited to clinical images.
+DQ361,global,clinical,
+DQ362,global,artefact,
+DQ363,global,clinical,Perilesional skin vs lesion; an edge patch might suffice.
+DQ364,global,clinical,"Counts naevi in image; needs body/TBP image, not dermoscopy."
+DQ365,global,clinical,
+DQ366,metadata,clinical,Absolute size (5 mm) needs scale; pigmentation/border part is global.
+DQ367,global,clinical,Diagnosis-level judgement rather than a single feature.
+DQ368,global,clinical,Diagnosis-level judgement rather than a single feature.
+DQ369,metadata,clinical,Absolute size (2 mm) plus count; needs scale.
+DQ370,metadata,clinical,
+DQ371,metadata,clinical,
+DQ372,local,clinical,Hair colour as phenotype; hair presence itself treated as artefact.
+DQ373,global,clinical,
+DQ374,global,clinical,
+DQ375,global,clinical,
+DQ376,global,clinical,
+DQ377,global,clinical,
+DQ378,local,clinical,
+DQ379,local,clinical,
+DQ380,local,clinical,
+DQ381,global,clinical,Subjective; skin thickness hard to judge from pixels.
+DQ382,global,clinical,
+DQ383,global,clinical,
+DQ384,local,clinical,
+DQ385,global,clinical,Melasma is a regional facial diagnosis; site implied.
+DQ386,global,clinical,
+DQ387,local,clinical,
+DQ388,local,clinical,
+DQ389,metadata,clinical,Hand-margin site needed; papules themselves visible.
+DQ390,local,clinical,
+DQ391,local,clinical,
+DQ392,local,clinical,Hair colour as phenotype; hair presence itself treated as artefact.
+DQ393,global,clinical,Sagging is 3D/elasticity; may need palpation/metadata.
+DQ394,global,artefact,
+DQ395,global,artefact,
+DQ396,global,artefact,"Polarization inferred indirectly (glare, shiny white structures); may be metadata."
+DQ397,global,clinical,
+DQ398,global,clinical,
+DQ399,global,clinical,
+DQ400,metadata,clinical,
+DQ401,global,clinical,
+DQ402,global,artefact,
+DQ403,global,artefact,
+DQ404,local,artefact,
+DQ405,local,artefact,
+DQ406,global,artefact,
+DQ407,global,artefact,
+DQ408,global,artefact,
+DQ409,global,artefact,"""Typical of multi-source dataset"" is dataset-level; vague for one image."
+DQ410,global,clinical,Shortcut framing but cue is a patient attribute; vague.
+DQ411,global,artefact,Acquisition setting partly metadata; inferred from image quality.
+DQ412,global,clinical,Embedded rationale clause; essentially a skin-tone question.
+DQ413,global,clinical,Needs diagnosis and rarity judgement; not a visual feature.
+DQ414,global,artefact,
+DQ415,global,artefact,Framing issue but also reflects lesion size.
+DQ416,global,clinical,Nail is visible; mucosa may need metadata.
+DQ417,global,clinical,
+DQ418,global,clinical,
+DQ419,global,artefact,
+DQ420,global,clinical,
+DQ421,global,clinical,"Flatness hard to judge; ""subtle"" is vague."
+DQ422,global,artefact,"Polarization inferred indirectly (glare, shiny white structures); may be metadata."
+DQ423,global,clinical,
+DQ424,global,clinical,
+DQ425,global,clinical,
+DQ426,global,artefact,"""Background noise"" ambiguous: image noise vs skin clutter."
+DQ427,global,artefact,"Lesion-to-frame ratio; framing cue, partly lesion size."
+DQ428,global,artefact,"Lesion-to-frame ratio; framing cue, partly lesion size."
+DQ429,global,artefact,"Lesion-to-frame ratio; framing cue, partly lesion size."
+DQ430,global,clinical,
+DQ431,global,clinical,
+DQ432,global,clinical,
+DQ433,global,clinical,
+DQ434,global,artefact,
+DQ435,global,artefact,
+DQ436,global,artefact,
+DQ437,global,artefact,
+DQ438,global,artefact,
+DQ439,global,artefact,
+DQ440,global,artefact,
+DQ441,global,artefact,
+DQ442,global,artefact,
+DQ443,global,artefact,Who took the image is metadata; inferred from framing/lighting.
+DQ444,local,artefact,Single-pixel perturbation likely below VLM perceptual resolution.
+DQ445,global,artefact,
+DQ446,local,artefact,
+DQ447,local,clinical,"Asks about certainty (""unambiguous""), not presence."
+DQ448,local,clinical,"Asks about certainty (""unambiguous""), not presence."
+DQ449,global,clinical,Vague; likely near-constant yes.
+DQ450,local,clinical,
+DQ451,global,clinical,
+DQ452,global,artefact,"Lesion-to-frame ratio; framing cue, partly lesion size."
+DQ453,global,clinical,
+DQ454,global,clinical,
+DQ455,global,artefact,Edges outside lesion could be artefacts or normal skin structures.
+DQ456,local,artefact,Vignetting visible in a corner crop.
+DQ457,local,artefact,
+DQ458,local,artefact,
+DQ459,local,artefact,
+DQ460,local,artefact,
+DQ461,local,artefact,
+DQ462,local,artefact,
+DQ463,local,artefact,
+DQ464,global,artefact,"""Many hairs crossing lesion"" needs whole-lesion view."
+DQ465,local,artefact,
+DQ466,local,artefact,
+DQ467,local,artefact,
+DQ468,global,artefact,
+DQ469,global,artefact,
+DQ470,local,artefact,
+DQ471,global,clinical,
+DQ472,global,clinical,
+DQ473,global,clinical,
+DQ474,global,clinical,Two colours could co-occur in a patch; kept global like colour counts.
+DQ475,global,clinical,
+DQ476,global,clinical,Requires image transformation; not answerable by viewing RGB.
+DQ477,global,clinical,
+DQ478,global,clinical,
+DQ479,global,clinical,Oxygen-saturation inference is interpretive.
+DQ480,global,clinical,
+DQ481,global,clinical,Obesity is patient metadata; striae themselves are local.
+DQ482,local,clinical,
+DQ483,local,clinical,
+DQ484,local,clinical,
+DQ485,metadata,clinical,
+DQ486,local,clinical,
+DQ487,local,clinical,
+DQ488,local,clinical,Facial site implied; may need metadata.
+DQ489,global,clinical,Facial site implied; may need metadata.
+DQ490,global,clinical,
+DQ491,global,artefact,
+DQ492,global,artefact,
+DQ493,global,clinical,GLCM is a computed statistic; only perceptual proxy.
+DQ494,global,clinical,
+DQ495,global,clinical,Computed statistic; only perceptual proxy.
+DQ496,global,clinical,Computer-vision keypoints; not a perceptual clinical concept.
+DQ497,global,clinical,Requires channel separation; not answerable by viewing RGB.
+DQ498,global,clinical,Requires greyscale conversion; likely near-constant yes.
+DQ499,local,clinical,
+DQ500,local,clinical,
