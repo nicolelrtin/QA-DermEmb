@@ -175,7 +175,7 @@ def answer_units(cfg, ctx, inputs, units, qs, plan_unit, template: str, shard_di
         reset = state["reset"]
         PAUSE_FILE.parent.mkdir(parents=True, exist_ok=True)
         PAUSE_FILE.write_text(str(reset or int(time.time()) + 3600))
-        when = datetime.fromtimestamp(reset).strftime("%Y-%m-%d %H:%M") if reset else "in about an hour"
+        when = datetime.fromtimestamp(reset).strftime("%Y-%m-%d-%H:%M:%S") if reset else "in about an hour"
         print(f"PAUSED: usage limit reached ({len(finished)}/{len(by_unit)} images complete); resumes after {when}")
         raise SystemExit(PAUSED)
     if fails:

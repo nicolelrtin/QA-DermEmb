@@ -25,7 +25,7 @@ QUEUE, DONE, FAILED, LOG = Q / "queue.txt", Q / "done.txt", Q / "FAILED", Q / "q
 
 
 def log(msg: str) -> None:
-    line = f"[{datetime.now():%Y-%m-%d %H:%M:%S}] {msg}"
+    line = f"[{datetime.now():%Y-%m-%d-%H:%M:%S}] {msg}"
     print(line, flush=True)
     with open(LOG, "a") as f:
         f.write(line + "\n")
@@ -62,7 +62,7 @@ def run() -> None:
             log(f"done: {cmd}")
         elif rc == PAUSED:
             until = int(PAUSE_FILE.read_text()) if PAUSE_FILE.exists() else None
-            return log(f"paused until {datetime.fromtimestamp(until):%Y-%m-%d %H:%M}" if until else "paused")
+            return log(f"paused until {datetime.fromtimestamp(until):%Y-%m-%d-%H:%M:%S}" if until else "paused")
         else:
             FAILED.write_text(f"exit code {rc}: {cmd}\n")
             return log(f"FAILED (exit {rc}): {cmd}; queue stopped, see the log above")
@@ -76,7 +76,7 @@ def status() -> None:
     if left:
         print(f"next: {left[0]}")
     if PAUSE_FILE.exists():
-        print(f"paused until {datetime.fromtimestamp(int(PAUSE_FILE.read_text())):%Y-%m-%d %H:%M}")
+        print(f"paused until {datetime.fromtimestamp(int(PAUSE_FILE.read_text())):%Y-%m-%d-%H:%M:%S}")
     if FAILED.exists():
         print(f"FAILED: {FAILED.read_text().strip()}")
     if LOG.exists():

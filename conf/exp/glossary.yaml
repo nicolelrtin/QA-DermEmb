@@ -1,0 +1,49 @@
+# Plain-language meaning of every experiment ID, used by reports (qaemb/report.py) next to the shorthand.
+# Not read by the pipeline itself, so editing it changes no results or cache hashes.
+data:
+  D0_smoke10: 10 smoke images, one per diagnostic class (leave-one-out split; plumbing only)
+  D0_poc2: 2 smoke images, ISIC_0000147 and ISIC_0000215 (Claude proof of concept)
+  D1_train: full manifest, train/val/test split grouped by lesion
+qset:
+  Q0_all: all 500 questions, each asked as the original and as its negated complement (1,000 items)
+  Q1_local: only questions about a local region of the lesion (233 of 500)
+  Q2_selected: questions selected by an earlier model run
+  Q9_smoke50: 50-question subset (every 10th question, all topics), original + complement
+answerer:
+  ANS_qwen7b: Qwen2.5-VL-7B-Instruct, local; P(yes) read from the Yes/No word probabilities
+  ANS_qwen3b: Qwen2.5-VL-3B-Instruct, local; P(yes) read from the Yes/No word probabilities
+  ANS_skingpt_r1: SkinGPT-R1 (dermatology fine-tune of Qwen2.5-VL-7B), local; reasoning skipped; P(yes) from Yes/No word probabilities
+  ANS_claude_opus: Claude Opus 5.5 through the API (effort low); stated P(yes) and confidence
+  ANS_claude_opus_cli: Claude Opus 5.5 through claude -p on the Claude subscription (effort low); stated P(yes) and confidence
+mode:
+  M_stateless: one question per prompt
+  M_topic: one prompt per topic, listing that topic's questions; originals and complements in separate prompts
+  M_all: one prompt with all questions; originals and complements in separate prompts
+grid:
+  G1: whole image only
+  G2: whole image + 2x2 patches
+  G2_ov: whole image + 2x2 patches with 50% overlap
+  G4: whole image + 4x4 patches
+  G4_ov: whole image + 4x4 patches with 50% overlap
+  G8: whole image + 8x8 patches
+  G8_ov: whole image + 8x8 patches with 50% overlap
+rep:
+  R1: replicate 1 (Claude only; local models are deterministic)
+  R2: replicate 2
+  R3: replicate 3
+  R4: replicate 4
+feat:
+  F_orig: features = P(yes) to the original questions
+  F_orig_bin: features = yes/no answers to the original questions
+  F_adj: features = p_adj = P(yes|original) - P(yes|complement)
+  F_adj_bin: features = p_adj thresholded to yes/no
+  F_w: features = P_w = P(yes|original) x |p_adj|
+model:
+  W0: logistic regression on whole-image answers
+  W1: logistic regression with stability selection on whole-image answers
+  P0: patch model, mean over patches
+  P1_max: patch model, max over patches
+  P1_topk: patch model, mean of the top-k patches
+  P1_noisyor: patch model, noisy-OR over patches
+  P2: patch model, attention over patches
+  P3: patch model, position-specific weights

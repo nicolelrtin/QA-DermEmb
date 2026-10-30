@@ -23,12 +23,17 @@ def load(d: Path):
     return pd.read_parquet(d / "answers_raw.parquet"), pd.read_parquet(d / "timing.parquet"), meta
 
 
-def modes(dirs: list[Path], threshold: float = 0.5) -> pd.DataFrame:
+def modes(dirs: list[Path], threshold: float = 0.5, images: set | None = None) -> pd.DataFrame:
+    """images: restrict every run to these image_ids (runs over different image sets)."""
     ref, _, _ = load(dirs[0])
+    if images is not None:
+        ref = ref[ref.image_id.isin(images)]
     keys = ["unit_id", "question_id", "original"]
     rows = []
     for d in dirs:
         ans, tim, meta = load(d)
+        if images is not None:
+            ans, tim = ans[ans.image_id.isin(images)], tim[tim.image_id.isin(images)]
         m = ref[keys + ["p_yes"]].merge(ans[keys + ["p_yes"]], on=keys, suffixes=("_ref", ""))
         rows.append({
             "dir": d.name, "mode": meta["key"]["mode"], "prompts": ans.batch_id.nunique() if meta["key"]["mode"] != "stateless" else 0,
@@ -68,15 +73,40 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 VALS = ["p_yes_original", "p_yes_complement", "p_adj", "p_w", "confidence_original", "confidence_complement"]
+SD_VALS = ["p_yes_original", "p_yes_complement", "p_adj", "p_w"]
 
 
 def run_dirs(run_id: str) -> tuple[str, dict]:
     meta = json.loads((ROOT / "outputs/qaemb/runs" / run_id / "run_meta.json").read_text())
     c = meta["config"]
     name = f"{c['answerer']['id']}/{c['answer']['mode']}" + ("_shuf" if c["answer"]["shuffle"] else "")
-    if c["answerer"].get("backend") == "anthropic":
+    if c["answerer"].get("backend") in ("anthropic", "claude_cli"):
         name += f"/R{c['answer'].get('replicate', 1)}"
     return name, {k: ROOT / v for k, v in meta["stage_dirs"].items()}
+
+
+def glossary() -> dict:
+    import yaml
+
+    g = yaml.safe_load((ROOT / "conf/exp/glossary.yaml").read_text())
+    return {k: v for group in g.values() for k, v in group.items()}
+
+
+def runs_covered(run_ids: list[str]) -> list[str]:
+    """Markdown table: every run behind a report, its experiment IDs spelled out, prompt and images."""
+    words = glossary()
+    rows = []
+    for group in run_ids:
+        for r in group.split("+"):
+            meta = json.loads((ROOT / "outputs/qaemb/runs" / r / "run_meta.json").read_text())
+            exps = meta["experiments"]
+            prompts = meta.get("prompts") or json.loads((ROOT / meta["stage_dirs"]["answer"] / "stage_meta.json").read_text())["summary"].get("prompts", {})
+            ids = meta["config"]["data"]["image_ids"]
+            rows.append({"run": f"`{r}`", "label": run_dirs(r)[0],
+                         "experiments": "<br>".join(f"`{e}`: {words.get(e, '?')}" for e in exps.values()),
+                         "prompt": ", ".join(f"`{v['name']}` ({v['hash']})" for v in prompts.values()),
+                         "images": f"{len(ids)}" if ids else "all"})
+    return ["## Runs covered", "", pd.DataFrame(rows).to_markdown(index=False), ""]
 
 
 def readable(run_id: str) -> tuple[str, pd.DataFrame, list[Path]]:
@@ -97,8 +127,10 @@ def readable(run_id: str) -> tuple[str, pd.DataFrame, list[Path]]:
         return names[0], frames[0], answer_dirs
     idx = ["image_id", "label_raw", "patch_id", "question_id"]
     vals = [c for c in VALS if c in frames[0]]
-    mean = pd.concat(frames).groupby(idx)[vals].mean().reset_index()
-    df = frames[0].drop(columns=vals + ["verdict"], errors="ignore").merge(mean, on=idx)
+    g = pd.concat(frames).groupby(idx)
+    mean = g[vals].mean().join(g[SD_VALS].std().add_suffix("_sd"))
+    mean["verdict_agreement"] = g.verdict.agg(lambda v: v.value_counts().iloc[0] / len(v))
+    df = frames[0].drop(columns=vals + ["verdict"], errors="ignore").merge(mean.reset_index(), on=idx)
     df["verdict"] = [verdict(a, b, 0.5) for a, b in zip(df.p_yes_original, df.p_yes_complement)]
     return names[0].rsplit("/R", 1)[0] + f"/mean{len(parts)}", df, answer_dirs
 
@@ -114,7 +146,7 @@ def compare(run_ids: list[str], out: Path, threshold: float = 0.5) -> Path:
     text = ["topic", "scope", "kind", "question", "question_neg"]
     merged = None
     for name, (_, df, _) in zip(names, runs):
-        cols = [c for c in VALS + ["verdict"] if c in df]
+        cols = [c for c in VALS + ["verdict"] + [f"{v}_sd" for v in SD_VALS] + ["verdict_agreement"] if c in df]
         vals = df[idx + cols].rename(columns={c: f"{c}__{name}" for c in cols})
         merged = df[idx + [c for c in text if c in df]].merge(vals, on=idx) if merged is None else merged.merge(vals, on=idx)
     merged.round(4).to_csv(out / "compare_answers.csv", index=False)
@@ -128,16 +160,18 @@ def compare(run_ids: list[str], out: Path, threshold: float = 0.5) -> Path:
     byq.round(4).to_csv(out / "compare_by_question.csv")
 
     answer_dirs = [dirs[0] for _, _, dirs in runs]  # first replicate of an averaged group
-    table = modes(answer_dirs, threshold)
+    table = modes(answer_dirs, threshold, images=set(merged.image_id))
     table.insert(0, "run", [f"{n} ({r.split('+')[0]}{' +' + str(r.count('+')) + ' more' if '+' in r else ''})"
                             for n, r in zip(names, run_ids)])
-    L = [f"# Answer-mode comparison: {', '.join(names)}", "",
-         f"Runs: {', '.join(f'`{r}`' for r in run_ids)}. Reference for agreement columns: `{names[0]}`.", "",
+    L = [f"# Answer comparison: {', '.join(names)}", "",
+         f"Images: {', '.join(sorted(merged.image_id.unique()))} (those every run answered). "
+         f"Reference for the agreement columns: `{names[0]}`.", ""] + runs_covered(run_ids) + ["## Summary", "",
          table.drop(columns=["dir"]).round(4).to_markdown(index=False), "",
          "- [compare_answers.csv](compare_answers.csv): one row per image x question; P(yes) to the original and "
          "complement, p_adj, P_w, stated confidence (Claude) and verdict for each run side by side. "
-         "Averaged replicate groups (`/meanN`) use the mean of each value; the table's timing and token "
-         "columns describe their first replicate.",
+         "Averaged replicate groups (`/meanN`) give the mean of each value over the N replicates, its SD "
+         "(`_sd` columns) and `verdict_agreement` (share of replicates giving the most common verdict); "
+         "the table's timing and token columns describe their first replicate.",
          "- [compare_by_question.csv](compare_by_question.csv): per question, mean p_adj and contradiction rate per run.", ""]
     verdicts = pd.concat({n: whole[f"verdict__{n}"].value_counts(normalize=True) for n in names}, axis=1).fillna(0)
     L += ["Share of verdicts (whole image, all images x questions):", "", verdicts.round(3).to_markdown(), ""]
@@ -167,8 +201,8 @@ def replicates(run_ids: list[str], out: Path) -> Path:
     wide = raw.pivot_table(index=idx, columns="replicate", values="p_adj")
     corr = wide.corr().values[np.triu_indices(wide.shape[1], 1)]
     rows = [{"value": v, "mean": raw[v].mean(), "mean SD across replicates": agg[f"{v}_std"].mean()} for v in vals]
-    L = [f"# Replicates: {frames[0].replicate.iloc[0]} … ({len(run_ids)} runs)", "",
-         f"Runs: {', '.join(f'`{r}`' for r in run_ids)}.", "",
+    L = [f"# Replicates: {run_dirs(run_ids[0])[0].rsplit('/R', 1)[0]} ({len(run_ids)} runs)", ""] + runs_covered(run_ids) + [
+         "## Summary", "",
          pd.DataFrame(rows).round(4).to_markdown(index=False), "",
          f"- Image × question pairs with the same verdict in every replicate: **{(agg.verdict_agreement == 1).mean():.1%}**",
          f"- Mean pairwise Pearson r of p_adj between replicates: **{np.nanmean(corr):.3f}**",
