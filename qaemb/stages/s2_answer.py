@@ -7,6 +7,10 @@ pass), topic (one prompt per original x topic) and all (one prompt per original 
 modes force a JSON skeleton and read P(yes) at each answer slot; `shuffle` permutes order within a prompt.
 Stateless results are written in shards of ~shard_questions items, batched results one shard per prompt;
 a restart skips finished shards.
+Backends: qwen_vl (local; P(yes) from the Yes/No logits; `answer_prefix` / `batched_prefix` force text at the
+start of the answer, e.g. to skip SkinGPT-R1's reasoning), anthropic (Claude API; stated P(yes) and
+confidence as forced JSON; see qaemb/answerers/claude.py) and claude_cli (the same through `claude -p` on a
+Claude subscription; pauses at usage limits, see qaemb/answerers/claude_cli.py).
 Outputs: answers_raw.parquet (no threshold applied; S4 adds answer_bin) and timing.parquet.
 """
 import hashlib
@@ -22,6 +26,7 @@ from ..config import ROOT, stable_hash
 UPSTREAM = ["prepare"]
 VERSION = 2
 PROMPTS = Path(__file__).resolve().parent.parent / "prompts"
+CLAUDE = ("anthropic", "claude_cli")
 
 
 def prompt_text(name: str) -> str:
@@ -36,8 +41,11 @@ def used_prompts(cfg) -> dict[str, str]:
     a = cfg.answer
     if a.mode not in ("stateless", "topic", "all"):
         raise SystemExit(f"answer.mode must be stateless, topic or all; got {a.mode!r}")
-    names = {"whole": a.prompts.whole, "patch": a.prompts.patch} if a.mode == "stateless" else \
-            {"whole": a.prompts.batched_whole, "patch": a.prompts.batched_patch}
+    if cfg.answerer.backend in CLAUDE:
+        names = {"whole": a.prompts.claude_whole if a.mode == "stateless" else a.prompts.claude_batched_whole, "patch": None}
+    else:
+        names = {"whole": a.prompts.whole, "patch": a.prompts.patch} if a.mode == "stateless" else \
+                {"whole": a.prompts.batched_whole, "patch": a.prompts.batched_patch}
     if cfg.grid.G == 1:
         names.pop("patch")
     return names
@@ -45,11 +53,19 @@ def used_prompts(cfg) -> dict[str, str]:
 
 def key(cfg, ctx) -> dict:
     a = cfg.answer
-    acfg = {k: v for k, v in cfg.answerer.items() if k != "device"}
-    return {"qset_hash": ctx.qset_hash, "answerer": {**acfg, "revision": ctx.answerer_revision},
-            "mode": a.mode, "shuffle": a.shuffle,
-            "shuffle_seed": cfg.seed if a.shuffle else None,
-            "prompts": {k: prompt_hash(v) for k, v in used_prompts(cfg).items()}}
+    # Unset fields and the default backend are left out, so earlier Qwen answers keep their hashes.
+    acfg = {k: v for k, v in cfg.answerer.items()
+            if k != "device" and v is not None and not (k == "backend" and v == "qwen_vl")}
+    out = {"qset_hash": ctx.qset_hash, "answerer": {**acfg, "revision": ctx.answerer_revision},
+           "mode": a.mode, "shuffle": a.shuffle,
+           "shuffle_seed": cfg.seed if a.shuffle else None,
+           "prompts": {k: prompt_hash(v) for k, v in used_prompts(cfg).items()}}
+    if cfg.answerer.backend in CLAUDE:  # not deterministic: replicates are separate runs
+        out["claude"] = {"model": cfg.claude.model, "effort": cfg.claude.effort, "max_tokens": cfg.claude.max_tokens}
+        out["replicate"] = a.replicate
+    if cfg.answerer.backend == "claude_cli":
+        out["claude_cli"] = {"system_prompt": cfg.claude_cli.system_prompt, "schema": "exact_length"}
+    return out
 
 
 def plan_unit(cfg, unit_id: str, qs: pd.DataFrame) -> list[list[list[str]]]:
@@ -88,7 +104,15 @@ def run(cfg, out, inputs, ctx) -> dict:
 
     answerer = None
     verify = {}
-    for n_unit, u in enumerate(units.itertuples()):
+    if cfg.answerer.backend in CLAUDE:
+        from ..answerers import claude, claude_cli
+
+        backend = claude if cfg.answerer.backend == "anthropic" else claude_cli
+        backend.answer_units(cfg, ctx, inputs, units, qs, plan_unit, prompt_text(prompts["whole"]), shard_dir)
+        units_todo = units.iloc[0:0]
+    else:
+        units_todo = units
+    for n_unit, u in enumerate(units_todo.itertuples()):
         plan = plan_unit(cfg, u.unit_id, qs)
         pending = [j for j in range(len(plan)) if not (shard_dir / f"{u.unit_id}__{j:03d}.ans.parquet").exists()]
         if not pending:
@@ -101,6 +125,10 @@ def run(cfg, out, inputs, ctx) -> dict:
         tmpl = prompt_text(prompts[kind])
         var = "{question}" if a.mode == "stateless" else "{questions}"
         pre, post = answerer.split_template(tmpl.replace(var, SENTINEL))
+        if a.mode == "stateless":
+            post += cfg.answerer.answer_prefix or ""
+        else:
+            post += cfg.answerer.batched_prefix or ""
         image = Image.open(inputs["prepare"] / u.path).convert("RGB")
         prefix = answerer.prefill(image, pre)
         base = {"run_id": ctx.run_id, "image_id": u.image_id, "patch_id": u.patch_id, "unit_id": u.unit_id}
@@ -165,12 +193,22 @@ def run(cfg, out, inputs, ctx) -> dict:
     timing.to_parquet(out / "timing.parquet", index=False)
 
     n = len(answers)
+    if answers.p_yes.isna().any():
+        raise RuntimeError(f"{int(answers.p_yes.isna().sum())} answers are missing")
     expected = len(units) * len(items)
     if n != expected:
         raise RuntimeError(f"answers has {n} rows, expected {expected}")
+    for col in ("n_cache_read_tokens", "n_cache_write_tokens"):
+        if col not in timing:
+            timing[col] = 0
     total_s = timing.wall_ms.sum() / 1e3
     spq = total_s / n
-    return {
+    extra = {"tokens_input": int(timing.n_input_tokens.sum()), "tokens_output": int(timing.n_output_tokens.sum()),
+             "tokens_cache_read": int(timing.n_cache_read_tokens.sum())}
+    if "confidence" in answers:
+        extra["confidence_mean"] = float(answers.confidence.mean())
+        extra["n_requests_resent"] = int((timing.attempts > 1).sum())
+    return {**extra,
         "n_answers": n, "n_units": len(units), "n_items": len(items), "n_question_ids": int(qs.question_id.nunique()),
         "total_answer_s": round(total_s, 2), "sec_per_query": round(spq, 5),
         "prefix_ms_mean": round(timing[timing.question_id == "__image_prefix__"].wall_ms.mean(), 1),
@@ -178,5 +216,6 @@ def run(cfg, out, inputs, ctx) -> dict:
         "p_yes_mean": float(answers.p_yes.mean()), "frac_yes": float((answers.p_yes >= a.threshold).mean()),
         "prefix_cache_check": verify,
         "prompts": {k: {"name": v, "hash": phash[k], "text": prompt_text(v)} for k, v in prompts.items()},
-        "key_metric": f"s/q={spq:.4f}",
+        "key_metric": f"tokens in/out={extra['tokens_input']}/{extra['tokens_output']}" if cfg.answerer.backend in CLAUDE
+        else f"s/q={spq:.4f}",
     }

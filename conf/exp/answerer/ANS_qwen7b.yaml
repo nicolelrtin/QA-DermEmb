@@ -1,1 +1,1 @@
-answerer: {id: qwen2.5-vl-7b, checkpoint: Qwen/Qwen2.5-VL-7B-Instruct}
+answerer: {backend: qwen_vl, id: qwen2.5-vl-7b, checkpoint: Qwen/Qwen2.5-VL-7B-Instruct, subfolder: null, answer_prefix: null, batched_prefix: null}

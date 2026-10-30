@@ -1,0 +1,6 @@
+# Claude Opus 5.5 through `claude -p` on the Claude subscription (no API key). Pauses at usage limits; run
+# from the queue (python -m qaemb.queue) so cron resumes it after each reset.
+answerer:
+  backend: claude_cli
+  id: claude-opus-cli
+  checkpoint: claude-opus-5-5

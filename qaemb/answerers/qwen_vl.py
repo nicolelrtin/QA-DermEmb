@@ -33,11 +33,12 @@ class QwenVL:
 
         self.device = acfg.device
         self.dtype = acfg.dtype
+        sub = {"subfolder": acfg.subfolder} if acfg.get("subfolder") else {}
         self.model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
-            acfg.checkpoint, revision=revision, dtype=getattr(torch, acfg.dtype), attn_implementation=acfg.attn
+            acfg.checkpoint, revision=revision, dtype=getattr(torch, acfg.dtype), attn_implementation=acfg.attn, **sub
         ).to(self.device).eval()
         self.processor = AutoProcessor.from_pretrained(
-            acfg.checkpoint, revision=revision, size={"shortest_edge": min_pixels, "longest_edge": max_pixels}
+            acfg.checkpoint, revision=revision, size={"shortest_edge": min_pixels, "longest_edge": max_pixels}, **sub
         )
         self.tok = self.processor.tokenizer
         self.yes_ids = self._single_token_ids(acfg.yes_tokens)

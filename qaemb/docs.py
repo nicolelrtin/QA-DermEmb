@@ -96,7 +96,57 @@ def write_run_report(meta: dict, status: dict, run_dir: Path) -> Path:
               f"All files: [{meta['stage_dirs']['model']}]({_rel(d, run_dir)}) "
               "(metrics.json, predictions.parquet, coefficients.csv, curves.csv)", ""]
 
+    if "answer" in meta["stages"]:
+        L += token_section(ROOT / meta["stage_dirs"]["answer"], run_dir)
+
     L += ["## Files", "", "- [run_meta.json](run_meta.json): full resolved config, versions, hashes", ""]
     path = run_dir / "report.md"
     path.write_text("\n".join(L))
     return path
+
+
+TOK = ["n_input_tokens", "n_output_tokens", "n_cache_read_tokens", "n_cache_write_tokens"]
+
+
+def token_tables(answer_dir: Path) -> tuple[dict, pd.DataFrame, pd.DataFrame]:
+    """Run totals, tokens per image, and tokens per item (Question ID x original) per image.
+
+    Per item: a stateless item's own tokens; in topic/all modes, the prompt's tokens split evenly over its
+    questions. A Qwen-style image prefix (processed once, then reused) is shared evenly over the image's items.
+    """
+    t = pd.read_parquet(answer_dir / "timing.parquet")
+    ans = pd.read_parquet(answer_dir / "answers_raw.parquet")[["unit_id", "image_id", "question_id", "original", "batch_id"]]
+    for c in TOK:
+        t[c] = t[c].fillna(0) if c in t else 0
+    totals = {c.replace("n_", "").replace("_tokens", ""): int(t[c].sum()) for c in TOK}
+    totals["requests_or_passes"] = int((t.question_id != "__image_prefix__").sum())
+
+    prefix = t[t.question_id == "__image_prefix__"].groupby("unit_id")[TOK].sum()
+    single = t[(t.batch_id < 0) & (t.question_id != "__image_prefix__")][["unit_id", "question_id", "original"] + TOK]
+    batched = t[t.batch_id >= 0][["unit_id", "batch_id", "batch_k"] + TOK]
+    if not batched.empty:
+        batched = ans.merge(batched, on=["unit_id", "batch_id"])
+        batched[TOK] = batched[TOK].div(batched.batch_k, axis=0)
+    items = pd.concat([single, batched[["unit_id", "question_id", "original"] + TOK] if not batched.empty else None])
+    items = items.merge(ans[["unit_id", "image_id", "question_id", "original"]], on=["unit_id", "question_id", "original"])
+    if not prefix.empty:
+        n_items = items.groupby("unit_id").size()
+        share = prefix.div(n_items, axis=0).reindex(items.unit_id).fillna(0).values
+        items[TOK] = items[TOK].values + share
+    by_image = items.groupby("image_id")[TOK].sum().round(0).astype(int)
+    return totals, by_image, items
+
+
+def token_section(answer_dir: Path, run_dir: Path) -> list[str]:
+    totals, by_image, items = token_tables(answer_dir)
+    by_q = items.groupby(["question_id", "original"])[TOK].mean().round(1)
+    by_image.to_csv(run_dir / "tokens_by_image.csv")
+    by_q.to_csv(run_dir / "tokens_by_question.csv")
+    stats = items[["n_input_tokens", "n_output_tokens"]].describe().loc[["mean", "50%", "min", "max"]].round(1)
+    stats.index = ["mean", "median", "min", "max"]
+    return ["## Tokens", "",
+            "Per run: " + ", ".join(f"{k.replace('_', ' ')} = {v:,}" for k, v in totals.items()), "",
+            "Per image (all of its questions):", "", by_image.to_markdown(), "",
+            "Per question, per image (input includes its share of the image tokens; in topic/all modes, "
+            "an even share of the prompt):", "", stats.to_markdown(), "",
+            "Files: [tokens_by_image.csv](tokens_by_image.csv), [tokens_by_question.csv](tokens_by_question.csv)", ""]

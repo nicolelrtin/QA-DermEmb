@@ -1,0 +1,9 @@
+# SkinGPT-R1 (Qwen2.5-VL-7B dermatology fine-tune, a reasoning model). Its reasoning is skipped by forcing an
+# empty think block and "Final answer:", after which the next token is Yes/No (tested: P(Yes or No) = 1.000).
+answerer:
+  backend: qwen_vl
+  id: skingpt-r1
+  checkpoint: yuhos16/SkinGPT-R1
+  subfolder: checkpoint
+  answer_prefix: "<think>\n\n</think>\n<answer> Final answer:"
+  batched_prefix: "<think>\n\n</think>\n<answer> "

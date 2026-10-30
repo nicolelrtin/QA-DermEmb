@@ -29,6 +29,7 @@ omegaconf = "^2.4.0"
 mlflow = "^3.17.2"
 pyarrow = ">=18,<26"
 tabulate = "^0.10.0"
+anthropic = "^2.3.0"
 
 
 [build-system]

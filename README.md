@@ -83,6 +83,22 @@ python -m qaemb.report cost <answer_dir> --images 1000 --G 4 --questions 1000 --
   gave the same answer to a question and its negation. It is the default feature (`F_adj`; also `F_adj_bin`,
   `F_orig`, `F_orig_bin`). `incoherence = P(yes|orig) + P(yes|compl) - 1` (< 0: "no" to both) and the
   contradiction rate are reported at S4.
+- **Answerers** (`answerer` group): `ANS_qwen7b` (Qwen2.5-VL-7B, P(yes) from logits), `ANS_skingpt_r1` (SkinGPT-R1;
+  its reasoning is skipped by starting its reply with `<think></think><answer> Final answer:`, so its next word is
+  the answer), `ANS_claude_opus` (Claude Opus 5.5 via the Messages/Batch API, effort low: *stated* P(yes) and
+  confidence as forced JSON; needs an API key in `ANTHROPIC_API_KEY`; `claude.use_batch=false` makes direct calls)
+  and `ANS_claude_opus_cli` (the same prompts through `claude -p` on a Claude subscription, no API key). Claude is
+  not deterministic, so replicates are separate runs: `rep` group `R1`–`R4`. A Claude prompt that does not return
+  a numeric answer for every question is retried (`claude.max_attempts`); if it still fails, the run stops.
+- **Long Claude runs on the subscription** go through a queue that cron resumes after usage-limit pauses: put one
+  command per line in `outputs/qaemb/queue/queue.txt` (e.g. `qaemb.run stage=embed +exp=[…,ANS_claude_opus_cli,…] tag=…`);
+  cron runs `python -m qaemb.queue run`. The runner pauses when 5-hour or weekly usage passes `claude_cli.stop_at`
+  and continues after the reset; `python -m qaemb.queue status` shows progress. This usage is shared with your
+  own Claude Code and claude.ai use.
+- **P_w** = P(yes | original) × |p_adj| (feature source `F_w`); Claude's stated confidence is kept per version.
+  `python -m qaemb.report replicates <run_id> …` aggregates replicates; `compare` accepts `A+B+C+D` to average them.
+- **Tokens**: every run report has a Tokens section (per run, per image, per question) and writes
+  `tokens_by_image.csv` / `tokens_by_question.csv` next to it.
 - **Reports**: every run writes `outputs/qaemb/runs/<run_id>/report.md` (what ran, stage outputs, results,
   metrics, top questions, link to `answers_readable.csv`), linked from `experiments_log.md`. Each experiment
   batch gets a write-up in `reports/<date>_<name>/` (tracked in git); index in `reports/README.md`.

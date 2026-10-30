@@ -61,10 +61,14 @@ class Context:
             from huggingface_hub import snapshot_download
 
             a = self.cfg.answerer
+            if a.backend in ("anthropic", "claude_cli"):  # API models are versioned by their ID
+                self._revision = self.cfg.claude.model
+                return self._revision
+            kw = {"allow_patterns": [f"{a.subfolder}/*"], "ignore_patterns": ["*.ipynb_checkpoints*"]} if a.subfolder else {}
             try:
-                path = snapshot_download(a.checkpoint, revision=a.revision, local_files_only=True)
+                path = snapshot_download(a.checkpoint, revision=a.revision, local_files_only=True, **kw)
             except Exception:
-                path = snapshot_download(a.checkpoint, revision=a.revision)
+                path = snapshot_download(a.checkpoint, revision=a.revision, **kw)
             self._revision = Path(path).name
         return self._revision
 

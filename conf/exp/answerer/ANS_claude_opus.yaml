@@ -1,0 +1,8 @@
+# Claude Opus 5.5 via the Messages API: stated P(yes) and confidence as forced JSON. Not deterministic: use R1-R4.
+answerer:
+  backend: anthropic
+  id: claude-opus-5-5
+  checkpoint: claude-opus-5-5
+claude:
+  model: claude-opus-5-5
+  effort: low
