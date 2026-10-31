@@ -80,7 +80,7 @@ def run_dirs(run_id: str) -> tuple[str, dict]:
     meta = json.loads((ROOT / "outputs/qaemb/runs" / run_id / "run_meta.json").read_text())
     c = meta["config"]
     name = f"{c['answerer']['id']}/{c['answer']['mode']}" + ("_shuf" if c["answer"]["shuffle"] else "")
-    if c["answerer"].get("backend") in ("anthropic", "claude_cli"):
+    if c["answerer"].get("backend") in ("anthropic", "claude_cli") or c["answer"]["shuffle"]:
         name += f"/R{c['answer'].get('replicate', 1)}"
     return name, {k: ROOT / v for k, v in meta["stage_dirs"].items()}
 

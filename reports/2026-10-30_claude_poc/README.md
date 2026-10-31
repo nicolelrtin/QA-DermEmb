@@ -1,5 +1,7 @@
 # Claude proof of concept: 2 images, 3 answerers, 4 Claude replicates (2026-10-30)
 
+**Write-up as a scientific letter, with the follow-up shuffle experiments and Figures 1–5:** [letter.md](letter.md). This README is the working report for the first batch.
+
 **Question:** how do Claude's answers compare with Qwen's and SkinGPT-R1's on the same two images and the same
 500 question pairs? How consistent is Claude between replicates and between ways of asking?
 

@@ -1,0 +1,1 @@
+answer: {mode: topic, shuffle: true}    # M_topic with question order shuffled inside each prompt; order differs per replicate (rep group)

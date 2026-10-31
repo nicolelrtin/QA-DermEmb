@@ -63,6 +63,8 @@ def key(cfg, ctx) -> dict:
     if cfg.answerer.backend in CLAUDE:  # not deterministic: replicates are separate runs
         out["claude"] = {"model": cfg.claude.model, "effort": cfg.claude.effort, "max_tokens": cfg.claude.max_tokens}
         out["replicate"] = a.replicate
+    elif a.shuffle and a.replicate != 1:  # shuffled replicates differ by question order (replicate 1 keeps the old key)
+        out["replicate"] = a.replicate
     if cfg.answerer.backend == "claude_cli":
         out["claude_cli"] = {"system_prompt": cfg.claude_cli.system_prompt, "schema": "exact_length"}
     return out
@@ -79,7 +81,7 @@ def plan_unit(cfg, unit_id: str, qs: pd.DataFrame) -> list[list[list[str]]]:
         raise SystemExit("answer.mode=topic needs a Topic column in the question CSV")
     batches = [list(g.item_id) for _, g in qs.groupby(keys, sort=False)]
     if a.shuffle:
-        rng = random.Random(cfg.seed * 1_000_003 + zlib.crc32(unit_id.encode()))
+        rng = random.Random(cfg.seed * 1_000_003 + zlib.crc32(unit_id.encode()) + 104_729 * (a.replicate - 1))
         for b in batches:
             rng.shuffle(b)
     return [[b] for b in batches]
