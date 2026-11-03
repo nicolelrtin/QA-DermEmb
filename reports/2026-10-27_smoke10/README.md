@@ -25,7 +25,7 @@ For each mode (`__stateless`, `__topic`, `__all`) there are four values:
 
 ## What was run
 
-All runs use Qwen2.5-VL-7B-Instruct (fp16) and your edited prompts (`qaemb/prompts/*_v1.txt`).
+All runs use Qwen2.5-VL-7B-Instruct (fp16) and your edited prompts (`inputs/prompts/*_v1.txt`).
 Questions are `DermQs_Source-1015FT_Prompt-C_N-500_Negated.csv`: 500 originals plus 500 complements.
 
 | Run report | Experiments | What it tests |
@@ -113,4 +113,4 @@ run. Leave-one-out AUROCs (0.4–0.6) on 8 images carry no information.
 ## Earlier runs (superseded)
 
 The 2026-10-23 smoke runs (`outputs/qaemb/runs/20261023-*`) used the original prompts, no complements,
-and random batches of 10. They are kept in `experiments_log.md` but have no report.md.
+and random batches of 10. They are kept in [experiments_log.md](../experiments_log.md) but have no report.md.

@@ -65,7 +65,7 @@ stage's output changes for the same settings).
 
 ## 5. Questions
 
-- **Source:** `2026-10-15 Generated Questions/DermQs_Source-1015FT_Prompt-C_N-500_Negated.csv`, read-only.
+- **Source:** `inputs/questions/2026-10-15/DermQs_Source-1015FT_Prompt-C_N-500_Negated.csv`, read-only.
   Columns are `Question ID, Topic, Question, Sources cited (Local ID), Grounding, original`.
   500 originals (`original = 1`) and their 500 negated complements (`original = 0`, same ID),
   for 1,000 items. There are 41 topics, with 1 to 63 questions each (about 12 on average).
@@ -87,7 +87,7 @@ stage's output changes for the same settings).
 
 ## 6. Answering
 
-- **Prompt** (your edited templates, `qaemb/prompts/stateless_whole_v1.txt`):
+- **Prompt** (your edited templates, `inputs/prompts/stateless_whole_v1.txt`):
   "This is an image of skin. / {question} / Answer with Yes or No." in Qwen's chat format, with the image first.
   The patch template says "This is an image of a patch of skin. Answer about this region only."
 - **P(yes):** at the first assistant token, P(yes) = P(Yes-tokens) / (P(Yes-tokens) + P(No-tokens)), where the
@@ -235,7 +235,7 @@ With 10 images this shows reliability, not predictive value.
   Two IDs from one group are rejected.
 - **Per run:** `outputs/qaemb/runs/<run_id>/run_meta.json` (full config, stage hashes, model revision
   `cc594898…`, library versions, GPU, git commit, seeds, wall time), `report.md`, a row in
-  `experiments_log.md`, and an MLflow run (`outputs/mlflow.db`).
+  `reports/experiments_log.md`, and an MLflow run (`outputs/mlflow.db`).
 - **Per batch of experiments:** a write-up in `reports/<date>_<name>/`.
 - **Comparisons:** `python -m qaemb.report compare <run_id> … --out reports/<name>`.
 
@@ -266,7 +266,7 @@ With 10 images this shows reliability, not predictive value.
 |---|---|
 | Code | `qaemb/` (stages, answerer, models, `report.py`, `docs.py`) |
 | Config and experiments | `conf/base.yaml`, `conf/exp/` |
-| Questions and annotations | `2026-10-15 Generated Questions/DermQs_Source-1015FT_Prompt-C_N-500_Negated.csv`, `…_annotations.csv` |
+| Questions and annotations | `inputs/questions/2026-10-15/DermQs_Source-1015FT_Prompt-C_N-500_Negated.csv`, `…_annotations.csv` |
 | Smoke-test write-up and comparison CSVs | `reports/2026-10-27_smoke10/` |
 | Run reports and raw outputs (not in git) | `outputs/qaemb/` |
-| Original plan | `handoff/HANDOFF_QA-Emb-Derm.md` |
+| Original plan | `inputs/handoff/HANDOFF_QA-Emb-Derm.md` |

@@ -5,7 +5,7 @@
 set -euo pipefail
 
 DERM1M_COMMIT="92d8fa9d9775aaf65bf3150c998d32daf4f1d32f"  # main @ 2026-08-11
-ROOT="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DEST="$ROOT/third_party/Derm1M"
 
 if [ ! -d "$DEST/.git" ]; then

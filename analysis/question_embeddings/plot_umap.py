@@ -1,7 +1,7 @@
 """2D UMAP of question embeddings, one panel per model, coloured by question set.
 
 Run after embed_questions.py:
-  python "Question Embeddings/plot_umap.py"
+  python analysis/question_embeddings/plot_umap.py
 
 UMAP is fitted on all four sets together (per model), so within a panel the sets share
 one map and gaps/overlaps are comparable. Axes are unitless; distances between panels

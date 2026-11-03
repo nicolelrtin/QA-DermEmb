@@ -250,7 +250,7 @@ def log_markdown(cfg, meta: dict, summaries: dict, report: Path) -> None:
     key = summaries.get("model", {}).get("key_metric") or summaries.get("answer", {}).get("key_metric") or ""
     exps = ",".join(meta["experiments"].values())
     with open(path, "a") as f:
-        link = report.relative_to(path.parent).as_posix().replace(" ", "%20")
+        link = Path(os.path.relpath(report, path.parent)).as_posix().replace(" ", "%20")
         f.write(f"| [{meta['run_id']}]({link}) | {exps} | {hashes} | {key} | {cfg.tag} |\n")
 
 

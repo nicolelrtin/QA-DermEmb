@@ -5,8 +5,8 @@ groups with k-means, and each topic joins the group holding most of its question
 on questions rather than one point per topic weights topics by size, so large topics split
 the dense regions into several groups and one-question topics cannot form groups of their
 own. Run after embed_questions.py:
-  python "Question Embeddings/group_topics.py"            # 12 groups from Qwen3 embeddings
-  python "Question Embeddings/group_topics.py" --k 8 --model panderm
+  python analysis/question_embeddings/group_topics.py            # 12 groups from Qwen3 embeddings
+  python analysis/question_embeddings/group_topics.py --k 8 --model panderm
 
 Writes a draft into topic_map.csv (section -> topic, the file the plot scripts read) and
 prints each group's members with their purity (share of the topic's questions that

@@ -2,7 +2,7 @@
 
 One folder per experiment batch, newest first. Each folder has a README with the purpose, the runs, the results and
 links to the data. Every individual run also writes `outputs/qaemb/runs/<run_id>/report.md`
-(indexed in [../experiments_log.md](../experiments_log.md)).
+(indexed in [experiments_log.md](experiments_log.md)).
 
 | Date | Report | Summary |
 |---|---|---|

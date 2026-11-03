@@ -2,12 +2,22 @@
 
 Dermatology question generation and analysis. Poetry environment `qa-dermemb` (Python 3.11).
 
-| Folder | What it does |
-|---|---|
-| `2026-10-08 Generated Questions/` | Four CSV question sets (500 each), generated with different methods |
-| `Question Embeddings/` | Embeds all four sets with three models and plots coverage with UMAP |
-| `Image Analysis/` | PanDerm image embeddings, zero-shot diagnosis, question relevance per image |
-| `dermlip.py` | Shared DermLIP-PanDerm loader used by both |
+## Layout
+
+| Folder | Kind | What it holds |
+|---|---|---|
+| `inputs/questions/` | inputs | Question sets by generation date (`2026-10-08/`, `2026-10-15/`); the pipeline reads `2026-10-15/DermQs_Source-1015FT_Prompt-C_N-500_Negated.csv` and its `_annotations.csv`. Read-only |
+| `inputs/prompts/` | inputs | Prompt templates (`<name>_v<N>.txt`). Never edit one in place: save a new version. Each run records the name and content hash of the prompt it used, shown in every report's Runs covered table |
+| `inputs/sources/` | inputs | Dermatology reference list and assessment notes behind the questions |
+| `inputs/handoff/` | inputs | Original project plan (`HANDOFF_QA-Emb-Derm.md`; not in git) |
+| `data/` | inputs | Images and `manifest.csv` (not in git). Read-only |
+| `conf/` | code workflow | Pipeline config: `base.yaml` and experiments in `exp/<group>/<ID>.yaml`; plain-language meaning of every ID in `exp/glossary.yaml` |
+| `qaemb/` | code workflow | QA-Emb pipeline: stages, answerers, models, reports, the Claude queue |
+| `analysis/` | code workflow | Earlier stand-alone analyses: question embeddings + UMAP (`question_embeddings/`), PanDerm image analysis (`image_analysis/`), shared DermLIP loader (`dermlip.py`) |
+| `reports/` | reports | One folder per experiment batch (`<date>_<name>/`), index in `reports/README.md`, one row per run in `reports/experiments_log.md` |
+| `outputs/` | generated | Stage caches, run records, MLflow, the queue (not in git) |
+| `infra/` | infrastructure | Environment setup (`setup_derm1m.sh`) and the cron entry for the Claude queue (`crontab.txt`); `pyproject.toml`/`poetry.lock` stay at the root |
+| `third_party/` | infrastructure | Derm1M fork fetched by `infra/setup_derm1m.sh` (not in git) |
 
 ## Models
 
@@ -24,7 +34,7 @@ PanDerm itself is image-only; its "text embedding" here is DermLIP's text tower,
 ```bash
 cd "<project folder>"
 poetry install                # creates ./.venv, prompt (qa-dermemb)
-./setup_derm1m.sh             # clones the Derm1M fork into third_party/ (pinned commit)
+infra/setup_derm1m.sh         # clones the Derm1M fork into third_party/ (pinned commit)
 hf auth login                 # or export HF_TOKEN
 poetry shell
 ```
@@ -32,11 +42,11 @@ poetry shell
 ## Question coverage (UMAP)
 
 ```bash
-python "Question Embeddings/embed_questions.py"     # ~25 GB of downloads on first run
-python "Question Embeddings/plot_umap.py"
+python analysis/question_embeddings/embed_questions.py     # ~25 GB of downloads on first run
+python analysis/question_embeddings/plot_umap.py
 ```
 
-Outputs in `Question Embeddings/outputs/`:
+Outputs in `analysis/question_embeddings/outputs/`:
 - `umap_<model>_by_set.png`: one panel per set, highlighted over the others in gray (best view of coverage)
 - `umap_<model>.png`, `umap_all.png`: all sets overlaid, per model and side by side
 - `umap_coords.csv`: every point with its question text, for looking up clusters
@@ -44,12 +54,12 @@ Outputs in `Question Embeddings/outputs/`:
 ## Image analysis (PanDerm)
 
 ```bash
-python "Image Analysis/panderm_image_analysis.py" path/to/images \
+python analysis/image_analysis/panderm_image_analysis.py path/to/images \
     --labels melanoma nevus "basal cell carcinoma" "seborrheic keratosis" \
-    --questions "2026-10-08 Generated Questions/2026-10-13_binary_dermal_image_questions_A.csv"
+    --questions inputs/questions/2026-10-08/2026-10-13_binary_dermal_image_questions_A.csv
 ```
 
-Writes `image_embeddings.npy`, `zero_shot.csv` and `question_relevance.csv` (top-10 most relevant questions per image; relevance, not answers) to `Image Analysis/outputs/`.
+Writes `image_embeddings.npy`, `zero_shot.csv` and `question_relevance.csv` (top-10 most relevant questions per image; relevance, not answers) to `analysis/image_analysis/outputs/`.
 
 DermLIP weights are CC BY-NC-ND 4.0: non-commercial research only, no redistribution.
 
@@ -57,7 +67,7 @@ DermLIP weights are CC BY-NC-ND 4.0: non-commercial research only, no redistribu
 
 Interpretable dermoscopy embeddings: Qwen2.5-VL answers yes/no dermatology questions per image (and per
 grid patch), P(yes) from the Yes/No logits becomes the feature vector, and linear/MIL classifiers predict
-malignant vs benign. Plan and decisions: `handoff/HANDOFF_QA-Emb-Derm.md`.
+malignant vs benign. Plan and decisions: `inputs/handoff/HANDOFF_QA-Emb-Derm.md`.
 
 ```bash
 python -m qaemb.run stage=<manifest|prepare|answer|embed|model|all> +exp=[<ID>,...] tag=<text> [key=value ...]
@@ -73,7 +83,7 @@ python -m qaemb.report cost <answer_dir> --images 1000 --G 4 --questions 1000 --
 - **Labels**: `label_2c` (malignant 1, benign 0). `label.indeterminate`: `holdout` (default; label -1, answered
   and scored but never fitted or in metrics), `drop`, `benign`, `malignant`.
 - **Splits**: grouped by `lesion_id` (no patient ID available), stratified 70/15/15; `D0_smoke10` uses leave-one-out.
-- **Questions**: `2026-10-15 Generated Questions/DermQs_Source-1015FT_Prompt-C_N-500_Negated.csv`. Each
+- **Questions**: `inputs/questions/2026-10-15/DermQs_Source-1015FT_Prompt-C_N-500_Negated.csv`. Each
   Question ID appears twice: `original = 1` (as written) and `original = 0` (its negated complement). Drafted
   `scope` (local/global/metadata) and `kind` (clinical/artefact) live in the sidecar `..._annotations.csv`,
   keyed by Question ID. The question-set hash covers (ID, original, text) only.
@@ -100,7 +110,7 @@ python -m qaemb.report cost <answer_dir> --images 1000 --G 4 --questions 1000 --
 - **Tokens**: every run report has a Tokens section (per run, per image, per question) and writes
   `tokens_by_image.csv` / `tokens_by_question.csv` next to it.
 - **Reports**: every run writes `outputs/qaemb/runs/<run_id>/report.md` (what ran, stage outputs, results,
-  metrics, top questions, link to `answers_readable.csv`), linked from `experiments_log.md`. Each experiment
+  metrics, top questions, link to `answers_readable.csv`), linked from `reports/experiments_log.md`. Each experiment
   batch gets a write-up in `reports/<date>_<name>/` (tracked in git); index in `reports/README.md`.
 - **Run records**: `outputs/qaemb/runs/<run_id>/run_meta.json`, MLflow at `outputs/mlflow.db`
-  (`mlflow ui --backend-store-uri sqlite:///outputs/mlflow.db`), one row per run in `experiments_log.md`.
+  (`mlflow ui --backend-store-uri sqlite:///outputs/mlflow.db`), one row per run in `reports/experiments_log.md`.

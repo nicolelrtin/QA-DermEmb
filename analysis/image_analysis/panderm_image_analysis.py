@@ -8,11 +8,11 @@ For a folder of skin images this script:
      PanDerm considers most relevant to each image -> outputs/question_relevance.csv
      This is relevance, not an answer: CLIP-style models cannot answer yes/no questions.
 
-Usage (from the project root, inside `poetry shell`, after ./setup_derm1m.sh):
-  python "Image Analysis/panderm_image_analysis.py" path/to/images
-  python "Image Analysis/panderm_image_analysis.py" path/to/images \\
+Usage (from the project root, inside `poetry shell`, after infra/setup_derm1m.sh):
+  python analysis/image_analysis/panderm_image_analysis.py path/to/images
+  python analysis/image_analysis/panderm_image_analysis.py path/to/images \\
       --labels melanoma nevus "basal cell carcinoma" "seborrheic keratosis" \\
-      --questions "2026-10-08 Generated Questions/2026-10-13_binary_dermal_image_questions_A.csv"
+      --questions "inputs/questions/2026-10-08/2026-10-13_binary_dermal_image_questions_A.csv"
 """
 import argparse
 import sys

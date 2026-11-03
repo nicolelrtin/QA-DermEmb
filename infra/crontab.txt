@@ -1,0 +1,3 @@
+# Cron entry that resumes the Claude subscription queue (qaemb/queue.py) every 15 minutes.
+# Install with: (crontab -l; grep -v '^#' infra/crontab.txt) | crontab -
+*/15 * * * * cd /home/ntin/Documents/QA-DermEmb && PATH=/home/ntin/.local/bin:/usr/local/bin:/usr/bin:/bin PYTHONUNBUFFERED=1 /home/ntin/.local/bin/poetry run python -m qaemb.queue run >> outputs/qaemb/queue/cron.log 2>&1

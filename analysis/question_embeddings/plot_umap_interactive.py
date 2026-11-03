@@ -3,7 +3,7 @@
 Run after plot_umap.py (it reads the UMAP coordinates that script saves, so the static and
 interactive plots show the same maps). Topics are looked up fresh from topic_map.csv, so
 after editing the map you only need to re-run this script:
-  python "Question Embeddings/plot_umap_interactive.py"
+  python analysis/question_embeddings/plot_umap_interactive.py
 
 Writes outputs/umap_interactive.html. Open it in any browser (in VS Code: right-click the
 file -> "Open with Live Preview", or download it). In the page you can

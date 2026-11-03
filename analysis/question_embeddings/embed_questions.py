@@ -6,8 +6,8 @@ Models
   skingpt    SkinGPT-R1 language model (Qwen2.5-VL-7B + derm LoRA), mean-pooled hidden states
 
 Usage (from the project root, inside `poetry shell`):
-  python "Question Embeddings/embed_questions.py"                 # all three models
-  python "Question Embeddings/embed_questions.py" --models qwen3  # just one
+  python analysis/question_embeddings/embed_questions.py                 # all three models
+  python analysis/question_embeddings/embed_questions.py --models qwen3  # just one
 
 Writes outputs/questions.csv (one row per question) and outputs/emb_<model>.npy
 (row-aligned with questions.csv, L2-normalised).
@@ -34,11 +34,11 @@ import torch
 from tqdm import tqdm
 
 HERE = Path(__file__).resolve().parent
-ROOT = HERE.parent
-sys.path.insert(0, str(ROOT))
+ROOT = HERE.parents[1]
+sys.path.insert(0, str(HERE.parent))  # analysis/: dermlip.py
 from dermlip import encode_texts, load_dermlip, pick_device  # noqa: E402
 
-QUESTIONS_DIR = ROOT / "2026-10-15 Generated Questions"
+QUESTIONS_DIR = ROOT / "inputs" / "questions" / "2026-10-15"
 # file -> short label used in plots
 QUESTION_SETS = {
     "DermQs_Source-1015A_Prompt-C_N-500.csv" : "Abstract - N500",

@@ -9,7 +9,7 @@ paths:
   out_root: outputs/qaemb        # content-addressed stage dirs: <out_root>/<stage>/<hash>/
   mlflow_uri: sqlite:///outputs/mlflow.db
   mlflow_artifacts: outputs/mlruns
-  experiments_log: experiments_log.md
+  experiments_log: reports/experiments_log.md
 
 data:
   name: beta_10class_100each
@@ -39,8 +39,8 @@ split:
   fractions: {train: 0.70, val: 0.15, test: 0.15}
 
 questions:
-  csv: "2026-10-15 Generated Questions/DermQs_Source-1015FT_Prompt-C_N-500_Negated.csv"
-  annotations: "2026-10-15 Generated Questions/DermQs_Source-1015FT_Prompt-C_N-500_annotations.csv"  # scope/kind by Question ID
+  csv: "inputs/questions/2026-10-15/DermQs_Source-1015FT_Prompt-C_N-500_Negated.csv"
+  annotations: "inputs/questions/2026-10-15/DermQs_Source-1015FT_Prompt-C_N-500_annotations.csv"  # scope/kind by Question ID
   id_column: question id         # matched case-insensitively
   text_column: question
   original_column: original      # 1 = question as written, 0 = negated complement (same Question ID)
@@ -97,7 +97,7 @@ answer:
   shard_questions: 100           # checkpoint granularity within a unit
   threshold: 0.5                 # answer_bin = p_yes >= threshold (applied at S4)
   adj_threshold: 0.0             # answer_adj_bin = p_adj >= adj_threshold
-  prompts:
+  prompts:                       # template names in inputs/prompts/<name>.txt
     whole: stateless_whole_v1
     patch: stateless_patch_v1
     batched_whole: batched_whole_v1

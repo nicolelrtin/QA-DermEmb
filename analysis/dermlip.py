@@ -1,7 +1,7 @@
 """Shared loader for DermLIP-PanDerm (PanDerm-base vision tower + PubMedBERT text tower).
 
 The model only loads through the open_clip fork in the Derm1M repo, which builds the
-PanDerm CAE ViT. Run ./setup_derm1m.sh once to fetch it into third_party/.
+PanDerm CAE ViT. Run infra/setup_derm1m.sh once to fetch it into third_party/.
 Weights are gated: request access at
 https://huggingface.co/redlessone/DermLIP_PanDerm-base-w-PubMed-256 (auto-approved).
 """
@@ -11,7 +11,7 @@ from pathlib import Path
 import torch
 
 MODEL_ID = "hf-hub:redlessone/DermLIP_PanDerm-base-w-PubMed-256"
-DERM1M_SRC = Path(__file__).resolve().parent / "third_party" / "Derm1M" / "src"
+DERM1M_SRC = Path(__file__).resolve().parents[1] / "third_party" / "Derm1M" / "src"
 
 
 def pick_device(requested: str | None = None) -> str:
@@ -26,7 +26,7 @@ def pick_device(requested: str | None = None) -> str:
 
 def _import_fork():
     if not DERM1M_SRC.exists():
-        raise SystemExit(f"Derm1M fork not found at {DERM1M_SRC}. Run ./setup_derm1m.sh first.")
+        raise SystemExit(f"Derm1M fork not found at {DERM1M_SRC}. Run infra/setup_derm1m.sh first.")
     if str(DERM1M_SRC) not in sys.path:
         sys.path.insert(0, str(DERM1M_SRC))
     import open_clip

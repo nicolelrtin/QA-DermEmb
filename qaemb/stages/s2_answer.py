@@ -25,7 +25,7 @@ from ..config import ROOT, stable_hash
 
 UPSTREAM = ["prepare"]
 VERSION = 2
-PROMPTS = Path(__file__).resolve().parent.parent / "prompts"
+PROMPTS = ROOT / "inputs" / "prompts"
 CLAUDE = ("anthropic", "claude_cli")
 
 
