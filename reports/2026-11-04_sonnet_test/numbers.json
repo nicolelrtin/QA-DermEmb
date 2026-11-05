@@ -1,0 +1,71 @@
+{
+ "sonnet_run": "20261104-221846_sonnet-test",
+ "sonnet_calls": 82,
+ "sonnet_usd": 1.09,
+ "sonnet_usd_per_prompt": 0.01329268292682927,
+ "opus_topic_usd_per_prompt": {
+  "min": 0.015,
+  "median": 0.022073170731707316,
+  "max": 0.029939024390243905
+ },
+ "contradiction_pct": {
+  "sonnet": 6.6000000000000005,
+  "opus_replicates": [
+   3.5999999999999996,
+   4.2,
+   3.8,
+   6.4
+  ]
+ },
+ "yes_to_Qo_pct": {
+  "sonnet": 13.8,
+  "opus_replicates": [
+   17.8,
+   17.8,
+   16.8,
+   17.4
+  ]
+ },
+ "mean_confidence_Qo": {
+  "sonnet": 0.6544,
+  "opus": 0.6954400000000001
+ },
+ "summary": {
+  "Opus self-agreement (mean of 4)": {
+   "rho P(Y|Qo)": 0.983,
+   "rho Net_P": 0.99,
+   "rho Directional_Score": 0.99,
+   "rho Coherence_Score": 0.99,
+   "rho confidence(Qo)": 0.959,
+   "same yes/no to Qo (%)": 98.15,
+   "same verdict (%)": 96.35,
+   "same 3-way Directional_Score (%)": 96.6,
+   "same 3-way Coherence_Score (%)": 95.85,
+   "mean |\u0394 Net_P|": 0.036
+  },
+  "Sonnet vs single Opus replicate (mean of 4)": {
+   "rho P(Y|Qo)": 0.925,
+   "rho Net_P": 0.918,
+   "rho Directional_Score": 0.924,
+   "rho Coherence_Score": 0.918,
+   "rho confidence(Qo)": 0.822,
+   "same yes/no to Qo (%)": 93.65,
+   "same verdict (%)": 88.55,
+   "same 3-way Directional_Score (%)": 85.55,
+   "same 3-way Coherence_Score (%)": 89.75,
+   "mean |\u0394 Net_P|": 0.13
+  },
+  "Sonnet vs mean of 4 Opus": {
+   "rho P(Y|Qo)": 0.932,
+   "rho Net_P": 0.923,
+   "rho Directional_Score": 0.929,
+   "rho Coherence_Score": 0.923,
+   "rho confidence(Qo)": 0.84,
+   "same yes/no to Qo (%)": 94.0,
+   "same verdict (%)": 88.2,
+   "same 3-way Directional_Score (%)": 85.8,
+   "same 3-way Coherence_Score (%)": 90.8,
+   "mean |\u0394 Net_P|": 0.127
+  }
+ }
+}

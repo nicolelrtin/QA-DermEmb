@@ -1,0 +1,8 @@
+# Claude Sonnet 5.5 through `claude -p` on the Claude subscription: the same prompts and settings as
+# ANS_claude_opus_cli with a smaller, cheaper model (cost/agreement test, 2026-11-04).
+answerer:
+  backend: claude_cli
+  id: claude-sonnet-cli
+  checkpoint: claude-sonnet-5-5
+claude:
+  model: claude-sonnet-5-5

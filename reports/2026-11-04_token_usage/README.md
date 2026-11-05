@@ -116,6 +116,7 @@ The grid is the whole image (`G1`) except for the two patch runs, which used `G2
   [2026-10-30 letter](../2026-10-30_claude_poc/letter.md) found that dropping the negations and keeping Claude's stated
   confidence loses almost nothing (ρ = 0.96).
 - **Keeping the negations doubles every number in the table.**
+- **Sonnet instead of Opus** cost about 60% as much per prompt in a one-image test; see [the Sonnet test](../2026-11-04_sonnet_test/README.md) (topic, 1,000 images, no negations: about $370–740).
 - **The weekly limit is shared with all other Claude use on the same account,** including Claude Code. The Batch API
   would be cheaper than the list price but needs a separate Console account; check current API pricing before budgeting.
 - **Correction:** on 2026-11-04 I estimated that Claude topic prompts for 1,000 images would take "several weeks" of the

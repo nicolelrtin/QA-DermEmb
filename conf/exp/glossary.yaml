@@ -2,6 +2,7 @@
 # Not read by the pipeline itself, so editing it changes no results or cache hashes.
 data:
   D0_smoke10: 10 smoke images, one per diagnostic class (leave-one-out split; plumbing only)
+  D0_poc1: 1 smoke image, ISIC_0000147 (melanoma), for single-image answerer tests
   D0_poc2: 2 smoke images, ISIC_0000147 and ISIC_0000215 (Claude proof of concept)
   D1_train: full manifest, train/val/test split grouped by lesion
 qset:
@@ -14,6 +15,7 @@ answerer:
   ANS_qwen3b: Qwen2.5-VL-3B-Instruct, local; P(yes) read from the Yes/No word probabilities
   ANS_skingpt_r1: SkinGPT-R1 (dermatology fine-tune of Qwen2.5-VL-7B), local; reasoning skipped; P(yes) from Yes/No word probabilities
   ANS_claude_opus: Claude Opus 5.5 through the API (effort low); stated P(yes) and confidence
+  ANS_claude_sonnet_cli: Claude Sonnet 5.5 through claude -p on the Claude subscription (effort low); stated P(yes) and confidence
   ANS_claude_opus_cli: Claude Opus 5.5 through claude -p on the Claude subscription (effort low); stated P(yes) and confidence
 mode:
   M_stateless: one question per prompt
