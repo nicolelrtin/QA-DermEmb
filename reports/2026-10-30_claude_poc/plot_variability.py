@@ -1,7 +1,7 @@
 """Answer variability per original question ID (2026-10-30 Claude PoC): Claude replicate to replicate, and
 stateless vs topic for each model, shown separately for each image.
 
-Every box is one value per question ID, |difference in p_adj| (0 = identical answer, 2 = certain and opposite).
+Every box is one value per question ID, |difference in Net_P| (0 = identical answer, 2 = certain and opposite).
 Claude comparisons average over every pair of individual replicates, so they compare single runs, like the
 one-run local models.
 
@@ -62,6 +62,21 @@ def boxes(ax, groups):
     ax.spines["bottom"].set_color(GRID)
 
 
+def highlight_changes(ax, v: pd.Series, x: float) -> None:
+    """Overlay Claude's flagged questions (claude_stateless_vs_topic.csv, from claude_mode_changes.py) on its
+    stateless-vs-topic boxes: filled = verdict changed, open = large shift with the same verdict."""
+    flags = pd.read_csv(HERE / "claude_stateless_vs_topic.csv").set_index(["image_id", "question_id"]).flag
+    rng = np.random.default_rng(0)
+    for j, img in enumerate(IMAGES):
+        for flag, style in (("large shift, same verdict", dict(facecolor="white", edgecolor="#c0392b", lw=0.8, s=12)),
+                            ("verdict changed", dict(color="#c0392b", lw=0, s=12))):
+            keys = flags[(flags == flag)].xs(img, level="image_id").index
+            y = v.xs(img, level="image_id").reindex(keys)
+            xs = x + (j - 0.5) * 0.34 + rng.uniform(-0.12, 0.12, len(y))
+            ax.scatter(xs, y, zorder=4, alpha=0.85, label=f"Claude: {flag}" if j == 0 else None, **style)
+    ax.legend(frameon=False, loc="upper right", fontsize=9, labelcolor=INK2)
+
+
 def main():
     plt.rcParams.update({"font.family": "Liberation Sans", "text.color": INK})
     t = p_adj_table()
@@ -75,8 +90,9 @@ def main():
     fig.patch.set_facecolor(BG)
     boxes(a, reps)
     boxes(b, modes)
+    highlight_changes(b, modes[2][2], x=2)
     a.set_ylim(0, 1.6)
-    a.set_ylabel("Change in p_adj per question ID\n0 = same answer, 2 = certain and opposite", color=INK2, fontsize=10)
+    a.set_ylabel("Change in Net_P per question ID\n0 = same answer, 2 = certain and opposite", color=INK2, fontsize=10)
     a.set_title("Claude: replicate to replicate", loc="left", fontsize=11.5, color=INK, pad=10)
     b.set_title("Stateless vs topic mode", loc="left", fontsize=11.5, color=INK, pad=10)
 
@@ -85,9 +101,11 @@ def main():
              title="Each pair of boxes, per image", alignment="left", loc="upper right", frameon=False, fontsize=9.5,
              title_fontsize=9.5, labelcolor=INK2)
     fig.suptitle("How much do answers change between Claude replicates and between answer modes?",
-                 x=0.075, y=1.02, ha="left", fontsize=13.5, weight="bold", color=INK)
-    fig.text(0.075, 0.955, "500 question pairs (Q0_all), whole image (G1). Box = middle half of the 500 question IDs, "
-             "white line = median, whiskers = 5th to 95th percentile.", fontsize=9.5, color=INK2)
+                 x=0.075, y=1.06, ha="left", fontsize=13.5, weight="bold", color=INK)
+    fig.text(0.075, 0.975, "500 question pairs (Q0_all), whole image (G1). Box = middle half of the 500 question IDs, "
+             "white line = median, whiskers = 5th to 95th percentile.\n"
+             "Red points: Claude questions whose answer changes between stateless and topic "
+             "(list: claude_stateless_vs_topic.xlsx).", fontsize=9.5, color=INK2)
     fig.savefig(HERE / "variability_by_question.png", dpi=170, bbox_inches="tight", facecolor=BG)
 
 

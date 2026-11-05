@@ -91,6 +91,16 @@ slightly fewer contradictions. It is the better choice for scaling Claude to mor
 | [compare/summary.md](compare/summary.md) | the comparison tables and the full Runs covered table |
 | [replicates_claude_stateless/](replicates_claude_stateless/summary.md), [replicates_claude_topic/](replicates_claude_topic/summary.md) | every Claude replicate's values (`replicates_raw.csv`), their mean/SD per image × question (`replicates_summary.csv`) and a summary |
 
+**Added 2026-11-05: which Claude answers change between stateless and topic prompts.**
+- [claude_stateless_vs_topic.xlsx](claude_stateless_vs_topic.xlsx) and [.csv](claude_stateless_vs_topic.csv) list all
+  1,000 image × question answers, flagged rows first and highlighted. Both modes are the mean of 4 replicates.
+- **Verdict changed** (red): 94 answers, 66 on ISIC_0000147 and 28 on ISIC_0000215.
+- **Large shift, same verdict** (yellow): |Δ Directional_Score| ≥ 0.3 without a verdict change; 148 answers.
+- **Direction:** of the 242 flagged answers, 229 are lower in topic mode.
+- **Charts:** [claude_stateless_vs_topic.png](claude_stateless_vs_topic.png) plots Directional_Score, stateless against topic, per
+  question, and [variability_by_question.png](variability_by_question.png) now marks the flagged answers on Claude's
+  stateless-vs-topic boxes. Script: [claude_mode_changes.py](claude_mode_changes.py).
+
 ## Runs covered
 
 All runs use `D0_poc2` or `D0_smoke10` (images), `Q0_all` (all 500 question pairs) and `G1` (whole image only).
