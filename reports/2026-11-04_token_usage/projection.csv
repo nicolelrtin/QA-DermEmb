@@ -1,0 +1,7 @@
+answerer,mode,prompts,input_tokens_M,output_tokens_M,list_price_usd_low,list_price_usd_median,list_price_usd_high,basis,gpu_hours
+Claude Opus 5.5 (claude -p),stateless,500000,1028.3,130.3,4400.0,7550.0,10900.0,"4 runs, 2 images",
+Claude Opus 5.5 (claude -p),topic,41000,129.9,18.4,615.0,906.0,1226.0,"4 runs, 2 images",
+qwen2.5-vl-7b,stateless,500000,12.4,0.5,,,,"f8daf7e76c0e, 10 images",1.4
+qwen2.5-vl-7b,topic,41000,9.2,3.0,,,,"0b679433bc77, 10 images",6.0
+skingpt-r1,stateless,500000,18.4,0.5,,,,"7091feb3cc89, 10 images",1.7
+skingpt-r1,topic,41000,9.6,3.0,,,,"351302c291de, 10 images",5.9

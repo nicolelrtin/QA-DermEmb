@@ -89,10 +89,12 @@ python -m qaemb.report cost <answer_dir> --images 1000 --G 4 --questions 1000 --
   keyed by Question ID. The question-set hash covers (ID, original, text) only.
 - **Answer modes** (`mode` group): `M_stateless` (one question per sequence), `M_topic` (one prompt per
   original x topic), `M_all` (one prompt per original value). Originals and complements never share a prompt.
-- **Adjusted answer**: `p_adj = P(yes | original) - P(yes | complement)`, in [-1, 1]; near 0 means the model
-  gave the same answer to a question and its negation. It is the default feature (`F_adj`; also `F_adj_bin`,
-  `F_orig`, `F_orig_bin`). `incoherence = P(yes|orig) + P(yes|compl) - 1` (< 0: "no" to both) and the
-  contradiction rate are reported at S4.
+- **Pair scores** (S4, per question pair; Po = P(yes | original), Pc = P(yes | complement)):
+  `Net_P = Po - Pc` in [-1, 1] (near 0: the same answer to a question and its negation; feature `F_adj`, also
+  `F_adj_bin`); `P_w = Po x |Net_P|` (`F_w`); `Directional_Score = (2 Po - 1) x |Net_P|` (`F_dir`);
+  `Coherence_Score = (2 Po - 1) x (1 - |incoherence|)` (`F_coh`), with `incoherence = Po + Pc - 1` (< 0: "no" to both).
+  Both scores are +1 / -1 for a certain, coherent yes / no and 0 for a contradiction. `F_orig`, `F_orig_bin` use Po
+  alone. Older runs stored `p_adj`/`p_w`; reports recompute every score from P(yes), so they read either.
 - **Answerers** (`answerer` group): `ANS_qwen7b` (Qwen2.5-VL-7B, P(yes) from logits), `ANS_skingpt_r1` (SkinGPT-R1;
   its reasoning is skipped by starting its reply with `<think></think><answer> Final answer:`, so its next word is
   the answer), `ANS_claude_opus` (Claude Opus 5.5 via the Messages/Batch API, effort low: *stated* P(yes) and
@@ -105,7 +107,7 @@ python -m qaemb.report cost <answer_dir> --images 1000 --G 4 --questions 1000 --
   cron runs `python -m qaemb.queue run`. The runner pauses when 5-hour or weekly usage passes `claude_cli.stop_at`
   and continues after the reset; `python -m qaemb.queue status` shows progress. This usage is shared with your
   own Claude Code and claude.ai use.
-- **P_w** = P(yes | original) × |p_adj| (feature source `F_w`); Claude's stated confidence is kept per version.
+- **Claude's stated confidence** is kept per version (question and complement).
   `python -m qaemb.report replicates <run_id> …` aggregates replicates; `compare` accepts `A+B+C+D` to average them.
 - **Tokens**: every run report has a Tokens section (per run, per image, per question) and writes
   `tokens_by_image.csv` / `tokens_by_question.csv` next to it.

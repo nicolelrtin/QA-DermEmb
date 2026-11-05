@@ -4,11 +4,13 @@ of yes/no answers from Qwen2.5-VL-7B, SkinGPT-R1 and Claude Opus 5.5 on ISIC_000
     poetry run python reports/2026-10-30_claude_poc/make_figures.py
 
 Reads each run's embed/answers.parquet (one row per image x question x original/negated), writes
-figures/fig{1,2,3}.{pdf,png}, table1.csv and numbers.json (every number quoted in the letter).
+figures/fig{1..6}.{pdf,png}, table1.csv and numbers.json (every number quoted in the letter).
 """
 import json
 from itertools import combinations, product
 from pathlib import Path
+
+import sys
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -16,6 +18,8 @@ import pandas as pd
 
 HERE = Path(__file__).parent
 ROOT = HERE.parents[1]
+sys.path.insert(0, str(ROOT))
+from qaemb.stages.s4_embed import pair_scores  # noqa: E402  (Net_P, P_w, Directional_Score, Coherence_Score)
 RUNS = ROOT / "outputs" / "qaemb" / "runs"
 FIG = HERE / "figures"
 IMAGES = ["ISIC_0000147", "ISIC_0000215"]
@@ -64,7 +68,8 @@ def load(run_id: str) -> pd.DataFrame:
     o, c = (a[a.original == v].set_index(["image_id", "question_id"]) for v in (1, 0))
     d = pd.DataFrame({"p_o": o.p_yes, "p_c": c.p_yes, "conf_o": o.confidence, "conf_c": c.confidence,
                       "pos": o.position_in_batch / (o.batch_k - 1).clip(lower=1), "mass": np.minimum(o.yesno_mass, c.yesno_mass)})
-    d["p_adj"] = d.p_o - d.p_c
+    for k, v in pair_scores(d.p_o, d.p_c).items():
+        d[k] = v
     yo, yc = d.p_o >= 0.5, d.p_c >= 0.5
     d["verdict"] = np.select([yo & ~yc, ~yo & yc, ~yo & ~yc], VERDICTS[:3], VERDICTS[3])
     topics = pd.read_parquet(ROOT / meta["stage_dirs"]["embed"] / "questions.parquet").set_index("question_id").topic
@@ -72,9 +77,9 @@ def load(run_id: str) -> pd.DataFrame:
 
 
 def pair_mad(frames: list, other: list | None = None) -> pd.Series:
-    """Per image x question: |difference in p_adj| averaged over run pairs (within frames, or frames x other)."""
+    """Per image x question: |difference in Net_P| averaged over run pairs (within frames, or frames x other)."""
     pairs = list(combinations(frames, 2)) if other is None else list(product(frames, other))
-    return sum((a.p_adj - b.p_adj).abs() for a, b in pairs) / len(pairs)
+    return sum((a.Net_P - b.Net_P).abs() for a, b in pairs) / len(pairs)
 
 
 def style(ax, grid="y"):
@@ -180,7 +185,7 @@ def fig2(data, runs, num):
     keyed = lambda frames: [f.set_index(["image_id", "question_id"]) for f in frames]
     ax = fig.add_subplot(gs[0, 0])
     groups = [(lab, m, pair_mad(keyed(data[k]))) for lab, m, k in rep_groups]
-    paired_boxes(ax, groups, "|Δ p_adj| between replicates")
+    paired_boxes(ax, groups, "|Δ Net_P| between replicates")
     ax.set_ylim(0, 1.0)
     ax.set_title("Replicate to replicate [source of variation]", loc="left")
     for (lab, _, v), (_, _, k) in zip(groups, rep_groups):
@@ -190,7 +195,7 @@ def fig2(data, runs, num):
 
     ax = fig.add_subplot(gs[0, 1])
     groups = [(m, m, pair_mad(keyed(data[(m, "stateless")]), keyed(data[(m, "topic")]))) for m in MODELS]
-    paired_boxes(ax, groups, "|Δ p_adj|, stateless vs topic")
+    paired_boxes(ax, groups, "|Δ Net_P|, stateless vs topic")
     ax.set_ylim(0, 1.6)
     ax.set_title("Stateless vs topic prompt (fixed order)", loc="left")
     for lab, _, v in groups:
@@ -242,7 +247,7 @@ def fig2(data, runs, num):
 
 def fig3(data, runs, num):
     """Confidence: Claude's stated confidence vs stated P(yes), vs replicate variability and vs contradictions;
-    the local models' implicit confidence (decisiveness |p_adj|) vs variability under shuffling."""
+    the local models' implicit confidence (decisiveness |Net_P|) vs variability under shuffling."""
     fig = plt.figure(figsize=(7.2, 5.0))
     gs = fig.add_gridspec(2, 2, wspace=0.3, hspace=0.5, left=0.08, right=0.98, top=0.95, bottom=0.1)
     claude = pd.concat([pd.concat(data[("Claude", c)]).assign(cond=c) for c in CONDS if ("Claude", c) in data])
@@ -272,7 +277,7 @@ def fig3(data, runs, num):
         ax.errorbar(xs, g["mean"], yerr=1.96 * g["sem"], color=COL["Claude"][0], ls=ls, lw=1.1, marker="o", ms=2.5,
                     capsize=1.5, elinewidth=0.6, label=c)
         num.setdefault("claude_conf_vs_replicate_mad_spearman", {})[c] = round(d.conf.corr(d.mad, method="spearman"), 4)
-    ax.set(xlabel="Mean stated confidence (pair, binned)", ylabel="|Δ p_adj| between replicates", ylim=(0, None))
+    ax.set(xlabel="Mean stated confidence (pair, binned)", ylabel="|Δ Net_P| between replicates", ylim=(0, None))
     ax.set_title("Claude: confidence vs replicate variability (mean ± 95% CI)", loc="left")
     ax.legend(frameon=False, loc="upper right", handlelength=2)
     style(ax)
@@ -309,14 +314,14 @@ def fig3(data, runs, num):
         if len(fr) < 2:
             continue
         fr = [f.set_index(["image_id", "question_id"]) for f in fr]
-        dec = (sum(f.p_adj for f in fr) / len(fr)).abs()
+        dec = (sum(f.Net_P for f in fr) / len(fr)).abs()
         d = pd.DataFrame({"dec": dec, "mad": pair_mad(fr)})
         d["bin"] = pd.cut(d.dec, np.linspace(0, 1, 6), include_lowest=True)
         g = d.groupby("bin", observed=True).mad.agg(["mean", "sem"])
         ax.errorbar([b.mid for b in g.index], g["mean"], yerr=1.96 * g["sem"], color=COL[m][0], lw=1.1, marker="o",
                     ms=2.5, capsize=1.5, elinewidth=0.6, label=m)
         num.setdefault("coherence_weight_vs_shuffle_mad_spearman", {})[m] = round(d.dec.corr(d.mad, method="spearman"), 4)
-    ax.set(xlabel="Coherence weight w = |p_adj| (mean over replicates, binned)", ylabel="|Δ p_adj| between\nshuffled replicates",
+    ax.set(xlabel="Coherence weight w = |Net_P| (mean over replicates, binned)", ylabel="|Δ Net_P| between\nshuffled replicates",
            xlim=(0, 1), ylim=(0, 0.72))
     ax.set_title("Coherence weight vs variability under shuffling (mean ± 95% CI)", loc="left")
     ax.legend(frameon=False, loc="upper right", ncol=3)
@@ -326,20 +331,19 @@ def fig3(data, runs, num):
     fig.savefig(FIG / "fig3.png")
 
 
-def claude_reference(data) -> pd.DataFrame:
-    """Claude, stateless, mean of its 4 replicates: the reference answers for the agreement figures."""
-    fr = [f.set_index(["image_id", "question_id"]) for f in data[("Claude", "stateless")]]
-    ref = sum(f[["p_o", "p_c", "conf_o", "conf_c"]] for f in fr) / len(fr)
-    ref["p_adj"] = ref.p_o - ref.p_c
-    ref["verdict"] = verdicts(ref.p_o, ref.p_c)
+SCORE_COLS = ["Net_P", "Directional_Score", "Coherence_Score"]
+SCORE_SHORT = {"p_o": "P(Y|Qo)", "Net_P": "Net_P", "P_w": "P_w", "Directional_Score": "Directional", "Coherence_Score": "Coherence"}
+DEADBAND = 0.1  # |score| below this counts as "no clear answer" in the three-way agreement
+
+
+def claude_reference(data, cond="stateless") -> pd.DataFrame:
+    """Claude, mean of its 4 replicates (scores averaged per replicate): the reference for Figs 4-6."""
+    fr = [f.set_index(["image_id", "question_id"]) for f in data[("Claude", cond)]]
+    cols = ["p_o", "p_c", "conf_o", "conf_c", "P_w", *SCORE_COLS]
+    ref = sum(f[cols] for f in fr) / len(fr)
     ref["conf"] = (ref.conf_o + ref.conf_c) / 2
-    ref["topic"] = data[("Claude", "stateless")][0].set_index(["image_id", "question_id"]).topic
+    ref["topic"] = data[("Claude", cond)][0].set_index(["image_id", "question_id"]).topic
     return ref
-
-
-def verdicts(p_o, p_c):
-    yo, yc = p_o >= 0.5, p_c >= 0.5
-    return pd.Series(np.select([yo & ~yc, ~yo & yc, ~yo & ~yc], VERDICTS[:3], VERDICTS[3]), index=p_o.index)
 
 
 def kappa(x: pd.Series, y: pd.Series) -> float:
@@ -349,177 +353,242 @@ def kappa(x: pd.Series, y: pd.Series) -> float:
     return (po - pe) / (1 - pe)
 
 
-def agree(a: pd.DataFrame, ref: pd.DataFrame) -> pd.DataFrame:
-    """Per image x question: same yes/no answer as Claude (P(yes) >= 0.5) to the question and to its negation."""
-    return pd.DataFrame({"same_q": (a.p_o >= 0.5) == (ref.p_o >= 0.5), "same_neg": (a.p_c >= 0.5) == (ref.p_c >= 0.5)})
+def three_way(x: pd.Series) -> pd.Series:
+    """+1 yes, -1 no, 0 no clear answer (|score| < DEADBAND)."""
+    return np.sign(x).where(x.abs() >= DEADBAND, 0)
 
 
-def yes_no_table(ax, x, ref_x, title, label, num_key, num):
-    m = pd.crosstab(ref_x >= 0.5, x >= 0.5, normalize=True).reindex(index=[True, False], columns=[True, False], fill_value=0)
-    ax.imshow(m.values, cmap="Greens", vmin=0, vmax=0.8)
-    for (i, j), v in np.ndenumerate(m.values):
-        ax.text(j, i, f"{100 * v:.0f}%", ha="center", va="center", fontsize=7, color="white" if v > 0.45 else INK)
-    ax.set_xticks([0, 1], ["yes", "no"])
-    ax.set_yticks([0, 1], ["yes", "no"])
-    ax.set(xlabel=f"SkinGPT-R1 (stateless)", ylabel="Claude")
-    ax.tick_params(length=0)
-    ax.set_title(title, loc="left")
-    for sp in ax.spines.values():
-        sp.set_visible(False)
-    agree_ = np.trace(m.values)
-    k = kappa(x >= 0.5, ref_x >= 0.5)
-    ax.text(0.5, -0.5, f"agree on {agree_:.0%}, κ = {k:.2f}", transform=ax.transAxes, ha="center", fontsize=6.5, color=INK2)
-    num[num_key] = {"table_pct_claude_rows_yes_no": (100 * m.values).round(1).tolist(), "agree": round(agree_, 4), "kappa": round(k, 4)}
+def same_answer(a: pd.Series, b: pd.Series) -> pd.Series:
+    return three_way(a) == three_way(b)
+
+
+def score_hist(ax, ref, sk, col, title):
+    bins = np.linspace(-1, 1, 21)
+    ax.hist(ref[col], bins, histtype="stepfilled", color=COL["Claude"][1], label="Claude (mean of 4)")
+    for c, ls in (("stateless", "-"), ("topic", "--")):
+        ax.hist(sk[c][0][col], bins, histtype="step", color=COL["SkinGPT-R1"][0], ls=ls, lw=1.1, label=f"SkinGPT-R1 {c}")
+    ax.axvspan(-DEADBAND, DEADBAND, color=GRID, alpha=0.6, lw=0, zorder=0)
+    ax.set(xlabel=title, ylabel="Question × image", xlim=(-1, 1), xticks=[-1, 0, 1])
+    ax.set_ylim(0, ax.get_ylim()[1] * 1.45)  # headroom for the legend
+    style(ax)
+
+
+def score_scatter(ax, ref, f, col, num):
+    for j, img in enumerate(IMAGES):
+        ax.scatter(ref[col].xs(img, level="image_id"), f[col].xs(img, level="image_id"), s=3, lw=0, alpha=0.45,
+                   color=COL["SkinGPT-R1"][j], rasterized=True)
+    rho = ref[col].corr(f[col], method="spearman")
+    agree3 = same_answer(ref[col], f[col]).mean()
+    num.setdefault("claude_vs_skingpt_stateless", {})[col] = {"spearman": round(rho, 4), "three_way_agreement": round(agree3, 4)}
+    ax.axhline(0, color=GRID, lw=0.6, zorder=0)
+    ax.axvline(0, color=GRID, lw=0.6, zorder=0)
+    ax.set(xlim=(-1.05, 1.05), ylim=(-1.05, 1.05), xticks=[-1, 0, 1], yticks=[-1, 0, 1], aspect="equal",
+           xlabel=f"Claude {SCORE_SHORT[col]}", ylabel=f"SkinGPT-R1 {SCORE_SHORT[col]}")
+    ax.text(0.97, 0.03, f"ρ = {rho:.2f}\nsame answer {agree3:.0%}", transform=ax.transAxes, ha="right", va="bottom",
+            fontsize=6.3, bbox=dict(boxstyle="round,pad=0.25", fc="white", ec="none", alpha=0.9), zorder=5)
+    style(ax, grid=None)
 
 
 def fig4(data, num):
-    """SkinGPT-R1 against Claude (stateless, mean of 4 replicates), on P(yes | question) first; negations shown apart."""
+    """SkinGPT-R1 against Claude (stateless, mean of 4 replicates) on Directional_Score and Coherence_Score."""
     ref = claude_reference(data)
     sk = {c: [f.set_index(["image_id", "question_id"]) for f in data[("SkinGPT-R1", c)]] for c in CONDS}
     f = sk["stateless"][0]
-    fig = plt.figure(figsize=(7.2, 5.0))
-    gs = fig.add_gridspec(2, 4, width_ratios=[1.25, 1.1, 0.8, 0.8], hspace=0.75, wspace=0.55, left=0.07, right=0.98,
-                          top=0.94, bottom=0.1)
+    fig = plt.figure(figsize=(7.2, 5.4))
+    gs = fig.add_gridspec(2, 4, hspace=0.62, wspace=0.62, left=0.07, right=0.98, top=0.94, bottom=0.1)
 
+    for col in ("p_o", "p_c"):  # yes/no agreement on the questions and on the negations (text only)
+        num.setdefault("skingpt_stateless_yes_no_vs_claude", {})[col] = {
+            "kappa": round(kappa(f[col] >= 0.5, ref[col] >= 0.5), 4), "same": round(((f[col] >= 0.5) == (ref[col] >= 0.5)).mean(), 4),
+            "spearman": round(ref[col].corr(f[col], method="spearman"), 4)}
     ax = fig.add_subplot(gs[0, 0])
-    bins = np.linspace(0, 1, 21)
-    ax.hist(ref.p_o, bins, histtype="stepfilled", color=COL["Claude"][1], label="Claude (mean of 4)")
-    for c, ls in (("stateless", "-"), ("topic", "--")):
-        ax.hist(sk[c][0].p_o, bins, histtype="step", color=COL["SkinGPT-R1"][0], ls=ls, lw=1.1, label=f"SkinGPT-R1 {c}")
-    ax.set(xlabel="P(yes | question)", ylabel="Question × image", xlim=(0, 1))
-    ax.set_title("Answers to the questions", loc="left")
-    ax.legend(frameon=False, loc="upper center", fontsize=6)
-    for c in ("stateless", "topic"):
-        p = sk[c][0].p_o
-        num.setdefault("skingpt_extreme_share_q", {})[c] = round(float(((p < 0.05) | (p > 0.95)).mean()), 4)
-    num["claude_extreme_share_q"] = round(float(((ref.p_o < 0.05) | (ref.p_o > 0.95)).mean()), 4)
-    style(ax)
-    letter(ax, "a", x=-0.3)
-
+    score_hist(ax, ref, sk, "Directional_Score", "Directional_Score")
+    ax.set_title("Distributions", loc="left")
+    ax.legend(frameon=False, loc="upper left", fontsize=5.6, ncol=1, bbox_to_anchor=(0.12, 1.02))
+    letter(ax, "a", x=-0.42)
     ax = fig.add_subplot(gs[0, 1])
-    for j, img in enumerate(IMAGES):
-        ax.scatter(ref.p_o.xs(img, level="image_id"), f.p_o.xs(img, level="image_id"), s=3, lw=0, alpha=0.45,
-                   color=COL["SkinGPT-R1"][j], rasterized=True)
-    rho = ref.p_o.corr(f.p_o, method="spearman")
-    num["claude_vs_skingpt_stateless_spearman_p_q"] = round(rho, 4)
-    num["claude_vs_skingpt_stateless_spearman_p_neg"] = round(ref.p_c.corr(f.p_c, method="spearman"), 4)
-    num["claude_vs_skingpt_stateless_spearman_p_w"] = round((ref.p_o * ref.p_adj.abs()).corr(f.p_o * f.p_adj.abs(), method="spearman"), 4)
-    ax.set(xlim=(-0.03, 1.03), ylim=(-0.03, 1.03), xticks=[0, 0.5, 1], yticks=[0, 0.5, 1], aspect="equal",
-           xlabel="Claude P(yes | question)", ylabel="SkinGPT-R1 P(yes | question)")
-    ax.text(0.97, 0.5, f"Spearman\nρ = {rho:.2f}", transform=ax.transAxes, ha="right", va="center", fontsize=6.5,
-            bbox=dict(boxstyle="round,pad=0.25", fc="white", ec="none", alpha=0.9), zorder=5)
-    ax.set_title("Per question (stateless)", loc="left")
-    style(ax, grid=None)
-    letter(ax, "b", x=-0.36)
+    score_hist(ax, ref, sk, "Coherence_Score", "Coherence_Score")
+    ax.set_ylabel("")
+    for col in ("Directional_Score", "Coherence_Score"):
+        for c in ("stateless", "topic"):
+            v = sk[c][0][col]
+            num.setdefault("score_clear_share", {}).setdefault(col, {})[f"SkinGPT-R1 {c}"] = round(float((v.abs() >= DEADBAND).mean()), 4)
+        num["score_clear_share"][col]["Claude stateless"] = round(float((ref[col].abs() >= DEADBAND).mean()), 4)
 
-    yes_no_table(fig.add_subplot(gs[0, 2]), f.p_o, ref.p_o, "Questions", "q", "yes_no_table_q", num)
-    yes_no_table(fig.add_subplot(gs[0, 3]), f.p_c, ref.p_c, "Negated\nquestions", "neg", "yes_no_table_neg", num)
-    fig.axes[-2].text(-0.55, 1.2, "c", transform=fig.axes[-2].transAxes, fontsize=9, weight="bold")
+    ax = fig.add_subplot(gs[0, 2])
+    score_scatter(ax, ref, f, "Directional_Score", num)
+    ax.set_title("Per question (stateless)", loc="left")
+    letter(ax, "b", x=-0.5)
+    ax = fig.add_subplot(gs[0, 3])
+    score_scatter(ax, ref, f, "Coherence_Score", num)
 
     ax = fig.add_subplot(gs[1, :])
-    cats = [("questions", "p_o"), ("negated questions", "p_c")]
+    metrics = ["p_o", "Net_P", "P_w", "Directional_Score", "Coherence_Score"]
     shades = [COL["SkinGPT-R1"][0], COL["SkinGPT-R1"][1], "#c9ecdd"]
     for k, c in enumerate(CONDS):
-        for i, (_, col) in enumerate(cats):
-            per = [kappa(x[col] >= 0.5, ref[col] >= 0.5) for x in sk[c]]
-            raw = np.mean([((x[col] >= 0.5) == (ref[col] >= 0.5)).mean() for x in sk[c]])
+        for i, col in enumerate(metrics):
+            per = [ref[col].corr(x[col], method="spearman") for x in sk[c]]
             x = i + (k - 1) * 0.26
             ax.bar(x, np.mean(per), width=0.24, color=shades[k], edgecolor=COL["SkinGPT-R1"][0], lw=0.6, label=c if i == 0 else None)
             if len(per) > 1:
                 ax.scatter([x] * len(per), per, s=6, color=INK, zorder=3, lw=0)
-            ax.text(x, max(max(per), 0) + 0.02, f"κ {np.mean(per):.2f}\n({raw:.0%} same)", ha="center", fontsize=5.8, color=INK2)
-            num.setdefault("skingpt_agreement_with_claude", {}).setdefault(c, {})[col] = {
-                "kappa": [round(p_, 4) for p_ in per], "raw_agree_mean": round(raw, 4)}
+            ax.text(x, max(per) + 0.015, f"{np.mean(per):.2f}", ha="center", fontsize=6, color=INK2)
+            num.setdefault("skingpt_spearman_with_claude", {}).setdefault(c, {})[col] = [round(p_, 4) for p_ in per]
     qw = data[("Qwen", "stateless")][0].set_index(["image_id", "question_id"])
-    for i, (_, col) in enumerate(cats):
-        kq = kappa(qw[col] >= 0.5, ref[col] >= 0.5)
-        ax.plot([i - 0.42, i + 0.42], [kq] * 2, color=COL["Qwen"][0], lw=0.9, ls=(0, (3, 2)))
-        num.setdefault("qwen_stateless_agreement_with_claude", {})[col] = {
-            "kappa": round(kq, 4), "raw_agree": round(((qw[col] >= 0.5) == (ref[col] >= 0.5)).mean(), 4)}
+    for i, col in enumerate(metrics):
+        r = ref[col].corr(qw[col], method="spearman")
+        ax.plot([i - 0.42, i + 0.42], [r] * 2, color=COL["Qwen"][0], lw=0.9, ls=(0, (3, 2)))
+        num.setdefault("qwen_stateless_spearman_with_claude", {})[col] = round(r, 4)
     ax.plot([], [], color=COL["Qwen"][0], lw=0.9, ls=(0, (3, 2)), label="Qwen stateless, for scale")
-    ax.set_xticks(range(len(cats)), [c[0] for c in cats])
-    ax.set(ylim=(min(0, ax.get_ylim()[0]), 0.75), xlim=(-0.6, 1.6))
-    ax.axhline(0, color=INK2, lw=0.6)
-    ax.set_ylabel("Agreement with Claude\n(Cohen's κ; 0 = chance)")
+    ax.set_xticks(range(len(metrics)), [SCORE_SHORT[m] if m != "Directional_Score" else "Directional_Score"
+                                        for m in ["p_o", "Net_P", "P_w"]] + ["Directional_Score", "Coherence_Score"])
+    ax.set(ylim=(0, 0.75), xlim=(-0.6, len(metrics) - 0.4))
+    ax.set_ylabel("Spearman ρ with Claude")
     ax.tick_params(axis="x", length=0)
-    ax.set_title("SkinGPT-R1 agreement with Claude's yes/no answers, beyond chance (dots: the 4 shuffled replicates)", loc="left")
-    ax.legend(frameon=False, loc="upper right", ncol=2)
+    ax.set_title("SkinGPT-R1 rank agreement with Claude, per measure and prompt style (dots: the 4 shuffled replicates)", loc="left")
+    ax.legend(frameon=False, loc="upper left", ncol=4)
     style(ax)
-    letter(ax, "d", x=-0.075)
+    letter(ax, "c", x=-0.075)
     fig.savefig(FIG / "fig4.pdf")
     fig.savefig(FIG / "fig4.png")
 
 
 def fig5(data, num):
-    """Where SkinGPT-R1 agrees with Claude on the questions: by topic, Claude's confidence, SkinGPT-R1's stability."""
+    """Where SkinGPT-R1 gives the same answer as Claude (three-way: yes / no clear answer / no, |score| >= DEADBAND)."""
     ref = claude_reference(data)
     sk = {c: [f.set_index(["image_id", "question_id"]) for f in data[("SkinGPT-R1", c)]] for c in CONDS}
-    a = agree(sk["stateless"][0], ref)
-    shift = (sk["stateless"][0].p_o - sk["topic"][0].p_o).abs()
+    f = sk["stateless"][0]
+    a = {col: same_answer(ref[col], f[col]) for col in ("Directional_Score", "Coherence_Score")}
+    mk = {"Directional_Score": dict(marker="o", color=COL["SkinGPT-R1"][0]),
+          "Coherence_Score": dict(marker="D", facecolor="white", edgecolor=COL["SkinGPT-R1"][0], lw=0.8)}
     fig = plt.figure(figsize=(7.2, 6.4))
     gs = fig.add_gridspec(2, 2, width_ratios=[1.55, 1], hspace=0.5, wspace=0.12, left=0.33, right=0.98, top=0.93, bottom=0.08)
 
     ax = fig.add_subplot(gs[:, 0])
-    t = pd.DataFrame({"agree": a.same_q, "shift": shift, "topic": ref.topic}).groupby("topic").agg(
-        agree=("agree", "mean"), shift=("shift", "mean"), n=("agree", "size")).sort_values("agree")
+    t = pd.DataFrame({**{c: v.astype(float) for c, v in a.items()}, "topic": ref.topic}).groupby("topic").agg(
+        Directional_Score=("Directional_Score", "mean"), Coherence_Score=("Coherence_Score", "mean"),
+        n=("Directional_Score", "size")).sort_values("Directional_Score")
     y = np.arange(len(t))
     ax.hlines(y, 0, 1, color=GRID, lw=0.5)
-    ax.scatter(t.agree, y, s=14, color=COL["SkinGPT-R1"][0], zorder=3, label="same answer as Claude (stateless)")
-    ax.scatter(t["shift"].clip(upper=1), y, s=14, marker="D", facecolor="white", edgecolor=COL["SkinGPT-R1"][0], lw=0.8,
-               zorder=3, label="SkinGPT-R1 change, stateless vs topic")
+    for col in a:
+        ax.scatter(t[col], y, s=14, zorder=3, label=col, **mk[col])
     ax.set_yticks(y, [f"{n[:52] + '…' if len(n) > 53 else n} ({k})" for n, k in zip(t.index, t.n)], fontsize=5.6)
-    ax.set(xlim=(0, 1.03), ylim=(-0.8, len(t) - 0.2), xlabel="Share of questions (filled) or mean |Δ P(yes | question)| (open)")
+    ax.set(xlim=(0, 1.03), ylim=(-0.8, len(t) - 0.2), xlabel="Same answer as Claude (yes / no clear answer / no), share")
     ax.tick_params(axis="y", length=0)
-    ax.set_title("By topic (n = questions × 2 images)", loc="left")
-    ax.legend(frameon=True, facecolor="white", edgecolor="none", framealpha=0.95, loc="lower right", fontsize=6, handletextpad=0.2)
+    ax.set_title("By topic, stateless (n = questions × 2 images)", loc="left")
+    ax.legend(frameon=True, facecolor="white", edgecolor="none", framealpha=0.95, loc="lower right", fontsize=6)
     for s_ in ("top", "right", "left"):
         ax.spines[s_].set_visible(False)
-    num["topic_agreement_q"] = {k: round(v, 3) for k, v in t.agree.items()}
-    num["topic_agreement_vs_shift_spearman"] = round(t.agree.corr(t["shift"], method="spearman"), 4)
+    num["topic_three_way_agreement"] = t.round(3).to_dict(orient="index")
     letter(ax, "a", x=-0.62, y=1.01)
 
     ax = fig.add_subplot(gs[0, 1])
-    d = pd.DataFrame({"conf": ref.conf_o, "agree": a.same_q.astype(float)})
-    d["bin"] = pd.cut(d.conf, [0, 0.55, 0.65, 0.75, 0.85, 1.0])
-    g = d.groupby("bin", observed=True).agree.agg(["mean", "sem", "size"])
-    ax.errorbar([b.mid for b in g.index], g["mean"], yerr=1.96 * g["sem"], color=COL["SkinGPT-R1"][0], marker="o", ms=3,
-                lw=1.1, capsize=1.5, elinewidth=0.6)
-    for b, n_ in zip(g.index, g["size"]):
-        ax.text(b.mid, 0.04, f"n={n_}", ha="center", fontsize=5.5, color=INK2)
-    ax.set(ylim=(0, 1), yticks=[0, 0.5, 1], yticklabels=["0", "50", "100"], xlabel="Claude stated confidence (question, binned)",
+    for k, col in enumerate(a):
+        d = pd.DataFrame({"conf": ref.conf_o, "agree": a[col].astype(float)})
+        d["bin"] = pd.cut(d.conf, [0, 0.55, 0.65, 0.75, 0.85, 1.0])
+        g = d.groupby("bin", observed=True).agree.agg(["mean", "sem", "size"])
+        xs = np.array([b.mid for b in g.index]) + (k - 0.5) * 0.012
+        ax.errorbar(xs, g["mean"], yerr=1.96 * g["sem"], color=COL["SkinGPT-R1"][0], marker=mk[col]["marker"], ms=3,
+                    mfc="white" if k else COL["SkinGPT-R1"][0], lw=1.1, ls="-" if k == 0 else "--", capsize=1.5,
+                    elinewidth=0.6, label=col)
+        if k == 0:
+            for b, n_ in zip(g.index, g["size"]):
+                ax.text(b.mid, 0.04, f"n={n_}", ha="center", fontsize=5.5, color=INK2)
+        num.setdefault("three_way_agreement_by_claude_conf_q", {})[col] = {str(b): round(v, 4) for b, v in g["mean"].items()}
+    ax.set(ylim=(0, 1), yticks=[0, 0.5, 1], yticklabels=["0", "50", "100"], xlabel="Claude stated confidence (Qo, binned)",
            ylabel="Same answer (%)")
     ax.set_title("By Claude's confidence", loc="left")
-    num["agreement_q_by_claude_conf"] = {str(k): round(v, 4) for k, v in g["mean"].items()}
+    ax.legend(frameon=False, loc="upper left", fontsize=6)
     style(ax)
     letter(ax, "b", x=-0.3)
 
     ax = fig.add_subplot(gs[1, 1])
-    stable = pd.concat([x.p_o >= 0.5 for x in sk["topic, shuffled"]], axis=1).nunique(axis=1).eq(1)
-    rows = []
-    for lab, mask in (("stable\n(same answer in\nall 4 shuffles)", stable), ("unstable", ~stable)):
-        v = a.same_q[mask]
-        rows.append((lab, v.mean(), v.sem(), int(mask.sum())))
-    for i, (lab, mn, se, n_) in enumerate(rows):
-        ax.bar(i, mn, width=0.55, color=COL["SkinGPT-R1"][0] if i == 0 else COL["SkinGPT-R1"][1], lw=0)
-        ax.errorbar(i, mn, yerr=1.96 * se, color=INK, capsize=2, lw=0.8)
-        ax.text(i, mn + 1.96 * se + 0.03, f"{mn:.0%}\n(n={n_})", ha="center", fontsize=6, color=INK2)
-        num.setdefault("agreement_q_by_skingpt_shuffle_stability", {})[lab.split(chr(10))[0]] = {"agree": round(mn, 4), "n": n_}
-    ax.set_xticks([0, 1], [r[0] for r in rows], fontsize=6)
-    ax.set(ylim=(0, 1.1), yticks=[0, 0.5, 1], yticklabels=["0", "50", "100"], xlim=(-0.6, 1.6), ylabel="Same answer as Claude (%)")
+    for k, col in enumerate(a):
+        stable = pd.concat([three_way(x[col]) for x in sk["topic, shuffled"]], axis=1).nunique(axis=1).eq(1)
+        for i, mask in enumerate((stable, ~stable)):
+            v = a[col][mask]
+            x = i + (k - 0.5) * 0.36
+            ax.bar(x, v.mean(), width=0.32, color=COL["SkinGPT-R1"][0] if k == 0 else "white", edgecolor=COL["SkinGPT-R1"][0],
+                   lw=0.8, label=col if i == 0 else None)
+            ax.errorbar(x, v.mean(), yerr=1.96 * v.sem(), color=INK, capsize=2, lw=0.8)
+            ax.text(x, v.mean() + 1.96 * v.sem() + 0.03, f"{v.mean():.0%}\n(n={int(mask.sum())})", ha="center", fontsize=5.5, color=INK2)
+            num.setdefault("three_way_agreement_by_skingpt_shuffle_stability", {}).setdefault(col, {})[
+                "stable" if i == 0 else "unstable"] = {"agree": round(v.mean(), 4), "n": int(mask.sum())}
+    ax.set_xticks([0, 1], ["stable\n(same answer in\nall 4 shuffles)", "unstable"], fontsize=6)
+    ax.set(ylim=(0, 1.15), yticks=[0, 0.5, 1], yticklabels=["0", "50", "100"], xlim=(-0.6, 1.6), ylabel="Same answer as Claude (%)")
     ax.tick_params(axis="x", length=0)
     ax.set_title("By SkinGPT-R1 stability\nunder shuffling", loc="left")
+    ax.legend(frameon=False, loc="upper right", fontsize=6)
     style(ax)
     letter(ax, "c", x=-0.3)
     fig.savefig(FIG / "fig5.pdf")
     fig.savefig(FIG / "fig5.png")
 
 
+def fig6(data, num):
+    """Claude: can its stated confidence in the original question stand in for the negated question?
+    Qo-only score = (2 P(Y|Qo) - 1) x confidence(Qo), compared with the pair-based scores."""
+    fig = plt.figure(figsize=(7.2, 2.6))
+    gs = fig.add_gridspec(1, 3, wspace=0.45, left=0.07, right=0.98, top=0.85, bottom=0.2)
+    ref = claude_reference(data)
+    ref["Conf_Qo"] = (2 * ref.p_o - 1) * ref.conf_o
+    contra = (ref.p_o >= 0.5) == (ref.p_c >= 0.5)
+
+    ax = fig.add_subplot(gs[0])
+    for m, (c, lab, sz) in ((~contra, (COL["Claude"][1], "coherent pair", 3)), (contra, ("#7a1f1e", "contradictory pair", 6))):
+        ax.scatter(ref.Net_P[m], ref.Conf_Qo[m], s=sz, lw=0, alpha=0.7, color=c, rasterized=True, label=lab)
+    rho = ref.Net_P.corr(ref.Conf_Qo, method="spearman")
+    ax.set(xlim=(-1.05, 1.05), ylim=(-1.05, 1.05), xticks=[-1, 0, 1], yticks=[-1, 0, 1], aspect="equal",
+           xlabel="Net_P (question and negation)", ylabel="(2 P(Y|Qo) − 1) × confidence(Qo)")
+    ax.text(0.97, 0.03, f"ρ = {rho:.2f}", transform=ax.transAxes, ha="right", va="bottom", fontsize=6.5,
+            bbox=dict(boxstyle="round,pad=0.25", fc="white", ec="none", alpha=0.9))
+    ax.set_title("Qo + confidence vs Net_P", loc="left")
+    ax.legend(frameon=False, loc="upper left", fontsize=5.8, markerscale=2)
+    num["claude_conf_qo_score_vs_net_p_spearman"] = round(rho, 4)
+    style(ax, grid=None)
+    letter(ax, "a", x=-0.28)
+
+    ax = fig.add_subplot(gs[1])
+    d = pd.DataFrame({"conf": ref.conf_o, "absnet": ref.Net_P.abs()})
+    d["bin"] = pd.cut(d.conf, [0, 0.55, 0.65, 0.75, 0.85, 1.0])
+    g = d.groupby("bin", observed=True).absnet.agg(["mean", "sem", "size"])
+    ax.errorbar([b.mid for b in g.index], g["mean"], yerr=1.96 * g["sem"], color=COL["Claude"][0], marker="o", ms=3, lw=1.1,
+                capsize=1.5, elinewidth=0.6)
+    ax.set(ylim=(0, 1), xlabel="Stated confidence(Qo), binned", ylabel="|Net_P|")
+    ax.set_title("Confidence vs what the negation adds", loc="left")
+    num["claude_conf_q_vs_abs_net_p_spearman"] = round(d.conf.corr(d.absnet, method="spearman"), 4)
+    style(ax)
+    letter(ax, "b", x=-0.3)
+
+    ax = fig.add_subplot(gs[2])
+    targets = ["Net_P", "Directional_Score", "Coherence_Score"]
+    for k, cond in enumerate(("stateless", "topic")):
+        r_ = claude_reference(data, cond)
+        r_["Conf_Qo"] = (2 * r_.p_o - 1) * r_.conf_o
+        for i, col in enumerate(targets):
+            rho_ = r_.Conf_Qo.corr(r_[col], method="spearman")
+            ag = same_answer(r_.Conf_Qo, r_[col]).mean()
+            x = i + (k - 0.5) * 0.36
+            ax.bar(x, rho_, width=0.32, color=COL["Claude"][k], lw=0, label=cond if i == 0 else None)
+            ax.text(x, rho_ + 0.015, f"{rho_:.2f}\n({ag:.0%})", ha="center", fontsize=5.5, color=INK2)
+            num.setdefault("claude_conf_qo_score_vs", {}).setdefault(cond, {})[col] = {"spearman": round(rho_, 4), "three_way_agreement": round(ag, 4)}
+    ax.set_xticks(range(3), ["Net_P", "Directional", "Coherence"])
+    ax.set(ylim=(0, 1.15), ylabel="Spearman ρ with Qo + confidence")
+    ax.tick_params(axis="x", length=0)
+    ax.set_title("Agreement (same answer, %)", loc="left")
+    ax.legend(frameon=False, loc="lower right", fontsize=6)
+    style(ax)
+    letter(ax, "c", x=-0.3)
+    fig.savefig(FIG / "fig6.pdf")
+    fig.savefig(FIG / "fig6.png")
+
+
 
 def claude_order_check(data, num):
     """Order effect for Claude beyond sampling: mean of 2 fixed-order replicates vs mean of 2 others (sampling only)
     against mean of 2 fixed-order vs mean of 2 shuffled replicates (sampling + order), over all splits."""
-    fx = [f.set_index(["image_id", "question_id"]).p_adj for f in data.get(("Claude", "topic"), [])]
-    sh = [f.set_index(["image_id", "question_id"]).p_adj for f in data.get(("Claude", "topic, shuffled"), [])]
+    fx = [f.set_index(["image_id", "question_id"]).Net_P for f in data.get(("Claude", "topic"), [])]
+    sh = [f.set_index(["image_id", "question_id"]).Net_P for f in data.get(("Claude", "topic, shuffled"), [])]
     if len(fx) < 4 or len(sh) < 2:
         return
     halves = [((0, 1), (2, 3)), ((0, 2), (1, 3)), ((0, 3), (1, 2))]
@@ -539,8 +608,8 @@ def table1(data, runs) -> pd.DataFrame:
                      "contradiction (%)": 100 * d.verdict.str.startswith("contradiction").mean(),
                      "  no to both (%)": 100 * (d.verdict == VERDICTS[2]).mean(),
                      "  yes to both (%)": 100 * (d.verdict == VERDICTS[3]).mean(),
-                     "mean |p_adj|": d.p_adj.abs().mean(),
-                     "replicate |Δ p_adj|": pair_mad(fr).mean() if len(fr) > 1 else np.nan,
+                     "mean |Net_P|": d.Net_P.abs().mean(),
+                     "replicate |Δ Net_P|": pair_mad(fr).mean() if len(fr) > 1 else np.nan,
                      "same verdict in all replicates (%)": 100 * pd.concat([f.verdict for f in fr], axis=1).nunique(axis=1).eq(1).mean() if len(fr) > 1 else np.nan,
                      "mean stated confidence": ((d.conf_o + d.conf_c) / 2).mean(),
                      "answers with P(Yes)+P(No) < 0.9 (%)": 100 * (d.mass < 0.9).mean()})
@@ -559,6 +628,7 @@ def main():
     fig3(data, runs, num)
     fig4(data, num)
     fig5(data, num)
+    fig6(data, num)
     claude_order_check(data, num)
     t = table1(data, runs)
     (HERE / "numbers.json").write_text(json.dumps(num, indent=1, default=float))

@@ -96,7 +96,7 @@ answer:
   compute_batch: 32              # stateless: independent question sequences per forward pass
   shard_questions: 100           # checkpoint granularity within a unit
   threshold: 0.5                 # answer_bin = p_yes >= threshold (applied at S4)
-  adj_threshold: 0.0             # answer_adj_bin = p_adj >= adj_threshold
+  adj_threshold: 0.0             # answer_adj_bin = Net_P >= adj_threshold; also the bin threshold for dir/coh
   prompts:                       # template names in inputs/prompts/<name>.txt
     whole: stateless_whole_v1
     patch: stateless_patch_v1
@@ -106,8 +106,8 @@ answer:
     claude_batched_whole: claude_batched_whole_v1
 
 feat:
-  source: adj                    # adj (p_adj = P(yes|original) - P(yes|complement)) | w (P(yes|original) x |p_adj|) | orig | neg
-  kind: prob                     # prob | bin (adj: p_adj >= answer.adj_threshold; orig/neg: p_yes >= answer.threshold)
+  source: adj                    # adj (Net_P = P(yes|original) - P(yes|complement)) | w (P_w) | dir (Directional_Score) | coh (Coherence_Score) | orig | neg
+  kind: prob                     # prob | bin (adj/dir/coh: score >= answer.adj_threshold; orig/neg: p_yes >= answer.threshold)
 
 model:
   name: null                     # W0 | W1 | P0 | P1 | P2 | P3

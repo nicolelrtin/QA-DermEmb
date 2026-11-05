@@ -14,25 +14,36 @@ Claude contradicted itself on 3–5% of question pairs; Qwen did so on 78–92% 
 Claude's answers were stable across replicates: the same verdict came back in all four for 91–96% of pairs. For
 SkinGPT-R1, changing only the question order left the verdict unchanged for 26% of pairs. Claude's stated confidence tracked its
 own stability (Spearman ρ = −0.72 to −0.79). Taking Claude as a reference, SkinGPT-R1's answers to the questions agreed
-beyond chance (Cohen's κ = 0.36–0.45), but its answers to the negations did not (κ ≈ 0.05). This suggests that its
-incoherence comes mostly from handling negation, not from misreading the image.
+beyond chance (Cohen's κ = 0.36), but its answers to the negations did not (κ = 0.05). This suggests that its
+incoherence comes mostly from handling negation, not from misreading the image. Two signed scores that combine an
+answer's direction with its coherence, Directional_Score and Coherence_Score, ranked SkinGPT-R1's answers similarly to
+Claude's (ρ = 0.44–0.45). For Claude, its answer to the question weighted by its stated confidence reproduced the
+question-and-negation score almost exactly (ρ = 0.96), which suggests the negated questions can be replaced by stated
+confidence for Claude.
 
 ## Introduction
 
 In question-answer embedding (QA-Emb), each image is described by a model's probability of answering "yes" to each of a
 fixed set of interpretable questions. To separate what the model sees from its tendency to agree, each question is also
-asked in negated form. Three quantities are derived for each question pair:
+asked in negated form. Writing Po = P(yes | Q) and Pc = P(yes | ¬Q), the following are derived for each question pair:
 
-- **net yes**, p_adj = P(yes | Q) − P(yes | ¬Q), from −1 to 1;
-- **coherence weight**, w = |p_adj|, from 0 to 1. It is 0 when the model gives the same answer to Q and ¬Q, and 1 when it
-  answers them with certainty and opposite. It is also 0 when both answers are 0.5, so it combines consistency and decisiveness;
-- **coherence-weighted P(yes)**, P_w = P(yes | Q) × w, the feature used downstream.
+- **Net_P** = Po − Pc, from −1 to 1. Its absolute value |Net_P| is 0 when the model gives the same answer to Q and ¬Q
+  (or answers 0.5 to both) and 1 when it answers them with certainty and opposite;
+- **P_w** = Po × |Net_P|, from 0 to 1, the original feature. It cannot be negative, so a confident "no" and a
+  contradiction both score 0;
+- **Directional_Score** = (2 Po − 1) × |Net_P|, from −1 to 1. Direction and confidence come from Q, shrunk by the gap to
+  ¬Q; for coherent pairs it is about Net_P² with Net_P's sign, so moderate answers are shrunk strongly (0.7 / 0.3 → 0.16);
+- **Coherence_Score** = (2 Po − 1) × (1 − |Po + Pc − 1|), from −1 to 1. Direction and confidence come from Q, shrunk only
+  by contradiction (0.7 / 0.3 keeps 0.40).
+
+Both scores are +1 for a certain, coherent "yes", −1 for a certain, coherent "no", and 0 for a contradiction.
 
 Before scaling to the full image set we asked four questions on a small, fully replicated sample:
 1. How often does each model contradict itself?
 2. How much do answers vary between replicates, and is that variation due to sampling or to question order?
 3. Does Claude's stated confidence tell us anything?
 4. Where do the dermatology model (SkinGPT-R1) and the most coherent model (Claude) agree?
+5. Could Claude's stated confidence replace the negated questions?
 
 ## Methods
 
@@ -61,10 +72,10 @@ mode (repeats would be identical) and four times in the shuffled condition. In t
 **Measures.**
 - *Verdict* for a pair: *yes* (P(yes | Q) ≥ 0.5, P(yes | ¬Q) < 0.5), *no* (the reverse), or a contradiction (*no to both*
   or *yes to both*).
-- *Variability* between two runs: |Δ p_adj| for each image × question, averaged over all pairs of runs. Claude conditions are compared
+- *Variability* between two runs: |Δ Net_P| for each image × question, averaged over all pairs of runs. Claude conditions are compared
   run by run, never as replicate means.
 - *Verdict stability*: the share of pairs whose verdict is identical in all four replicates.
-- *Order effect beyond sampling* (Claude): the mean |Δ p_adj| between the averages of two fixed-order replicates and of two other
+- *Order effect beyond sampling* (Claude): the mean |Δ Net_P| between the averages of two fixed-order replicates and of two other
   fixed-order replicates (sampling alone), compared with the same between two fixed-order and two shuffled replicates
   (sampling plus order).
 - *Agreement with Claude*: the reference is Claude's stateless answers, averaged over its four replicates. Agreement is the
@@ -79,7 +90,7 @@ two images and do not generalise across lesions.
 **Claude is coherent; the local models are not (Fig. 1, Table 1).** Claude's answers to Q and ¬Q lie close to the
 anti-diagonal, where the answers to the two are complementary. Only 3.4–4.9% of its pairs were contradictions, and
 switching from stateless to topic prompts did not raise that. Qwen answered "no" to both the question and its negation for most pairs: 78% contradictions with stateless prompts, rising to 92% with topic prompts, where its
-mean coherence weight halved (0.21 → 0.10). SkinGPT-R1 contradicted itself on 50% (stateless), 54% (topic) and 61%
+mean |Net_P| halved (0.21 → 0.10). SkinGPT-R1 contradicted itself on 50% (stateless), 54% (topic) and 61%
 (shuffled) of pairs. It also answered "yes" to both more often than the other models (13% stateless).
 
 ![Figure 1](figures/fig1.png)
@@ -91,7 +102,7 @@ each model and prompt condition. The number above each bar is the contradiction 
 four replicates.
 
 **Variability: SkinGPT-R1 is highly sensitive to question order; Claude is not (Fig. 2).** Rerunning Claude with
-identical prompts changed p_adj by 0.034–0.047 on average, and 91–96% of pairs kept the same verdict in all four
+identical prompts changed Net_P by 0.034–0.047 on average, and 91–96% of pairs kept the same verdict in all four
 replicates (Fig. 2a,c). Shuffling the order hardly changed this (0.042–0.057; 91–95%). Comparing averages of replicates
 isolates order from sampling: two fixed-order averages differed by 0.028, a fixed-order and a shuffled average by 0.046.
 So question order adds a small effect on top of Claude's sampling noise. For the deterministic models, order is the only
@@ -103,17 +114,17 @@ small next to the other effects, but it does count in favour of stateless prompt
 
 ![Figure 2](figures/fig2.png)
 
-**Figure 2 | Variability of answers.** **a**, |Δ p_adj| between replicates for each question ID, labelled with the source of
+**Figure 2 | Variability of answers.** **a**, |Δ Net_P| between replicates for each question ID, labelled with the source of
 variation: sampling (Claude, fixed prompts), order (local models, shuffled prompts), or both (Claude, shuffled). Darker
 box, ISIC_0000147; lighter, ISIC_0000215. Box, interquartile range; white line, median; whiskers, 5th–95th percentile.
-**b**, |Δ p_adj| between stateless and topic prompts; for Claude, the average over all 16 cross-replicate pairs.
+**b**, |Δ Net_P| between stateless and topic prompts; for Claude, the average over all 16 cross-replicate pairs.
 **c**, Share of question pairs with the same verdict in all four replicates. **d**, P(yes | Q) relative to that
 question's mean over the four shuffled replicates, by relative position within its topic prompt (five bins; mean ± 95% CI).
 
 **Claude's stated confidence is informative (Fig. 3).** Claude's stated confidence tracked how extreme its stated P(yes)
 was (r = 0.90 with |P(yes) − 0.5|; Fig. 3a). It was also inversely related to its own replicate variability (Spearman
 ρ = −0.72 stateless, −0.79 topic, −0.74 shuffled; Fig. 3b). Pairs that Claude contradicted had a median confidence of 0.45–0.50,
-against 0.73–0.75 for coherent pairs (Fig. 3c). For Claude, a higher coherence weight also meant lower variability under
+against 0.73–0.75 for coherent pairs (Fig. 3c). For Claude, a higher |Net_P| also meant lower variability under
 shuffling (ρ = −0.76). For the local models the relation was positive (Qwen ρ = 0.69, SkinGPT-R1 ρ = 0.25; Fig. 3d).
 Their least variable pairs are those they reject with both answers at 0, so w ≈ 0: consistently incoherent rather than
 coherent and stable.
@@ -121,58 +132,81 @@ coherent and stable.
 ![Figure 3](figures/fig3.png)
 
 **Figure 3 | Confidence.** **a**, Claude's stated confidence against its stated P(yes), all answers pooled (log
-count). **b**, Mean |Δ p_adj| between Claude replicates by the pair's mean stated confidence (five bins; mean ± 95%
-CI), per condition. **c**, Mean stated confidence of coherent and contradictory pairs. **d**, |Δ p_adj| between shuffled
-replicates against the coherence weight w (mean over replicates, five bins).
+count). **b**, Mean |Δ Net_P| between Claude replicates by the pair's mean stated confidence (five bins; mean ± 95%
+CI), per condition. **c**, Mean stated confidence of coherent and contradictory pairs. **d**, |Δ Net_P| between shuffled
+replicates against |Net_P| (mean over replicates, five bins).
 
-**SkinGPT-R1 agrees with Claude on the questions but not on the negations (Fig. 4).** SkinGPT-R1's answers were mostly
-all-or-nothing: 72% (stateless) and 81% (topic) of its P(yes | Q) values were below 0.05 or above 0.95, against 29% for
-Claude (Fig. 4a). This explains its low stability. A small change of context flips a saturated answer from 0 to 1,
-which counts as a full verdict change. Its answers to the questions ranked similarly to Claude's (Spearman ρ = 0.56; Fig. 4b) and
-agreed beyond chance: 74% identical, κ = 0.36 (stateless); 84%, κ = 0.45 (topic); 81%, κ = 0.37–0.42 (shuffled
-replicates; Fig. 4c,d). Its answers to the negations agreed with Claude's no better than chance (44–48% identical,
-κ = −0.02 to 0.08; ρ = 0.16). Claude answered "yes" to 78% of negated questions (for example, "Does the lesion lack …?")
-and SkinGPT-R1 answered "no" to most of those. The coherence-weighted feature P_w inherits this failure: its correlation with Claude's
-P_w (ρ = 0.38) is lower than for P(yes | Q) alone. Qwen, for scale, reached κ = 0.31 on the questions, mostly by
-answering "no", and κ = −0.04 on the negations.
+**SkinGPT-R1 agrees with Claude on the questions but not on the negations (Fig. 4).** With Claude's stateless answers
+(mean of four replicates) as the reference, SkinGPT-R1's yes/no answers to the questions agreed beyond chance (74%
+identical, Cohen's κ = 0.36; ρ = 0.56 on P(yes | Q)). Its answers to the negations did not (48% identical, κ = 0.05;
+ρ = 0.16). Claude answered "yes" to 78% of negated questions (for example, "Does the lesion lack …?") and SkinGPT-R1
+answered "no" to most of those. SkinGPT-R1's answers were mostly all-or-nothing (Fig. 4a): 72% of its P(yes | Q) values
+were below 0.05 or above 0.95, against 29% for Claude. This explains its low stability: a small change of context flips a
+saturated answer from 0 to 1, which counts as a full verdict change. Both signed scores ranked SkinGPT-R1's answers
+similarly to Claude's (stateless ρ = 0.45 Directional_Score, 0.44 Coherence_Score; Fig. 4b), better than P_w
+(0.39) or Net_P (0.43), but below P(yes | Q) alone (0.56). This is the cost of letting SkinGPT-R1's negation answers
+into the score: when it answers "no" to both a question and its negation, both scores fall to 0 even if its "no" to the
+question was right. Topic and shuffled prompts lowered every measure (Fig. 4c). Qwen, for scale, reached ρ = 0.17–0.24
+on the two scores; its "no to both" answers score 0 under both.
 
 ![Figure 4](figures/fig4.png)
 
-**Figure 4 | SkinGPT-R1 compared with Claude.** The Claude reference is its stateless answers, averaged over four replicates. **a**,
-Distribution of P(yes | Q). **b**, P(yes | Q) per image × question (stateless; darker, ISIC_0000147; lighter,
-ISIC_0000215). **c**, Yes/no cross-tabulation (threshold 0.5) for the questions and for the negated questions, as
-percentages of all 1,000 answers, with raw agreement and Cohen's κ. **d**, Cohen's κ (0 = chance) by prompt condition;
-dots, the four shuffled replicates; dashed line, Qwen stateless.
+**Figure 4 | SkinGPT-R1 compared with Claude on the signed scores.** The Claude reference is its stateless answers,
+averaged over four replicates (scores averaged per replicate). **a**, Distributions of Directional_Score and
+Coherence_Score; grey band, |score| < 0.1 ("no clear answer"). **b**, Each score per image × question (stateless;
+darker, ISIC_0000147; lighter, ISIC_0000215), with Spearman ρ and the share of identical three-way answers (yes, no
+clear answer, no). **c**, Spearman ρ with Claude for each measure by prompt condition; dots, the four shuffled
+replicates; dashed line, Qwen stateless.
 
-**Where they agree (Fig. 5).** On the questions, agreement rose steadily with Claude's stated confidence, from 54% to
-90% (Fig. 5b). It was also higher for questions SkinGPT-R1 answered the same way in all four shuffles: 79% (n = 755), against
-58% (n = 245; Fig. 5c). By topic it ranged from about 85% (photoaging grading, shortcut/artefact learning,
-teledermatology, total-body photography) to 45–55% (skin-tone measurement, nevus count, seborrhoeic keratosis and benign
-mimics). Topics where SkinGPT-R1 agreed less with Claude were also those where its answers moved more between stateless and topic
-prompts (Spearman ρ = −0.58 across topics; Fig. 5a). The topics at 0% or 100% contain only 2–4 answers each.
+**Where they agree (Fig. 5).** Counting an answer as yes (score ≥ 0.1), no (≤ −0.1) or no clear answer, SkinGPT-R1 gave
+the same answer as Claude for 49% (Directional_Score) and 55% (Coherence_Score) of stateless answers. Coherence_Score
+agrees more because it gives a clear answer more often (75% of SkinGPT-R1's answers, against 69%). Agreement rose with
+Claude's stated confidence, from 30% to 59% (Directional) and from 41% to 63% (Coherence; Fig. 5b). It was higher for
+answers SkinGPT-R1 gave the same way in all four shuffles: 63% against 45% (Directional; Fig. 5c). By topic (Fig. 5a,
+topics with at least 10 answers), agreement was highest for shortcut/artefact learning (87%), photoaging grading
+(72–81%) and skin surface texture (63–75%), and lowest for distribution and configuration (23–32%), skin-tone
+measurement (25%), texture descriptors (31%) and skin of colour (33–44%).
 
 ![Figure 5](figures/fig5.png)
 
-**Figure 5 | Where SkinGPT-R1 agrees with Claude on the questions.** **a**, By topic: share of identical yes/no answers
-to Q (filled; stateless) and SkinGPT-R1's mean |Δ P(yes | Q)| between stateless and topic prompts (open). Numbers in
-parentheses, questions × 2 images. **b**, Agreement by Claude's stated confidence for Q (five bins; mean ± 95% CI;
-n per bin). **c**, Agreement for questions SkinGPT-R1 answered stably or unstably across the four shuffled
-replicates (mean ± 95% CI).
+**Figure 5 | Where SkinGPT-R1 gives the same answer as Claude.** Answers are compared three ways: yes (score ≥ 0.1), no
+(≤ −0.1) or no clear answer. **a**, By topic, stateless (filled circles, Directional_Score; open diamonds,
+Coherence_Score); numbers in parentheses, questions × 2 images. **b**, Agreement by Claude's stated confidence for Q
+(five bins; mean ± 95% CI; n per bin). **c**, Agreement for answers SkinGPT-R1 gave stably or unstably across the four
+shuffled replicates (mean ± 95% CI).
+
+**For Claude, stated confidence can stand in for the negated question (Fig. 6).** Claude's answer to the question
+weighted by its own confidence, (2 Po − 1) × confidence(Q), reproduced its question-and-negation Net_P almost exactly
+(Spearman ρ = 0.96 stateless, 0.98 topic; same three-way answer for 94–95% of pairs) and Directional_Score and
+Coherence_Score equally well (ρ = 0.96–0.98; Fig. 6a,c). Its stated confidence also tracked how decisively the negation
+separated the answers: |Net_P| rose from 0.24 to 0.89 across confidence bins (ρ = 0.93; Fig. 6b). The few points off the
+diagonal are mostly contradictory pairs, where the negation disagrees with a moderately confident answer.
+
+![Figure 6](figures/fig6.png)
+
+**Figure 6 | Claude's stated confidence against its question-and-negation scores** (stateless, mean of four
+replicates). **a**, (2 P(yes | Q) − 1) × confidence(Q) against Net_P; dark points, contradictory pairs. **b**, |Net_P|
+by stated confidence for Q (five bins; mean ± 95% CI). **c**, Spearman ρ between the confidence-based score and each
+pair-based score, stateless and topic; numbers in parentheses, share of identical three-way answers.
 
 ## Discussion
 
-For QA-Emb, these two images point to three practical conclusions.
+For QA-Emb, these two images point to four practical conclusions.
 - **Claude's answers already behave like usable features.** They are coherent, reproducible to a few hundredths, and
-  little affected by how they are grouped. Topic prompts match stateless ones closely (|Δ p_adj| 0.14–0.20, 91% identical
+  little affected by how they are grouped. Topic prompts match stateless ones closely (|Δ Net_P| 0.14–0.20, 91% identical
   verdicts in our earlier comparison) at about one-ninth of the tokens. This makes topic prompting the economical
   choice for scaling Claude. Claude's stated confidence identifies its own unstable and contradictory answers, so it could
   serve as a per-answer weight.
 - **For the local models, stateless prompting is necessary but not sufficient.** Grouping questions raised their
   contradictions and introduced order effects. Qwen's answers are dominated by a "no" bias.
 - **SkinGPT-R1 carries information in its answers to the questions, not to the negations.** Its incoherence and instability arise
-  from saturated answers and a failure to process negated phrasing. Weighting its answers by coherence (P_w) penalises
-  the negation failure instead of the image content. For this model, P(yes | Q) alone, or negations rewritten as
-  affirmative opposites, may be the better input.
+  from saturated answers and a failure to process negated phrasing. Any score that uses the negation (P_w, Net_P,
+  Directional_Score, Coherence_Score) penalises the negation failure instead of the image content: all rank below
+  P(yes | Q) alone. For this model, P(yes | Q) alone, or negations rewritten as affirmative opposites, may be the better input.
+- **For Claude, the negated questions may be unnecessary.** Its stated confidence reproduces what the negation adds
+  (ρ = 0.96), so asking each question once with a stated confidence would halve the prompts. The signed scores
+  (Directional_Score, Coherence_Score) are now pipeline features (`F_dir`, `F_coh`); which one classifies better needs the
+  full image set.
 
 **Limitations.**
 - **Sample size.** Two images and one lesion each of melanoma and benign: per-question estimates are noisy, and per-topic
@@ -196,7 +230,7 @@ For QA-Emb, these two images point to three practical conclusions.
 **Table 1 | Summary by answerer and prompt condition** (both images, 1,000 question pairs per run). Pooled over the runs in
 each condition. Replicate columns are empty where only one run exists. Confidence is stated by Claude only.
 
-| Answerer | Condition | Runs | Verdict yes (%) | Contradiction (%) | No to both (%) | Yes to both (%) | Mean coherence weight w | Replicate \|Δ p_adj\| | Same verdict in all replicates (%) | Mean stated confidence |
+| Answerer | Condition | Runs | Verdict yes (%) | Contradiction (%) | No to both (%) | Yes to both (%) | Mean \|Net_P\| | Replicate \|Δ Net_P\| | Same verdict in all replicates (%) | Mean stated confidence |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Qwen | stateless | 1 | 15.9 | 78.4 | 74.6 | 3.8 | 0.21 | – | – | – |
 | Qwen | topic | 1 | 5.8 | 92.2 | 91.7 | 0.5 | 0.10 | – | – | – |

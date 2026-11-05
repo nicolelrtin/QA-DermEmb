@@ -1,4 +1,4 @@
-model,condition,runs,said yes (%),contradiction (%),  no to both (%),  yes to both (%),mean |p_adj|,replicate |Δ p_adj|,same verdict in all replicates (%),mean stated confidence,answers with P(Yes)+P(No) < 0.9 (%)
+model,condition,runs,said yes (%),contradiction (%),  no to both (%),  yes to both (%),mean |Net_P|,replicate |Δ Net_P|,same verdict in all replicates (%),mean stated confidence,answers with P(Yes)+P(No) < 0.9 (%)
 Qwen,stateless,1,15.9,78.4,74.6,3.8,0.212,,,,0.0
 Qwen,topic,1,5.8,92.2,91.7,0.5,0.103,,,,0.0
 Qwen,"topic, shuffled",4,6.3,92.2,91.25,0.95,0.11,0.1,86.5,,0.0

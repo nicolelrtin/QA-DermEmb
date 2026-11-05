@@ -161,161 +161,390 @@
   "SkinGPT-R1": 0.247,
   "Claude": -0.7642
  },
- "skingpt_extreme_share_q": {
-  "stateless": 0.721,
-  "topic": 0.812
+ "skingpt_stateless_yes_no_vs_claude": {
+  "p_o": {
+   "kappa": 0.3595,
+   "same": 0.737,
+   "spearman": 0.5606
+  },
+  "p_c": {
+   "kappa": 0.0503,
+   "same": 0.475,
+   "spearman": 0.1618
+  }
  },
- "claude_extreme_share_q": 0.289,
- "claude_vs_skingpt_stateless_spearman_p_q": 0.5606,
- "claude_vs_skingpt_stateless_spearman_p_neg": 0.1618,
- "claude_vs_skingpt_stateless_spearman_p_w": 0.3788,
- "yes_no_table_q": {
-  "table_pct_claude_rows_yes_no": [
-   [
-    14.3,
-    5.3
-   ],
-   [
-    21.0,
-    59.4
-   ]
-  ],
-  "agree": 0.737,
-  "kappa": 0.3595
+ "score_clear_share": {
+  "Directional_Score": {
+   "SkinGPT-R1 stateless": 0.688,
+   "SkinGPT-R1 topic": 0.571,
+   "Claude stateless": 0.864
+  },
+  "Coherence_Score": {
+   "SkinGPT-R1 stateless": 0.749,
+   "SkinGPT-R1 topic": 0.613,
+   "Claude stateless": 0.971
+  }
  },
- "yes_no_table_neg": {
-  "table_pct_claude_rows_yes_no": [
-   [
-    32.9,
-    44.9
-   ],
-   [
-    7.6,
-    14.6
-   ]
-  ],
-  "agree": 0.475,
-  "kappa": 0.0503
+ "claude_vs_skingpt_stateless": {
+  "Directional_Score": {
+   "spearman": 0.4499,
+   "three_way_agreement": 0.488
+  },
+  "Coherence_Score": {
+   "spearman": 0.4421,
+   "three_way_agreement": 0.546
+  }
  },
- "skingpt_agreement_with_claude": {
+ "skingpt_spearman_with_claude": {
   "stateless": {
-   "p_o": {
-    "kappa": [
-     0.3595
-    ],
-    "raw_agree_mean": 0.737
+   "p_o": [
+    0.5606
+   ],
+   "Net_P": [
+    0.4264
+   ],
+   "P_w": [
+    0.3924
+   ],
+   "Directional_Score": [
+    0.4499
+   ],
+   "Coherence_Score": [
+    0.4421
+   ]
+  },
+  "topic": {
+   "p_o": [
+    0.565
+   ],
+   "Net_P": [
+    0.3668
+   ],
+   "P_w": [
+    0.3848
+   ],
+   "Directional_Score": [
+    0.374
+   ],
+   "Coherence_Score": [
+    0.3587
+   ]
+  },
+  "topic, shuffled": {
+   "p_o": [
+    0.4673,
+    0.5043,
+    0.4888,
+    0.4391
+   ],
+   "Net_P": [
+    0.2365,
+    0.2959,
+    0.4452,
+    0.3772
+   ],
+   "P_w": [
+    0.3581,
+    0.3766,
+    0.3144,
+    0.2796
+   ],
+   "Directional_Score": [
+    0.2126,
+    0.3029,
+    0.4001,
+    0.3404
+   ],
+   "Coherence_Score": [
+    0.2008,
+    0.2865,
+    0.385,
+    0.3286
+   ]
+  }
+ },
+ "qwen_stateless_spearman_with_claude": {
+  "p_o": 0.4943,
+  "Net_P": 0.2938,
+  "P_w": 0.4226,
+  "Directional_Score": 0.2432,
+  "Coherence_Score": 0.1686
+ },
+ "topic_three_way_agreement": {
+  "Domain shift, OOD & generalisation": {
+   "Directional_Score": 0.0,
+   "Coherence_Score": 0.25,
+   "n": 4
+  },
+  "Saliency method validity (sanity checks, evaluation)": {
+   "Directional_Score": 0.0,
+   "Coherence_Score": 0.0,
+   "n": 2
+  },
+  "Concept-based explanations": {
+   "Directional_Score": 0.125,
+   "Coherence_Score": 0.0,
+   "n": 8
+  },
+  "Distribution & configuration (Blaschko, segmental, mosaic)": {
+   "Directional_Score": 0.227,
+   "Coherence_Score": 0.318,
+   "n": 22
+  },
+  "Public datasets & challenges": {
+   "Directional_Score": 0.25,
+   "Coherence_Score": 0.5,
+   "n": 16
+  },
+  "Skin tone measurement (Fitzpatrick, Monk, ITA)": {
+   "Directional_Score": 0.25,
+   "Coherence_Score": 0.25,
+   "n": 20
+  },
+  "Texture descriptors & radiomics for lesions": {
+   "Directional_Score": 0.312,
+   "Coherence_Score": 0.312,
+   "n": 16
+  },
+  "Skin of colour presentation": {
+   "Directional_Score": 0.333,
+   "Coherence_Score": 0.444,
+   "n": 18
+  },
+  "Anatomic site & body-region lesion density": {
+   "Directional_Score": 0.333,
+   "Coherence_Score": 0.667,
+   "n": 12
+  },
+  "Vascular structures in dermoscopy": {
+   "Directional_Score": 0.357,
+   "Coherence_Score": 0.429,
+   "n": 42
+  },
+  "Segmentation & handcrafted ABCD features": {
+   "Directional_Score": 0.385,
+   "Coherence_Score": 0.5,
+   "n": 26
+  },
+  "Nevus phenotypes / signature nevus / ugly duckling": {
+   "Directional_Score": 0.4,
+   "Coherence_Score": 0.5,
+   "n": 10
+  },
+  "Spitz / pink / amelanotic & paediatric lesions": {
+   "Directional_Score": 0.433,
+   "Coherence_Score": 0.467,
+   "n": 30
+  },
+  "Seborrhoeic keratosis & benign mimics": {
+   "Directional_Score": 0.433,
+   "Coherence_Score": 0.367,
+   "n": 30
+  },
+  "Dermoscopy terminology consensus": {
+   "Directional_Score": 0.446,
+   "Coherence_Score": 0.635,
+   "n": 74
+  },
+  "Field cancerization & actinic damage scoring": {
+   "Directional_Score": 0.45,
+   "Coherence_Score": 0.45,
+   "n": 20
+  },
+  "ILDS morphology / lesion terminology": {
+   "Directional_Score": 0.45,
+   "Coherence_Score": 0.5,
+   "n": 40
+  },
+  "Congenital nevi & vascular anomalies/birthmarks": {
+   "Directional_Score": 0.455,
+   "Coherence_Score": 0.5,
+   "n": 22
+  },
+  "Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA)": {
+   "Directional_Score": 0.46,
+   "Coherence_Score": 0.55,
+   "n": 100
+  },
+  "Dermoscopy algorithms for melanoma": {
+   "Directional_Score": 0.483,
+   "Coherence_Score": 0.533,
+   "n": 60
+  },
+  "Lesion-body context & patient-level AI": {
+   "Directional_Score": 0.5,
+   "Coherence_Score": 0.667,
+   "n": 6
+  },
+  "Skin optical properties & chromophores": {
+   "Directional_Score": 0.5,
+   "Coherence_Score": 0.417,
+   "n": 12
+  },
+  "Nevus count & atypical mole phenotype": {
+   "Directional_Score": 0.5,
+   "Coherence_Score": 0.5,
+   "n": 18
+  },
+  "Monte Carlo light transport in skin": {
+   "Directional_Score": 0.5,
+   "Coherence_Score": 0.0,
+   "n": 2
+  },
+  "Adversarial / pixel perturbation attacks": {
+   "Directional_Score": 0.5,
+   "Coherence_Score": 0.5,
+   "n": 4
+  },
+  "Colour constancy & acquisition standards": {
+   "Directional_Score": 0.5,
+   "Coherence_Score": 0.417,
+   "n": 12
+  },
+  "Histopathologic correlates of dermoscopic structures": {
+   "Directional_Score": 0.5,
+   "Coherence_Score": 0.667,
+   "n": 12
+  },
+  "Smartphone / consumer apps & teledermatology": {
+   "Directional_Score": 0.5,
+   "Coherence_Score": 0.625,
+   "n": 16
+  },
+  "Inflammatory dermoscopy & general dermatology": {
+   "Directional_Score": 0.528,
+   "Coherence_Score": 0.556,
+   "n": 72
+  },
+  "Special sites (acral, face/LM, nail, mucosa)": {
+   "Directional_Score": 0.579,
+   "Coherence_Score": 0.579,
+   "n": 126
+  },
+  "Clinical melanoma criteria (ABCDE, EFG, ugly duckling)": {
+   "Directional_Score": 0.6,
+   "Coherence_Score": 0.65,
+   "n": 20
+  },
+  "Total body photography & 3D TBP": {
+   "Directional_Score": 0.6,
+   "Coherence_Score": 0.65,
+   "n": 20
+  },
+  "Melanin/haemoglobin decomposition of RGB images": {
+   "Directional_Score": 0.625,
+   "Coherence_Score": 0.625,
+   "n": 8
+  },
+  "Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)": {
+   "Directional_Score": 0.625,
+   "Coherence_Score": 0.625,
+   "n": 8
+  },
+  "Skin surface texture & microrelief": {
+   "Directional_Score": 0.625,
+   "Coherence_Score": 0.75,
+   "n": 16
+  },
+  "Photoaging scales & image grading": {
+   "Directional_Score": 0.719,
+   "Coherence_Score": 0.812,
+   "n": 32
+  },
+  "Fairness & skin-tone bias": {
+   "Directional_Score": 0.833,
+   "Coherence_Score": 0.833,
+   "n": 6
+  },
+  "Shortcut / artefact learning (markings, rulers, hair)": {
+   "Directional_Score": 0.867,
+   "Coherence_Score": 0.867,
+   "n": 30
+  },
+  "Multispectral / hyperspectral lesion imaging": {
+   "Directional_Score": 1.0,
+   "Coherence_Score": 1.0,
+   "n": 2
+  },
+  "Auditing classifiers / Clever Hans": {
+   "Directional_Score": 1.0,
+   "Coherence_Score": 1.0,
+   "n": 2
+  },
+  "Synthetic data: 3D rendering & generative models": {
+   "Directional_Score": 1.0,
+   "Coherence_Score": 1.0,
+   "n": 4
+  }
+ },
+ "three_way_agreement_by_claude_conf_q": {
+  "Directional_Score": {
+   "(0.0, 0.55]": 0.3005,
+   "(0.55, 0.65]": 0.4352,
+   "(0.65, 0.75]": 0.5215,
+   "(0.75, 0.85]": 0.5464,
+   "(0.85, 1.0]": 0.5918
+  },
+  "Coherence_Score": {
+   "(0.0, 0.55]": 0.4098,
+   "(0.55, 0.65]": 0.4974,
+   "(0.65, 0.75]": 0.5767,
+   "(0.75, 0.85]": 0.5773,
+   "(0.85, 1.0]": 0.633
+  }
+ },
+ "three_way_agreement_by_skingpt_shuffle_stability": {
+  "Directional_Score": {
+   "stable": {
+    "agree": 0.6313,
+    "n": 217
    },
-   "p_c": {
-    "kappa": [
-     0.0503
-    ],
-    "raw_agree_mean": 0.475
+   "unstable": {
+    "agree": 0.4483,
+    "n": 783
+   }
+  },
+  "Coherence_Score": {
+   "stable": {
+    "agree": 0.6216,
+    "n": 222
+   },
+   "unstable": {
+    "agree": 0.5244,
+    "n": 778
+   }
+  }
+ },
+ "claude_conf_qo_score_vs_net_p_spearman": 0.9596,
+ "claude_conf_q_vs_abs_net_p_spearman": 0.9257,
+ "claude_conf_qo_score_vs": {
+  "stateless": {
+   "Net_P": {
+    "spearman": 0.9596,
+    "three_way_agreement": 0.943
+   },
+   "Directional_Score": {
+    "spearman": 0.9783,
+    "three_way_agreement": 0.934
+   },
+   "Coherence_Score": {
+    "spearman": 0.9649,
+    "three_way_agreement": 0.959
    }
   },
   "topic": {
-   "p_o": {
-    "kappa": [
-     0.4544
-    ],
-    "raw_agree_mean": 0.837
+   "Net_P": {
+    "spearman": 0.9776,
+    "three_way_agreement": 0.952
    },
-   "p_c": {
-    "kappa": [
-     0.0233
-    ],
-    "raw_agree_mean": 0.478
-   }
-  },
-  "topic, shuffled": {
-   "p_o": {
-    "kappa": [
-     0.4236,
-     0.3708,
-     0.4247,
-     0.3894
-    ],
-    "raw_agree_mean": 0.8148
+   "Directional_Score": {
+    "spearman": 0.9849,
+    "three_way_agreement": 0.955
    },
-   "p_c": {
-    "kappa": [
-     -0.0185,
-     0.0553,
-     0.08,
-     0.0542
-    ],
-    "raw_agree_mean": 0.44
+   "Coherence_Score": {
+    "spearman": 0.9798,
+    "three_way_agreement": 0.958
    }
-  }
- },
- "qwen_stateless_agreement_with_claude": {
-  "p_o": {
-   "kappa": 0.3065,
-   "raw_agree": 0.781
-  },
-  "p_c": {
-   "kappa": -0.0356,
-   "raw_agree": 0.249
-  }
- },
- "topic_agreement_q": {
-  "Saliency method validity (sanity checks, evaluation)": 0.0,
-  "Domain shift, OOD & generalisation": 0.25,
-  "Concept-based explanations": 0.375,
-  "Skin tone measurement (Fitzpatrick, Monk, ITA)": 0.45,
-  "Nevus count & atypical mole phenotype": 0.5,
-  "Seborrhoeic keratosis & benign mimics": 0.533,
-  "Segmentation & handcrafted ABCD features": 0.577,
-  "Colour constancy & acquisition standards": 0.583,
-  "Vascular structures in dermoscopy": 0.619,
-  "Texture descriptors & radiomics for lesions": 0.625,
-  "Skin optical properties & chromophores": 0.667,
-  "Distribution & configuration (Blaschko, segmental, mosaic)": 0.682,
-  "Nevus phenotypes / signature nevus / ugly duckling": 0.7,
-  "Field cancerization & actinic damage scoring": 0.7,
-  "Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA)": 0.71,
-  "Dermoscopy algorithms for melanoma": 0.717,
-  "Spitz / pink / amelanotic & paediatric lesions": 0.733,
-  "Dermoscopy terminology consensus": 0.743,
-  "ILDS morphology / lesion terminology": 0.75,
-  "Clinical melanoma criteria (ABCDE, EFG, ugly duckling)": 0.75,
-  "Public datasets & challenges": 0.75,
-  "Melanin/haemoglobin decomposition of RGB images": 0.75,
-  "Inflammatory dermoscopy & general dermatology": 0.806,
-  "Skin surface texture & microrelief": 0.812,
-  "Special sites (acral, face/LM, nail, mucosa)": 0.817,
-  "Congenital nevi & vascular anomalies/birthmarks": 0.818,
-  "Anatomic site & body-region lesion density": 0.833,
-  "Skin of colour presentation": 0.833,
-  "Histopathologic correlates of dermoscopic structures": 0.833,
-  "Fairness & skin-tone bias": 0.833,
-  "Photoaging scales & image grading": 0.844,
-  "Total body photography & 3D TBP": 0.85,
-  "Shortcut / artefact learning (markings, rulers, hair)": 0.867,
-  "Pixel attribution in dermatology (saliency, Grad-CAM, LRP, SHAP)": 0.875,
-  "Smartphone / consumer apps & teledermatology": 0.875,
-  "Monte Carlo light transport in skin": 1.0,
-  "Adversarial / pixel perturbation attacks": 1.0,
-  "Lesion-body context & patient-level AI": 1.0,
-  "Multispectral / hyperspectral lesion imaging": 1.0,
-  "Auditing classifiers / Clever Hans": 1.0,
-  "Synthetic data: 3D rendering & generative models": 1.0
- },
- "topic_agreement_vs_shift_spearman": -0.5825,
- "agreement_q_by_claude_conf": {
-  "(0.0, 0.55]": 0.5355,
-  "(0.55, 0.65]": 0.6477,
-  "(0.65, 0.75]": 0.7239,
-  "(0.75, 0.85]": 0.8041,
-  "(0.85, 1.0]": 0.8989
- },
- "agreement_q_by_skingpt_shuffle_stability": {
-  "stable": {
-   "agree": 0.7894,
-   "n": 755
-  },
-  "unstable": {
-   "agree": 0.5755,
-   "n": 245
   }
  },
  "claude_order_check": {

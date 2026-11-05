@@ -3,7 +3,8 @@
   python -m qaemb.report modes <answer_dir> <answer_dir> ...    # timing + agreement vs the first dir
   python -m qaemb.report compare <run_id> <run_id> ... --out reports/<name>
       # side-by-side answers of several runs (e.g. stateless / topic / all) for the same images:
-      # compare_answers.csv (image x question), compare_by_question.csv, summary.md
+      # compare_answers.csv / .xlsx (image x question; one column block per run, in the order given),
+      # compare_by_question.csv, summary.md
       # a run_id of the form A+B+C+D averages those replicate runs into one column set
   python -m qaemb.report replicates <run_id> <run_id> ... --out reports/<name>
       # replicate runs of one answerer and mode: replicates_raw.csv (every replicate's values),
@@ -51,8 +52,8 @@ def modes(dirs: list[Path], threshold: float = 0.5, images: set | None = None) -
         w = ans.pivot(index=["unit_id", "question_id"], columns="original", values="p_yes")
         if 0 in w.columns:
             rows[-1]["contradiction_rate"] = ((w[1] >= threshold) == (w[0] >= threshold)).mean()
-            rows[-1]["mean_abs_p_adj"] = (w[1] - w[0]).abs().mean()
-            rows[-1]["mean_p_w"] = (w[1] * (w[1] - w[0]).abs()).mean()
+            rows[-1]["mean_abs_Net_P"] = (w[1] - w[0]).abs().mean()
+            rows[-1]["mean_P_w"] = (w[1] * (w[1] - w[0]).abs()).mean()
         if "confidence" in ans:
             rows[-1]["mean_confidence"] = ans.confidence.mean()
         rows[-1]["tokens_in"] = int(tim.n_input_tokens.fillna(0).sum())
@@ -72,8 +73,18 @@ def cost(d: Path, images: int, G: int, questions: int, local: int | None) -> dic
 ROOT = Path(__file__).resolve().parent.parent
 
 
-VALS = ["p_yes_original", "p_yes_complement", "p_adj", "p_w", "confidence_original", "confidence_complement"]
-SD_VALS = ["p_yes_original", "p_yes_complement", "p_adj", "p_w"]
+SCORES = ["Net_P", "P_w", "Directional_Score", "Coherence_Score"]
+VALS = ["p_yes_original", "p_yes_complement", *SCORES, "confidence_original", "confidence_complement"]
+SD_VALS = ["p_yes_original", "p_yes_complement", *SCORES]
+# compare_answers column names (the layout of the annotated review sheet, 2026-11-04)
+SHOW = {"p_yes_original": "P(Y|Qo)", "p_yes_complement": "P(Y|Qc)", "Net_P": "Net_P", "P_w": "P_w",
+        "Directional_Score": "Directional_Score", "Coherence_Score": "Coherence_Score", "verdict": "verdict",
+        "confidence_original": "confidence(Qo)", "confidence_complement": "confidence(Qc)",
+        **{f"{v}_sd": f"SD {n}" for v, n in (("Net_P", "Net_P"), ("Directional_Score", "Directional_Score"),
+                                              ("Coherence_Score", "Coherence_Score"))},
+        "verdict_agreement": "verdict agreement"}
+ANSWERER_NAME = {"qwen2.5-vl-7b": "Qwen2.5-VL-7B", "qwen2.5-vl-3b": "Qwen2.5-VL-3B", "skingpt-r1": "SkinGPT-R1",
+                 "claude-opus-cli": "Claude Opus 5.5 (claude -p)", "claude-opus": "Claude Opus 5.5 (API)"}
 
 
 def run_dirs(run_id: str) -> tuple[str, dict]:
@@ -110,16 +121,18 @@ def runs_covered(run_ids: list[str]) -> list[str]:
 
 
 def readable(run_id: str) -> tuple[str, pd.DataFrame, list[Path]]:
-    """Name, answers_readable rows (P_w added for older runs), and answer dirs; A+B+... averages replicates."""
-    from .stages.s4_embed import verdict
+    """Name, answers_readable rows (pair scores recomputed from P(yes), so older runs that only stored p_adj/p_w
+    get the current columns), and answer dirs; A+B+... averages replicates (scores averaged per replicate)."""
+    from .stages.s4_embed import pair_scores, verdict
 
     parts = run_id.split("+")
     frames, answer_dirs, names = [], [], []
     for r in parts:
         name, dirs = run_dirs(r)
-        df = pd.read_csv(dirs["embed"] / "answers_readable.csv")
-        if "p_w" not in df:
-            df["p_w"] = df.p_yes_original * df.p_adj.abs()
+        df = pd.read_csv(dirs["embed"] / "answers_readable.csv").drop(columns=["p_adj", "p_w"], errors="ignore")
+        if "p_yes_complement" in df:
+            for c, v in pair_scores(df.p_yes_original, df.p_yes_complement).items():
+                df[c] = v
         frames.append(df)
         answer_dirs.append(dirs["answer"])
         names.append(name)
@@ -135,6 +148,63 @@ def readable(run_id: str) -> tuple[str, pd.DataFrame, list[Path]]:
     return names[0].rsplit("/R", 1)[0] + f"/mean{len(parts)}", df, answer_dirs
 
 
+def pretty(name: str) -> str:
+    """Run label for column groups: 'claude-opus-cli/stateless/mean4' -> 'Claude Opus 5.5 (claude -p) | stateless, mean of 4'."""
+    parts = name.split("/")
+    label = f"{ANSWERER_NAME.get(parts[0], parts[0])} | {parts[1].replace('_shuf', ', shuffled')}"
+    for p in parts[2:]:
+        label += f", mean of {p[4:]}" if p.startswith("mean") else f", {p}"
+    return label
+
+
+def write_xlsx(df: pd.DataFrame, front: list[str], blocks: list[tuple[str, list[str]]], path: Path) -> None:
+    """compare_answers as a review sheet: a merged group header per run over its columns, frozen question
+    columns, filters, red-white-green scales on the signed scores and data bars on P_w."""
+    from openpyxl import Workbook
+    from openpyxl.formatting.rule import ColorScaleRule, DataBarRule
+    from openpyxl.styles import Alignment, Font, PatternFill
+    from openpyxl.utils import get_column_letter
+
+    fills = {"Qwen": "BDD7F5", "SkinGPT": "B7E4CF", "Claude": "F8C9B3"}
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "compare_answers"
+    col = len(front) + 1
+    for k, name in enumerate(front, 1):
+        ws.cell(2, k, name).font = Font(bold=True)
+    for label, cols in blocks:
+        fill = PatternFill("solid", fgColor=next((v for k, v in fills.items() if label.startswith(k)), "E6E5E1"))
+        ws.merge_cells(start_row=1, start_column=col, end_row=1, end_column=col + len(cols) - 1)
+        head = ws.cell(1, col, label)
+        head.font, head.fill, head.alignment = Font(bold=True), fill, Alignment(horizontal="center")
+        for k, c in enumerate(cols):
+            cell = ws.cell(2, col + k, c.split(" | ")[-1])
+            cell.font, cell.fill, cell.alignment = Font(bold=True), fill, Alignment(wrap_text=True)
+            letter = get_column_letter(col + k)
+            rng = f"{letter}3:{letter}{len(df) + 2}"
+            short = c.split(" | ")[-1]
+            if short in ("Net_P", "Directional_Score", "Coherence_Score"):
+                ws.conditional_formatting.add(rng, ColorScaleRule(start_type="num", start_value=-1, start_color="F4A3A3",
+                                                                  mid_type="num", mid_value=0, mid_color="FFFFFF",
+                                                                  end_type="num", end_value=1, end_color="8FD19E"))
+            elif short == "P_w":
+                ws.conditional_formatting.add(rng, DataBarRule(start_type="num", start_value=0, end_type="num",
+                                                               end_value=1, color="6FA8DC"))
+            ws.column_dimensions[letter].width = 9 if short != "verdict" else 14
+        col += len(cols)
+    for r, row in enumerate(df.itertuples(index=False), 3):
+        for k, v in enumerate(row, 1):
+            cell = ws.cell(r, k, None if (isinstance(v, float) and np.isnan(v)) else v)
+            if isinstance(v, float):
+                cell.number_format = "0.00"
+    widths = {"question": 60, "question_neg": 40, "topic": 28}
+    for k, name in enumerate(front, 1):
+        ws.column_dimensions[get_column_letter(k)].width = widths.get(name, 13)
+    ws.freeze_panes = ws.cell(3, len(front) + 1)
+    ws.auto_filter.ref = f"A2:{get_column_letter(col - 1)}{len(df) + 2}"
+    wb.save(path)
+
+
 def compare(run_ids: list[str], out: Path, threshold: float = 0.5) -> Path:
     out = ROOT / out
     out.mkdir(parents=True, exist_ok=True)
@@ -146,16 +216,31 @@ def compare(run_ids: list[str], out: Path, threshold: float = 0.5) -> Path:
     text = ["topic", "scope", "kind", "question", "question_neg"]
     merged = None
     for name, (_, df, _) in zip(names, runs):
-        cols = [c for c in VALS + ["verdict"] + [f"{v}_sd" for v in SD_VALS] + ["verdict_agreement"] if c in df]
+        cols = [c for c in SHOW if c in df]
         vals = df[idx + cols].rename(columns={c: f"{c}__{name}" for c in cols})
         merged = df[idx + [c for c in text if c in df]].merge(vals, on=idx) if merged is None else merged.merge(vals, on=idx)
-    merged.round(4).to_csv(out / "compare_answers.csv", index=False)
+
+    # compare_answers: question columns, then one block per run in the order given
+    front = ["image_id", "label_raw", "question_id", *[c for c in text if c in merged]]
+    if (merged.patch_id >= 0).any():
+        front.insert(2, "patch_id")
+    show, blocks = merged[front].copy(), []
+    for name in names:
+        label = pretty(name)
+        cols = []
+        for c, shown in SHOW.items():
+            if f"{c}__{name}" in merged and merged[f"{c}__{name}"].notna().any():
+                show[f"{label} | {shown}"] = merged[f"{c}__{name}"]
+                cols.append(f"{label} | {shown}")
+        blocks.append((label, cols))
+    show = show.round(4)
+    show.to_csv(out / "compare_answers.csv", index=False)
+    write_xlsx(show, front, blocks, out / "compare_answers.xlsx")
 
     whole = merged[merged.patch_id < 0]
     byq = whole.groupby("question_id").agg(
         question=("question", "first"), topic=("topic", "first"),
-        **{f"mean_p_adj__{n}": (f"p_adj__{n}", "mean") for n in names},
-        **{f"mean_p_w__{n}": (f"p_w__{n}", "mean") for n in names},
+        **{f"mean_{v}__{n}": (f"{v}__{n}", "mean") for n in names for v in SCORES},
         **{f"contradiction_rate__{n}": (f"verdict__{n}", lambda v: v.str.startswith("contradiction").mean()) for n in names})
     byq.round(4).to_csv(out / "compare_by_question.csv")
 
@@ -167,12 +252,15 @@ def compare(run_ids: list[str], out: Path, threshold: float = 0.5) -> Path:
          f"Images: {', '.join(sorted(merged.image_id.unique()))} (those every run answered). "
          f"Reference for the agreement columns: `{names[0]}`.", ""] + runs_covered(run_ids) + ["## Summary", "",
          table.drop(columns=["dir"]).round(4).to_markdown(index=False), "",
-         "- [compare_answers.csv](compare_answers.csv): one row per image x question; P(yes) to the original and "
-         "complement, p_adj, P_w, stated confidence (Claude) and verdict for each run side by side. "
-         "Averaged replicate groups (`/meanN`) give the mean of each value over the N replicates, its SD "
-         "(`_sd` columns) and `verdict_agreement` (share of replicates giving the most common verdict); "
+         "- [compare_answers.csv](compare_answers.csv) and [compare_answers.xlsx](compare_answers.xlsx): one row per "
+         "image x question; one column block per run: P(Y|Qo) and P(Y|Qc) (P(yes) to the question and to its negation), "
+         "Net_P = P(Y|Qo) - P(Y|Qc), P_w = P(Y|Qo) x |Net_P|, Directional_Score = (2 P(Y|Qo) - 1) x |Net_P|, "
+         "Coherence_Score = (2 P(Y|Qo) - 1) x (1 - |P(Y|Qo) + P(Y|Qc) - 1|), verdict, and Claude's stated confidence. "
+         "Averaged replicate groups (`mean of N`) give the mean of each value over the N replicates (scores averaged "
+         "per replicate), SDs and `verdict agreement` (share of replicates giving the most common verdict); "
          "the table's timing and token columns describe their first replicate.",
-         "- [compare_by_question.csv](compare_by_question.csv): per question, mean p_adj and contradiction rate per run.", ""]
+         "- [compare_by_question.csv](compare_by_question.csv): per question, mean Net_P, P_w, both scores and "
+         "contradiction rate per run.", ""]
     verdicts = pd.concat({n: whole[f"verdict__{n}"].value_counts(normalize=True) for n in names}, axis=1).fillna(0)
     L += ["Share of verdicts (whole image, all images x questions):", "", verdicts.round(3).to_markdown(), ""]
     (out / "summary.md").write_text("\n".join(L))
@@ -198,14 +286,14 @@ def replicates(run_ids: list[str], out: Path) -> Path:
     agg = agg.reset_index().merge(frames[0][idx + ["question", "question_neg"]], on=idx)
     agg.round(4).to_csv(out / "replicates_summary.csv", index=False)
 
-    wide = raw.pivot_table(index=idx, columns="replicate", values="p_adj")
+    wide = raw.pivot_table(index=idx, columns="replicate", values="Net_P")
     corr = wide.corr().values[np.triu_indices(wide.shape[1], 1)]
     rows = [{"value": v, "mean": raw[v].mean(), "mean SD across replicates": agg[f"{v}_std"].mean()} for v in vals]
     L = [f"# Replicates: {run_dirs(run_ids[0])[0].rsplit('/R', 1)[0]} ({len(run_ids)} runs)", ""] + runs_covered(run_ids) + [
          "## Summary", "",
          pd.DataFrame(rows).round(4).to_markdown(index=False), "",
          f"- Image × question pairs with the same verdict in every replicate: **{(agg.verdict_agreement == 1).mean():.1%}**",
-         f"- Mean pairwise Pearson r of p_adj between replicates: **{np.nanmean(corr):.3f}**",
+         f"- Mean pairwise Pearson r of Net_P between replicates: **{np.nanmean(corr):.3f}**",
          "",
          "- [replicates_raw.csv](replicates_raw.csv): every replicate's values, one row per replicate x image x question.",
          "- [replicates_summary.csv](replicates_summary.csv): mean and SD per image x question, modal verdict and its share.", ""]

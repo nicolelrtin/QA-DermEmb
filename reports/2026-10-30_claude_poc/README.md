@@ -23,7 +23,7 @@ Claude's columns are the **mean of its 4 replicates**. They come with an SD colu
 share of replicates that gave the most common verdict.
 
 **Verdict** for a question pair: *yes* when the model said yes to the question and no to its negation; *no* for the
-reverse; a *contradiction* when it gave the same answer to both. p_adj = P(yes | question) − P(yes | negation),
+reverse; a *contradiction* when it gave the same answer to both. Net_P = P(yes | question) − P(yes | negation),
 from −1 (clearly no) to +1 (clearly yes).
 
 ## Validity checks
@@ -47,22 +47,22 @@ from −1 (clearly no) to +1 (clearly yes).
 | contradiction: yes to both | 3.8% | 0.5% | 12.8% | 7.5% | 0.6% | 0.5% |
 
 **2. Claude is consistent between replicates.** The same verdict came back in all 4 replicates for **92.1%** of pairs
-(stateless) and **94.6%** (topic). Across replicates, p_adj correlates at r = 0.99. A typical answer moves by
+(stateless) and **94.6%** (topic). Across replicates, Net_P correlates at r = 0.99. A typical answer moves by
 about 0.02–0.03 between replicates (mean SD).
 
-**3. How Claude is asked matters little.** Stateless and topic give the same verdict for 90.6% of pairs, and p_adj
+**3. How Claude is asked matters little.** Stateless and topic give the same verdict for 90.6% of pairs, and Net_P
 correlates at r = 0.92 between the two modes. For Qwen the two modes agree on 78% of verdicts, but only because both
 mostly contradict. For SkinGPT-R1 they agree on 48%.
 
-**4. The three models largely disagree with one another.** p_adj correlates at only r = 0.34–0.43 between Claude and
+**4. The three models largely disagree with one another.** Net_P correlates at only r = 0.34–0.43 between Claude and
 either local model. Claude's verdict matches Qwen's for 8–13% of pairs and SkinGPT-R1's for 35–40%.
 These figures show disagreement, not who is right: there is no ground truth for individual answers.
 
 **5. Claude's answers differ between the two images,** as they should for two different lesions. Matched question by
-question, Claude's p_adj on the two images correlates at r = 0.58–0.62. It said "yes" to 22% of pairs for the
+question, Claude's Net_P on the two images correlates at r = 0.58–0.62. It said "yes" to 22% of pairs for the
 melanoma (ISIC_0000147) and 16% for the benign image (stateless).
 
-**6. Where the variability sits, per question ID.** The measure is how much p_adj changes for a question
+**6. Where the variability sits, per question ID.** The measure is how much Net_P changes for a question
 (0 = same answer, 2 = certain and opposite), shown separately for each image. Claude comparisons use single
 replicates, never replicate means. Claude's replicate-to-replicate change averages **0.03–0.05**. Stateless vs topic
 averages 0.14–0.20 for Claude, 0.17–0.20 for Qwen and 0.48–0.50 for SkinGPT-R1. So for Claude, the choice of mode
@@ -86,8 +86,8 @@ slightly fewer contradictions. It is the better choice for scaling Claude to mor
 
 | File | What it holds |
 |---|---|
-| [compare/compare_answers.csv](compare/compare_answers.csv) | one row per image × question: P(yes) to the question and to its negation, p_adj, P_w, verdict for each answerer × mode; Claude adds stated confidence, `_sd` columns and `verdict_agreement` |
-| [compare/compare_by_question.csv](compare/compare_by_question.csv) | per question: mean p_adj and contradiction rate for each answerer × mode |
+| [compare/compare_answers.csv](compare/compare_answers.csv), [.xlsx](compare/compare_answers.xlsx) | one row per image × question, one column block per answerer × mode (stateless blocks first): P(Y\|Qo), P(Y\|Qc), Net_P, P_w, Directional_Score, Coherence_Score, verdict; Claude adds stated confidence, SDs and verdict agreement. Regenerated 2026-11-04 in the review-sheet layout |
+| [compare/compare_by_question.csv](compare/compare_by_question.csv) | per question: mean Net_P, P_w, both scores and contradiction rate for each answerer × mode |
 | [compare/summary.md](compare/summary.md) | the comparison tables and the full Runs covered table |
 | [replicates_claude_stateless/](replicates_claude_stateless/summary.md), [replicates_claude_topic/](replicates_claude_topic/summary.md) | every Claude replicate's values (`replicates_raw.csv`), their mean/SD per image × question (`replicates_summary.csv`) and a summary |
 

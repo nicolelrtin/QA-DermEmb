@@ -1,0 +1,1 @@
+feat: {source: coh, kind: prob}   # Coherence_Score = (2 P(yes|original) - 1) x (1 - |incoherence|)

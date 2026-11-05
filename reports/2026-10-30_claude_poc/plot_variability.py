@@ -16,7 +16,7 @@ import pandas as pd
 
 HERE = Path(__file__).parent
 # local models are deterministic: one run each, read from compare_answers.csv (runs listed in README.md)
-LOCAL = {"Qwen": "qwen2.5-vl-7b", "SkinGPT-R1": "skingpt-r1"}
+LOCAL = {"Qwen": "Qwen2.5-VL-7B", "SkinGPT-R1": "SkinGPT-R1"}
 IMAGES = {"ISIC_0000147": "ISIC_0000147 (malignant)", "ISIC_0000215": "ISIC_0000215 (benign)"}
 # per model: (first image, second image) = darker and lighter step of one hue (reference palette ramps)
 COLORS = {"Qwen": ("#256abf", "#9ec5f4"), "SkinGPT-R1": ("#178f63", "#8fd9bc"), "Claude": ("#d95926", "#f5b596")}
@@ -32,7 +32,7 @@ def p_adj_table() -> pd.DataFrame:
             cols[("Claude", mode, rep)] = g.set_index(["image_id", "question_id"]).p_adj
     d = pd.read_csv(HERE / "compare" / "compare_answers.csv").set_index(["image_id", "question_id"])
     for (model, name), mode in product(LOCAL.items(), ("stateless", "topic")):
-        cols[(model, mode, "-")] = d[f"p_adj__{name}/{mode}"]
+        cols[(model, mode, "-")] = d[f"{name} | {mode} | Net_P"]
     return pd.DataFrame(cols)
 
 

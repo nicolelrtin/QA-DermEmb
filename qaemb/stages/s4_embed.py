@@ -1,18 +1,21 @@
 """S4 Embedding store.
 
 answers.parquet: the long table (handoff §5.1) with one row per (unit, Question ID, original), plus the
-pair-level adjusted answer on both rows of a pair:
-  p_adj       = P(yes | original) - P(yes | complement), in [-1, 1]. Near +1 / -1 = confident yes / no;
-                near 0 = the model said the same thing to a question and its negation (not confident).
-  incoherence = P(yes | original) + P(yes | complement) - 1; 0 for a perfectly complementary pair,
-                > 0 = says yes to both, < 0 = says no to both.
-  p_w         = P(yes | original) x |p_adj|: the original answer, discounted when the pair is inconsistent.
+pair-level scores on both rows of a pair (Po = P(yes | original), Pc = P(yes | complement)):
+  Net_P             = Po - Pc, in [-1, 1]. Near +1 / -1 = confident yes / no; near 0 = the same answer to a
+                      question and its negation, or uncertain.
+  incoherence       = Po + Pc - 1; 0 for a perfectly complementary pair, > 0 = yes to both, < 0 = no to both.
+  P_w               = Po x |Net_P|: the original answer, discounted when the pair is inconsistent.
+  Directional_Score = (2 Po - 1) x |Net_P|, in [-1, 1]: direction and confidence from the original question,
+                      shrunk by the gap to the complement (about sign(Net_P) x Net_P^2 for coherent pairs).
+  Coherence_Score   = (2 Po - 1) x (1 - |incoherence|), in [-1, 1]: direction and confidence from the original
+                      question, shrunk only by contradiction (coherent 0.7 / 0.3 keeps its full 0.4).
   confidence  = the answerer's stated confidence in its answer (Claude; NaN for logit answerers).
-Matrices per source s in {orig, neg, adj, w}: X_image_<s>.parquet [N_img x Q] and, for patch runs,
+Matrices per source s in {orig, neg, adj (Net_P), w (P_w), dir (Directional_Score), coh (Coherence_Score)}: X_image_<s>.parquet [N_img x Q] and, for patch runs,
 X_patch_<s>.npy [N_img x n x n x Q] (n = cells per side; 2G-1 with 50% overlap) with patch_index.json.
 questions.parquet: one row per Question ID (original text, complement text, topic/scope/kind).
 answers_readable.csv: one row per (unit, Question ID) with label, question texts, P(yes) to each version,
-p_adj and a plain-language verdict -- the file to open when reviewing what the model answered.
+Net_P, P_w, both scores and a plain-language verdict -- the file to open when reviewing what the model answered.
 """
 import json
 
@@ -22,11 +25,20 @@ import pandas as pd
 from ..questions import question_table
 
 UPSTREAM = ["manifest", "answer"]
-VERSION = 6
+VERSION = 7
 
 SCHEMA = ["run_id", "image_id", "patch_id", "grid_G", "bbox", "question_id", "original", "qset_hash", "p_yes", "answer_bin",
-          "threshold", "p_adj", "answer_adj_bin", "adj_threshold", "incoherence", "mode", "batch_k", "batch_id",
-          "position_in_batch", "prompt_hash", "answerer_id", "yesno_mass", "p_w", "confidence"]
+          "threshold", "Net_P", "answer_adj_bin", "adj_threshold", "incoherence", "mode", "batch_k", "batch_id",
+          "position_in_batch", "prompt_hash", "answerer_id", "yesno_mass", "P_w", "Directional_Score", "Coherence_Score",
+          "confidence"]
+SCORES = ["Net_P", "P_w", "Directional_Score", "Coherence_Score"]
+
+
+def pair_scores(po, pc) -> dict:
+    """The pair-level scores from P(yes | original) and P(yes | complement) (see module docstring)."""
+    net, inc = po - pc, po + pc - 1
+    return {"Net_P": net, "incoherence": inc, "P_w": po * net.abs(),
+            "Directional_Score": (2 * po - 1) * net.abs(), "Coherence_Score": (2 * po - 1) * (1 - inc.abs())}
 UNIT = ["image_id", "patch_id"]
 
 
@@ -49,13 +61,14 @@ def run(cfg, out, inputs, ctx) -> dict:
     sources = {"orig": wide[1]}
     if has_neg:
         sources["neg"] = wide[0]
-        sources["adj"] = wide[1] - wide[0]
-        sources["w"] = wide[1] * sources["adj"].abs()
-        pair = pd.DataFrame({"p_adj": sources["adj"], "incoherence": wide[1] + wide[0] - 1, "p_w": sources["w"]}).reset_index()
+        ps = pair_scores(wide[1], wide[0])
+        sources.update({"adj": ps["Net_P"], "w": ps["P_w"], "dir": ps["Directional_Score"], "coh": ps["Coherence_Score"]})
+        pair = pd.DataFrame(ps).reset_index()
         raw = raw.merge(pair, on=UNIT + ["question_id"], how="left")
-        raw["answer_adj_bin"] = (raw.p_adj >= adj_thr).astype("int8")
+        raw["answer_adj_bin"] = (raw.Net_P >= adj_thr).astype("int8")
     else:
-        raw["p_adj"] = raw["incoherence"] = raw["p_w"] = np.nan
+        for c in SCORES + ["incoherence"]:
+            raw[c] = np.nan
         raw["answer_adj_bin"] = -1
     raw[SCHEMA].to_parquet(out / "answers.parquet", index=False)
 
@@ -70,11 +83,13 @@ def run(cfg, out, inputs, ctx) -> dict:
     if has_neg:
         p1, p0 = wide[1], wide[0]
         summary.update({
-            "mean_abs_p_adj": float(sources["adj"].abs().mean()),
+            "mean_abs_Net_P": float(sources["adj"].abs().mean()),
             "mean_incoherence": float((p1 + p0 - 1).mean()),
             "mean_abs_incoherence": float((p1 + p0 - 1).abs().mean()),
             "contradiction_rate": float(((p1 >= thr) == (p0 >= thr)).mean()),  # same answer to Q and not-Q
-            "mean_p_w": float(sources["w"].mean()),
+            "mean_P_w": float(sources["w"].mean()),
+            "mean_Directional_Score": float(sources["dir"].mean()),
+            "mean_Coherence_Score": float(sources["coh"].mean()),
         })
 
     for name, s in sources.items():
@@ -126,15 +141,14 @@ def write_readable(out, raw: pd.DataFrame, qt: pd.DataFrame, manifest_dir, thr: 
     cols = ["question_id", "topic", "scope", "kind", "question", "question_neg"]
     df = man.merge(wide, on="image_id").merge(qt[[c for c in cols if c in qt]], on="question_id", how="left")
     if has_neg:
-        df["p_adj"] = df.p_yes_original - df.p_yes_complement
-        df["incoherence"] = df.p_yes_original + df.p_yes_complement - 1
-        df["p_w"] = df.p_yes_original * df.p_adj.abs()
+        for c, v in pair_scores(df.p_yes_original, df.p_yes_complement).items():
+            df[c] = v
         df["verdict"] = [verdict(a, b, thr) for a, b in zip(df.p_yes_original, df.p_yes_complement)]
     else:
         df["verdict"] = np.where(df.p_yes_original >= thr, "yes", "no")
     front = ["image_id", "label_raw", "split", "patch_id", "question_id", "topic", "scope", "kind", "question",
              "p_yes_original", "confidence_original", "question_neg", "p_yes_complement", "confidence_complement",
-             "p_adj", "p_w", "incoherence", "verdict"]
+             "Net_P", "P_w", "Directional_Score", "Coherence_Score", "incoherence", "verdict"]
     df = df[[c for c in front if c in df]].sort_values(["image_id", "patch_id", "question_id"])
     df = df.drop(columns=[c for c in ("confidence_original", "confidence_complement") if df[c].isna().all()])
     df.round(4).to_csv(out / "answers_readable.csv", index=False)

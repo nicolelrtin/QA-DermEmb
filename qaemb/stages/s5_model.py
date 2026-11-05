@@ -3,7 +3,8 @@
 Images with label -1 (indeterminate holdout) are never fitted or scored in metrics; they get
 predictions in predictions.parquet under split 'holdout'. Questions of kind in model.exclude_kinds
 (artefact by default) are left out; patch models also use scope == local only.
-Features come from feat.source: adj (default; p_adj = P(yes|original) - P(yes|complement)), orig or neg.
+Features come from feat.source: adj (default; Net_P = P(yes|original) - P(yes|complement)), w (P_w),
+dir (Directional_Score), coh (Coherence_Score), orig or neg (see stages/s4_embed.py).
 split 'loo': leave-one-out over labelled images (pooled predictions -> metrics['loo']); the final
 model for coefficients/holdout is refit on all labelled images.
 """
@@ -21,7 +22,7 @@ VERSION = 2
 def key(cfg, ctx) -> dict:
     if not cfg.model.name:
         raise SystemExit("stage=model needs a model experiment (W0, W1, P0, ...)")
-    thr = cfg.answer.adj_threshold if cfg.feat.source == "adj" else cfg.answer.threshold
+    thr = cfg.answer.adj_threshold if cfg.feat.source in ("adj", "dir", "coh") else cfg.answer.threshold  # signed sources: 0
     return {"feat": cfg.feat, "bin_threshold": thr if cfg.feat.kind == "bin" else None, "model": cfg.model, "seed": cfg.seed}
 
 
@@ -51,7 +52,7 @@ def load_features(cfg, embed_dir, image_ids, keep) -> np.ndarray:
         Xp = np.load(embed_dir / name)[[pos[i] for i in image_ids]]
         X = Xp.reshape(len(image_ids), -1, Xp.shape[-1])[..., keep]
     if cfg.feat.kind == "bin":
-        X = (X >= (cfg.answer.adj_threshold if src == "adj" else cfg.answer.threshold)).astype(np.float32)
+        X = (X >= (cfg.answer.adj_threshold if src in ("adj", "dir", "coh") else cfg.answer.threshold)).astype(np.float32)
     return X.astype(np.float32)
 
 

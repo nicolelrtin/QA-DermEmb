@@ -75,7 +75,7 @@ def write_run_report(meta: dict, status: dict, run_dir: Path) -> Path:
         readable = d / "answers_readable.csv"
         if readable.exists():
             L += [f"**Answers to review:** [answers_readable.csv]({_rel(readable, run_dir)}) "
-                  "(one row per image x question pair: question texts, P(yes) to each version, p_adj, verdict)", ""]
+                  "(one row per image x question pair: question texts, P(yes) to each version, Net_P, P_w, Directional_Score, Coherence_Score, verdict)", ""]
             df = pd.read_csv(readable)
             if "verdict" in df and (df.patch_id < 0).any():
                 v = df[df.patch_id < 0].pivot_table(index="image_id", columns="verdict", values="question_id",
