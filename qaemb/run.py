@@ -3,7 +3,8 @@
   python -m qaemb.run stage=<stage|all> +exp=[<ID>,<ID>,...] tag=<free_text> [key=value ...]
   python -m qaemb.run stage=all +exp=[...] dry_run=true      # resolved config + cache hits, runs nothing
 
-Stages: manifest -> prepare -> answer -> embed -> model. Asking for a stage runs its upstream chain;
+Stages: manifest -> prepare -> answer -> embed -> model | classify. Asking for a stage runs its upstream chain
+(classify with classify.synthetic set needs only the manifest);
 stages whose content-addressed output dir is already complete are skipped.
 """
 import importlib
@@ -19,13 +20,14 @@ from omegaconf import OmegaConf
 
 from .config import ROOT, compose, parse_cli, stable_hash
 
-ORDER = ["manifest", "prepare", "answer", "embed", "model"]
+ORDER = ["manifest", "prepare", "answer", "embed", "model", "classify"]
 MODULES = {
     "manifest": "qaemb.stages.s0_manifest",
     "prepare": "qaemb.stages.s1_prepare",
     "answer": "qaemb.stages.s2_answer",
     "embed": "qaemb.stages.s4_embed",
     "model": "qaemb.stages.s5_model",
+    "classify": "qaemb.stages.s6_classify",
 }
 DONE = "_DONE"
 os.environ.setdefault("MLFLOW_DISABLE_AGENT_HINT", "1")
@@ -73,12 +75,24 @@ class Context:
         return self._revision
 
 
-def stage_chain(target: str) -> list[str]:
+def upstream_of(mod, cfg) -> list[str]:
+    """A stage's inputs: its upstream(cfg) when it depends on the config, else its UPSTREAM list."""
+    return list(mod.upstream(cfg)) if hasattr(mod, "upstream") else list(mod.UPSTREAM)
+
+
+def stage_chain(target: str, cfg) -> list[str]:
+    """The target and everything it needs, in pipeline order. 'all' = the original chain up to model."""
     if target == "all":
-        return list(ORDER)
+        return ORDER[: ORDER.index("model") + 1]
     if target not in ORDER:
         raise SystemExit(f"Unknown stage {target!r}; choose from {ORDER + ['all']}")
-    return ORDER[: ORDER.index(target) + 1]
+    need, todo = set(), [target]
+    while todo:
+        name = todo.pop()
+        if name not in need:
+            need.add(name)
+            todo += upstream_of(importlib.import_module(MODULES[name]), cfg)
+    return [n for n in ORDER if n in need]
 
 
 def resolve(cfg, ctx: Context, chain: list[str]) -> dict:
@@ -86,7 +100,7 @@ def resolve(cfg, ctx: Context, chain: list[str]) -> dict:
     modules = {}
     for name in chain:
         mod = importlib.import_module(MODULES[name])
-        up = {u: ctx.stage_hashes[u] for u in mod.UPSTREAM}
+        up = {u: ctx.stage_hashes[u] for u in upstream_of(mod, cfg)}
         h = stable_hash({"stage": name, "version": getattr(mod, "VERSION", 1), "key": mod.key(cfg, ctx), "upstream": up})
         ctx.stage_hashes[name] = h
         ctx.stage_dirs[name] = out_root / name / h
@@ -125,7 +139,7 @@ def git_state() -> dict:
 def main(argv: list[str] | None = None) -> None:
     exp_ids, overrides = parse_cli(sys.argv[1:] if argv is None else argv)
     cfg = compose(exp_ids, overrides)
-    chain = stage_chain(cfg.stage)
+    chain = stage_chain(cfg.stage, cfg)
     run_id = datetime.now().strftime("%Y%m%d-%H%M%S") + (f"_{cfg.tag}" if cfg.tag else "")
     ctx = Context(cfg, run_id)
     modules = resolve(cfg, ctx, chain)
@@ -162,11 +176,11 @@ def main(argv: list[str] | None = None) -> None:
         out.mkdir(parents=True, exist_ok=True)
         print(f"[{name}] -> {out.relative_to(ROOT)}")
         ts = time.time()
-        inputs = {u: ctx.stage_dirs[u] for u in modules[name].UPSTREAM}
+        inputs = {u: ctx.stage_dirs[u] for u in upstream_of(modules[name], cfg)}
         summary = modules[name].run(cfg, out, inputs, ctx) or {}
         stage_meta = {
             "stage": name, "hash": ctx.stage_hashes[name], "key": modules[name].key(cfg, ctx),
-            "upstream": {u: ctx.stage_hashes[u] for u in modules[name].UPSTREAM},
+            "upstream": {u: ctx.stage_hashes[u] for u in upstream_of(modules[name], cfg)},
             "run_id": run_id, "wall_s": round(time.time() - ts, 2), "summary": summary,
         }
         (out / "stage_meta.json").write_text(json.dumps(stage_meta, indent=2, default=str))
@@ -197,7 +211,7 @@ def write_run_meta(cfg, ctx: Context, chain: list[str], summaries: dict, wall_s:
         meta["answerer"] = {"checkpoint": cfg.answerer.checkpoint, "revision": ctx.answerer_revision,
                             "dtype": cfg.answerer.dtype, "attn": cfg.answerer.attn}
         meta["prompts"] = summaries.get("answer", {}).get("prompts")
-    if any(s in chain for s in ("answer", "embed", "model")):
+    if any(s in chain for s in ("answer", "embed", "model", "classify")):
         meta["question_set"] = {"hash": ctx.qset_hash, "count": len(ctx.questions), "csv": cfg.questions.csv}
 
     run_dir = ROOT / cfg.paths.out_root / "runs" / ctx.run_id
@@ -247,7 +261,7 @@ def log_markdown(cfg, meta: dict, summaries: dict, report: Path) -> None:
     if not path.exists():
         path.write_text("# Experiments log\n\n| run_id | experiments | stage hashes | key metric | notes |\n|---|---|---|---|---|\n")
     hashes = " ".join(f"{k[:3]}:{v[:6]}" for k, v in meta["stage_hashes"].items())
-    key = summaries.get("model", {}).get("key_metric") or summaries.get("answer", {}).get("key_metric") or ""
+    key = summaries.get("classify", {}).get("key_metric") or summaries.get("model", {}).get("key_metric") or summaries.get("answer", {}).get("key_metric") or ""
     exps = ",".join(meta["experiments"].values())
     with open(path, "a") as f:
         link = Path(os.path.relpath(report, path.parent)).as_posix().replace(" ", "%20")

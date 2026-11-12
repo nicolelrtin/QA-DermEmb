@@ -7,6 +7,7 @@ data:
   D1_train: full manifest, train/val/test split grouped by lesion
 qset:
   Q0_all: all 500 questions, each asked as the original and as its negated complement (1,000 items)
+  Q0_orig: "all 500 questions as written, no complements; from 2026-11-11 plus the control question DQC01 'Is this a malignant lesion?' in its own topic (a benchmark, never a feature)"
   Q1_local: only questions about a local region of the lesion (233 of 500)
   Q2_selected: questions selected by an earlier model run
   Q9_smoke50: 50-question subset (every 10th question, all topics), original + complement
@@ -30,6 +31,8 @@ grid:
   G4_ov: whole image + 4x4 patches with 50% overlap
   G8: whole image + 8x8 patches
   G8_ov: whole image + 8x8 patches with 50% overlap
+img:
+  I1_claude_max: "whole images for Claude, shrunk only, to at most 3.6 MP and 2,576 px long edge (the most Sonnet/Opus 5.5 use); without an img ID, images are resized to 0.4 MP for Qwen"
 rep:
   R1: "replicate 1 (Claude, a new sample; local models differ only under M_topic_shuf, as a new question order)"
   R2: replicate 2

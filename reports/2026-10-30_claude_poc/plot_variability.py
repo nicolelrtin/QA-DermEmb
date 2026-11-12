@@ -1,6 +1,8 @@
 """Answer variability per original question ID (2026-10-30 Claude PoC): Claude replicate to replicate, and
 stateless vs topic for each model, shown separately for each image.
 
+variability_by_question.csv: per image x question, each model's Net_P per mode (Claude: mean of 4) and the changes
+(|difference| averaged over run pairs) that the boxes show.
 Every box is one value per question ID, |difference in Net_P| (0 = identical answer, 2 = certain and opposite).
 Claude comparisons average over every pair of individual replicates, so they compare single runs, like the
 one-run local models.
@@ -62,6 +64,22 @@ def boxes(ax, groups):
     ax.spines["bottom"].set_color(GRID)
 
 
+def readable_columns(score: str, t: pd.DataFrame) -> dict:
+    """CSV columns for one score: each model's value per mode (Claude: mean of its replicates) next to the
+    changes, named so that values and changes cannot be confused."""
+    runs = lambda model, mode: [c for c in t.columns if c[:2] == (model, mode)]
+    out = {}
+    for model in ("Claude", "Qwen", "SkinGPT-R1"):
+        n = len(runs(model, "stateless"))
+        for mode in ("stateless", "topic"):
+            out[f"{score} | {model} {mode} | value" + (f" (mean of {n})" if n > 1 else "")] = t[runs(model, mode)].mean(axis=1)
+        out[f"{score} | {model} | change, stateless vs topic"] = mean_abs_diff(t, runs(model, "stateless"), runs(model, "topic"))
+        if n > 1:
+            for mode in ("stateless", "topic"):
+                out[f"{score} | {model} {mode} | change between replicates"] = mean_abs_diff(t, runs(model, mode))
+    return out
+
+
 def highlight_changes(ax, v: pd.Series, x: float) -> None:
     """Overlay Claude's flagged questions (claude_stateless_vs_topic.csv, from claude_mode_changes.py) on its
     stateless-vs-topic boxes: filled = verdict changed, open = large shift with the same verdict."""
@@ -83,8 +101,7 @@ def main():
     runs = lambda model, mode: [c for c in t.columns if c[:2] == (model, mode)]
     reps = [(f"Claude\n{mode}", "Claude", mean_abs_diff(t, runs("Claude", mode))) for mode in ("stateless", "topic")]
     modes = [(m, m, mean_abs_diff(t, runs(m, "stateless"), runs(m, "topic"))) for m in ("Qwen", "SkinGPT-R1", "Claude")]
-    pd.DataFrame({f"{lab.replace(chr(10), ' ')} | {kind}": v for kind, grp in (("replicates", reps), ("stateless vs topic", modes))
-                  for lab, _, v in grp}).to_csv(HERE / "variability_by_question.csv")
+    pd.DataFrame(readable_columns("Net_P", t)).round(4).to_csv(HERE / "variability_by_question.csv")
 
     fig, (a, b) = plt.subplots(1, 2, figsize=(10, 5.2), sharey=True, gridspec_kw={"width_ratios": [2, 3], "wspace": 0.08})
     fig.patch.set_facecolor(BG)

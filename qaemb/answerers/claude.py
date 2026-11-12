@@ -7,13 +7,23 @@ run go into one Message Batch whose id is saved, so a restart polls the same bat
 A request that does not return a complete, numeric answer for every question is resent (claude.max_attempts);
 if any is still incomplete the stage stops, so missing answers never reach the embedding.
 Results are written in the same shard format as the Qwen path (one shard per unit).
+
+Spend: every billed response is priced from its usage and appended to a ledger shared by all runs (claude.budget).
+Before each submission (and each resend round) the cost is projected; a submission that would take the total past
+checkpoint_usd stops until claude.budget.approved_usd covers it, and none may pass limit_usd.
 """
 import json
+import math
+import random
+import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
+
+from ..config import ROOT
 
 NUM = {"type": "number"}
 SCHEMA_ONE = {"type": "object", "properties": {"p_yes": NUM, "confidence": NUM},
@@ -88,7 +98,89 @@ def usage_tokens(msg) -> dict:
 TOK0 = {"n_input_tokens": 0, "n_output_tokens": 0, "n_cache_read_tokens": 0, "n_cache_write_tokens": 0, "kv_cache_hit": False}
 
 
-def _submit(client, c, reqs, run_dir: Path, attempt: int) -> dict[str, tuple]:
+class Budget:
+    """Running Claude API spend, one ledger row per billed response, kept across runs and deduplicated by message id."""
+
+    COLS = ["time", "run_id", "message_id", "model", "batch", "n_questions", "input_tokens", "cache_read_tokens",
+            "cache_write_tokens", "output_tokens", "usd"]
+
+    def __init__(self, cfg, run_id: str):
+        self.b, self.prices, self.run_id, self.model = cfg.claude.budget, cfg.claude.prices, run_id, cfg.claude.model
+        self.path = ROOT / self.b.ledger
+        self.df = pd.read_csv(self.path) if self.path.exists() else pd.DataFrame(columns=self.COLS)
+        self.seen = set(self.df.message_id)
+        self.lock = threading.Lock()
+
+    def _rate(self, model: str, batch: bool):
+        if model not in self.prices:
+            raise SystemExit(f"No price for {model} in claude.prices; add it before running")
+        return self.prices[model], (float(self.prices.batch_factor) if batch else 1.0)
+
+    def usd(self, model: str, batch: bool, inp: float, out: float, cr: float = 0, cw: float = 0) -> float:
+        p, f = self._rate(model, batch)
+        return f * (inp * p.input + cr * p.cache_read + cw * p.cache_write + out * p.output) / 1e6
+
+    @property
+    def spent(self) -> float:
+        return float(self.df.usd.sum()) if len(self.df) else 0.0
+
+    def record(self, msg, batch: bool, n_questions: int) -> None:
+        if msg is None or msg.id in self.seen:
+            return
+        u = msg.usage
+        cr, cw = getattr(u, "cache_read_input_tokens", 0) or 0, getattr(u, "cache_creation_input_tokens", 0) or 0
+        row = {"time": datetime.now().strftime("%Y-%m-%d-%H:%M:%S"), "run_id": self.run_id, "message_id": msg.id,
+               "model": self.model, "batch": batch, "n_questions": n_questions, "input_tokens": u.input_tokens,
+               "cache_read_tokens": cr, "cache_write_tokens": cw, "output_tokens": u.output_tokens,
+               "usd": self.usd(self.model, batch, u.input_tokens, u.output_tokens, cr, cw)}
+        with self.lock:
+            self.seen.add(msg.id)
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            pd.DataFrame([row], columns=self.COLS).to_csv(self.path, mode="a", index=False, header=not self.path.exists())
+            self.df = pd.concat([self.df, pd.DataFrame([row])], ignore_index=True) if len(self.df) else pd.DataFrame([row])
+
+    def ceiling(self) -> float:
+        return min(float(self.b.limit_usd), max(float(self.b.checkpoint_usd), float(self.b.approved_usd)))
+
+    def estimate(self, client, model: str, reqs: list, batch: bool) -> tuple[float, float, float]:
+        """(usd, input tokens, output tokens) for reqs. Input: count_tokens (free) on a random sample of up to 40
+        requests, scaled to all. Output: a + b per question from the config, rescaled by what this model actually
+        produced so far in the ledger."""
+        # count_tokens takes no Files API images, so the text is counted there and the image estimated from its
+        # pixels (about pixels / 750, at most ~4,784; measured with count_tokens on 2026-11-11).
+        sample = random.Random(len(reqs)).sample(reqs, min(40, len(reqs)))
+        text = []
+        for r in sample:
+            body = {k: v for k, v in r[4].items() if k in ("model", "messages", "output_config", "system")}
+            body["messages"] = [{**m, "content": [b for b in m["content"] if b.get("type") != "image"]}
+                                for m in body["messages"]]
+            text.append(client.messages.count_tokens(**body).input_tokens)
+        image = sum(min(r[1].width * r[1].height / 750, 4784) for r in reqs)
+        inp = sum(text) / len(text) * len(reqs) + image
+        a, b = float(self.b.output_tokens_per_prompt), float(self.b.output_tokens_per_question)
+        prior = self.df[self.df.model == model] if len(self.df) else self.df
+        scale = 1.0
+        if len(prior) >= 20:
+            scale = prior.output_tokens.sum() / (a * len(prior) + b * prior.n_questions.sum())
+        out = scale * sum(a + b * len(r[3]) for r in reqs)
+        return self.usd(model, batch, inp, out), inp, out
+
+    def check(self, client, model: str, reqs: list, batch: bool, label: str) -> None:
+        est, inp, out = self.estimate(client, model, reqs, batch)
+        est *= 1.1  # margin for the sampling error of the input count and resends
+        total = self.spent + est
+        msg = (f"Claude API spend so far ${self.spent:.2f}; {label} ({len(reqs)} requests, ~{inp / 1e6:.2f} M input and "
+               f"~{out / 1e6:.2f} M output tokens{', batch price' if batch else ''}) is estimated at ${est:.2f} "
+               f"including a 10% margin; total ${total:.2f}")
+        print(f"  {msg}")
+        if total > float(self.b.limit_usd):
+            raise SystemExit(f"{msg}. That passes the ${self.b.limit_usd} limit (claude.budget.limit_usd); nothing was submitted.")
+        if total > self.ceiling():
+            raise SystemExit(f"{msg}. That passes the ${self.b.checkpoint_usd} checkpoint; nothing was submitted. To go on, "
+                             f"rerun with claude.budget.approved_usd={math.ceil(total)} (at most {self.b.limit_usd}).")
+
+
+def _submit(client, c, reqs, run_dir: Path, attempt: int, budget: "Budget") -> dict[str, tuple]:
     """One round of requests. Returns custom_id -> (message or None, error, wall_ms)."""
     import anthropic
 
@@ -103,8 +195,10 @@ def _submit(client, c, reqs, run_dir: Path, attempt: int) -> dict[str, tuple]:
             rc = b.request_counts
             print(f"  batch {batch_id}: {b.processing_status}, processing {rc.processing}, succeeded {rc.succeeded}, errored {rc.errored}")
             time.sleep(c.poll_seconds)
+        nq = {r[0]: len(r[3]) for r in reqs}
         for r in client.messages.batches.results(batch_id):
             if r.result.type == "succeeded":
+                budget.record(r.result.message, True, nq.get(r.custom_id, 0))
                 out[r.custom_id] = (r.result.message, None, float("nan"))
             else:
                 err = getattr(getattr(r.result, "error", None), "type", "") if r.result.type == "errored" else ""
@@ -112,9 +206,13 @@ def _submit(client, c, reqs, run_dir: Path, attempt: int) -> dict[str, tuple]:
         return out
 
     def call(req):
+        if budget.spent > budget.ceiling():  # the projection was too low: stop sending
+            return req[0], None, "budget_stop", float("nan")
         t = time.perf_counter()
         try:
-            return req[0], client.messages.create(**req[4]), None, (time.perf_counter() - t) * 1e3
+            msg = client.messages.create(**req[4])
+            budget.record(msg, False, len(req[3]))
+            return req[0], msg, None, (time.perf_counter() - t) * 1e3
         except anthropic.APIStatusError as e:
             return req[0], None, f"api_error:{e.status_code}", (time.perf_counter() - t) * 1e3
     with ThreadPoolExecutor(c.concurrency) as pool:
@@ -123,7 +221,7 @@ def _submit(client, c, reqs, run_dir: Path, attempt: int) -> dict[str, tuple]:
     return out
 
 
-def run_with_retries(client, c, reqs, run_dir: Path) -> dict[str, tuple]:
+def run_with_retries(client, c, reqs, run_dir: Path, budget: "Budget") -> dict[str, tuple]:
     """Resend every request that did not return a complete answer (API error, refusal, truncated or unparseable
     JSON, missing questions) up to claude.max_attempts times. Raises if any request is still incomplete, so the
     stage never completes with missing answers. Tokens of failed attempts are added to the request's total.
@@ -131,7 +229,9 @@ def run_with_retries(client, c, reqs, run_dir: Path) -> dict[str, tuple]:
     done, spent, failures = {}, {}, {}
     todo = list(reqs)
     for attempt in range(1, int(c.max_attempts) + 1):
-        res = _submit(client, c, todo, run_dir, attempt)
+        if not (c.use_batch and (run_dir / f"batch_id_{attempt}.txt").exists()):  # an already submitted batch is paid for
+            budget.check(client, c.model, todo, bool(c.use_batch), "this submission" if attempt == 1 else f"resend round {attempt}")
+        res = _submit(client, c, todo, run_dir, attempt, budget)
         failures = {}
         for r in todo:
             cid, n = r[0], len(r[3])
@@ -168,7 +268,7 @@ def answer_units(cfg, ctx, inputs, units, qs, plan_unit, template: str, shard_di
             for n, (u, b_id, items, text) in enumerate(build_requests(cfg, todo, qs, plan_unit, template))]
     print(f"  {len(reqs)} Claude requests ({c.model}, effort {c.effort}, {'batch' if c.use_batch else 'direct'})")
 
-    results = run_with_retries(client, c, reqs, shard_dir.parent)
+    results = run_with_retries(client, c, reqs, shard_dir.parent, Budget(cfg, ctx.run_id))
     write_shards(cfg, ctx, qs, [(u, b_id, items, results[cid][1:]) for cid, u, b_id, items, _ in reqs], shard_dir)
 
 

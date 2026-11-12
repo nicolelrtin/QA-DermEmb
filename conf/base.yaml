@@ -12,8 +12,8 @@ paths:
   experiments_log: reports/experiments_log.md
 
 data:
-  name: beta_10class_100each
-  root: "data/train_10class_100each - beta"
+  name: test0_10class_100each
+  root: "data/train_10class_100each"
   manifest: manifest.csv
   path_column: file
   id_column: isic_id
@@ -53,6 +53,10 @@ prepare:
   max_pixels: 401408             # 512 vision tokens (28x28 px each) for the whole image
   patch_max_pixels: 401408       # crops are resized to this budget, so the VLM sees a zoom
   min_pixels: 3136
+  upscale: true                  # true = fill max_pixels exactly (Qwen, multiples of 28); false = shrink only (Claude, I1_claude_max)
+  max_long_edge: null            # shrink-only mode: also cap the long edge (px)
+  format: png                    # png | jpg
+  jpeg_quality: 95
 
 grid:
   G: 1                           # 1 = whole image only
@@ -81,6 +85,17 @@ claude:                          # used when answerer.backend = anthropic
   concurrency: 8                 # direct calls only
   poll_seconds: 60
   max_attempts: 5                # resend incomplete requests; the stage fails if any is still incomplete
+  budget:                        # API spend on this Console key, from the usage of every billed response (qaemb/answerers/claude.py)
+    ledger: outputs/qaemb/claude_spend.csv   # one row per response; shared by all runs
+    checkpoint_usd: 400          # stop before any submission projected to pass this, until approved_usd covers it
+    limit_usd: 500               # never submit past this (also set as the spend limit in the Console)
+    approved_usd: 0              # pass claude.budget.approved_usd=<amount> on the command line to continue past the checkpoint
+    output_tokens_per_question: 30   # for the projection before a submission; replaced by the ledger's own mean once known
+    output_tokens_per_prompt: 60
+  prices:                        # USD per million tokens, list price (checked 2026-11-11); batches cost batch_factor of this
+    claude-sonnet-5-5: {input: 2.0, output: 10.0, cache_read: 0.10, cache_write: 2.50}
+    claude-opus-5-5: {input: 4.0, output: 20.0, cache_read: 0.20, cache_write: 5.00}
+    batch_factor: 0.5
 
 claude_cli:                      # used when answerer.backend = claude_cli (claude -p on the Claude subscription)
   binary: claude
@@ -129,3 +144,19 @@ model:
   lr: 0.01
   weight_decay: 0.01
   patience: 30
+
+classify:                        # S6: cross-validated classifiers on the whole-image answers (qaemb/stages/s6_classify.py)
+  label_columns: {c2: label_2c, c3: label_3c, c10: label_10c}   # read from the source manifest CSV
+  sources: [orig, dir, coh]      # orig = P(yes); dir / coh = Directional / Coherence Score (see stages/s4_embed.py)
+  models: [l1, l2, enet, rf, hgb, mlp]
+  # s1_2c: benign vs malignant (indeterminate scored, not fitted); s1_3c: + indeterminate; flat_10c: all subtypes in one
+  # model; s2_<group>: subtypes within one stage-1 class, true routing; the cascade (s1_3c -> s2_*) is computed from these
+  tasks: [s1_2c, s1_3c, flat_10c, s2_benign, s2_malignant, s2_indeterminate]
+  outer_folds: 5                 # stratified on label_10c, grouped by split.group_column
+  outer_repeats: 5
+  inner_folds: 3                 # hyperparameters chosen by log loss inside each outer training set
+  shap_repeats: 1                # SHAP on the outer test folds of the first N repeats (each image explained once per repeat)
+  shap_background: 50            # MLP only (permutation explainer)
+  sens_target: 0.95              # report specificity at this malignant sensitivity
+  n_jobs: -1
+  synthetic: null                # {effect: <logit shift>} replaces the answers with simulated ones (qaemb/synthetic.py)

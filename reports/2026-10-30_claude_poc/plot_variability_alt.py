@@ -15,7 +15,7 @@ import pandas as pd
 
 HERE = Path(__file__).parent
 sys.path.insert(0, str(HERE.parents[1]))
-from plot_variability import BG, COLORS, IMAGES, INK, INK2, LOCAL, boxes, mean_abs_diff  # noqa: E402
+from plot_variability import BG, IMAGES, INK, INK2, LOCAL, boxes, mean_abs_diff, readable_columns  # noqa: E402
 from qaemb.stages.s4_embed import pair_scores  # noqa: E402
 
 SCORES = {"Directional_Score": "Directional_Score = (2 P(Y|Qo) − 1) × |Net_P|",
@@ -47,9 +47,7 @@ def main():
         runs = lambda model, mode: [c for c in t.columns if c[:2] == (model, mode)]
         reps = [(f"Claude\n{mode}", "Claude", mean_abs_diff(t, runs("Claude", mode))) for mode in ("stateless", "topic")]
         modes = [(m, m, mean_abs_diff(t, runs(m, "stateless"), runs(m, "topic"))) for m in ("Qwen", "SkinGPT-R1", "Claude")]
-        for kind, grp in (("replicates", reps), ("stateless vs topic", modes)):
-            for lab, _, v in grp:
-                out[f"{score} | {lab.replace(chr(10), ' ')} | {kind}"] = v
+        out.update(readable_columns(score, t))
         a, b = axes[row]
         boxes(a, reps)
         boxes(b, modes)
@@ -63,7 +61,7 @@ def main():
             a.legend(handles, [f"darker: {IMAGES[i]}" if j == 0 else f"lighter: {IMAGES[i]}" for j, i in enumerate(IMAGES)],
                      title="Each pair of boxes, per image", alignment="left", loc="upper right", frameon=False, fontsize=9.5,
                      title_fontsize=9.5, labelcolor=INK2)
-    pd.DataFrame(out).to_csv(HERE / "variability_by_question_alt.csv")
+    pd.DataFrame(out).round(4).to_csv(HERE / "variability_by_question_alt.csv")
     fig.suptitle("Figure 1 Alternate: how much do the scores change between Claude replicates and between answer modes?",
                  x=0.075, y=1.0, ha="left", fontsize=13.5, weight="bold", color=INK)
     fig.text(0.075, 0.965, "500 question pairs (Q0_all), whole image (G1). Box = middle half of the 500 question IDs, "

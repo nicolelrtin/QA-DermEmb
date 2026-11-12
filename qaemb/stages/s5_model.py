@@ -29,7 +29,8 @@ def key(cfg, ctx) -> dict:
 def feature_mask(qs: pd.DataFrame, mcfg, patch: bool) -> np.ndarray:
     keep = np.ones(len(qs), bool)
     if "kind" in qs:
-        keep &= ~qs.kind.isin(list(mcfg.exclude_kinds)).values
+        # Control questions (e.g. "Is this a malignant lesion?") ask for the diagnosis itself: never features.
+        keep &= ~qs.kind.isin(list(mcfg.exclude_kinds) + ["control"]).values
     if "scope" in qs:
         keep &= ~qs.scope.isin(list(mcfg.exclude_scopes)).values
         if patch:

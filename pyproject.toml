@@ -31,6 +31,7 @@ pyarrow = ">=18,<26"
 tabulate = "^0.10.0"
 anthropic = "^2.3.0"
 openpyxl = "^3.1.5"
+shap = {version = "^0.54.1", python = ">=3.12"}
 
 
 [build-system]

@@ -1,0 +1,12 @@
+# Whole images for Claude at the largest size Sonnet/Opus 5.5 use (decided 2026-11-11).
+# Measured with count_tokens on 2026-11-11: image tokens are about pixels / 750 and level off at about 4,700 above
+# about 3.6 MP (2,576 px long edge is the documented limit); larger images are shrunk by the API itself.
+# So images are shrunk here to at most 3.6 MP and 2,576 px on the long edge, and never enlarged:
+# 43% of the 1,000 beta images reach the limit, 26% are under 0.4 MP and stay at their native size.
+# JPEG at quality 95: the sources are JPEGs, and PNGs at this size would be several MB each.
+prepare:
+  max_pixels: 3600000
+  max_long_edge: 2576
+  upscale: false
+  format: jpg
+  jpeg_quality: 95

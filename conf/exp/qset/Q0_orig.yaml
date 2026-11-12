@@ -1,0 +1,12 @@
+# All 500 questions as written, without the negated versions (Claude pipeline from 2026-11-05).
+# S4 then derives Net_P, Directional_Score and Coherence_Score from P(yes) and the stated confidence.
+# From 2026-11-11 the set also holds one control question, DQC01 "Is this a malignant lesion?", in its own topic
+# ("Control", so it is asked in a prompt of its own). Its kind is "control": it is a zero-shot benchmark and is never a
+# classifier feature (stages/s5_model.feature_mask). The 2026-10-15 files are unchanged.
+questions:
+  csv: "inputs/questions/2026-11-11/DermQs_Source-1015FT_Prompt-C_N-500+control_Negated.csv"
+  annotations: "inputs/questions/2026-11-11/DermQs_Source-1015FT_Prompt-C_N-500+control_annotations.csv"
+  complements: false
+  scope: null
+  ids: null
+  selected_from: null

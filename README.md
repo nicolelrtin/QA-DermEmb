@@ -2,6 +2,8 @@
 
 Dermatology question generation and analysis. Poetry environment `qa-dermemb` (Python 3.11).
 
+Project status, current decisions and plan: [PROJECT.md](PROJECT.md). Running record of findings: [FINDINGS.md](FINDINGS.md).
+
 ## Layout
 
 | Folder | Kind | What it holds |

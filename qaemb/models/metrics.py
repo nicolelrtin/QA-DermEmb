@@ -30,3 +30,47 @@ def binary_metrics(y, p, spec: float = 0.9, bins: int = 10) -> dict:
         "ece": ece(y, p, bins) if len(y) else nan,
         "confusion_matrix": confusion_matrix(y, p >= 0.5, labels=[0, 1]).tolist(),
     }
+
+
+def spec_at_sens(y, p, sens: float) -> float:
+    """Specificity at the first threshold that reaches the target sensitivity (malignant caught)."""
+    fpr, tpr, _ = roc_curve(y, p)
+    ok = tpr >= sens
+    return float(1 - fpr[ok].min()) if ok.any() else 0.0
+
+
+def multiclass_metrics(y, P, classes) -> dict:
+    """y: integer class index; P: [n x K] probabilities in the order of `classes`."""
+    from sklearn.metrics import accuracy_score, f1_score, log_loss
+
+    y, P = np.asarray(y, int), np.asarray(P, float)
+    K = len(classes)
+    pred = P.argmax(1)
+    present = np.unique(y)
+    if len(present) < K:
+        auroc = float("nan")
+    elif K == 2:
+        auroc = float(roc_auc_score(y, P[:, 1]))
+    else:
+        auroc = float(roc_auc_score(y, P, multi_class="ovr", average="macro", labels=list(range(K))))
+    return {
+        "n": int(len(y)),
+        "balanced_accuracy": float(balanced_accuracy_score(y, pred)),
+        "macro_f1": float(f1_score(y, pred, average="macro", labels=list(range(K)), zero_division=0)),
+        "accuracy": float(accuracy_score(y, pred)),
+        "macro_auroc_ovr": auroc,
+        "log_loss": float(log_loss(y, (Q := np.clip(P, 1e-7, 1)) / Q.sum(1, keepdims=True), labels=list(range(K)))),
+        "confusion_matrix": confusion_matrix(y, pred, labels=list(range(K))).tolist(),
+    }
+
+
+def task_metrics(y, P, classes, spec: float = 0.9, sens: float = 0.95, bins: int = 10) -> dict:
+    """Binary tasks get the binary metric set on P(class 1) plus balanced accuracy etc.; others the multiclass set."""
+    if len(classes) == 2:
+        m = binary_metrics(y, P[:, 1], spec, bins)
+        both = len(np.unique(y)) == 2
+        m[f"spec_at_sens{int(sens * 100)}"] = spec_at_sens(y, P[:, 1], sens) if both else float("nan")
+        m["macro_f1"] = multiclass_metrics(y, P, classes)["macro_f1"]
+        m["log_loss"] = multiclass_metrics(y, P, classes)["log_loss"]
+        return m
+    return multiclass_metrics(y, P, classes)

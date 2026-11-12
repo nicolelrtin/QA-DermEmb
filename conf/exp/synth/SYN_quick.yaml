@@ -1,0 +1,5 @@
+# Planted synthetic answers, one source, one CV repeat: a fast plumbing check of the classify stage.
+classify:
+  synthetic: {effect: 0.75}
+  sources: [orig]
+  outer_repeats: 1

@@ -96,6 +96,15 @@ def write_run_report(meta: dict, status: dict, run_dir: Path) -> Path:
               f"All files: [{meta['stage_dirs']['model']}]({_rel(d, run_dir)}) "
               "(metrics.json, predictions.parquet, coefficients.csv, curves.csv)", ""]
 
+    if "classify" in meta["stages"]:
+        d = ROOT / meta["stage_dirs"]["classify"]
+        summ = d / "summary.md"
+        if summ.exists():
+            body = summ.read_text().split("\n", 1)[1]
+            body = body.replace("](figures/", f"]({_rel(d / 'figures', run_dir)}/")
+            L += ["## Classifiers", "", f"Full stage output: [{meta['stage_dirs']['classify']}]({_rel(d, run_dir)}) "
+                  f"([summary.md]({_rel(summ, run_dir)}))", "", body.replace("\n## ", "\n### "), ""]
+
     if "answer" in meta["stages"]:
         L += token_section(ROOT / meta["stage_dirs"]["answer"], run_dir)
 

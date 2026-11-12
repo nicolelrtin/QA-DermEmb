@@ -11,7 +11,16 @@ pair-level scores on both rows of a pair (Po = P(yes | original), Pc = P(yes | c
   Coherence_Score   = (2 Po - 1) x (1 - |incoherence|), in [-1, 1]: direction and confidence from the original
                       question, shrunk only by contradiction (coherent 0.7 / 0.3 keeps its full 0.4).
   confidence  = the answerer's stated confidence in its answer (Claude; NaN for logit answerers).
-Matrices per source s in {orig, neg, adj (Net_P), w (P_w), dir (Directional_Score), coh (Coherence_Score)}: X_image_<s>.parquet [N_img x Q] and, for patch runs,
+
+Without negations (questions.complements = false; the Claude pipeline from 2026-11-05), the stated confidence c
+stands in for Net_P, signed by the direction of the answer: Net_P = sign(2 Po - 1) x c. The implied complement
+Pc = Po - Net_P then gives every score through the same formulas, which reduce to (d = 2 Po - 1):
+  Directional_Score = d x c                    -- the answer, shrunk when Claude says it is unsure;
+  Coherence_Score   = d x (1 - | |d| - c |)    -- the answer, shrunk when the stated probability and the stated
+                                                  confidence disagree (e.g. P(yes) = 0.95 with confidence 0.3);
+  P_w = Po x c; incoherence = d - sign(d) x c. summary['scores_from'] records which route was taken.
+Matrices per source s in {orig, neg, adj (Net_P), w (P_w), dir (Directional_Score), coh (Coherence_Score), conf (stated
+confidence; confidence route only)}: X_image_<s>.parquet [N_img x Q] and, for patch runs,
 X_patch_<s>.npy [N_img x n x n x Q] (n = cells per side; 2G-1 with 50% overlap) with patch_index.json.
 questions.parquet: one row per Question ID (original text, complement text, topic/scope/kind).
 answers_readable.csv: one row per (unit, Question ID) with label, question texts, P(yes) to each version,
@@ -25,7 +34,7 @@ import pandas as pd
 from ..questions import question_table
 
 UPSTREAM = ["manifest", "answer"]
-VERSION = 7
+VERSION = 8
 
 SCHEMA = ["run_id", "image_id", "patch_id", "grid_G", "bbox", "question_id", "original", "qset_hash", "p_yes", "answer_bin",
           "threshold", "Net_P", "answer_adj_bin", "adj_threshold", "incoherence", "mode", "batch_k", "batch_id",
@@ -39,6 +48,14 @@ def pair_scores(po, pc) -> dict:
     net, inc = po - pc, po + pc - 1
     return {"Net_P": net, "incoherence": inc, "P_w": po * net.abs(),
             "Directional_Score": (2 * po - 1) * net.abs(), "Coherence_Score": (2 * po - 1) * (1 - inc.abs())}
+
+
+def confidence_scores(po, conf) -> dict:
+    """The same scores without a negated question: Net_P = sign(2 Po - 1) x stated confidence."""
+    net = np.sign(2 * po - 1) * conf
+    return pair_scores(po, po - net)
+
+
 UNIT = ["image_id", "patch_id"]
 
 
@@ -66,10 +83,18 @@ def run(cfg, out, inputs, ctx) -> dict:
         pair = pd.DataFrame(ps).reset_index()
         raw = raw.merge(pair, on=UNIT + ["question_id"], how="left")
         raw["answer_adj_bin"] = (raw.Net_P >= adj_thr).astype("int8")
+    elif raw.confidence.notna().all():
+        conf = raw.pivot(index=UNIT + ["question_id"], columns="original", values="confidence")[1]
+        ps = confidence_scores(wide[1], conf)
+        sources.update({"adj": ps["Net_P"], "w": ps["P_w"], "dir": ps["Directional_Score"], "coh": ps["Coherence_Score"],
+                        "conf": conf})
+        raw = raw.merge(pd.DataFrame(ps).reset_index(), on=UNIT + ["question_id"], how="left")
+        raw["answer_adj_bin"] = (raw.Net_P >= adj_thr).astype("int8")
     else:
         for c in SCORES + ["incoherence"]:
             raw[c] = np.nan
         raw["answer_adj_bin"] = -1
+    scores_from = "negation" if has_neg else "confidence" if "dir" in sources else "none"
     raw[SCHEMA].to_parquet(out / "answers.parquet", index=False)
 
     qt = question_table(ctx.questions)
@@ -77,9 +102,17 @@ def run(cfg, out, inputs, ctx) -> dict:
     qids = list(qt.question_id)
 
     summary = {"n_images": int(raw.image_id.nunique()), "n_question_ids": len(qids), "complements": has_neg,
-               "sources": list(sources)}
+               "sources": list(sources), "scores_from": scores_from}
     if raw.confidence.notna().any():
         summary["confidence_mean"] = float(raw.confidence.mean())
+    if scores_from == "confidence":
+        d, c = 2 * wide[1] - 1, sources["conf"]
+        summary.update({
+            "mean_Directional_Score": float(sources["dir"].mean()),
+            "mean_Coherence_Score": float(sources["coh"].mean()),
+            "corr_abs_d_confidence": float(np.corrcoef(d.abs(), c)[0, 1]),  # how far confidence tracks |2 P(yes) - 1|
+            "corr_dir_coh": float(np.corrcoef(sources["dir"], sources["coh"])[0, 1]),
+        })
     if has_neg:
         p1, p0 = wide[1], wide[0]
         summary.update({
@@ -144,11 +177,15 @@ def write_readable(out, raw: pd.DataFrame, qt: pd.DataFrame, manifest_dir, thr: 
         for c, v in pair_scores(df.p_yes_original, df.p_yes_complement).items():
             df[c] = v
         df["verdict"] = [verdict(a, b, thr) for a, b in zip(df.p_yes_original, df.p_yes_complement)]
+    elif "confidence_original" in df and df.confidence_original.notna().all():
+        for c, v in confidence_scores(df.p_yes_original, df.confidence_original).items():
+            df[c] = v
+        df["verdict"] = np.where(df.p_yes_original >= thr, "yes", "no")
     else:
         df["verdict"] = np.where(df.p_yes_original >= thr, "yes", "no")
     front = ["image_id", "label_raw", "split", "patch_id", "question_id", "topic", "scope", "kind", "question",
              "p_yes_original", "confidence_original", "question_neg", "p_yes_complement", "confidence_complement",
              "Net_P", "P_w", "Directional_Score", "Coherence_Score", "incoherence", "verdict"]
     df = df[[c for c in front if c in df]].sort_values(["image_id", "patch_id", "question_id"])
-    df = df.drop(columns=[c for c in ("confidence_original", "confidence_complement") if df[c].isna().all()])
+    df = df.drop(columns=[c for c in ("confidence_original", "confidence_complement") if c in df and df[c].isna().all()])
     df.round(4).to_csv(out / "answers_readable.csv", index=False)

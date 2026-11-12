@@ -1,0 +1,3 @@
+# Synthetic answers with no informative questions: every score must sit at chance (leakage check, 2026-11-05).
+classify:
+  synthetic: {effect: 0.0}

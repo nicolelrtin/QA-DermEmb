@@ -1,0 +1,9 @@
+# Claude Sonnet 5.5 via the Messages API on the lab's Console organisation (decided 2026-11-05; API key pending).
+# Stated P(yes) and confidence as forced JSON. Use with M_topic and Q0_orig (no negations). Not deterministic.
+answerer:
+  backend: anthropic
+  id: claude-sonnet-5-5
+  checkpoint: claude-sonnet-5-5
+claude:
+  model: claude-sonnet-5-5
+  effort: low
