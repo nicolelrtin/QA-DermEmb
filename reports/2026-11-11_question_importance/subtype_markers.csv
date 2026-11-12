@@ -1,0 +1,31 @@
+subtype,rank,question_id,question,ridge_coef,lasso_kept_share,yes_rate_in_subtype,yes_rate_other_subtypes,mean_p_yes_in_subtype,mean_p_yes_other_subtypes
+benign fibro-histiocytic,1,DQ388,Are pseudostellate scars visible?,0.0972456643795747,1.0,0.0,0.0,0.0406,0.02838888888888889
+benign fibro-histiocytic,2,DQ376,Do the naevi in the image show an eclipse pattern (tan centre with a brown rim)?,0.0893277464083977,0.96,0.03,0.0044444444444444444,0.07280000000000002,0.037000000000000005
+benign fibro-histiocytic,3,DQ346,Are the pigmented macules non-hairy?,0.0845253159622132,0.84,0.21,0.2011111111111111,0.27330000000000004,0.2515333333333334
+benign melanocytic,1,DQ421,"Is the melanocytic lesion flat and subtle, without obvious melanoma features?",0.0734062365132063,1.0,0.54,0.2388888888888889,0.49620000000000003,0.2703
+benign melanocytic,2,DQ097,Is the depigmented lesion free of scale?,0.0733672413026406,0.68,0.0,0.005555555555555556,0.07719999999999999,0.09787777777777779
+benign melanocytic,3,DQ476,Does lesion contrast increase when the RGB image is converted to simulated narrow-band images?,0.0733535434517216,1.0,1.0,0.9822222222222222,0.6444999999999999,0.619511111111111
+benign vascular,1,DQ472,Does the lesion look like a vascular neoplasm (uniform red to purple colour)?,0.1354780754272294,1.0,0.55,0.008888888888888889,0.505,0.06870000000000001
+benign vascular,2,DQ301,Does the lesion resemble a vascular lesion?,0.1283389607976232,1.0,0.69,0.011111111111111112,0.6265,0.10912222222222223
+benign vascular,3,DQ293,Is a small elevated lesion uniformly black?,0.0877365917111718,1.0,0.04,0.0,0.06860000000000001,0.017344444444444447
+flat melanotic pigmentation,1,DQ416,Is the lesion located on a nail or mucosa?,0.1350829530935551,1.0,0.05,0.0033333333333333335,0.07470000000000002,0.036144444444444444
+flat melanotic pigmentation,2,DQ094,"Does the lesion have a smooth, shiny surface?",0.0770941436619699,0.68,0.02,0.07111111111111111,0.175,0.2096
+flat melanotic pigmentation,3,DQ364,Does the image show more than 50 common naevi?,0.0730535553318346,0.96,0.0,0.0,0.0239,0.0173
+inflammatory or infectious,1,DQ412,Is the skin in the image dark (a group where diagnostic accuracy is lower)?,0.0845956664937733,0.96,0.02,0.0,0.061300000000000014,0.03532222222222223
+inflammatory or infectious,2,DQ112,Does the lesion surface appear rippled?,0.0828004169999926,0.96,0.01,0.0022222222222222222,0.1002,0.06641111111111113
+inflammatory or infectious,3,DQ486,Are wrinkles closely spaced (short wrinkle pitch)?,0.0794291988050841,0.88,0.15,0.07444444444444444,0.27740000000000004,0.22308888888888892
+indeterminate epidermal,1,DQ043,Are white dots or clods clustered or disseminated across the lesion?,0.0982125157476038,1.0,0.03,0.0011111111111111111,0.1637,0.11731111111111112
+indeterminate epidermal,2,DQ482,Does a thick keratin layer make the lesion surface look white or opaque?,0.077542322071875,0.96,0.1,0.03888888888888889,0.21400000000000002,0.14478888888888888
+indeterminate epidermal,3,DQ057,Are follicular plugs present in the lesion?,0.0751463876358013,0.72,0.01,0.0011111111111111111,0.09220000000000002,0.05373333333333334
+indeterminate melanocytic,1,DQ193,Does the lesion have a scalloped border?,0.0791385683625256,1.0,0.05,0.012222222222222223,0.2236,0.13172222222222224
+indeterminate melanocytic,2,DQ481,"Does the image show skin with visible features of obesity (e.g., striae, stretched skin)?",0.0673036149501086,0.88,0.0,0.0,0.030100000000000002,0.030433333333333337
+indeterminate melanocytic,3,DQ298,Are pigment remnants arranged in a cobblestone pattern?,0.0665921757080346,0.96,0.01,0.0,0.08670000000000001,0.06173333333333334
+malignant adnexal follicular,1,DQ222,Does the visible skin have a yellow (rather than red) undertone?,0.0925110287124249,1.0,0.15,0.14666666666666667,0.3057,0.29237777777777785
+malignant adnexal follicular,2,DQ082,Are blue-grey or black ovoid nests of varying size present (correlates of dermal tumour islands)?,0.0808770140203885,0.96,0.03,0.008888888888888889,0.09299999999999997,0.05616666666666668
+malignant adnexal follicular,3,DQ160,Is pink coloration sparse or absent in a lesion with BCC-like structures?,0.0787383904512258,0.96,0.0,0.0011111111111111111,0.14679999999999999,0.11142222222222226
+malignant epidermal,1,DQ355,Are scaly lesions present on the ear helix?,0.1089041824680929,1.0,0.02,0.0011111111111111111,0.05650000000000002,0.02868888888888889
+malignant epidermal,2,DQ484,Does the skin surface appear rough?,0.0835029311602249,1.0,0.59,0.20777777777777778,0.549,0.3557666666666666
+malignant epidermal,3,DQ290,Are dotted vessels present together with an inverse (negative) network?,0.0733687291352812,0.96,0.0,0.0,0.05340000000000001,0.03168888888888889
+malignant melanocytic,1,DQ454,Is the lesion's darkest region located off-centre?,0.0834898492804632,0.76,0.59,0.40444444444444444,0.5460999999999999,0.4536222222222222
+malignant melanocytic,2,DQ361,Are multiple lesions from the same patient visible in the image?,0.0832513883593393,0.84,0.08,0.042222222222222223,0.1352,0.10983333333333335
+malignant melanocytic,3,DQ212,Is the lesion on a less pigmented acral site of a person with dark skin?,0.075630234869503,1.0,0.0,0.0,0.0366,0.027511111111111118

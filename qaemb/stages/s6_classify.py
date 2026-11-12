@@ -11,8 +11,13 @@ Feature sources: orig = P(yes); dir / coh = Directional / Coherence Score (stage
 left out (model.exclude_kinds). With classify.synthetic set, the answers are simulated (qaemb/synthetic.py) and the
 stage also reports how well each importance measure recovers the planted questions.
 
+Benchmark: questions of kind `control` (DQC01, "Is this a malignant lesion?") are never features. Their P(yes) is
+scored directly as P(malignant) on the s1_2c test folds of the classifiers (same splits, same metrics), as the
+zero-shot benchmark row.
+
 Outputs: metrics_folds.csv, metrics_summary.csv, cascade.csv, oof_predictions.parquet, indeterminate_2c.csv,
-importance.csv, question_ranking.csv, best_params.csv, [planted.csv, recovery.csv], figures/, summary.md.
+importance.csv, question_ranking.csv, best_params.csv, [benchmark_folds.csv, benchmark_summary.csv],
+[planted.csv, recovery.csv], figures/, summary.md.
 """
 import json
 from pathlib import Path
@@ -22,13 +27,13 @@ import pandas as pd
 
 from ..config import ROOT, file_hash
 from ..models import plots
-from ..models.cv import run_all
+from ..models.cv import outer_splits, run_all
 from ..models.metrics import task_metrics
 from ..questions import question_table
 from .s5_model import feature_mask
 
 UPSTREAM = ["manifest", "embed"]
-VERSION = 2
+VERSION = 3
 
 SHORT = {
     "BENIGN MELANOCYTIC PROLIFERATIONS": "benign melanocytic",
@@ -199,8 +204,13 @@ def run(cfg, out, inputs, ctx) -> dict:
         rec = recovery(imp, planted, tasks, lab)
         rec.to_csv(out / "recovery.csv", index=False)
 
+    bench = control_benchmark(cfg, inputs, qt, lab, tasks, groups, spec, sens)
+    if bench is not None:
+        bench["folds"].to_csv(out / "benchmark_folds.csv", index=False)
+        bench["summary"].to_csv(out / "benchmark_summary.csv", index=False)
+
     figures(out / "figures", preds, folds, imp, indet, pooled, casc, tasks, cc, planted, lab)
-    write_summary(out, cfg, lab, tasks, qk, summary_tab, casc, ranking, indet, rec, planted, preds, folds)
+    write_summary(out, cfg, lab, tasks, qk, summary_tab, casc, ranking, indet, rec, planted, preds, folds, bench)
 
     s0 = cc.sources[0]
     t0 = list(tasks)[0]
@@ -211,6 +221,39 @@ def run(cfg, out, inputs, ctx) -> dict:
     return {"n_images": len(lab), "n_questions": len(qids), "synthetic": bool(cc.synthetic),
             "sources": list(cc.sources), "models": list(cc.models), "tasks": list(tasks),
             "outer": f"{cc.outer_repeats}x{cc.outer_folds}", "key_metric": key_metric}
+
+
+def control_benchmark(cfg, inputs, qt, lab, tasks, groups, spec, sens) -> dict | None:
+    """Score each control question's P(yes) as P(malignant) on exactly the s1_2c outer test folds the classifiers use
+    (outer_splits with the same strata, groups and seed), with the same metrics. Nothing is fitted."""
+    ctrl = list(qt.question_id[qt.kind == "control"]) if "kind" in qt else []
+    if cfg.classify.synthetic or not ctrl or "s1_2c" not in tasks:
+        return None
+    cc, T = cfg.classify, tasks["s1_2c"]
+    rows = T["rows"]
+    X = pd.read_parquet(inputs["embed"] / "X_image_orig.parquet").loc[lab.image_id, ctrl]
+    yi = np.array([T["classes"].index(v) for v in lab.c2.values[rows]])
+    splits = outer_splits(lab.c10.values[rows], groups[rows], cc.outer_folds, cc.outer_repeats, cfg.seed)
+    frows, prow = [], []
+    for q in ctrl:
+        p = X[q].values.astype(float)
+        P = np.column_stack([1 - p, p])[rows]
+        for r, f, _, te in splits:
+            met = task_metrics(yi[te], P[te], T["classes"], spec, sens, cfg.model.ece_bins)
+            frows.append({"question_id": q, "repeat": r, "fold": f, "n_test": len(te),
+                          **{k: v for k, v in met.items() if k != "confusion_matrix"}})
+        met = task_metrics(yi, P, T["classes"], spec, sens, cfg.model.ece_bins)
+        prow.append({"question_id": q, **{k: v for k, v in met.items() if k != "confusion_matrix"}})
+    fdf = pd.DataFrame(frows)
+    mets = [c for c in fdf.columns if c not in ("question_id", "repeat", "fold", "n_test", "n", "n_pos")]
+    summ = fdf.melt(id_vars="question_id", value_vars=mets, var_name="metric").groupby(["question_id", "metric"]) \
+        .value.agg(fold_mean="mean", fold_sd="std", n_folds="count")
+    pooled = pd.DataFrame(prow).melt(id_vars="question_id", var_name="metric").set_index(["question_id", "metric"])
+    summ = summ.join(pooled.value.rename("pooled_all")).reset_index()
+    ind = pd.DataFrame({"subtype": lab.c10.values[T["extra"]], **{q: X[q].values[T["extra"]] for q in ctrl}})
+    texts = qt.set_index("question_id").question.to_dict()
+    return {"folds": fdf, "summary": summ, "indeterminate": ind.groupby("subtype")[ctrl].median(),
+            "texts": {q: texts.get(q, q) for q in ctrl}}
 
 
 def importance_table(res, base, cls, qids) -> pd.DataFrame:
@@ -464,7 +507,7 @@ def _pm(a, b) -> str:
     return f"{a:.3f} ± {b:.3f}" if np.isfinite(b) else f"{a:.3f}"
 
 
-def write_summary(out, cfg, lab, tasks, qk, tab, casc, ranking, indet, rec, planted, preds, folds):
+def write_summary(out, cfg, lab, tasks, qk, tab, casc, ranking, indet, rec, planted, preds, folds, bench=None):
     cc = cfg.classify
     L = ["# Classifier results", ""]
     if cc.synthetic:
@@ -508,6 +551,20 @@ def write_summary(out, cfg, lab, tasks, qk, tab, casc, ranking, indet, rec, plan
                                                values="auroc_relevant_vs_not").round(2)
         r.columns = [f"{MODEL_NAMES[m]}: {meas}" for m, meas in r.columns]
         L += [f"AUROC relevant vs not ({SOURCE_NAMES.get(s0, s0)}):", "", r.reset_index().to_markdown(index=False), ""]
+
+    if bench is not None:
+        sm = bench["summary"].set_index(["question_id", "metric"])
+        st = f"spec_at_sens{int(cc.sens_target * 100)}"
+        L += ["## Benchmark: the answerer asked directly", "",
+              "P(yes) to the control question, used as P(malignant) without any fitting, scored on the same 2-class test "
+              "folds as the classifiers. A classifier on the other questions has to beat this to be worth its cost.", "",
+              "| question | AUROC | specificity at " + f"{int(cc.sens_target * 100)}% sensitivity | balanced accuracy (P(yes) ≥ 0.5) |",
+              "|---|---|---|---|"]
+        for q, txt in bench["texts"].items():
+            v = lambda m: _pm(sm.loc[(q, m), "fold_mean"], sm.loc[(q, m), "fold_sd"]) if (q, m) in sm.index else "-"
+            L.append(f"| {q} {txt} | {v('auroc')} | {v(st)} | {v('balanced_accuracy')} |")
+        L += ["", "Median P(yes) it gives the indeterminate images:", "",
+              bench["indeterminate"].round(3).to_markdown(), ""]
 
     for s in cc.sources:
         L += [f"## Results: {SOURCE_NAMES.get(s, s)} (`{s}`)", ""]
@@ -573,5 +630,5 @@ def write_summary(out, cfg, lab, tasks, qk, tab, casc, ranking, indet, rec, plan
           "- oof_predictions.parquet: out-of-fold class probabilities per image, model, source and repeat",
           "- importance.csv: per question and output class: ridge/lasso/elastic-net weights, lasso selection count, mean |SHAP|",
           "- question_ranking.csv: one row per question and task, all importance measures side by side",
-          "- cascade.csv, indeterminate_2c.csv" + (", planted.csv, recovery.csv" if planted is not None else ""), ""]
+          "- cascade.csv, indeterminate_2c.csv" + (", benchmark_folds.csv, benchmark_summary.csv" if bench is not None else "") + (", planted.csv, recovery.csv" if planted is not None else ""), ""]
     (out / "summary.md").write_text("\n".join(L))

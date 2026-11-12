@@ -3,7 +3,7 @@
   python -m qaemb.run stage=<stage|all> +exp=[<ID>,<ID>,...] tag=<free_text> [key=value ...]
   python -m qaemb.run stage=all +exp=[...] dry_run=true      # resolved config + cache hits, runs nothing
 
-Stages: manifest -> prepare -> answer -> embed -> model | classify. Asking for a stage runs its upstream chain
+Stages: manifest -> prepare -> answer -> embed -> model | classify -> importance. Asking for a stage runs its upstream chain
 (classify with classify.synthetic set needs only the manifest);
 stages whose content-addressed output dir is already complete are skipped.
 """
@@ -20,7 +20,7 @@ from omegaconf import OmegaConf
 
 from .config import ROOT, compose, parse_cli, stable_hash
 
-ORDER = ["manifest", "prepare", "answer", "embed", "model", "classify"]
+ORDER = ["manifest", "prepare", "answer", "embed", "model", "classify", "importance"]
 MODULES = {
     "manifest": "qaemb.stages.s0_manifest",
     "prepare": "qaemb.stages.s1_prepare",
@@ -28,6 +28,7 @@ MODULES = {
     "embed": "qaemb.stages.s4_embed",
     "model": "qaemb.stages.s5_model",
     "classify": "qaemb.stages.s6_classify",
+    "importance": "qaemb.stages.s7_importance",
 }
 DONE = "_DONE"
 os.environ.setdefault("MLFLOW_DISABLE_AGENT_HINT", "1")
@@ -211,7 +212,7 @@ def write_run_meta(cfg, ctx: Context, chain: list[str], summaries: dict, wall_s:
         meta["answerer"] = {"checkpoint": cfg.answerer.checkpoint, "revision": ctx.answerer_revision,
                             "dtype": cfg.answerer.dtype, "attn": cfg.answerer.attn}
         meta["prompts"] = summaries.get("answer", {}).get("prompts")
-    if any(s in chain for s in ("answer", "embed", "model", "classify")):
+    if any(s in chain for s in ("answer", "embed", "model", "classify", "importance")):
         meta["question_set"] = {"hash": ctx.qset_hash, "count": len(ctx.questions), "csv": cfg.questions.csv}
 
     run_dir = ROOT / cfg.paths.out_root / "runs" / ctx.run_id
@@ -261,7 +262,7 @@ def log_markdown(cfg, meta: dict, summaries: dict, report: Path) -> None:
     if not path.exists():
         path.write_text("# Experiments log\n\n| run_id | experiments | stage hashes | key metric | notes |\n|---|---|---|---|---|\n")
     hashes = " ".join(f"{k[:3]}:{v[:6]}" for k, v in meta["stage_hashes"].items())
-    key = summaries.get("classify", {}).get("key_metric") or summaries.get("model", {}).get("key_metric") or summaries.get("answer", {}).get("key_metric") or ""
+    key = summaries.get("importance", {}).get("key_metric") or summaries.get("classify", {}).get("key_metric") or summaries.get("model", {}).get("key_metric") or summaries.get("answer", {}).get("key_metric") or ""
     exps = ",".join(meta["experiments"].values())
     with open(path, "a") as f:
         link = Path(os.path.relpath(report, path.parent)).as_posix().replace(" ", "%20")

@@ -145,6 +145,12 @@ model:
   weight_decay: 0.01
   patience: 30
 
+importance:                      # S7: which questions the S6 classifiers relied on (qaemb/stages/s7_importance.py)
+  source: dir                    # feature source for the main tables and figures (dir = Directional Score)
+  top_n: 20                      # questions listed per task
+  per_class_top: 3               # marker questions per subtype (10-class model)
+  redundancy_r: 0.7              # |correlation| from which two top questions count as near-duplicates
+
 classify:                        # S6: cross-validated classifiers on the whole-image answers (qaemb/stages/s6_classify.py)
   label_columns: {c2: label_2c, c3: label_3c, c10: label_10c}   # read from the source manifest CSV
   sources: [orig, dir, coh]      # orig = P(yes); dir / coh = Directional / Coherence Score (see stages/s4_embed.py)
