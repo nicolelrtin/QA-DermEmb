@@ -166,3 +166,30 @@ classify:                        # S6: cross-validated classifiers on the whole-
   sens_target: 0.95              # report specificity at this malignant sensitivity
   n_jobs: -1
   synthetic: null                # {effect: <logit shift>} replaces the answers with simulated ones (qaemb/synthetic.py)
+
+tune:                            # S8: penalty curves and selection rules for one linear model (qaemb/stages/s8_tune.py)
+  model: l2                      # l2 (ridge) | l1 (lasso)
+  sources: [dir, orig]           # feature sources (as in classify.sources)
+  tasks: [s1_2c, flat_10c]       # tasks (as in classify.tasks)
+  log10_C: [-5, 0]               # grid of C = 1/lambda: 1, 2, 3, 5 per decade from 10^-5 to 10^0, plus S6's own values
+  check_classify: true           # read the S6 run of the same config and check this stage reproduces its choices
+  n_jobs: -1
+
+explore:                         # S9: unsupervised structure of the answers + interactive page (qaemb/stages/s9_explore.py)
+  source: dir                    # score clustered (dir = Directional Score)
+  kinds: [clinical, artefact]    # question kinds included (the control question is never clustered)
+  metadata: data/train_10class_100each/isic_metadata.csv          # python -m qaemb.isic_metadata <manifest>
+  text_questions: analysis/question_embeddings/2026-11-15_N500/questions.csv
+  text_embeddings:               # analysis/question_embeddings/embed_question_set.py; the first is the main one
+    qwen3: analysis/question_embeddings/2026-11-15_N500/emb_qwen3.npy
+    panderm: analysis/question_embeddings/2026-11-15_N500/emb_panderm.npy
+  question_ks: [5, 8, 10, 15, 20, 25, 30, 41, 50, 60]
+  image_ks: [2, 3, 4, 5, 6, 8, 10, 12, 15, 20]
+  default_question_k: 20
+  default_image_k: 10
+  min_institution_images: 10     # institutions with fewer images are pooled as "Other"
+  n_perm: 1000                   # permutations for the cohesion and Mantel nulls
+  n_perm_agreement: 200          # for the adjusted mutual information nulls
+  n_perm_pca: 50                 # shuffles for parallel analysis
+  thumb_px: 160
+  n_jobs: 16

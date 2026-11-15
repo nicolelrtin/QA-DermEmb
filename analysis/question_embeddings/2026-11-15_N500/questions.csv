@@ -1,0 +1,501 @@
+question_id,question
+DQ001,Is the lesion diameter larger than 6 mm?
+DQ002,Is the lesion border irregular?
+DQ003,Is the lesion colour heterogeneous?
+DQ004,Is the lesion outline asymmetric?
+DQ005,Does the lesion have a hazy (ill-defined) border?
+DQ006,Is the pigmented lesion at least 5 mm in diameter with irregular pigmentation?
+DQ007,Is the lesion elevated above the skin surface?
+DQ008,Does the lesion present as a red nodule?
+DQ009,Does one pigmented lesion in the image look different from the other naevi visible in the same image?
+DQ010,"Do the naevi visible in the image resemble one another in colour, shape, size and pattern?"
+DQ011,Is an atypical pigment network present?
+DQ012,Is a blue-white veil present?
+DQ013,Is an atypical vascular pattern present?
+DQ014,Are irregular dots or globules present?
+DQ015,Are irregular streaks present?
+DQ016,Is an irregular blotch present?
+DQ017,Are regression structures present?
+DQ018,Is there asymmetry in the distribution of dermoscopic structures?
+DQ019,Does the lesion show a multicomponent global pattern?
+DQ020,Does the lesion show a pigmented homogeneous global pattern?
+DQ021,Are areas of irregular homogeneous pigmentation present?
+DQ022,Does the lesion contain more than two colours?
+DQ023,Is light brown colour present in the lesion?
+DQ024,Is dark brown or black colour present in the lesion?
+DQ025,Is pink colour present in a pigmented lesion?
+DQ026,Are shiny white structures present?
+DQ027,Is a patchy (discontinuous) pigment network present?
+DQ028,Does the lesion score 3 or more on the revised 7-point checklist?
+DQ029,Is at least one major 7-point checklist criterion present?
+DQ030,Does a blue-white veil cover at least 30% of the lesion area?
+DQ031,Is grey colour present in the lesion?
+DQ032,Is the pigment network irregular in line thickness or hole size?
+DQ033,Are dotted vessels visible within a pigment network?
+DQ034,Are comedo-like openings present in a lesion that also shows a pigment network?
+DQ035,Is perifollicular pigmentation present in a flat pigmented lesion?
+DQ036,Does the lesion appear as a flat pigmented macule with an irregular border?
+DQ037,Are irregular dots and globules the dominant structure of the lesion?
+DQ038,Is colour variegation present across the lesion?
+DQ039,Is the overall global dermoscopic pattern of the lesion reticular?
+DQ040,Is the overall global dermoscopic pattern of the lesion globular?
+DQ041,Are brown reticular lines (a pigment network) present in the lesion?
+DQ042,Are radial lines converging to a central dot or clod present in the lesion?
+DQ043,Are white dots or clods clustered or disseminated across the lesion?
+DQ044,"Are brown, yellow or orange clods present in the lesion?"
+DQ045,"Are large polygonal clods, brown or skin-coloured, present in the lesion?"
+DQ046,Are grey or blue dots arranged in a peripheral clustered or linear pattern?
+DQ047,Are thick curved lines (a cerebriform pattern) present in the lesion?
+DQ048,Are concentric clods (a clod within a clod) present in the lesion?
+DQ049,"Are grey, blue or black dots in a peppering pattern present in the lesion?"
+DQ050,"Are grey, blue or black circles present in the lesion?"
+DQ051,Is a polychromatic structureless zone present in the lesion?
+DQ052,Is a red structureless zone interrupted by follicular openings present?
+DQ053,Are small black clods (black globules) present in the lesion?
+DQ054,Are small pink clods (milky-red globules) present in the lesion?
+DQ055,Is a structureless pink zone (milky-red area) present in the lesion?
+DQ056,Is white colour visible around vessels (a perivascular white halo)?
+DQ057,Are follicular plugs present in the lesion?
+DQ058,Are erosions or ulcerations present in the lesion?
+DQ059,Are dots (structures no wider than a terminal hair) present in the lesion?
+DQ060,Is only one vessel morphology present (a monomorphous vascular pattern)?
+DQ061,Are vessels arranged in a serpiginous (string-of-pearls) line?
+DQ062,Are vessels arranged radially around the lesion centre?
+DQ063,Are vessels arranged in a branched pattern?
+DQ064,Are vessels arranged in clusters?
+DQ065,Are vessels arranged in a reticular (net-like) pattern?
+DQ066,Are vessels distributed randomly without a specific arrangement?
+DQ067,Are curved vessels present in the lesion?
+DQ068,Are shiny white clods present in the lesion?
+DQ069,Are white circles present in the lesion?
+DQ070,Are brown dots present in the lesion?
+DQ071,Is a grey-white structureless zone present in the lesion?
+DQ072,Is a brown structureless area present in the lesion?
+DQ073,Is a grey-black structureless area present in the lesion?
+DQ074,Is a combined brown and blue-grey structureless area present in the lesion?
+DQ075,Are white lines crossing each other at right angles present in the lesion?
+DQ076,Is a yellow or yellow-white structureless area present in the lesion?
+DQ077,Is a blue structureless area present in the lesion?
+DQ078,Are whitish scales present (a correlate of hyperkeratosis)?
+DQ079,Are blue-grey dots present (a correlate of pigment incontinence)?
+DQ080,Are white structureless areas present (a correlate of dermal fibrosis)?
+DQ081,Are small surface depressions (dells) visible over hypopigmented lines?
+DQ082,Are blue-grey or black ovoid nests of varying size present (correlates of dermal tumour islands)?
+DQ083,Do milky-red areas and blurred vessels suggest deep tumoral vessels?
+DQ084,Are papules present?
+DQ085,Are vesicles or blisters present?
+DQ086,Are pustules present?
+DQ087,Are crusts or scabs present?
+DQ088,Is an abscess present?
+DQ089,Is a morbilliform rash present?
+DQ090,Is the lesion a plaque?
+DQ091,Is the lesion a flat macule?
+DQ092,Is the lesion a nodule?
+DQ093,Is the lesion polypoid or pedunculated?
+DQ094,"Does the lesion have a smooth, shiny surface?"
+DQ095,Does the lesion have a well-defined edge and a round or oval outline?
+DQ096,Are chalky-white macules or patches present?
+DQ097,Is the depigmented lesion free of scale?
+DQ098,Does the lesion present as an ulcer without a raised border?
+DQ099,Is the lesion umbilicated (centrally depressed)?
+DQ100,Is the lesion dome-shaped?
+DQ101,Is the lesion verrucous (wart-like)?
+DQ102,Is a fissure present on the lesion surface?
+DQ103,Is lichenification (thickened skin with accentuated markings) present?
+DQ104,Are reticulate white lines (Wickham striae) present?
+DQ105,Are Wickham striae yellow or blue rather than white?
+DQ106,Are white striae arranged in a leaf-venation pattern?
+DQ107,Are white striae arranged as scattered dots in a starry-sky pattern?
+DQ108,Are white striae arranged in an annular or circular pattern?
+DQ109,Are comedo-like structures filled with yellow keratinous plugs present?
+DQ110,Are round white structures (corn pearls) present?
+DQ111,Is diffuse structureless brownish pigmentation present?
+DQ112,Does the lesion surface appear rippled?
+DQ113,Does an erythematous scaly plaque have a hyperpigmented border?
+DQ114,Are perifollicular white halos present?
+DQ115,Are follicular red dots present?
+DQ116,Are white rosettes (four-dot clods) present?
+DQ117,Is a honeycomb pigmentation pattern present?
+DQ118,Are telangiectatic vessels present on an inflamed plaque?
+DQ119,Are white scales present on an inflamed plaque?
+DQ120,Is the plaque atrophic and depigmented?
+DQ121,Is the plaque covered by adherent scale?
+DQ122,Are grouped translucent orange ovoid structures present?
+DQ123,Is a central scar-like area present?
+DQ124,Are bright white streaks present?
+DQ125,Are orange-yellowish areas or globules present?
+DQ126,Is the lesion annular?
+DQ127,Is diffuse erythema of the scalp present?
+DQ128,Are non-follicular papules or pustules present on the scalp?
+DQ129,Are follicle-centred pustules present?
+DQ130,Are dilated capillaries surrounding papules present?
+DQ131,Is diffuse silver-white scaling present?
+DQ132,Is perifollicular scaling present?
+DQ133,Are red loops or dotted vessels regularly distributed across the field?
+DQ134,Is yellow exudate present?
+DQ135,Is diffuse white-yellowish scaling present?
+DQ136,Is perifollicular tubular scaling present?
+DQ137,"Are well-demarcated, scaly erythematous plaques present?"
+DQ138,Are pinpoint bleeding points visible where scale has been removed?
+DQ139,Does erythema appear violaceous or hyperpigmented rather than red?
+DQ140,"Are thick arborizing vessels (about 0.2 mm or more, branching into thinner ones) present?"
+DQ141,"Are bright red, sharply focused vessels visible on the lesion surface?"
+DQ142,Are leaf-like areas present?
+DQ143,Are large blue-grey ovoid nests present?
+DQ144,Are spoke-wheel areas present?
+DQ145,Are multiple blue-grey dots and globules present?
+DQ146,Are short white streaks (chrysalis structures) present?
+DQ147,"Is a milky-pink, white-red translucent structureless background present?"
+DQ148,Are telangiectatic vessels arranged annularly around an ulcer?
+DQ149,Is annular hypopigmentation present around an ulcer?
+DQ150,Are comma-shaped vessels present within an ulcerated area?
+DQ151,Is a pigment network absent in a pigmented lesion?
+DQ152,"Are blue, black and grey dots present together?"
+DQ153,Does the lesion appear as a pigmented nodule?
+DQ154,Does the lesion appear scar-like?
+DQ155,Does the lesion appear as an erythematous plaque or patch?
+DQ156,Are maple-leaf-like structureless black areas present on a pink background?
+DQ157,Are multiple small erosions present?
+DQ158,Are brown-grey globules present?
+DQ159,Are central tumour vessels present?
+DQ160,Is pink coloration sparse or absent in a lesion with BCC-like structures?
+DQ161,Is the lesion so heavily pigmented that vessels are hidden?
+DQ162,Are white-to-yellow surface scales present?
+DQ163,Are glomerular vessels arranged in clusters?
+DQ164,Is a central keratin plug present?
+DQ165,Does the lesion have a crater-like keratin core?
+DQ166,Is an ivory-white peripheral zone present?
+DQ167,Are hairpin or linear vessels radiating symmetrically around a keratin core?
+DQ168,Is a faint whitish halo present at the lesion periphery?
+DQ169,Are white clods (keratin pearls) present?
+DQ170,Are dark necrotic or blood spots interspersed in the keratin?
+DQ171,Is a pinkish-white area present?
+DQ172,Is structureless pigmentation present in a scaly patch?
+DQ173,Are brown globules arranged in a patchy distribution?
+DQ174,Is a double-edge sign present?
+DQ175,Are clusters of brown structureless areas present?
+DQ176,Are whitish structureless areas present?
+DQ177,Is surface keratin present?
+DQ178,Is a strawberry pattern (pink pseudonetwork around prominent follicles) present?
+DQ179,Is white or white-yellow the predominant colour of the lesion?
+DQ180,Is pink-red the predominant colour of a keratinizing lesion?
+DQ181,"Does the lesion show nodular, exophytic growth?"
+DQ182,Is prominent hyperkeratosis present?
+DQ183,Are polarizing-specific white lines present in a non-pigmented lesion?
+DQ184,Are clothing fibres or hairs adherent to the lesion surface (a clue to ulceration)?
+DQ185,Is a non-pigmented lesion raised and firm (nodular)?
+DQ186,Is ulceration present in a non-pigmented lesion?
+DQ187,Is structureless pigmentation combined with dots in a pigmented scaly lesion?
+DQ188,"Are follicular plugs present in a flat, scaly lesion on sun-damaged skin?"
+DQ189,Does the lesion appear as an erythematous nodule?
+DQ190,Does the lesion have a sharply demarcated border?
+DQ191,"Are thin, curved, parallel brown lines present?"
+DQ192,Is a faint criss-cross reticulation present?
+DQ193,Does the lesion have a scalloped border?
+DQ194,Is fine scale present on the lesion surface?
+DQ195,Is a diffuse grey dotted pattern present?
+DQ196,Is homogeneous brown pigmentation present?
+DQ197,Are fine parallel lines present in a flat brown lesion?
+DQ198,Is a white network (brown holes intersected by white lines) present?
+DQ199,"Is the lesion a yellow, exophytic or polypoid nodule?"
+DQ200,Is the lesion an erythematous crateriform nodule with central ulceration?
+DQ201,Is the lesion a hyperkeratotic erythematous papule?
+DQ202,Is the lesion a solitary pinkish-red papule on the lower limb?
+DQ203,Is the lesion a firm-appearing pink to red papule?
+DQ204,Is a collarette of scale present around the lesion?
+DQ205,Is the contrast between epidermal structures and background low because of dark skin?
+DQ206,Does a perivascular white halo stand out against dark background skin?
+DQ207,Are well-circumscribed pigmented ovoid areas present on dark skin?
+DQ208,Is a blue veil present in a pigmented nodule on dark skin?
+DQ209,Does the lesion appear as a pigmented patch on dark skin?
+DQ210,Is the background skin phototype IV or darker?
+DQ211,Is erythema less pronounced than expected because of skin pigmentation?
+DQ212,Is the lesion on a less pigmented acral site of a person with dark skin?
+DQ213,Are black globules present in a seborrhoeic keratosis-like lesion on dark skin?
+DQ214,Does the visible skin match Monk Skin Tone 1–3?
+DQ215,Does the visible skin match Monk Skin Tone 4–7?
+DQ216,Does the visible skin match Monk Skin Tone 8–10?
+DQ217,Does the visible skin appear to be Fitzpatrick type I–II?
+DQ218,Does the visible skin appear to be Fitzpatrick type III–IV?
+DQ219,Does the visible skin appear to be Fitzpatrick type V–VI?
+DQ220,Is the individual typology angle (ITA) of the visible normal skin above 28°?
+DQ221,Is the individual typology angle (ITA) of the visible normal skin below 10°?
+DQ222,Does the visible skin have a yellow (rather than red) undertone?
+DQ223,Does the lighting visibly alter the apparent skin tone?
+DQ224,Are asymmetrical pigmented follicular openings present?
+DQ225,Is an annular-granular pattern present?
+DQ226,Are angulated lines present?
+DQ227,Are rhomboidal structures present around follicles?
+DQ228,Is a circle-within-a-circle pattern present?
+DQ229,Is a zigzag pattern of pigmentation present?
+DQ230,Are perifollicular linear projections present?
+DQ231,Is a pseudonetwork (pigmentation interrupted by follicular openings) present?
+DQ232,Are follicular openings obliterated by pigment?
+DQ233,Are follicular openings obliterated by black or blue blotches?
+DQ234,Are grey dots or globules present around follicles?
+DQ235,"Are white, wide follicular openings present?"
+DQ236,Are reticular or parallel brown lines present on facial skin?
+DQ237,Is bluish-grey pigmentation present in a facial macule?
+DQ238,Is pigmentation surrounding hair follicles visible?
+DQ239,Are thick parallel lines located on the ridges of acral skin (parallel ridge pattern)?
+DQ240,Are thin parallel lines located in the furrows of acral skin (parallel furrow pattern)?
+DQ241,Are thin lines in the furrows joined by lines crossing the ridges (lattice-like pattern)?
+DQ242,Are short parallel lines crossing the ridges (fibrillar pattern) present?
+DQ243,Does an acral lesion show homogeneous dark brown or black pigmentation?
+DQ244,Is a pigmented acral lesion symmetric?
+DQ245,Is the acral lesion a pink nodule?
+DQ246,Does the acral lesion resemble a non-healing ulcer?
+DQ247,Are milky-red areas present on acral skin?
+DQ248,Are polymorphous vessels present in an acral lesion?
+DQ249,Is the lesion located on the heel?
+DQ250,Is the lesion located on a fingertip?
+DQ251,Is the lesion located on the palm?
+DQ252,Is the lesion located on the sole?
+DQ253,Does an acral lesion lack any pigmented structures?
+DQ254,Is a longitudinal pigmented band (melanonychia) present in the nail plate?
+DQ255,Is a longitudinal nail band wider than 3 mm present?
+DQ256,Does the nail show brown-black discoloration?
+DQ257,Does a longitudinal nail band have irregular borders?
+DQ258,Is a longitudinal nail band heterogeneous in colour?
+DQ259,Is a longitudinal nail band wider proximally than distally (triangular)?
+DQ260,Does pigment extend from the nail onto the periungual skin (Hutchinson's sign)?
+DQ261,"Does a longitudinal nail band contain lines of irregular colour, spacing or thickness?"
+DQ262,"Does a longitudinal nail band have blurred, fading borders?"
+DQ263,Is the nail plate split or notched?
+DQ264,Is onycholysis (nail plate separation) present?
+DQ265,Is bleeding visible at the nail unit?
+DQ266,Is a longitudinal red band (erythronychia) present in the nail?
+DQ267,"Is a pink, red or flesh-coloured papule present in the nail unit?"
+DQ268,Is a whitish or milky-red veil present on the nail bed?
+DQ269,Is peripheral yellow-to-brown scaling or crust present on the nail bed?
+DQ270,Are irregular vessels visible in the nail unit?
+DQ271,Is a longitudinal nail band homogeneous in colour intensity?
+DQ272,Is a longitudinal nail band light brown?
+DQ273,Are splinter haemorrhages visible under the nail?
+DQ274,Are nail pits visible?
+DQ275,Is subungual hyperkeratosis visible?
+DQ276,Is hyperpigmentation of the proximal nail fold visible?
+DQ277,Are several thin longitudinal grey bands present in one nail?
+DQ278,Is the nail surface rough or shiny in a trachyonychia pattern?
+DQ279,Is the nail plate absent?
+DQ280,Is pigmentation of the nail bed visible?
+DQ281,Is the pigmented nail on a thumb?
+DQ282,Is the entire nail plate pigmented (complete melanonychia)?
+DQ283,Does the nail plate appear wavy?
+DQ284,Is linear erythema of the nail bed visible?
+DQ285,Is brown-red discoloration visible proximal to an area of onycholysis?
+DQ286,Is the nail plate thickened?
+DQ287,Is a negative pigment network present?
+DQ288,Is a starburst pattern present?
+DQ289,Is a globular pattern with reticular depigmentation present?
+DQ290,Are dotted vessels present together with an inverse (negative) network?
+DQ291,Is the lesion smaller than 1 cm and elevated?
+DQ292,Is pink to red the predominant colour of a small elevated lesion?
+DQ293,Is a small elevated lesion uniformly black?
+DQ294,Do shiny white structures coincide with hypopigmented lines in the lesion?
+DQ295,Are dotted vessels located within the brown globular portions of a negative network?
+DQ296,Is the lesion a light brown nodule?
+DQ297,Does a non-pigmented lesion show polymorphous vessels with milky-red areas?
+DQ298,Are pigment remnants arranged in a cobblestone pattern?
+DQ299,"Is the lesion a pinkish, soft papule or nodule?"
+DQ300,Is the lesion flesh-coloured?
+DQ301,Does the lesion resemble a vascular lesion?
+DQ302,Is a polymorphous vascular pattern present?
+DQ303,Are linear irregular vessels present?
+DQ304,Is a vascular blush (pink veil) present?
+DQ305,"Are vessels poorly focused (blurred), suggesting a deep location?"
+DQ306,Are dotted vessels present?
+DQ307,Are glomerular vessels present?
+DQ308,Are hairpin vessels present?
+DQ309,Are comma-like vessels present?
+DQ310,"Are dotted or glomerular vessels arranged in a curvilinear, necklace-like distribution?"
+DQ311,Does a pink nodule lack any pigmented structures?
+DQ312,Are vessels seen on a milky-red background?
+DQ313,"Is there a thick linear vessel with multiple short, thin side branches (caterpillar-like)?"
+DQ314,Are red dots and globules present?
+DQ315,Are twisted red loops present?
+DQ316,Are punctate haemorrhages (haemorrhagic dots) present?
+DQ317,Are atypical non-branching red vessels present?
+DQ318,Are tortuous arborizing vessels present?
+DQ319,Are red structureless areas present?
+DQ320,Are loop vessels present?
+DQ321,Are only slightly blurred pink vessels of the normal dermal plexus visible?
+DQ322,Are linear vessels overlying translucent orange structures?
+DQ323,Is the lesion located on the head or neck?
+DQ324,Is the lesion located on the trunk?
+DQ325,Is the lesion located on a limb?
+DQ326,Is the lesion located on the back?
+DQ327,Is the lesion located on the face?
+DQ328,Is the lesion located on a non-sun-exposed site?
+DQ329,Are nodules visible within a large congenital naevus?
+DQ330,Is a nodule within a congenital naevus lighter or pinker than the surrounding naevus?
+DQ331,Is a nodule within a congenital naevus between 0.5 and 2 cm across?
+DQ332,"Is there a soft, diffuse overgrowth within a congenital naevus?"
+DQ333,Is a large congenital melanocytic naevus visible?
+DQ334,Is a large red plaque-type infantile haemangioma visible?
+DQ335,Does a haemangioma follow a facial segment?
+DQ336,Does a facial haemangioma involve both sides of the face?
+DQ337,Does a haemangioma show a C-shaped pattern on the scalp?
+DQ338,Is whitening visible along the midline of a segmental haemangioma?
+DQ339,Does a facial haemangioma involve the mandibular (S3) segment?
+DQ340,Are the lesions confined to one side of the body?
+DQ341,Do the lesions follow the lines of Blaschko?
+DQ342,Do the lesions follow a dermatomal pattern?
+DQ343,Are the macules 1–5 mm in diameter?
+DQ344,Are small brown macules arranged in clusters?
+DQ345,Are café-au-lait macules visible?
+DQ346,Are the pigmented macules non-hairy?
+DQ347,Are scaly papules and plaques arranged in a continuous or intermittent line?
+DQ348,Is depigmentation confined to one body segment?
+DQ349,Does the eruption stop sharply at the body midline?
+DQ350,Are lesions arranged in a V-shape on the back?
+DQ351,Is erythema present across the sun-exposed skin field?
+DQ352,Are actinic keratoses thick (raised and hyperkeratotic)?
+DQ353,Are scaly plaques present on sun-exposed skin?
+DQ354,Are pigmented scaly papules present on sun-exposed skin?
+DQ355,Are scaly lesions present on the ear helix?
+DQ356,Are scaly lesions present on the dorsum of the hand?
+DQ357,Are scaly lesions present on the scalp?
+DQ358,Do actinic keratoses cover more than 30% of the visible area?
+DQ359,Are signs of chronic sun damage visible around the lesions?
+DQ360,Are multiple actinic keratoses visible in one field?
+DQ361,Are multiple lesions from the same patient visible in the image?
+DQ362,Is the image a view of a 3D total-body avatar?
+DQ363,Is the skin immediately surrounding the lesion erythematous?
+DQ364,Does the image show more than 50 common naevi?
+DQ365,Is at least one clinically atypical naevus visible in the image?
+DQ366,Is a naevus of 5 mm or more with irregular pigmentation or a hazy border visible?
+DQ367,Is a blue naevus visible in the image?
+DQ368,Is a congenital-appearing naevus visible in the image?
+DQ369,Does the image show more than 25 naevi of at least 2 mm?
+DQ370,Does the image show any naevus of at least 5 mm?
+DQ371,Are most naevi in the image located on sun-exposed skin?
+DQ372,Is fair or red hair visible in the image?
+DQ373,Is there a single darker or larger 'ugly duckling' lesion among the naevi visible?
+DQ374,Do the naevi visible in the image share a predominantly reticular pattern?
+DQ375,Do the naevi visible in the image share a predominantly globular pattern?
+DQ376,Do the naevi in the image show an eclipse pattern (tan centre with a brown rim)?
+DQ377,Is a ring of depigmentation (halo) present around a naevus?
+DQ378,Are fine wrinkles visible?
+DQ379,Are deep wrinkles visible?
+DQ380,"Is xerosis (dry, rough skin) visible?"
+DQ381,Does the skin appear thin?
+DQ382,Does the skin appear thick and leathery?
+DQ383,Is dyspigmentation visible?
+DQ384,Are freckles visible?
+DQ385,Is melasma visible?
+DQ386,"Is citrine (yellowish, thickened) skin visible?"
+DQ387,Is senile purpura visible?
+DQ388,Are pseudostellate scars visible?
+DQ389,Are small keratotic papules along the hand margins (acrokeratoelastoidosis-like) visible?
+DQ390,Are solar lentigines visible?
+DQ391,Are acrochordons (skin tags) visible?
+DQ392,Is grey or white hair visible in the image?
+DQ393,Does the skin show loss of elasticity (sagging)?
+DQ394,Is the image a lesion crop extracted from a total-body photograph?
+DQ395,Is the image resolution and detail comparable to a smartphone photograph?
+DQ396,Was the image taken with cross-polarized lighting?
+DQ397,Is the blue-yellow (b*) contrast between lesion and surrounding skin low?
+DQ398,Is colour variance inside the lesion high?
+DQ399,Is colour asymmetry within the lesion high?
+DQ400,Is the lesion's minor-axis diameter greater than 6 mm?
+DQ401,Is the lesion border perimeter long relative to the lesion area?
+DQ402,"Is the lesion unobstructed by hair, clothing or body folds?"
+DQ403,Does the image field of view include surrounding skin beyond the lesion?
+DQ404,Is a colour calibration chart visible in the image?
+DQ405,Is a grey reference card visible in the image?
+DQ406,"Is there a visible colour cast (e.g., blue, yellow or green tint) across the image?"
+DQ407,Is the dermatoscope illumination visibly uneven across the field?
+DQ408,"Is the image visibly distorted (e.g., barrel distortion at the edges)?"
+DQ409,Does the image show colour and lighting variation typical of a multi-source dataset?
+DQ410,"Does the image contain visible demographic cues (e.g., age-related skin changes) that a model could exploit?"
+DQ411,Does the image come from a non-specialist (community or smartphone) setting?
+DQ412,Is the skin in the image dark (a group where diagnostic accuracy is lower)?
+DQ413,Does the image show an uncommon disease on dark skin?
+DQ414,Does the image resemble a textbook illustration rather than a clinical photograph?
+DQ415,Is the lesion too large to fit within the dermatoscope aperture?
+DQ416,Is the lesion located on a nail or mucosa?
+DQ417,Is the lesion hypopigmented relative to the surrounding skin?
+DQ418,Is the lesion border impossible to delineate (not segmentable)?
+DQ419,Is the image a dermoscopic (dermatoscopic) image?
+DQ420,Is the lesion clearly separable from the background for segmentation?
+DQ421,"Is the melanocytic lesion flat and subtle, without obvious melanoma features?"
+DQ422,Was the image taken with polarized dermoscopy?
+DQ423,Is the lesion border low in contrast with the surrounding skin?
+DQ424,Is the background skin texture prominent?
+DQ425,Is the lesion colour distinct from the surrounding skin colour?
+DQ426,Is background noise present around the lesion region of interest?
+DQ427,Does the lesion occupy more than half of the image area?
+DQ428,Does the lesion bounding box cover most of the image?
+DQ429,Is the lesion diameter large relative to the image width?
+DQ430,Is the lesion outline approximately circular?
+DQ431,Is the lesion more than twice as long as it is wide?
+DQ432,Does the lesion border contain notches or indentations?
+DQ433,Does the lesion consist of more than one separate pigmented component?
+DQ434,Is the lesion centred in the image?
+DQ435,Does the lesion touch the image edge?
+DQ436,Is the lesion poorly framed in the image?
+DQ437,Is the lighting poor?
+DQ438,Is the image blurry?
+DQ439,Is the image resolution too low to resolve lesion detail?
+DQ440,Was the image taken from too far away?
+DQ441,Does the image contain no visible skin?
+DQ442,Is only the background blurred while the lesion is in focus?
+DQ443,Was the image taken by the patient with a consumer app (non-standard framing and lighting)?
+DQ444,Is there a single isolated pixel of unusual colour in the image?
+DQ445,Is visible digital noise present across the image?
+DQ446,Is there a source tag or watermark in the image that could act as a 'Clever Hans' cue?
+DQ447,Is the presence of a blue-whitish veil unambiguous in the image?
+DQ448,Is the presence of irregular streaks unambiguous in the image?
+DQ449,"Can the lesion be described by plain clinical concepts such as asymmetry, irregular border or multiple colours?"
+DQ450,Does the lesion contain a stripe-like (linear) texture?
+DQ451,Is the lesion composed of a few large regions of uniform colour?
+DQ452,Is the lesion small enough that a coarse attention map could not localise it within the image?
+DQ453,Is the lesion's appearance dominated by one compact region?
+DQ454,Is the lesion's darkest region located off-centre?
+DQ455,Are strong edges present outside the lesion?
+DQ456,Are dark corners (vignetting) present?
+DQ457,Is a gel border visible?
+DQ458,Are gel or air bubbles present?
+DQ459,Is a ruler visible?
+DQ460,Are ink markings or staining present?
+DQ461,Is an adhesive patch or sticker visible?
+DQ462,Is hair present?
+DQ463,Does hair obscure part of the lesion?
+DQ464,Are many thin hairs crossing the lesion?
+DQ465,Do ink markings touch or overlap the lesion?
+DQ466,Does a ruler overlap the lesion?
+DQ467,Does a dark-corner vignette cut into the lesion?
+DQ468,Do the image borders contain non-lesion content such as frames or text?
+DQ469,Are two or more different artefact types present in the image?
+DQ470,Does the image show signs of digital hair removal (smudged streaks)?
+DQ471,"Is the lesion redder than the surrounding skin, suggesting higher haemoglobin content?"
+DQ472,Does the lesion look like a vascular neoplasm (uniform red to purple colour)?
+DQ473,"Is the lesion's pigmentation distribution uneven, with patchy dark and light areas?"
+DQ474,Does the lesion contain both brown (melanin-like) and red (blood-like) areas?
+DQ475,"Does the lesion appear blue-grey, consistent with pigment located deep in the dermis?"
+DQ476,Does lesion contrast increase when the RGB image is converted to simulated narrow-band images?
+DQ477,Does the skin show a yellowish tint consistent with carotene content?
+DQ478,Does the lesion appear darker primarily because of melanin (brown-black) rather than blood (red-purple)?
+DQ479,"Does the lesion look bluish-purple, suggesting low blood oxygen saturation?"
+DQ480,Is epidermal pigmentation visibly heterogeneous across the normal skin?
+DQ481,"Does the image show skin with visible features of obesity (e.g., striae, stretched skin)?"
+DQ482,Does a thick keratin layer make the lesion surface look white or opaque?
+DQ483,Is a network of skin furrows and ridges visible on the surrounding skin?
+DQ484,Does the skin surface appear rough?
+DQ485,Does the image show the microrelief of the dorsal hand?
+DQ486,Are wrinkles closely spaced (short wrinkle pitch)?
+DQ487,Are skin pores individually visible?
+DQ488,Are red areas (diffuse vascular redness) visible on the facial skin?
+DQ489,Is facial skin texture uneven?
+DQ490,Are skin markings (furrows) lost over the lesion compared with the surrounding skin?
+DQ491,Does the image appear to be synthetic (GAN-generated) rather than a real photograph?
+DQ492,"Does the image show artefacts typical of generative models (repetitive textures, unnatural edges)?"
+DQ493,Is the grey-level co-occurrence contrast of the lesion higher than that of the surrounding skin?
+DQ494,Is the lesion texture less homogeneous than the surrounding skin texture?
+DQ495,Is the intensity variance inside the lesion higher than in the surrounding skin?
+DQ496,Does the lesion contain many distinctive keypoints (corners and blobs)?
+DQ497,Does lesion texture differ markedly between the red and blue colour channels?
+DQ498,Is lesion texture visible in a greyscale version of the image?
+DQ499,"Does the lesion show a periodic, repeating texture?"
+DQ500,Is the lesion texture coarse rather than fine?

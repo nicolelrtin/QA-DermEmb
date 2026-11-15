@@ -202,3 +202,204 @@ def heat(rows: list, cols: list, M, boxed: set, title: str, path):
     fig.tight_layout()
     fig.savefig(path, dpi=150)
     plt.close(fig)
+
+
+# S8 tune --------------------------------------------------------------------------------------------------------
+SOURCE_COLOURS = {"orig": SERIES[0], "dir": SERIES[1], "coh": SERIES[2]}   # same slots as the S6 figures
+
+
+def penalty_curves(curves, sel, tasks, sources, primary, names, title, path):
+    """Columns = tasks. Rows: inner log loss, inner primary score, outer primary score (reference only), against
+    lambda = 1/C. Line = mean over the outer folds, band = 10th to 90th percentile over folds. Ticks at the bottom of
+    each panel: the lambda each outer fold chose by inner log loss (S6's rule), one row of ticks per source."""
+    rows = [("ll_mean", "inner log loss (lower is better)"), ("prim_mean", "inner {}"), ("outer_{}", "outer {} (reference)")]
+    fig, axes = plt.subplots(3, len(tasks), figsize=(4.2 * len(tasks), 8.4), squeeze=False, sharex=True)
+    for j, t in enumerate(tasks):
+        pm = primary(t)
+        for i, (col, lab) in enumerate(rows):
+            ax = axes[i, j]
+            col = col.format(pm)
+            for k, s in enumerate(sources):
+                g = curves[(curves.task == t) & (curves.source == s)]
+                if g.empty:
+                    continue
+                q = g.groupby("lambda")[col].describe(percentiles=[0.1, 0.9]).sort_index()
+                c = SOURCE_COLOURS.get(s, SERIES[k % 3])
+                ax.fill_between(q.index, q["10%"], q["90%"], color=c, alpha=0.15, lw=0)
+                ax.plot(q.index, q["mean"], color=c, lw=2, label=names.get(s, s))
+                ib = q["mean"].idxmin() if col == "ll_mean" else q["mean"].idxmax()
+                ax.plot([ib], [q["mean"][ib]], marker="o", ms=5, color=c)
+                if i == 2:
+                    ch = sel[(sel.task == t) & (sel.source == s) & (sel.rule == "logloss")]["lambda"]
+                    lo, hi = ax.get_ylim()
+                    ax.plot(ch, np.full(len(ch), lo + (0.02 + 0.04 * k) * (hi - lo)), "|", ms=8, color=c, alpha=0.6)
+            ax.set_xscale("log")
+            ax.set_ylabel(lab.format(pm.replace("_", " ")))
+            if i == 0:
+                ax.set_title(t)
+            if i == 2:
+                ax.set_xlabel("lambda = 1/C (stronger penalty to the right)")
+    axes[0, 0].legend(loc="best", fontsize=8)
+    fig.suptitle(title, color=INK, fontsize=10)
+    fig.tight_layout(rect=(0, 0, 1, 0.97))
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def chosen_lambda(sel, tasks, sources, rules, names, title, path):
+    """One panel per (task, source): for each selection rule, how many of the outer folds chose each lambda."""
+    fig, axes = plt.subplots(len(tasks), len(sources), figsize=(4.3 * len(sources), 2.6 * len(tasks) + 0.4),
+                             squeeze=False, sharex=True)
+    for i, t in enumerate(tasks):
+        for j, s in enumerate(sources):
+            ax = axes[i, j]
+            c = SOURCE_COLOURS.get(s, SERIES[j % 3])
+            for k, r in enumerate(rules):
+                g = sel[(sel.task == t) & (sel.source == s) & (sel.rule == r)]["lambda"].round(6).value_counts()
+                ax.scatter(g.index, np.full(len(g), k), s=12 * g.values, color=c, alpha=0.8, edgecolor="none")
+                for lam, n in g.items():
+                    ax.annotate(str(n), (lam, k), xytext=(0, 7), textcoords="offset points", ha="center", fontsize=7,
+                                color=INK2)
+            ax.set_yticks(range(len(rules)))
+            ax.set_yticklabels(rules)
+            ax.set_ylim(-0.6, len(rules) - 0.3)
+            ax.set_xscale("log")
+            ax.set_title(f"{t}, {names.get(s, s)}")
+            if i == len(tasks) - 1:
+                ax.set_xlabel("lambda chosen (number = outer folds)")
+    fig.suptitle(title, color=INK, fontsize=10)
+    fig.tight_layout(rect=(0, 0, 1, 1 - 0.4 / fig.get_figheight()))
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def repeat_spread(reps, tasks, sources, rules, primary, names, title, path):
+    """One panel per (task, source): the pooled score of each of the repeats (dots) and their mean (bar), by rule."""
+    fig, axes = plt.subplots(len(tasks), len(sources), figsize=(4.3 * len(sources), 2.6 * len(tasks) + 0.4),
+                             squeeze=False)
+    for i, t in enumerate(tasks):
+        pm = primary(t)
+        for j, s in enumerate(sources):
+            ax = axes[i, j]
+            c = SOURCE_COLOURS.get(s, SERIES[j % 3])
+            for k, r in enumerate(rules):
+                v = reps[(reps.task == t) & (reps.source == s) & (reps.rule == r)][pm].values
+                ax.scatter(np.full(len(v), k) + np.linspace(-0.12, 0.12, len(v)), v, s=16, color=c, edgecolor="none")
+                ax.plot([k - 0.25, k + 0.25], [v.mean()] * 2, color=INK, lw=1.5)
+            ax.set_xticks(range(len(rules)))
+            ax.set_xticklabels(rules)
+            ax.set_ylabel(pm.replace("_", " "))
+            ax.set_title(f"{t}, {names.get(s, s)}")
+    fig.suptitle(title, color=INK, fontsize=10)
+    fig.tight_layout(rect=(0, 0, 1, 1 - 0.4 / fig.get_figheight()))
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+# S9 explore -------------------------------------------------------------------------------------------------------
+DIV_NEG, DIV_POS, DIV_MID = "#2a78d6", "#e34948", "#f0efec"
+
+
+def _div_cmap():
+    from matplotlib.colors import LinearSegmentedColormap
+
+    return LinearSegmentedColormap.from_list("bluegrayred", [DIV_NEG, DIV_MID, DIV_POS])
+
+
+def explore_figures(fdir, coh_topic, coh_all, tva, pc, agr, ica, qsum, sub_order, kq, topic_names):
+    import pandas as pd
+
+    # 1. cohesion of each topic against random groups of the same size
+    t = coh_topic.dropna(subset=["within_mean_r"]).sort_values("within_mean_r")
+    fig, ax = plt.subplots(figsize=(8.5, 0.22 * len(t) + 1.4))
+    yy = np.arange(len(t))
+    ax.hlines(yy, t.null_05, t.null_95, color=GRID, lw=5, label="random groups of the same size (5th to 95th percentile)")
+    ax.scatter(t.within_mean_r, yy, s=22, color=SERIES[0], zorder=3, label="mean r within the topic")
+    ax.set_yticks(yy)
+    ax.set_yticklabels([f"{str(n)[:55]} ({k})" for n, k in zip(t.topic, t.n_questions)], fontsize=7)
+    ax.axvline(coh_all["between_mean_r"], color=REF, ls="--", lw=1, label="mean r between topics")
+    ax.set_xlabel("mean correlation between questions (Directional Score, 1,000 images)")
+    ax.legend(loc="lower right", fontsize=7)
+    ax.set_title("How alike the questions of one topic are answered")
+    fig.tight_layout()
+    fig.savefig(fdir / "topic_cohesion.png", dpi=150)
+    plt.close(fig)
+
+    # 2. answer correlation against wording similarity
+    fig, ax = plt.subplots(figsize=(5.2, 3.6))
+    for (name, g), c in zip(tva.groupby("pairs", sort=False), SERIES):
+        ax.errorbar(g.text_sim_mid, g.mean_r, yerr=1.96 * g.se, color=c, lw=2, marker="o", ms=4, capsize=2, label=name)
+    ax.set_xlabel("wording similarity of the pair (cosine, bin median)")
+    ax.set_ylabel("mean answer correlation")
+    ax.legend(fontsize=8)
+    ax.set_title("Question pairs: answered alike vs worded alike")
+    fig.tight_layout()
+    fig.savefig(fdir / "text_vs_answers.png", dpi=150)
+    plt.close(fig)
+
+    # 3. scree with parallel analysis
+    fig, ax = plt.subplots(figsize=(5.2, 3.6))
+    k = np.arange(1, 51)
+    tot = pc["eigen"].sum()
+    ax.plot(k, pc["ratio"][:50], color=SERIES[0], lw=2, marker="o", ms=3, label="answers")
+    ax.plot(k, pc["null95"] / tot, color=REF, lw=1.5, ls="--", label="answers shuffled across images (95th pct)")
+    ax.axvline(pc["n_parallel"] + 0.5, color=INK2, lw=1, ls=":")
+    ax.set_yscale("log")
+    ax.set_xlabel("principal component")
+    ax.set_ylabel("share of variance")
+    ax.legend(fontsize=8)
+    ax.set_title(f"{pc['n_parallel']} components beat shuffled answers; {pc['n_for'][0.9]} needed for 90%")
+    fig.tight_layout()
+    fig.savefig(fdir / "scree.png", dpi=150)
+    plt.close(fig)
+
+    # 4. agreement of question groupings against k
+    fig, ax = plt.subplots(figsize=(5.6, 3.6))
+    pairs = [("answer clusters", "topic"), ("answer clusters", agr.b[agr.b.str.startswith("text")].iloc[0]),
+             (agr.a[agr.a.str.startswith("text")].iloc[0], "topic")]
+    for (a, b), c in zip(pairs, SERIES):
+        g = agr[(agr.a == a) & (agr.b == b)]
+        ax.plot(g.k, g.ami, color=c, lw=2, marker="o", ms=4, label=f"{a} vs {b}")
+        ax.plot(g.k, g.ami_null95, color=c, lw=1, ls=":")
+    ax.set_xlabel("number of clusters")
+    ax.set_ylabel("adjusted mutual information")
+    ax.legend(fontsize=7)
+    ax.set_title("Agreement between question groupings (dotted: shuffled 95th pct)")
+    fig.tight_layout()
+    fig.savefig(fdir / "question_grouping_agreement.png", dpi=150)
+    plt.close(fig)
+
+    # 5. image clusters against variables
+    h = ica.pivot_table(index="variable", columns="k", values="ami", sort=False)
+    fig, ax = plt.subplots(figsize=(0.55 * h.shape[1] + 2.6, 0.42 * h.shape[0] + 1.2))
+    im = ax.imshow(h.values, cmap="Blues", vmin=0, vmax=max(0.3, np.nanmax(h.values)), aspect="auto")
+    for i in range(h.shape[0]):
+        for j in range(h.shape[1]):
+            v = h.values[i, j]
+            ax.text(j, i, f"{v:.2f}", ha="center", va="center", fontsize=7, color="white" if v > 0.2 else INK)
+    ax.set_xticks(range(h.shape[1]))
+    ax.set_xticklabels(h.columns)
+    ax.set_yticks(range(h.shape[0]))
+    ax.set_yticklabels(h.index)
+    ax.set_xlabel("number of image clusters")
+    ax.grid(False)
+    ax.set_title("Image clusters vs each variable (adjusted mutual information)")
+    fig.colorbar(im, ax=ax, shrink=0.8)
+    fig.tight_layout()
+    fig.savefig(fdir / "image_clusters_vs_variables.png", dpi=150)
+    plt.close(fig)
+
+    # 6. question clusters by subtype
+    M = np.array([d["prof"] for d in qsum[kq]])
+    fig, ax = plt.subplots(figsize=(8.2, 0.32 * len(M) + 2.6))
+    lim = np.nanmax(np.abs(M))
+    ax.imshow(M, cmap=_div_cmap(), vmin=-lim, vmax=lim, aspect="auto")
+    ax.set_xticks(range(len(sub_order)))
+    ax.set_xticklabels(sub_order, rotation=40, ha="right", fontsize=7)
+    ax.set_yticks(range(len(M)))
+    ax.set_yticklabels([f"{c + 1} ({d['n']} q, AUROC {d['auroc']:.2f})" for c, d in enumerate(qsum[kq])], fontsize=7)
+    ax.grid(False)
+    ax.set_title(f"{kq} question clusters: mean cluster score by subtype (red above average, blue below)")
+    fig.tight_layout()
+    fig.savefig(fdir / "question_clusters_by_subtype.png", dpi=150)
+    plt.close(fig)

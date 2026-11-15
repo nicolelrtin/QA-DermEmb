@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Answer Structure Explorer</title>
+<style>
+:root {
+  color-scheme: light;
+  --surface-0: #f4f3f0; --surface-1: #fcfcfb; --border: #dedcd5; --grid: #ebe9e3;
+  --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #77756f;
+  --accent: #2a78d6; --mark-muted: #c9c7bf; --mid: #f0efec;
+  --c1: #2a78d6; --c2: #eb6834; --c3: #1baf7a; --neg: #2a78d6; --pos: #e34948;
+  --seq: #cde2fb,#9ec5f4,#6da7ec,#3987e5,#256abf,#184f95,#0d366b;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --surface-0: #111110; --surface-1: #1a1a19; --border: #383835; --grid: #262624;
+    --text-primary: #f0efec; --text-secondary: #c3c2b7; --text-muted: #9a998f;
+    --accent: #3987e5; --mark-muted: #4a4945; --mid: #383835;
+    --c1: #3987e5; --c2: #d95926; --c3: #199e70; --neg: #3987e5; --pos: #e66767;
+    --seq: #0d366b,#184f95,#256abf,#3987e5,#6da7ec,#9ec5f4,#cde2fb;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface-0: #111110; --surface-1: #1a1a19; --border: #383835; --grid: #262624;
+  --text-primary: #f0efec; --text-secondary: #c3c2b7; --text-muted: #9a998f;
+  --accent: #3987e5; --mark-muted: #4a4945; --mid: #383835;
+  --c1: #3987e5; --c2: #d95926; --c3: #199e70; --neg: #3987e5; --pos: #e66767;
+  --seq: #0d366b,#184f95,#256abf,#3987e5,#6da7ec,#9ec5f4,#cde2fb;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--surface-0); color: var(--text-primary);
+  font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 1320px; margin: 0 auto; padding: 20px 16px 64px; }
+h1 { font-size: 20px; margin: 0 0 4px; font-weight: 650; }
+h2 { font-size: 16px; margin: 0 0 6px; font-weight: 620; }
+h3 { font-size: 14px; margin: 16px 0 6px; font-weight: 620; }
+p { margin: 0 0 10px; max-width: 95ch; }
+.sub { color: var(--text-secondary); margin-bottom: 14px; }
+.muted { color: var(--text-muted); font-size: 12px; }
+nav.tabs { position: sticky; top: 0; z-index: 5; background: var(--surface-0); padding: 8px 0; margin-bottom: 12px;
+  display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid var(--border); }
+nav.tabs button { font: inherit; border: 1px solid var(--border); background: var(--surface-1); color: var(--text-secondary);
+  padding: 5px 11px; border-radius: 8px; cursor: pointer; }
+nav.tabs button[aria-selected="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+.theme { margin-left: auto; }
+section[hidden] { display: none; }
+.card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: end; margin-bottom: 10px; }
+.control { display: flex; flex-direction: column; gap: 3px; }
+.control > span { font-size: 12px; color: var(--text-secondary); font-weight: 600; }
+select, input[type="search"] { font: inherit; padding: 5px 8px; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--surface-1); color: var(--text-primary); max-width: 100%; }
+input[type="search"] { width: 260px; }
+.seg { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--surface-1); }
+.seg button { border: 0; background: transparent; color: var(--text-secondary); padding: 5px 11px; font: inherit; cursor: pointer;
+  border-right: 1px solid var(--border); }
+.seg button:last-child { border-right: 0; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+.split { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 14px; align-items: start; }
+@media (max-width: 960px) { .split { grid-template-columns: 1fr; } }
+.panel { position: sticky; top: 64px; max-height: calc(100vh - 80px); overflow: auto; }
+svg.plot { display: block; width: 100%; height: auto; touch-action: none; }
+.pt { stroke: var(--surface-1); stroke-width: .8; }
+.pt.dim { opacity: .35; }
+.lbl { font-size: 12px; fill: var(--text-primary); paint-order: stroke; stroke: var(--surface-1); stroke-width: 3px; pointer-events: none; font-weight: 600; }
+.axis text { font-size: 11px; fill: var(--text-muted); }
+.axis line, .axis path { stroke: var(--grid); }
+.tip { position: fixed; pointer-events: none; z-index: 20; max-width: 380px; background: var(--surface-1);
+  border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 6px 24px rgba(0,0,0,.16); padding: 8px 11px;
+  font-size: 12.5px; display: none; }
+.tip b { color: var(--text-primary); }
+.tip .k { color: var(--text-muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; margin: 8px 0; max-height: 132px; overflow: auto; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 9px 2px 6px; border-radius: 999px;
+  border: 1px solid var(--border); background: transparent; color: var(--text-primary); font: inherit; font-size: 12px; cursor: pointer; }
+.chip[aria-pressed="true"] { border-color: var(--text-primary); box-shadow: inset 0 0 0 1px var(--text-primary); }
+.chip .sw { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.chip .n { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.grad { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); margin: 8px 0; }
+.grad .bar { width: 220px; height: 10px; border-radius: 5px; }
+table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+th { color: var(--text-secondary); font-weight: 600; position: sticky; top: 0; background: var(--surface-1); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+td.cell { text-align: center; font-variant-numeric: tabular-nums; min-width: 34px; }
+.scroll { overflow: auto; max-height: 520px; border: 1px solid var(--border); border-radius: 8px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-bottom: 14px; }
+.tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+.tile .v { font-size: 24px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.tile .d { color: var(--text-secondary); font-size: 12.5px; }
+.bars { display: grid; grid-template-columns: 170px 1fr 44px; gap: 2px 8px; align-items: center; font-size: 12px; }
+.bars .track { position: relative; height: 10px; }
+.bars .track .zero { position: absolute; left: 50%; top: -2px; bottom: -2px; width: 1px; background: var(--text-muted); }
+.bars .track .b { position: absolute; top: 1px; height: 8px; border-radius: 2px; }
+.qlist { list-style: none; margin: 0; padding: 0; font-size: 12.5px; }
+.qlist li { padding: 4px 0; border-bottom: 1px solid var(--grid); cursor: pointer; }
+.qlist li:hover { background: var(--grid); }
+.qlist .r { color: var(--text-muted); font-variant-numeric: tabular-nums; margin-right: 6px; }
+.thumbgrid { display: flex; flex-wrap: wrap; gap: 6px; }
+.thumbgrid figure { margin: 0; width: 96px; cursor: pointer; }
+.thumbgrid img { width: 96px; height: 96px; object-fit: cover; border-radius: 6px; border: 3px solid var(--border); display: block; }
+.thumbgrid figcaption { font-size: 10.5px; color: var(--text-secondary); line-height: 1.2; margin-top: 2px; }
+canvas.hm { display: block; width: 100%; image-rendering: pixelated; cursor: crosshair; }
+.hmwrap { display: grid; gap: 2px; }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; font-size: 12.5px; margin: 6px 0 10px; }
+.kv dt { color: var(--text-muted); } .kv dd { margin: 0; }
+.big-thumb { width: 100%; max-width: 320px; border-radius: 8px; display: block; margin-bottom: 8px; }
+.note { border-left: 3px solid var(--accent); padding: 6px 10px; background: var(--surface-0); border-radius: 0 8px 8px 0; margin: 8px 0; font-size: 13px; }
+a.link, button.link { color: var(--accent); background: none; border: 0; padding: 0; font: inherit; cursor: pointer; text-decoration: underline; }
+</style>
+</head>
+<body>
+<main>
+<h1>Answer structure explorer</h1>
+<p class="sub" id="subtitle"></p>
+<nav class="tabs" role="tablist" id="tabs"></nav>
+
+<section id="t-overview" data-title="Overview"></section>
+
+<section id="t-qmap" data-title="Question map" hidden>
+  <div class="card">
+    <h2>Questions placed by how alike they were answered</h2>
+    <p class="muted" id="qmap-help"></p>
+    <div class="controls">
+      <div class="control"><span>Layout</span><div class="seg" id="qmap-layout"></div></div>
+      <label class="control"><span>Colour by</span><select id="qmap-color"></select></label>
+      <label class="control" id="qmap-sub-wrap"><span>Subtype</span><select id="qmap-sub"></select></label>
+      <label class="control"><span>Clusters (k)</span><select id="qmap-k"></select></label>
+      <label class="control"><span>Search questions</span><input type="search" id="qmap-search" placeholder="e.g. vessels, sun damage"></label>
+    </div>
+  </div>
+  <div class="split">
+    <div class="card"><svg class="plot" id="qmap-svg" viewBox="0 0 900 640" role="img" aria-label="Map of questions"></svg>
+      <div id="qmap-legend"></div></div>
+    <div class="card panel" id="qmap-panel"><p class="muted">Click a question to see its answers by subtype, the questions answered most like it, and the questions worded most like it.</p></div>
+  </div>
+</section>
+
+<section id="t-corr" data-title="Correlations" hidden>
+  <div class="card">
+    <h2>Correlation between every pair of questions</h2>
+    <p class="muted">Each cell is the correlation, across the 1,000 images, between the scores of two questions. Red: answered alike; blue: answered oppositely. The dendrogram above is the clustering of the questions by these correlations; the strips mark the clusters at the chosen k and the topic you select.</p>
+    <div class="controls">
+      <div class="control"><span>Order</span><div class="seg" id="corr-order"></div></div>
+      <label class="control"><span>Clusters (k)</span><select id="corr-k"></select></label>
+      <label class="control"><span>Mark topic</span><select id="corr-topic"></select></label>
+    </div>
+    <div class="hmwrap" style="max-width:880px">
+      <svg id="corr-dendro" viewBox="0 0 1000 110" preserveAspectRatio="none" style="width:100%;height:110px;display:block"></svg>
+      <canvas class="hm" id="corr-strip" height="2" style="height:14px"></canvas>
+      <canvas class="hm" id="corr-strip2" height="1" style="height:8px"></canvas>
+      <canvas class="hm" id="corr-canvas"></canvas>
+    </div>
+    <div class="grad" id="corr-grad"></div>
+  </div>
+</section>
+
+<section id="t-topics" data-title="Topics" hidden>
+  <div class="card" id="topics-head"></div>
+  <div class="card"><h2>Each topic against random groups of the same size</h2>
+    <p class="muted">Dot: mean correlation between the questions of the topic, blue if it is above the 95th percentile of random groups, grey if not. Grey bar: the same for random sets of questions of the same size (5th to 95th percentile of 1,000 draws). Dashed line: mean correlation between questions of different topics. Click a topic to show it on the question map.</p>
+    <svg class="plot" id="topics-svg" role="img" aria-label="Topic cohesion"></svg></div>
+  <div class="card"><h2>Answered alike because worded alike?</h2>
+    <p class="muted" id="tva-help"></p><div id="tva-legend"></div>
+    <svg class="plot" id="tva-svg" viewBox="0 0 760 330" role="img" aria-label="Answer correlation against wording similarity"></svg></div>
+  <div class="card"><h2>How far the groupings agree</h2>
+    <p class="muted">Adjusted mutual information between two ways of grouping the questions: 0 is no more agreement than chance, 1 is the same grouping. Dotted lines: the 95th percentile with one grouping shuffled.</p>
+    <div id="agr-legend"></div><svg class="plot" id="agr-svg" viewBox="0 0 760 330" role="img" aria-label="Agreement between groupings"></svg>
+    <div class="controls"><label class="control"><span>k for the table</span><select id="agr-k"></select></label></div>
+    <div id="agr-table"></div></div>
+</section>
+
+<section id="t-dims" data-title="Dimensions" hidden>
+  <div class="card" id="dims-head"></div>
+  <div class="card"><h2>Variance of each principal component</h2>
+    <div id="scree-legend"></div><svg class="plot" id="scree-svg" viewBox="0 0 760 330" role="img" aria-label="Scree plot"></svg></div>
+  <div class="card"><h2>What the first ten components follow</h2>
+    <p class="muted">Share of each component's variance explained by each variable (eta squared; r squared for age), shaded from 0 to 0.5. AUROC: the component alone as a score for malignant against benign (0.5 = none; below 0.5 points towards benign). Click a row for the questions that load most on it.</p>
+    <div id="pc-table"></div></div>
+</section>
+
+<section id="t-imap" data-title="Image map" hidden>
+  <div class="card">
+    <h2>Images placed by their answer profiles</h2>
+    <p class="muted" id="imap-help"></p>
+    <div class="controls">
+      <div class="control"><span>Layout</span><div class="seg" id="imap-layout"></div></div>
+      <label class="control"><span>Colour by</span><select id="imap-color"></select></label>
+      <label class="control" id="imap-k-wrap"><span>Image clusters (k)</span><select id="imap-k"></select></label>
+      <label class="control" id="imap-q-wrap"><span>Question</span><input type="search" id="imap-q" list="qdatalist" placeholder="type to pick a question"></label>
+    </div>
+    <datalist id="qdatalist"></datalist>
+  </div>
+  <div class="split">
+    <div class="card"><svg class="plot" id="imap-svg" viewBox="0 0 900 640" role="img" aria-label="Map of images"></svg>
+      <div id="imap-legend"></div></div>
+    <div class="card panel" id="imap-panel"><p class="muted">Click an image for its thumbnail, labels and metadata, its most unusual answers, and the images answered most like it.</p></div>
+  </div>
+</section>
+
+<section id="t-iclust" data-title="Image clusters" hidden>
+  <div class="card"><h2>What the image clusters line up with</h2>
+    <p class="muted">Adjusted mutual information between the image clusters and each variable (0 = chance, 1 = identical), for every number of clusters. "Within benign" and "within malignant" repeat it on one group only, where the diagnosis group cannot carry the association.</p>
+    <div id="ica-table"></div></div>
+  <div class="card"><h2>Inside the clusters</h2>
+    <div class="controls">
+      <label class="control"><span>Image clusters (k)</span><select id="ic-k"></select></label>
+      <label class="control"><span>Count by</span><select id="ic-var"></select></label>
+      <label class="control"><span>Question clusters (k)</span><select id="ic-kq"></select></label>
+    </div>
+    <h3>Images per cluster</h3><p class="muted">Shading: share of the cluster's images (row). Click a row to see its images.</p>
+    <div id="ic-cont" class="scroll"></div>
+    <h3>Mean answer score of each question cluster, in each image cluster</h3><p class="muted">Red: questions of that group scored higher than average in these images; blue: lower (standardised scores). Hover a column for the group's most typical questions.</p>
+    <div id="ic-qc" class="scroll"></div>
+    <h3 id="ic-gallery-title"></h3><div id="ic-gallery" class="thumbgrid"></div>
+  </div>
+</section>
+
+<section id="t-heat" data-title="Heatmap" hidden>
+  <div class="card"><h2>Every answer: questions by images</h2>
+    <p class="muted">Rows are questions, columns are images. Red: the image scored higher than the average image on that question; blue: lower. Top strips: diagnosis group (blue benign, aqua indeterminate, orange malignant), then the subtype you mark, then clinical (non-dermoscopic) images in dark ink. Left strip: question clusters. Click a column to open that image.</p>
+    <div class="controls">
+      <div class="control"><span>Question order</span><div class="seg" id="heat-qorder"></div></div>
+      <div class="control"><span>Image order</span><div class="seg" id="heat-iorder"></div></div>
+      <label class="control"><span>Mark subtype</span><select id="heat-sub"></select></label>
+      <label class="control"><span>Question clusters (k)</span><select id="heat-k"></select></label>
+    </div>
+    <div style="display:grid;grid-template-columns:14px 1fr;gap:2px">
+      <div></div><canvas class="hm" id="heat-top" height="3" style="height:24px"></canvas>
+      <canvas class="hm" id="heat-left" width="1" style="width:14px"></canvas><canvas class="hm" id="heat-canvas"></canvas>
+    </div>
+    <div class="grad" id="heat-grad"></div>
+  </div>
+</section>
+
+<section id="t-qgroups" data-title="Question groups" hidden>
+  <div class="card"><h2>Which groups of questions separate the diagnoses</h2>
+    <p class="muted">Each row is a cluster of questions answered alike. Cells: the cluster's mean score in the images of each subtype, in standard deviations from the average image (red above, blue below). AUROC: the cluster's mean score alone for malignant against benign (above 0.5 points towards malignant). Click a row to list its questions.</p>
+    <div class="controls"><label class="control"><span>Question clusters (k)</span><select id="qg-k"></select></label></div>
+    <div id="qg-table" class="scroll" style="max-height:none"></div>
+    <div id="qg-members"></div></div>
+</section>
+
+<section id="t-methods" data-title="Methods" hidden><div class="card" id="methods"></div></section>
+
+<div class="tip" id="tip" role="status"></div>
+<p id="errors" style="color:#d03b3b;font-weight:600"></p>
+<script>
+window.onerror = (msg, src, line) => { const e = document.getElementById("errors"); if (e) e.textContent += `Error: ${msg} (line ${line}). `; };
+</script>
+<script>
+const D = __DATA__;
+// ------------------------------------------------------------------ data
+function dec(s, T) { const b = atob(s), a = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return new T(a.buffer); }
+const NQ = D.meta.n_questions, NI = D.meta.n_images;
+const R = dec(D.R, Int8Array), Z = dec(D.Z, Int8Array), P = dec(D.P, Uint8Array);
+const r_ = (i, j) => R[i * NQ + j] / 127, z_ = (im, q) => Z[im * NQ + q] / 32, p_ = (im, q) => P[im * NQ + q] / 255;
+const SUB = D.subtypes, GRP = D.groups, TOP = D.topics;
+const fmt = (v, d = 2) => v === null || v === undefined || Number.isNaN(v) ? "n/a" : (+v).toFixed(d);
+const pct = v => (100 * v).toFixed(0) + "%";
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const $ = id => document.getElementById(id);
+const el = (tag, attrs = {}, html) => { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html !== undefined) e.innerHTML = html; return e; };
+const svgEl = (tag, attrs = {}) => { const e = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
+
+// ------------------------------------------------------------------ colour
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const hex2rgb = h => { h = h.replace("#", ""); return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)]; };
+const rgb = a => `rgb(${a.map(Math.round).join(",")})`;
+const mix = (a, b, t) => a.map((v, i) => v + (b[i] - v) * t);
+let PAL = {};
+function readPalette() {
+  PAL = {c: [css("--c1"), css("--c2"), css("--c3")], muted: css("--mark-muted"), ink: css("--text-primary"), ink2: css("--text-secondary"),
+    neg: hex2rgb(css("--neg")), pos: hex2rgb(css("--pos")), mid: hex2rgb(css("--mid")), surf: hex2rgb(css("--surface-1")),
+    seq: css("--seq").split(",").map(s => hex2rgb(s.trim())), grid: css("--grid"), border: css("--border")};
+  PAL.grp = [PAL.c[0], PAL.c[2], PAL.c[1]];     // benign blue, indeterminate aqua, malignant orange
+}
+const onFill = c => (0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) > 150 ? "#0b0b0b" : "#ffffff";
+const seqCell = t => { const c = seqRGB(t); return `background:${rgb(c)};color:${onFill(c)}`; };
+const divCell = t => { const c = divRGB(t); return `background:${rgb(c)};color:${onFill(c)}`; };
+function divRGB(t) { t = Math.max(-1, Math.min(1, t)); return t < 0 ? mix(PAL.mid, PAL.neg, -t) : mix(PAL.mid, PAL.pos, t); }
+function seqRGB(t) { t = Math.max(0, Math.min(1, t)) * (PAL.seq.length - 1); const i = Math.min(Math.floor(t), PAL.seq.length - 2); return mix(PAL.seq[i], PAL.seq[i + 1], t - i); }
+function gradHTML(kind, lo, hi, label) {
+  const stops = kind === "div" ? [-1, -0.5, 0, 0.5, 1].map(t => rgb(divRGB(t))) : [0, .25, .5, .75, 1].map(t => rgb(seqRGB(t)));
+  return `<span>${esc(lo)}</span><span class="bar" style="background:linear-gradient(90deg,${stops.join(",")})"></span><span>${esc(hi)}</span><span class="muted">${esc(label)}</span>`;
+}
+
+// ------------------------------------------------------------------ tooltip
+const tip = $("tip");
+function showTip(html, ev) { tip.innerHTML = html; tip.style.display = "block";
+  const w = tip.offsetWidth, h = tip.offsetHeight; let x = ev.clientX + 14, y = ev.clientY + 14;
+  if (x + w > innerWidth - 8) x = ev.clientX - w - 14; if (y + h > innerHeight - 8) y = ev.clientY - h - 14;
+  tip.style.left = x + "px"; tip.style.top = y + "px"; }
+function hideTip() { tip.style.display = "none"; }
+
+// ------------------------------------------------------------------ tabs
+const tabs = [...document.querySelectorAll("main > section")];
+const drawn = {};
+function showTab(id) {
+  tabs.forEach(s => s.hidden = s.id !== id);
+  document.querySelectorAll("#tabs button[data-t]").forEach(b => b.setAttribute("aria-selected", b.dataset.t === id));
+  if (!drawn[id] && RENDER[id]) { RENDER[id](); drawn[id] = true; }
+  try { history.replaceState(null, "", "#" + id); } catch (e) {}
+}
+function initTabs() {
+  const nav = $("tabs");
+  tabs.forEach(s => { const b = el("button", {role: "tab", "data-t": s.id}, s.dataset.title); b.onclick = () => showTab(s.id); nav.appendChild(b); });
+  const t = el("button", {class: "theme", title: "Switch light / dark"}, "◐ Theme");
+  t.onclick = () => { const cur = document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.dataset.theme = cur === "dark" ? "light" : "dark"; retheme(); };
+  nav.appendChild(t);
+}
+function retheme() { readPalette(); Object.keys(drawn).forEach(k => drawn[k] = false); const cur = tabs.find(s => !s.hidden); if (cur) { RENDER[cur.id] && RENDER[cur.id](); drawn[cur.id] = true; } }
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", retheme);
+
+// ------------------------------------------------------------------ small widgets
+function seg(container, options, value, onChange) {
+  container.innerHTML = "";
+  options.forEach(([v, label]) => { const b = el("button", {"aria-pressed": v === value}, label);
+    b.onclick = () => { container.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); onChange(v); }; container.appendChild(b); });
+}
+function fillSelect(sel, options, value) { sel.innerHTML = ""; options.forEach(([v, l]) => { const o = el("option", {value: v}, esc(l)); if (String(v) === String(value)) o.selected = true; sel.appendChild(o); }); }
+const kOptions = ks => ks.map(k => [k, String(k)]);
+
+// ------------------------------------------------------------------ scatter
+function makeScatter(svg, n, onClick, tipHTML) {
+  const W = 900, H = 640, pad = 22;
+  svg.innerHTML = "";
+  const gLab = svgEl("g"), gPts = svgEl("g"), ring = svgEl("circle", {r: 9, fill: "none", "stroke-width": 2, visibility: "hidden"});
+  svg.append(gPts, gLab, ring);
+  const pts = [];
+  for (let i = 0; i < n; i++) { const c = svgEl("circle", {class: "pt", r: 4}); c.dataset.i = i; gPts.appendChild(c); pts.push(c); }
+  let XY = [], sel = -1;
+  const S = {
+    pts,
+    setXY(xy) { XY = xy.map(([x, y]) => [pad + x * (W - 2 * pad), pad + (1 - y) * (H - 2 * pad)]);
+      pts.forEach((c, i) => { c.setAttribute("cx", XY[i][0]); c.setAttribute("cy", XY[i][1]); }); S.mark(sel); },
+    style(fill, radius, front) {
+      pts.forEach((c, i) => { c.setAttribute("fill", fill(i)); c.setAttribute("r", radius ? radius(i) : 4); });
+      if (front) pts.filter((c, i) => front(i)).forEach(c => gPts.appendChild(c));
+    },
+    labels(list) { gLab.innerHTML = ""; list.forEach(([x, y, t]) => { const tx = svgEl("text", {class: "lbl", x: pad + x * (W - 2 * pad), y: pad + (1 - y) * (H - 2 * pad), "text-anchor": "middle"}); tx.textContent = t; gLab.appendChild(tx); }); },
+    mark(i) { sel = i; if (i < 0 || !XY[i]) { ring.setAttribute("visibility", "hidden"); return; }
+      ring.setAttribute("cx", XY[i][0]); ring.setAttribute("cy", XY[i][1]); ring.setAttribute("stroke", PAL.ink); ring.setAttribute("visibility", "visible"); },
+  };
+  function nearest(ev) { const pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY;
+    const p = pt.matrixTransform(svg.getScreenCTM().inverse()); let best = -1, bd = 144;
+    for (let i = 0; i < XY.length; i++) { const dx = XY[i][0] - p.x, dy = XY[i][1] - p.y, d = dx * dx + dy * dy; if (d < bd) { bd = d; best = i; } } return best; }
+  svg.onmousemove = ev => { const i = nearest(ev); if (i < 0) { hideTip(); svg.style.cursor = "default"; return; } svg.style.cursor = "pointer"; showTip(tipHTML(i), ev); };
+  svg.onmouseleave = hideTip;
+  svg.onclick = ev => { const i = nearest(ev); if (i >= 0) { S.mark(i); onClick(i); } };
+  return S;
+}
+function centroids(labels, xy) { const acc = {}; labels.forEach((l, i) => { (acc[l] = acc[l] || [0, 0, 0]); acc[l][0] += xy[i][0]; acc[l][1] += xy[i][1]; acc[l][2]++; });
+  return Object.entries(acc).map(([l, [x, y, n]]) => [x / n, y / n, +l + 1]); }
+
+// legend for categorical colouring: up to 3 categories get colours, more get "highlight one"
+function catLegend(container, cats, counts, colored, active, onPick) {
+  container.innerHTML = "";
+  const box = el("div", {class: "legend"});
+  if (!colored) box.appendChild(el("span", {class: "muted"}, "Click to highlight:&nbsp;"));
+  cats.forEach((c, k) => { if (!counts[k]) return;
+    const b = el("button", {class: "chip", "aria-pressed": active === k}, `${colored ? `<span class="sw" style="background:${PAL.c[k]}"></span>` : ""}${esc(c)} <span class="n">${counts[k]}</span>`);
+    b.onclick = () => onPick(active === k ? -1 : k); box.appendChild(b); });
+  container.appendChild(box);
+}
+
+// ------------------------------------------------------------------ overview
+function renderOverview() {
+  const o = D.cohesion.overall, pc = D.pca, ica = D.ica.filter(r => r.k === D.meta.ki), A = v => ica.find(r => r.variable === v) || {};
+  const m = D.mantel[D.meta.text_models[0]];
+  const s = $("t-overview");
+  s.innerHTML = `
+  <div class="tiles">
+    <div class="tile"><div class="v">${NQ} × ${NI}</div><div class="d">questions × images, ${esc(D.meta.source)} (control question left out)</div></div>
+    <div class="tile"><div class="v">${fmt(o.within_mean_r)} vs ${fmt(o.between_mean_r)}</div><div class="d">mean correlation of two questions in the same topic vs in different topics (random groups: ${fmt(o.null_mean)})</div></div>
+    <div class="tile"><div class="v">${pc.n_parallel}</div><div class="d">principal components carry more variance than shuffled answers; ${pc.n_for["0.9"]} are needed for 90% of the variance</div></div>
+    <div class="tile"><div class="v">${fmt(A("subtype").ami)} / ${fmt(A("institution").ami)} / ${fmt(A("image type").ami)}</div><div class="d">agreement of the ${D.meta.ki} image clusters with subtype / institution / image type (adjusted mutual information)</div></div>
+    <div class="tile"><div class="v">${fmt(m.spearman)}</div><div class="d">rank correlation between how alike two questions are answered and how alike they are worded</div></div>
+  </div>
+  <div class="card"><h2>What is here</h2>
+  <p>Claude Sonnet answered ${NQ} yes/no questions about each of ${NI} ISIC images (topic mode, one prompt per topic). This page looks at the answers without the diagnoses first, then asks what the structure lines up with. Every association is shown against a chance level from shuffled data.</p>
+  <ul>
+    <li><b>Question map</b>: each question placed by how alike it was answered to the others (or by its wording). Colour by topic, cluster, how well it separates malignant from benign, or its average answer in one subtype.</li>
+    <li><b>Correlations</b>: the full question-by-question correlation matrix, ordered by the clustering or by topic.</li>
+    <li><b>Topics</b>: are questions of one topic answered more alike than chance, and is that only because they are worded alike? (Plan item D.)</li>
+    <li><b>Dimensions</b>: how many independent directions the ${NQ} questions amount to, and what the main ones follow (diagnosis, image type, institution).</li>
+    <li><b>Image map</b> and <b>Image clusters</b>: images placed and grouped by their answers, with thumbnails, labels and ISIC metadata.</li>
+    <li><b>Heatmap</b>: every answer, questions by images, both clustered.</li>
+    <li><b>Question groups</b>: which clusters of questions separate the ten subtypes.</li>
+  </ul>
+  <div class="note">The scores are standardised per question before anything is compared, so a question Sonnet almost always answers "no" still counts by how its doubt varies between images. Correlations are between questions across images; nothing here uses the diagnoses until the final colouring or comparison.</div>
+  <p class="muted">Run ${esc(D.meta.run_hash)}, generated ${esc(D.meta.generated)}.${D.meta.dropped.length ? " Questions without variation, left out: " + esc(D.meta.dropped.join(", ")) + "." : ""}</p></div>`;
+}
+
+// ------------------------------------------------------------------ question map
+const Q = {layout: "answers", color: "auc", k: D.meta.kq, hl: -1, sub: 0, search: "", sel: -1};
+let qScatter;
+const qColorOptions = [["acl", "Answer cluster"], ["topic", "Topic"], ["tcl", "Wording cluster (" + D.meta.text_models[0] + ")"], ["kind", "Kind (clinical / artefact)"],
+  ["scope", "Scope"], ["grounding", "Grounding"], ["auc", "AUROC alone (malignant vs benign)"], ["ridge", "Ridge weight (benign vs malignant)"],
+  ["yes", "Share of images answered yes"], ["prof", "Mean score in one subtype"]];
+function qCats() {
+  const q = D.q, k = String(Q.k);
+  switch (Q.color) {
+    case "acl": return {lab: q.cl[k], names: [...Array(Q.k)].map((_, c) => "cluster " + (c + 1))};
+    case "tcl": return {lab: q.tcl[D.meta.text_models[0]][k], names: [...Array(Q.k)].map((_, c) => "wording " + (c + 1))};
+    case "topic": return {lab: q.topic, names: TOP};
+    case "kind": case "scope": case "grounding": { const names = [...new Set(q[Q.color])]; return {lab: q[Q.color].map(v => names.indexOf(v)), names}; }
+  }
+  return null;
+}
+function qValue(i) {
+  if (Q.color === "auc") return D.q.auc[i] === null ? null : (D.q.auc[i] - 0.5) / 0.25;
+  if (Q.color === "ridge") return D.q.ridge[i] === null ? null : D.q.ridge[i] / 0.15;
+  if (Q.color === "yes") return D.q.yes[i];
+  if (Q.color === "prof") return D.q.prof[i][Q.sub] / 1.0;
+}
+function renderQmap() {
+  readPalette();
+  $("qmap-help").textContent = "Each dot is a question. Nearby dots were answered alike across the images (Layout: Answers), or are worded alike (Layout: Wording; text embedding models). Numbers mark the answer clusters (or, in the wording layouts, the wording clusters) at the chosen k. UMAP layout: distances are only meaningful locally; the axes have no units.";
+  seg($("qmap-layout"), [["answers", "Answers"], ...D.meta.text_models.map(m => [m, "Wording: " + m])], Q.layout, v => { Q.layout = v; qScatter.setXY(D.q.xy[v]); qStyle(); });
+  fillSelect($("qmap-color"), qColorOptions, Q.color);
+  $("qmap-color").onchange = e => { Q.color = e.target.value; Q.hl = -1; qStyle(); };
+  fillSelect($("qmap-sub"), SUB.map((s, i) => [i, s]), Q.sub);
+  $("qmap-sub").onchange = e => { Q.sub = +e.target.value; qStyle(); };
+  fillSelect($("qmap-k"), kOptions(D.meta.qks), Q.k);
+  $("qmap-k").onchange = e => { Q.k = +e.target.value; Q.hl = -1; qStyle(); if (Q.sel >= 0) qPanel(Q.sel); };
+  $("qmap-search").oninput = e => { Q.search = e.target.value.trim().toLowerCase(); qStyle(); };
+  qScatter = makeScatter($("qmap-svg"), NQ, i => { Q.sel = i; qPanel(i); }, i => {
+    const c = D.q.cl[String(Q.k)][i] + 1;
+    return `<b>${esc(D.q.text[i])}</b><br><span class="k">${esc(D.q.id[i])} · ${esc(TOP[D.q.topic[i]])}</span><br>answer cluster ${c} · yes in ${pct(D.q.yes[i])} of images · AUROC alone ${fmt(D.q.auc[i])}`; });
+  qScatter.setXY(D.q.xy[Q.layout]);
+  qStyle();
+  if (Q.sel >= 0) { qScatter.mark(Q.sel); qPanel(Q.sel); }
+}
+function qStyle() {
+  $("qmap-sub-wrap").style.display = Q.color === "prof" ? "" : "none";
+  const cats = qCats(), s = Q.search, hit = i => s && D.q.text[i].toLowerCase().includes(s);
+  const leg = $("qmap-legend");
+  if (cats) {
+    const counts = cats.names.map((_, c) => cats.lab.filter(l => l === c).length);
+    const colored = cats.names.length <= 3;
+    qScatter.style(i => s ? (hit(i) ? PAL.c[1] : PAL.muted) : colored ? PAL.c[cats.lab[i]] : (cats.lab[i] === Q.hl ? PAL.c[1] : PAL.muted),
+      i => (s && hit(i)) || (!colored && cats.lab[i] === Q.hl) ? 6 : 4, i => (s && hit(i)) || cats.lab[i] === Q.hl);
+    catLegend(leg, cats.names, counts, colored, Q.hl, k => { Q.hl = k; qStyle(); });
+    qScatter.labels(s ? [] : Q.layout === "answers" ? centroids(D.q.cl[String(Q.k)], D.q.xy.answers) : centroids(D.q.tcl[Q.layout][String(Q.k)], D.q.xy[Q.layout]));
+  } else {
+    const div = Q.color !== "yes";
+    qScatter.style(i => { const v = qValue(i); if (s) return hit(i) ? PAL.c[1] : PAL.muted; return v === null ? PAL.muted : rgb(div ? divRGB(v) : seqRGB(v)); },
+      i => s && hit(i) ? 6 : 4, i => s ? hit(i) : Math.abs(qValue(i) || 0) > 0.6);
+    qScatter.labels(s ? [] : Q.layout === "answers" ? centroids(D.q.cl[String(Q.k)], D.q.xy.answers) : D.meta.text_models.includes(Q.layout) ? centroids(D.q.tcl[Q.layout][String(Q.k)], D.q.xy[Q.layout]) : []);
+    const g = {auc: ["0.25 (towards benign)", "0.75 (towards malignant)", "each question's score alone, 800 labelled images"],
+      ridge: ["−0.15 (benign)", "+0.15 (malignant)", "standardised ridge weight, mean over 25 fits; artefact questions not in the model"],
+      yes: ["0%", "100%", "share of images with P(yes) ≥ 0.5"],
+      prof: ["−1 sd", "+1 sd", "mean standardised score in " + SUB[Q.sub]]}[Q.color];
+    leg.innerHTML = `<div class="grad">${gradHTML(div ? "div" : "seq", g[0], g[1], g[2])}</div>`;
+  }
+  if (s) leg.insertAdjacentHTML("beforeend", `<p class="muted">${D.q.text.filter((t, i) => hit(i)).length} questions match “${esc(s)}”.</p>`);
+}
+function profBars(vals, names, scale = 1) {
+  return `<div class="bars">` + vals.map((v, i) => { const w = Math.min(Math.abs(v) / scale, 1) * 50;
+    return `<span>${esc(names[i])}</span><span class="track"><span class="zero"></span><span class="b" style="left:${v < 0 ? 50 - w : 50}%;width:${w}%;background:${rgb(v < 0 ? PAL.neg : PAL.pos)}"></span></span><span class="num">${fmt(v)}</span>`; }).join("") + `</div>`;
+}
+function qPanel(i) {
+  const q = D.q, corr = [...Array(NQ).keys()].filter(j => j !== i).map(j => [j, r_(i, j)]).sort((a, b) => b[1] - a[1]);
+  const top = corr.slice(0, 8), bot = corr.slice(-4).reverse();
+  const li = ([j, r]) => `<li data-q="${j}"><span class="r">${r >= 0 ? "+" : ""}${r.toFixed(2)}</span>${esc(q.text[j])}</li>`;
+  $("qmap-panel").innerHTML = `<h2>${esc(q.text[i])}</h2>
+    <dl class="kv"><dt>ID</dt><dd>${esc(q.id[i])} (${esc(q.kind[i])}, ${esc(q.scope[i])})</dd><dt>Topic</dt><dd>${esc(TOP[q.topic[i]])}</dd>
+    <dt>Answer cluster</dt><dd>${q.cl[String(Q.k)][i] + 1} of ${Q.k}</dd><dt>Grounding</dt><dd>${esc(q.grounding[i])}; sources ${esc(q.sources[i] || "none")}</dd>
+    <dt>Answered yes</dt><dd>${pct(q.yes[i])} of images (mean P(yes) ${fmt(q.meanp[i])})</dd>
+    <dt>AUROC alone</dt><dd>${fmt(q.auc[i])}</dd><dt>Ridge weight</dt><dd>${fmt(q.ridge[i], 3)}</dd></dl>
+    <h3>Mean score by subtype (standard deviations)</h3>${profBars(q.prof[i], SUB, 1.2)}
+    <h3>Answered most alike (r)</h3><ul class="qlist">${top.map(li).join("")}</ul>
+    <h3>Answered most oppositely</h3><ul class="qlist">${bot.map(li).join("")}</ul>
+    <h3>Worded most alike (${esc(D.meta.text_models[0])})</h3><ul class="qlist">${q.nn_text[i].map(j => li([j, r_(i, j)])).join("")}</ul>
+    <p class="muted">For worded-alike questions the number is still their answer correlation.</p>`;
+  $("qmap-panel").querySelectorAll("li[data-q]").forEach(l => l.onclick = () => openQuestion(+l.dataset.q));
+}
+function openQuestion(i) { Q.sel = i; showTab("t-qmap"); qScatter.mark(i); qPanel(i); }
+
+// ------------------------------------------------------------------ correlation matrix
+const C = {order: "tree", k: D.meta.kq, topic: -1};
+function qOrder(kind) {
+  const leaves = D.q.dendro.leaves;
+  if (kind === "tree") return leaves;
+  const pos = new Map(leaves.map((q, i) => [q, i]));
+  return [...Array(NQ).keys()].sort((a, b) => D.q.topic[a] - D.q.topic[b] || pos.get(a) - pos.get(b));
+}
+function renderCorr() {
+  readPalette();
+  seg($("corr-order"), [["tree", "Clustering"], ["topic", "Topic"]], C.order, v => { C.order = v; drawCorr(); });
+  fillSelect($("corr-k"), kOptions(D.meta.qks), C.k);
+  $("corr-k").onchange = e => { C.k = +e.target.value; drawCorr(); };
+  fillSelect($("corr-topic"), [[-1, "none"], ...TOP.map((t, i) => [i, t])], C.topic);
+  $("corr-topic").onchange = e => { C.topic = +e.target.value; drawCorr(); };
+  $("corr-grad").innerHTML = gradHTML("div", "−1", "+1", "correlation between two questions across the images");
+  drawCorr();
+}
+function drawCorr() {
+  const ord = qOrder(C.order), cv = $("corr-canvas"), n = ord.length;
+  cv.width = n; cv.height = n;
+  const ctx = cv.getContext("2d"), img = ctx.createImageData(n, n);
+  for (let a = 0; a < n; a++) for (let b = 0; b < n; b++) { const c = divRGB(r_(ord[a], ord[b])), o = 4 * (a * n + b); img.data[o] = c[0]; img.data[o + 1] = c[1]; img.data[o + 2] = c[2]; img.data[o + 3] = 255; }
+  ctx.putImageData(img, 0, 0);
+  // strips: clusters (alternating shades), selected topic
+  const cl = D.q.cl[String(C.k)], s1 = $("corr-strip"), s2 = $("corr-strip2");
+  [s1, s2].forEach(s => { s.width = n; });
+  const c1 = s1.getContext("2d"), c2 = s2.getContext("2d");
+  for (let a = 0; a < n; a++) { c1.fillStyle = cl[ord[a]] % 2 ? PAL.ink2 : PAL.muted; c1.fillRect(a, 0, 1, 2);
+    c2.fillStyle = D.q.topic[ord[a]] === C.topic ? PAL.c[1] : PAL.grid; c2.fillRect(a, 0, 1, 1); }
+  // dendrogram
+  const dg = $("corr-dendro"); dg.innerHTML = "";
+  if (C.order === "tree") { const ymax = Math.max(...D.q.dendro.y.flat()), W = 1000, H = 108;
+    D.q.dendro.x.forEach((xs, s) => { const ys = D.q.dendro.y[s]; const pts = xs.map((x, j) => `${(x + .5) / n * W},${H - ys[j] / ymax * (H - 4)}`).join(" ");
+      dg.appendChild(svgEl("polyline", {points: pts, fill: "none", stroke: PAL.ink2, "stroke-width": 1, "vector-effect": "non-scaling-stroke"})); }); }
+  cv.onmousemove = ev => { const rc = cv.getBoundingClientRect(), b = Math.floor((ev.clientX - rc.left) / rc.width * n), a = Math.floor((ev.clientY - rc.top) / rc.height * n);
+    if (a < 0 || b < 0 || a >= n || b >= n) return hideTip(); const i = ord[a], j = ord[b];
+    showTip(`r = <b>${r_(i, j).toFixed(2)}</b><br><b>${esc(D.q.text[i])}</b><br><span class="k">${esc(TOP[D.q.topic[i]])} · cluster ${cl[i] + 1}</span><br><b>${esc(D.q.text[j])}</b><br><span class="k">${esc(TOP[D.q.topic[j]])} · cluster ${cl[j] + 1}</span><br><span class="k">click to open the row question</span>`, ev); };
+  cv.onmouseleave = hideTip;
+  cv.onclick = ev => { const rc = cv.getBoundingClientRect(), a = Math.floor((ev.clientY - rc.top) / rc.height * n); if (a >= 0 && a < n) openQuestion(ord[a]); };
+}
+
+// ------------------------------------------------------------------ simple SVG charts
+function axes(svg, W, H, m, xs, ys, xl, yl, opts = {}) {
+  const g = svgEl("g", {class: "axis"}); svg.appendChild(g);
+  const X = v => m.l + (opts.xlog ? Math.log(v) - Math.log(xs[0]) : v - xs[0]) / (opts.xlog ? Math.log(xs[1]) - Math.log(xs[0]) : xs[1] - xs[0]) * (W - m.l - m.r);
+  const Y = v => H - m.b - (opts.ylog ? Math.log(v) - Math.log(ys[0]) : v - ys[0]) / (opts.ylog ? Math.log(ys[1]) - Math.log(ys[0]) : ys[1] - ys[0]) * (H - m.t - m.b);
+  (opts.yt || []).forEach(v => { g.appendChild(svgEl("line", {x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v)}));
+    const t = svgEl("text", {x: m.l - 6, y: Y(v) + 4, "text-anchor": "end"}); t.textContent = opts.yf ? opts.yf(v) : v; g.appendChild(t); });
+  (opts.xt || []).forEach(v => { const t = svgEl("text", {x: X(v), y: H - m.b + 16, "text-anchor": "middle"}); t.textContent = opts.xf ? opts.xf(v) : v; g.appendChild(t); });
+  const tx = svgEl("text", {x: (m.l + W - m.r) / 2, y: H - 4, "text-anchor": "middle"}); tx.textContent = xl; g.appendChild(tx);
+  const ty = svgEl("text", {x: 12, y: (m.t + H - m.b) / 2, "text-anchor": "middle", transform: `rotate(-90 12 ${(m.t + H - m.b) / 2})`}); ty.textContent = yl; g.appendChild(ty);
+  return {X, Y};
+}
+function line(svg, pts, color, dash, w = 2) { svg.appendChild(svgEl("polyline", {points: pts.map(p => p.join(",")).join(" "), fill: "none", stroke: color, "stroke-width": w, "stroke-dasharray": dash || "", "stroke-linejoin": "round"})); }
+function legendRow(items) { return `<div class="legend">` + items.map(([c, t, dash]) => `<span class="chip" style="cursor:default"><svg width="22" height="8"><line x1="1" x2="21" y1="4" y2="4" stroke="${c}" stroke-width="2" ${dash ? 'stroke-dasharray="3 3"' : ""}/></svg>${esc(t)}</span>`).join("") + `</div>`; }
+function hoverPoints(svg, list) { // list of [x, y, html]
+  const W = svg.viewBox.baseVal.width;
+  svg.onmousemove = ev => { const pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY; const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+    let best = null, bd = 400; list.forEach(l => { const d = (l[0] - p.x) ** 2 + (l[1] - p.y) ** 2; if (d < bd) { bd = d; best = l; } });
+    best ? showTip(best[2], ev) : hideTip(); };
+  svg.onmouseleave = hideTip;
+}
+
+// ------------------------------------------------------------------ topics
+function renderTopics() {
+  readPalette();
+  const o = D.cohesion.overall, ss = D.cohesion.shared_source, T = D.cohesion.topics.filter(t => t.within_mean_r !== null);
+  const above = T.filter(t => t.share_null_below >= 0.95).length;
+  $("topics-head").innerHTML = `<h2>Are questions of one topic answered alike?</h2>
+   <p>Two questions of the same topic correlate on average at <b>r = ${fmt(o.within_mean_r)}</b> across the images; two questions of different topics at <b>${fmt(o.between_mean_r)}</b>. Shuffling the topic labels (keeping the topic sizes, 1,000 times) gives a same-topic mean of ${fmt(o.null_mean)} at most ${fmt(o.null_max)}, so the topics are far more cohesive than chance. ${above} of ${T.length} topics are more cohesive than 95% of random groups of their size. Questions that cite a common paper (${ss.n_pairs} pairs) correlate at ${fmt(ss.mean_r)}, against ${fmt(ss.null_mean)} for random pairs.</p>
+   <div class="note">Each topic was asked in one prompt, so two explanations are open: the questions describe related features, or Sonnet keeps its answers consistent within one prompt. The chart "Answered alike because worded alike?" below is a first look; separating the two needs the same questions asked one per prompt on a subset of images (Plan item D).</div>`;
+  // dot plot
+  const S = [...T].sort((a, b) => a.within_mean_r - b.within_mean_r), W = 900, rowH = 17, m = {l: 360, r: 20, t: 10, b: 36}, H = m.t + m.b + rowH * S.length;
+  const svg = $("topics-svg"); svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.innerHTML = "";
+  const lo = Math.min(-0.1, ...S.map(t => t.null_05)), hi = 1;
+  const {X} = axes(svg, W, H, m, [lo, hi], [0, 1], "mean correlation between questions", "", {xt: [0, .2, .4, .6, .8, 1]});
+  svg.appendChild(svgEl("line", {x1: X(o.between_mean_r), x2: X(o.between_mean_r), y1: m.t, y2: H - m.b, stroke: PAL.ink2, "stroke-dasharray": "4 3"}));
+  const hov = [];
+  S.forEach((t, i) => { const y = m.t + rowH * i + rowH / 2;
+    svg.appendChild(svgEl("line", {x1: X(t.null_05), x2: X(t.null_95), y1: y, y2: y, stroke: PAL.muted, "stroke-width": 6, "stroke-linecap": "round"}));
+    const c = svgEl("circle", {cx: X(t.within_mean_r), cy: y, r: 5, fill: t.share_null_below >= .95 ? PAL.c[0] : PAL.ink2, stroke: rgb(PAL.surf), "stroke-width": 1.5}); svg.appendChild(c);
+    const tx = svgEl("text", {x: m.l - 8, y: y + 4, "text-anchor": "end", style: `font-size:11.5px;fill:${PAL.ink};cursor:pointer`}); tx.textContent = `${TOP[t.topic].slice(0, 52)} (${t.n_questions})`;
+    tx.onclick = () => { Q.color = "topic"; Q.hl = t.topic; showTab("t-qmap"); $("qmap-color").value = "topic"; qStyle(); }; svg.appendChild(tx);
+    hov.push([X(t.within_mean_r), y, `<b>${esc(TOP[t.topic])}</b><br>${t.n_questions} questions · mean r ${fmt(t.within_mean_r)}<br>random groups of ${t.n_questions}: ${fmt(t.null_05)} to ${fmt(t.null_95)} (mean ${fmt(t.null_mean)})<br>more cohesive than ${pct(t.share_null_below)} of random groups`]); });
+  hoverPoints(svg, hov);
+  // text vs answers
+  const tv = D.cohesion.tva, svg2 = $("tva-svg"); svg2.innerHTML = "";
+  $("tva-help").innerHTML = `Question pairs are binned by how alike they are worded (cosine similarity of ${esc(D.meta.text_models[0])} text embeddings, 10 bins of equal size). Lines: mean answer correlation of the pairs in each bin, for pairs from the same topic and from different topics; bars: 95% intervals. If wording explained the topic effect, the two lines would meet.`;
+  const xs = [Math.min(...tv.map(t => t.text_sim_mid)) - .01, Math.max(...tv.map(t => t.text_sim_mid)) + .01], ymax = Math.max(...tv.map(t => t.mean_r + 2 * t.se)) + .05;
+  const ax = axes(svg2, 760, 330, {l: 56, r: 16, t: 14, b: 42}, xs, [Math.min(0, ...tv.map(t => t.mean_r)) - .02, ymax], "wording similarity (cosine, bin median)", "mean answer correlation",
+    {yt: [0, .2, .4, .6, .8].filter(v => v < ymax), xt: [...new Set(tv.map(t => +t.text_sim_mid.toFixed(2)))].filter((_, i) => i % 2 === 0)});
+  const hov2 = [];
+  [["same topic", PAL.c[0]], ["different topics", PAL.c[1]]].forEach(([name, col]) => { const g = tv.filter(t => t.pairs === name);
+    g.forEach(t => svg2.appendChild(svgEl("line", {x1: ax.X(t.text_sim_mid), x2: ax.X(t.text_sim_mid), y1: ax.Y(t.mean_r - 1.96 * t.se), y2: ax.Y(t.mean_r + 1.96 * t.se), stroke: col, "stroke-width": 1.5})));
+    line(svg2, g.map(t => [ax.X(t.text_sim_mid), ax.Y(t.mean_r)]), col);
+    g.forEach(t => { svg2.appendChild(svgEl("circle", {cx: ax.X(t.text_sim_mid), cy: ax.Y(t.mean_r), r: 4, fill: col, stroke: rgb(PAL.surf)})); hov2.push([ax.X(t.text_sim_mid), ax.Y(t.mean_r), `<b>${name}</b><br>wording similarity ≈ ${fmt(t.text_sim_mid)}<br>${t.n_pairs} pairs · mean r ${fmt(t.mean_r)} ± ${fmt(1.96 * t.se)}`]); }); });
+  hoverPoints(svg2, hov2);
+  $("tva-legend").innerHTML = legendRow([[PAL.c[0], "same topic"], [PAL.c[1], "different topics"]]);
+  // agreement
+  const A = D.agreement, tm = D.meta.text_models[0], svg3 = $("agr-svg"); svg3.innerHTML = "";
+  const series = [["answer clusters", "topic", PAL.c[0], "answer clusters vs topics"], ["answer clusters", `text clusters (${tm})`, PAL.c[1], "answer clusters vs wording clusters"], [`text clusters (${tm})`, "topic", PAL.c[2], "wording clusters vs topics"]];
+  const ks = D.meta.qks, amax = Math.max(.1, ...A.map(a => a.ami)) + .05;
+  const ax3 = axes(svg3, 760, 330, {l: 56, r: 16, t: 14, b: 42}, [ks[0], ks[ks.length - 1]], [0, amax], "number of clusters (k)", "adjusted mutual information", {yt: [0, .1, .2, .3, .4, .5, .6].filter(v => v <= amax), xt: ks});
+  const hov3 = [];
+  series.forEach(([a, b, col, name]) => { const g = A.filter(x => x.a === a && x.b === b).sort((x, y) => x.k - y.k);
+    line(svg3, g.map(x => [ax3.X(x.k), ax3.Y(x.ami)]), col); line(svg3, g.map(x => [ax3.X(x.k), ax3.Y(x.ami_null95)]), col, "3 3", 1.2);
+    g.forEach(x => { svg3.appendChild(svgEl("circle", {cx: ax3.X(x.k), cy: ax3.Y(x.ami), r: 3.5, fill: col})); hov3.push([ax3.X(x.k), ax3.Y(x.ami), `<b>${name}</b>, k = ${x.k}<br>AMI ${fmt(x.ami)} (shuffled 95th: ${fmt(x.ami_null95)})`]); }); });
+  hoverPoints(svg3, hov3);
+  $("agr-legend").innerHTML = legendRow(series.map(s => [s[2], s[3]]));
+  fillSelect($("agr-k"), kOptions(ks), D.meta.kq);
+  const tab = () => { const k = +$("agr-k").value; $("agr-table").innerHTML = `<table><tr><th>grouping</th><th>compared with</th><th class="num">AMI</th><th class="num">shuffled 95th</th><th class="num">adjusted Rand</th></tr>` +
+    A.filter(x => x.k === k).map(x => `<tr><td>${esc(x.a)}</td><td>${esc(x.b)}</td><td class="num">${fmt(x.ami)}</td><td class="num">${fmt(x.ami_null95)}</td><td class="num">${fmt(x.ari)}</td></tr>`).join("") + `</table>`; };
+  $("agr-k").onchange = tab; tab();
+}
+
+// ------------------------------------------------------------------ dimensions
+function renderDims() {
+  readPalette();
+  const pc = D.pca;
+  $("dims-head").innerHTML = `<h2>How many independent dimensions do the ${NQ} questions amount to?</h2>
+    <p>Principal component analysis of the standardised scores (${NI} images × ${NQ} questions). <b>${pc.n_parallel}</b> components carry more variance than the 95th percentile of the same answers shuffled across images (parallel analysis: each question keeps its own distribution, but the links between questions are destroyed). ${pc.n_for["0.5"]}, ${pc.n_for["0.8"]}, ${pc.n_for["0.9"]} and ${pc.n_for["0.95"]} components are needed for 50, 80, 90 and 95% of the variance. The participation ratio, the number of equally strong dimensions that would give the same spread of variance, is ${fmt(pc.pr, 1)}.</p>
+    <div class="note">So the questions are far from independent: a few dozen directions carry what is above noise. The classifiers still use all ${NQ} questions, and the ridge weights are spread over the correlated ones.</div>`;
+  const svg = $("scree-svg"); svg.innerHTML = "";
+  const n = pc.ratio.length, ymin = Math.min(...pc.ratio, ...pc.null95) * .8, ymax = pc.ratio[0] * 1.3;
+  const ax = axes(svg, 760, 330, {l: 60, r: 16, t: 14, b: 42}, [1, n], [ymin, ymax], "principal component", "share of variance (log scale)",
+    {ylog: true, yt: [.001, .003, .01, .03, .1, .3].filter(v => v >= ymin && v <= ymax), yf: v => (100 * v) + "%", xt: [1, 5, 10, 20, 30, 40, 50].filter(v => v <= n)});
+  svg.appendChild(svgEl("line", {x1: ax.X(pc.n_parallel + .5), x2: ax.X(pc.n_parallel + .5), y1: 14, y2: 330 - 42, stroke: PAL.ink2, "stroke-dasharray": "2 3"}));
+  line(svg, pc.null95.map((v, i) => [ax.X(i + 1), ax.Y(v)]), PAL.ink2, "4 3", 1.5);
+  line(svg, pc.ratio.map((v, i) => [ax.X(i + 1), ax.Y(v)]), PAL.c[0]);
+  const hov = pc.ratio.map((v, i) => [ax.X(i + 1), ax.Y(v), `component ${i + 1}: ${(100 * v).toFixed(1)}% of the variance (shuffled 95th: ${(100 * pc.null95[i]).toFixed(2)}%)<br>cumulative ${(100 * pc.cum[i]).toFixed(0)}%`]);
+  pc.ratio.forEach((v, i) => svg.appendChild(svgEl("circle", {cx: ax.X(i + 1), cy: ax.Y(v), r: 3, fill: PAL.c[0]})));
+  hoverPoints(svg, hov);
+  $("scree-legend").innerHTML = legendRow([[PAL.c[0], "answers"], [PAL.ink2, "answers shuffled across images, 95th percentile", true]]);
+  const vars = [["eta2_subtype", "subtype"], ["eta2_group", "group"], ["eta2_image type", "image type"], ["eta2_institution", "institution"], ["eta2_body site", "body site"], ["eta2_sex", "sex"], ["r2_age", "age"]];
+  const cell = v => v === null ? `<td class="cell">n/a</td>` : `<td class="cell" style="${seqCell(Math.min(v / .5, 1))}">${fmt(v)}</td>`;
+  $("pc-table").innerHTML = `<table><tr><th>component</th><th class="num">variance</th><th class="num">AUROC</th>${vars.map(v => `<th class="cell">${v[1]}</th>`).join("")}</tr>` +
+    pc.assoc.map((r, i) => `<tr data-i="${i}" style="cursor:pointer"><td>PC ${r.component}</td><td class="num">${(100 * r.variance_share).toFixed(1)}%</td><td class="num">${fmt(r.auroc_malignant)}</td>${vars.map(v => cell(r[v[0]])).join("")}</tr>
+      <tr hidden id="pcrow${i}"><td colspan="${3 + vars.length}"><b>High scores on this component:</b> ${esc(r.top_positive).split(" | ").join(" · ")}<br><b>Low scores:</b> ${esc(r.top_negative).split(" | ").join(" · ")}</td></tr>`).join("") + `</table>`;
+  $("pc-table").querySelectorAll("tr[data-i]").forEach(tr => tr.onclick = () => { const x = $("pcrow" + tr.dataset.i); x.hidden = !x.hidden; });
+}
+
+// ------------------------------------------------------------------ image map
+const I = {layout: "umap", color: "grp", k: D.meta.ki, hl: -1, q: -1, sel: -1};
+let iScatter;
+const iColorOptions = [["grp", "Diagnosis group"], ["sub", "Subtype"], ["cl", "Image cluster"], ["imtype", "Image type"], ["inst", "Institution"], ["site", "Body site"],
+  ["sex", "Sex"], ["age", "Age"], ["ctrl", "Sonnet: 'Is this a malignant lesion?' P(yes)"], ["ridge", "Ridge on the answers: P(malignant), out of fold"], ["q", "Answer to one question"]];
+function iCats() {
+  const g = D.img;
+  if (I.color === "grp") return {lab: g.grp, names: GRP};
+  if (I.color === "sub") return {lab: g.sub, names: SUB};
+  if (I.color === "cl") return {lab: g.cl[String(I.k)], names: [...Array(I.k)].map((_, c) => "cluster " + (c + 1))};
+  if (["imtype", "inst", "site", "sex"].includes(I.color)) { const names = [...new Set(g[I.color].map(v => v || "unknown"))].sort(); return {lab: g[I.color].map(v => names.indexOf(v || "unknown")), names}; }
+  return null;
+}
+function iValue(i) {
+  const g = D.img;
+  if (I.color === "age") return g.age[i] === null ? null : g.age[i] / 85;
+  if (I.color === "ctrl") return g.ctrl[i];
+  if (I.color === "ridge") return g.ridge[i];
+  if (I.color === "q") return I.q < 0 ? null : z_(i, I.q) / 2.5;
+}
+function renderImap() {
+  readPalette();
+  $("imap-help").textContent = `Each dot is an image. Nearby images got similar answers to the ${NQ} questions (UMAP of the first ${D.meta.m_img} principal components of the standardised scores; or the first two components directly). The diagnoses play no part in the layout.`;
+  seg($("imap-layout"), [["umap", "UMAP"], ["pca", "PC 1 and 2"]], I.layout, v => { I.layout = v; iScatter.setXY(D.img.xy[v]); });
+  fillSelect($("imap-color"), iColorOptions, I.color);
+  $("imap-color").onchange = e => { I.color = e.target.value; I.hl = -1; iStyle(); };
+  fillSelect($("imap-k"), kOptions(D.meta.iks), I.k);
+  $("imap-k").onchange = e => { I.k = +e.target.value; I.hl = -1; iStyle(); };
+  const dl = $("qdatalist"); if (!dl.childElementCount) D.q.text.forEach((t, i) => dl.appendChild(el("option", {value: `${D.q.id[i]}: ${t}`})));
+  $("imap-q").onchange = e => { const id = e.target.value.split(":")[0].trim(); I.q = D.q.id.indexOf(id); I.color = "q"; $("imap-color").value = "q"; iStyle(); };
+  iScatter = makeScatter($("imap-svg"), NI, i => { I.sel = i; iPanel(i); }, i => {
+    const g = D.img; return `<img src="data:image/jpeg;base64,${g.thumb[i]}" style="width:120px;border-radius:6px;float:right;margin-left:8px">
+      <b>${esc(SUB[g.sub[i]])}</b><br><span class="k">${esc(g.id[i])}</span><br>${esc(g.imtype[i])}<br>${esc(g.inst[i])}<br>cluster ${g.cl[String(I.k)][i] + 1} · ridge P(malignant) ${fmt(g.ridge[i])}${I.color === "q" && I.q >= 0 ? `<br>answer: P(yes) ${fmt(p_(i, I.q))}, score ${fmt(z_(i, I.q))} sd` : ""}`; });
+  iScatter.setXY(D.img.xy[I.layout]);
+  iStyle();
+  if (I.sel >= 0) { iScatter.mark(I.sel); iPanel(I.sel); }
+}
+function iStyle() {
+  $("imap-k-wrap").style.display = I.color === "cl" ? "" : "none";
+  $("imap-q-wrap").style.display = I.color === "q" ? "" : "none";
+  const cats = iCats(), leg = $("imap-legend");
+  if (cats) {
+    const colored = cats.names.length <= 3, counts = cats.names.map((_, c) => cats.lab.filter(l => l === c).length);
+    const cc = I.color === "grp" ? PAL.grp : PAL.c;
+    iScatter.style(i => colored ? (I.hl < 0 || cats.lab[i] === I.hl ? cc[cats.lab[i]] : PAL.muted) : (cats.lab[i] === I.hl ? PAL.c[1] : PAL.muted),
+      i => cats.lab[i] === I.hl ? 5.5 : 4, i => cats.lab[i] === I.hl);
+    if (I.color === "grp") { leg.innerHTML = ""; const box = el("div", {class: "legend"});
+      GRP.forEach((g, k) => { const b = el("button", {class: "chip", "aria-pressed": I.hl === k}, `<span class="sw" style="background:${PAL.grp[k]}"></span>${g} <span class="n">${counts[k]}</span>`); b.onclick = () => { I.hl = I.hl === k ? -1 : k; iStyle(); }; box.appendChild(b); });
+      leg.appendChild(box); }
+    else catLegend(leg, cats.names, counts, colored, I.hl, k => { I.hl = k; iStyle(); });
+    iScatter.labels(I.color === "cl" ? centroids(cats.lab, D.img.xy[I.layout]) : []);
+  } else {
+    const div = I.color === "q";
+    iScatter.style(i => { const v = iValue(i); return v === null ? PAL.muted : rgb(div ? divRGB(v) : seqRGB(v)); }, null, i => iValue(i) !== null && (div ? Math.abs(iValue(i)) > .5 : iValue(i) > .6));
+    iScatter.labels([]);
+    const g = {age: ["0", "85 years", "approximate age (grey: unknown)"], ctrl: ["0", "1", "Sonnet's P(yes) to the control question"], ridge: ["0", "1", "ridge (Directional Score), out-of-fold P(malignant), mean of 5 repeats"],
+      q: ["−2.5 sd", "+2.5 sd", I.q >= 0 ? "score on: " + D.q.text[I.q] : "pick a question above"]}[I.color];
+    leg.innerHTML = `<div class="grad">${gradHTML(div ? "div" : "seq", g[0], g[1], g[2])}</div>`;
+  }
+}
+function iPanel(i) {
+  const g = D.img, k = String(I.k);
+  const z = [...Array(NQ).keys()].map(q => [q, z_(i, q)]).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1])).slice(0, 12);
+  // nearest images by answer profile (Euclidean on standardised scores)
+  const d = []; for (let j = 0; j < NI; j++) { if (j === i) continue; let s = 0; for (let q = 0; q < NQ; q++) { const t = Z[i * NQ + q] - Z[j * NQ + q]; s += t * t; } d.push([j, s]); }
+  d.sort((a, b) => a[1] - b[1]);
+  const fig = j => `<figure data-i="${j}"><img src="data:image/jpeg;base64,${g.thumb[j]}" style="border-color:${PAL.grp[g.grp[j]]}" alt=""><figcaption>${esc(SUB[g.sub[j]])}</figcaption></figure>`;
+  $("imap-panel").innerHTML = `<img class="big-thumb" src="data:image/jpeg;base64,${g.thumb[i]}" alt="${esc(g.id[i])}">
+    <h2>${esc(SUB[g.sub[i]])}</h2>
+    <dl class="kv"><dt>Image</dt><dd>${esc(g.id[i])}</dd><dt>ISIC diagnosis</dt><dd>${esc(g.dx3[i] || "n/a")} (${esc(g.confirm[i] || "confirmation not recorded")})</dd>
+    <dt>Image type</dt><dd>${esc(g.imtype[i])}</dd><dt>Institution</dt><dd>${esc(g.inst[i])}</dd><dt>Patient</dt><dd>${esc([g.sex[i], g.age[i] !== null ? g.age[i] + " y" : "", g.site[i]].filter(Boolean).join(", ") || "n/a")}${g.patient[i] ? " · " + esc(g.patient[i]) : ""}</dd>
+    <dt>Image cluster</dt><dd>${g.cl[k][i] + 1} of ${I.k}</dd><dt>Sonnet "malignant?"</dt><dd>P(yes) ${fmt(g.ctrl[i])}</dd><dt>Ridge P(malignant)</dt><dd>${fmt(g.ridge[i])} (out of fold)</dd></dl>
+    <h3>Most unusual answers for this image</h3><p class="muted">Standardised score (sd from the average image) and Sonnet's stated P(yes). Click to open the question.</p>
+    <ul class="qlist">${z.map(([q, v]) => `<li data-q="${q}"><span class="r">${v >= 0 ? "+" : ""}${v.toFixed(1)} sd · P(yes) ${p_(i, q).toFixed(2)}</span>${esc(D.q.text[q])}</li>`).join("")}</ul>
+    <h3>Answered most like this image</h3><div class="thumbgrid">${d.slice(0, 9).map(x => fig(x[0])).join("")}</div>`;
+  $("imap-panel").querySelectorAll("li[data-q]").forEach(l => l.onclick = () => openQuestion(+l.dataset.q));
+  $("imap-panel").querySelectorAll("figure[data-i]").forEach(f => f.onclick = () => openImage(+f.dataset.i));
+}
+function openImage(i) { I.sel = i; showTab("t-imap"); iScatter.mark(i); iPanel(i); }
+
+// ------------------------------------------------------------------ image clusters
+const IC = {k: D.meta.ki, v: "sub", kq: D.meta.kq, row: -1};
+function renderIclust() {
+  readPalette();
+  const ica = D.ica, vars = [...new Set(ica.map(r => r.variable))], ks = D.meta.iks;
+  const shade = v => v === null ? "" : seqCell(Math.min(v / .4, 1));
+  $("ica-table").innerHTML = `<div class="scroll"><table><tr><th>variable</th>${ks.map(k => `<th class="cell">k=${k}</th>`).join("")}<th class="cell">within benign (k=${D.meta.ki})</th><th class="cell">within malignant (k=${D.meta.ki})</th></tr>` +
+    vars.map(v => { const rr = ks.map(k => ica.find(r => r.k === k && r.variable === v)); const d = ica.find(r => r.k === D.meta.ki && r.variable === v);
+      return `<tr><td>${esc(v)}</td>${rr.map(r => `<td class="cell" style="${shade(r.ami)}" title="shuffled 95th: ${fmt(r.ami_null95)}">${fmt(r.ami)}</td>`).join("")}<td class="cell" style="${shade(d.ami_within_benign)}">${fmt(d.ami_within_benign)}</td><td class="cell" style="${shade(d.ami_within_malignant)}">${fmt(d.ami_within_malignant)}</td></tr>`; }).join("") + `</table></div>
+    <p class="muted">Shuffled 95th percentiles are at most ${fmt(Math.max(...ica.map(r => r.ami_null95)))}; hover a cell for its own.</p>`;
+  fillSelect($("ic-k"), kOptions(ks), IC.k); $("ic-k").onchange = e => { IC.k = +e.target.value; IC.row = -1; drawIC(); };
+  fillSelect($("ic-var"), [["sub", "subtype"], ["grp", "group"], ["imtype", "image type"], ["inst", "institution"], ["site", "body site"], ["sex", "sex"]], IC.v);
+  $("ic-var").onchange = e => { IC.v = e.target.value; drawIC(); };
+  fillSelect($("ic-kq"), kOptions(D.meta.qks), IC.kq); $("ic-kq").onchange = e => { IC.kq = +e.target.value; drawIC(); };
+  drawIC();
+}
+function drawIC() {
+  const g = D.img, lab = g.cl[String(IC.k)];
+  const vals = IC.v === "sub" ? g.sub.map(s => SUB[s]) : IC.v === "grp" ? g.grp.map(x => GRP[x]) : g[IC.v].map(v => v || "unknown");
+  const cols = IC.v === "sub" ? SUB : IC.v === "grp" ? GRP : [...new Set(vals)].sort();
+  const M = [...Array(IC.k)].map(() => cols.map(() => 0)); lab.forEach((c, i) => M[c][cols.indexOf(vals[i])]++);
+  $("ic-cont").innerHTML = `<table><tr><th>cluster</th><th class="num">images</th>${cols.map(c => `<th class="cell" style="writing-mode:vertical-rl;transform:rotate(180deg);max-height:150px">${esc(c)}</th>`).join("")}</tr>` +
+    M.map((row, c) => { const n = row.reduce((a, b) => a + b, 0); return `<tr data-c="${c}" style="cursor:pointer"><td><b>${c + 1}</b></td><td class="num">${n}</td>${row.map(v => { const t = n ? v / n : 0; return `<td class="cell" style="${seqCell(t)}">${v || ""}</td>`; }).join("")}</tr>`; }).join("") + `</table>`;
+  $("ic-cont").querySelectorAll("tr[data-c]").forEach(tr => tr.onclick = () => { IC.row = +tr.dataset.c; gallery(); });
+  // image cluster x question cluster mean z
+  const qc = D.q.cl[String(IC.kq)], S = [...Array(IC.k)].map(() => new Float64Array(IC.kq)), cnt = [...Array(IC.k)].map(() => new Float64Array(IC.kq));
+  for (let i = 0; i < NI; i++) for (let q = 0; q < NQ; q++) { S[lab[i]][qc[q]] += Z[i * NQ + q] / 32; cnt[lab[i]][qc[q]]++; }
+  const qs = D.qsum[String(IC.kq)];
+  $("ic-qc").innerHTML = `<table><tr><th>image cluster</th>${qs.map((d, c) => `<th class="cell" data-qc="${c}" title="${esc(d.central.map(j => D.q.text[j]).join(' | '))}">Q${c + 1}</th>`).join("")}</tr>` +
+    S.map((row, c) => `<tr><td><b>${c + 1}</b></td>${[...row].map((v, j) => { const m = v / Math.max(cnt[c][j], 1); return `<td class="cell" style="${divCell(m / .8)}" data-tip="${c}|${j}|${m.toFixed(2)}">${m.toFixed(1)}</td>`; }).join("")}</tr>`).join("") + `</table>`;
+  $("ic-qc").querySelectorAll("th[data-qc]").forEach(th => { th.onmousemove = ev => { const d = qs[+th.dataset.qc];
+    showTip(`<b>Question cluster ${+th.dataset.qc + 1}</b> (${d.n} questions)<br>${d.central.map(j => "· " + esc(D.q.text[j])).join("<br>")}`, ev); }; th.onmouseleave = hideTip; });
+  $("ic-qc").querySelectorAll("td[data-tip]").forEach(td => { td.onmousemove = ev => { const [c, j, m] = td.dataset.tip.split("|"); const d = qs[+j];
+    showTip(`Image cluster ${+c + 1} × question cluster ${+j + 1}: mean score ${m} sd<br>${d.central.map(q => "· " + esc(D.q.text[q])).join("<br>")}`, ev); }; td.onmouseleave = hideTip; });
+  gallery();
+}
+function gallery() {
+  const g = D.img, lab = g.cl[String(IC.k)];
+  if (IC.row < 0) { $("ic-gallery-title").textContent = ""; $("ic-gallery").innerHTML = ""; return; }
+  const mem = [...Array(NI).keys()].filter(i => lab[i] === IC.row);
+  $("ic-gallery-title").innerHTML = `Images in cluster ${IC.row + 1} (${mem.length}; border colour = group: <span style="color:${PAL.grp[0]}">benign</span>, <span style="color:${PAL.grp[1]}">indeterminate</span>, <span style="color:${PAL.grp[2]}">malignant</span>)`;
+  $("ic-gallery").innerHTML = mem.slice(0, 120).map(j => `<figure data-i="${j}"><img loading="lazy" src="data:image/jpeg;base64,${g.thumb[j]}" style="border-color:${PAL.grp[g.grp[j]]}" alt=""><figcaption>${esc(SUB[g.sub[j]])}<br>${esc(g.imtype[j])}</figcaption></figure>`).join("") + (mem.length > 120 ? `<p class="muted">First 120 of ${mem.length}.</p>` : "");
+  $("ic-gallery").querySelectorAll("figure").forEach(f => f.onclick = () => openImage(+f.dataset.i));
+}
+
+// ------------------------------------------------------------------ heatmap
+const H = {qo: "tree", io: "tree", sub: -1, k: D.meta.kq};
+function renderHeat() {
+  readPalette();
+  seg($("heat-qorder"), [["tree", "Clustering"], ["topic", "Topic"]], H.qo, v => { H.qo = v; drawHeat(); });
+  seg($("heat-iorder"), [["tree", "Clustering"], ["sub", "Subtype"]], H.io, v => { H.io = v; drawHeat(); });
+  fillSelect($("heat-sub"), [[-1, "none"], ...SUB.map((s, i) => [i, s])], H.sub); $("heat-sub").onchange = e => { H.sub = +e.target.value; drawHeat(); };
+  fillSelect($("heat-k"), kOptions(D.meta.qks), H.k); $("heat-k").onchange = e => { H.k = +e.target.value; drawHeat(); };
+  $("heat-grad").innerHTML = gradHTML("div", "−2 sd", "+2 sd", "standardised score of the image on the question");
+  drawHeat();
+}
+function drawHeat() {
+  const qo = qOrder(H.qo), pos = new Map(D.img.order.map((im, i) => [im, i]));
+  const io = H.io === "tree" ? D.img.order : [...Array(NI).keys()].sort((a, b) => D.img.sub[a] - D.img.sub[b] || pos.get(a) - pos.get(b));
+  const cv = $("heat-canvas"); cv.width = NI; cv.height = NQ; const ctx = cv.getContext("2d"), img = ctx.createImageData(NI, NQ);
+  for (let a = 0; a < NQ; a++) for (let b = 0; b < NI; b++) { const c = divRGB(z_(io[b], qo[a]) / 2), o = 4 * (a * NI + b); img.data[o] = c[0]; img.data[o + 1] = c[1]; img.data[o + 2] = c[2]; img.data[o + 3] = 255; }
+  ctx.putImageData(img, 0, 0);
+  cv.style.height = Math.round(cv.clientWidth * NQ / NI * 1.4) + "px";
+  const top = $("heat-top"); top.width = NI; const t = top.getContext("2d");
+  io.forEach((im, b) => { t.fillStyle = PAL.grp[D.img.grp[im]]; t.fillRect(b, 0, 1, 1);
+    t.fillStyle = D.img.sub[im] === H.sub ? PAL.ink : PAL.grid; t.fillRect(b, 1, 1, 1);
+    t.fillStyle = D.img.imtype[im].startsWith("dermoscopic") ? PAL.grid : PAL.ink2; t.fillRect(b, 2, 1, 1); });
+  const left = $("heat-left"); left.height = NQ; left.style.height = cv.style.height; const l = left.getContext("2d"), cl = D.q.cl[String(H.k)];
+  qo.forEach((q, a) => { l.fillStyle = cl[q] % 2 ? PAL.ink2 : PAL.muted; l.fillRect(0, a, 1, 1); });
+  cv.onmousemove = ev => { const rc = cv.getBoundingClientRect(), b = Math.floor((ev.clientX - rc.left) / rc.width * NI), a = Math.floor((ev.clientY - rc.top) / rc.height * NQ);
+    if (a < 0 || b < 0 || a >= NQ || b >= NI) return hideTip(); const im = io[b], q = qo[a];
+    showTip(`<img src="data:image/jpeg;base64,${D.img.thumb[im]}" style="width:90px;border-radius:6px;float:right;margin-left:8px"><b>${esc(D.q.text[q])}</b><br><span class="k">${esc(TOP[D.q.topic[q]])} · question cluster ${cl[q] + 1}</span><br>${esc(SUB[D.img.sub[im]])} · ${esc(D.img.imtype[im])}<br>score ${fmt(z_(im, q))} sd · P(yes) ${fmt(p_(im, q))}`, ev); };
+  cv.onmouseleave = hideTip;
+  cv.onclick = ev => { const rc = cv.getBoundingClientRect(), b = Math.floor((ev.clientX - rc.left) / rc.width * NI); if (b >= 0 && b < NI) openImage(io[b]); };
+}
+
+// ------------------------------------------------------------------ question groups
+const QG = {k: D.meta.kq, row: -1};
+function renderQgroups() {
+  readPalette();
+  fillSelect($("qg-k"), kOptions(D.meta.qks), QG.k); $("qg-k").onchange = e => { QG.k = +e.target.value; QG.row = -1; drawQG(); };
+  drawQG();
+}
+function drawQG() {
+  const qs = D.qsum[String(QG.k)];
+  $("qg-table").innerHTML = `<table><tr><th>cluster</th><th class="num">questions</th><th class="num">mean r</th><th class="num">AUROC</th><th>main topics</th>${SUB.map((s, i) => `<th class="cell" style="writing-mode:vertical-rl;transform:rotate(180deg);max-height:160px;border-bottom:3px solid ${PAL.grp[D.sub_group[i]]}">${esc(s)}</th>`).join("")}<th>most typical question</th></tr>` +
+    qs.map((d, c) => `<tr data-c="${c}" style="cursor:pointer"><td><b>${c + 1}</b></td><td class="num">${d.n}</td><td class="num">${fmt(d.mean_r)}</td><td class="num">${fmt(d.auroc)}</td>
+      <td style="max-width:260px">${d.topics.map(([t, n]) => `${esc(TOP[t].slice(0, 40))} (${n})`).join("; ")}</td>
+      ${d.prof.map(v => `<td class="cell" style="${divCell(v / 1.2)}">${fmt(v, 1)}</td>`).join("")}<td style="max-width:320px">${esc(D.q.text[d.central[0]])}</td></tr>`).join("") + `</table>`;
+  $("qg-table").querySelectorAll("tr[data-c]").forEach(tr => tr.onclick = () => { QG.row = +tr.dataset.c; members(); });
+  members();
+}
+function members() {
+  if (QG.row < 0) { $("qg-members").innerHTML = ""; return; }
+  const cl = D.q.cl[String(QG.k)], mem = [...Array(NQ).keys()].filter(i => cl[i] === QG.row).sort((a, b) => Math.abs((D.q.auc[b] ?? .5) - .5) - Math.abs((D.q.auc[a] ?? .5) - .5));
+  $("qg-members").innerHTML = `<h3>Questions in cluster ${QG.row + 1} (${mem.length}), most discriminating first</h3><div class="scroll"><table><tr><th>question</th><th>topic</th><th class="num">yes</th><th class="num">AUROC alone</th><th class="num">ridge weight</th></tr>` +
+    mem.map(i => `<tr data-q="${i}" style="cursor:pointer"><td>${esc(D.q.text[i])}</td><td>${esc(TOP[D.q.topic[i]])}</td><td class="num">${pct(D.q.yes[i])}</td><td class="num">${fmt(D.q.auc[i])}</td><td class="num">${fmt(D.q.ridge[i], 3)}</td></tr>`).join("") + `</table></div>`;
+  $("qg-members").querySelectorAll("tr[data-q]").forEach(tr => tr.onclick = () => openQuestion(+tr.dataset.q));
+}
+
+// ------------------------------------------------------------------ methods
+function renderMethods() {
+  $("methods").innerHTML = `<h2>Methods</h2>
+  <p><b>Answers.</b> Claude Sonnet 5.5 (effort low), topic mode (one prompt per topic, 41 prompts per image), images at up to 3.6 MP, one replicate. Score: ${esc(D.meta.source)} = (2 P(yes) − 1) × stated confidence. Each question's scores are standardised over the ${NI} images (mean 0, sd 1). Included: clinical and artefact questions as written; the control question "Is this a malignant lesion?" is left out of everything except the image colouring.</p>
+  <p><b>Question similarity.</b> Pearson correlation of the standardised scores across images. Clusters: Ward hierarchical clustering on correlation distance (1 − r), cut at k clusters. Wording: text embeddings of the question as written (${esc(D.meta.text_models.join(", "))}), cosine similarity, Ward clustering. Map: UMAP (15 neighbours) on 1 − r, or on 1 − cosine.</p>
+  <p><b>Chance levels.</b> Topic cohesion: topic labels shuffled 1,000 times keeping the sizes; per topic, random sets of questions of the same size. Shared sources: the same pair mask applied to the questions in random order. Agreement between groupings: adjusted mutual information (corrected for chance; 0 = chance) with one grouping shuffled 200 times. Wording against answers: Spearman correlation between the two similarity matrices, with the questions' order shuffled 1,000 times.</p>
+  <p><b>Dimensions.</b> PCA of the standardised scores; parallel analysis with each question's answers shuffled across images (50 shuffles, 95th percentile). Eta squared: share of a component's variance explained by a categorical variable; r squared for age.</p>
+  <p><b>Images.</b> Ward clustering and UMAP (30 neighbours) on the first ${D.meta.m_img} principal components (the components above the shuffled level, at least 10). Metadata from the public ISIC Archive API (fetched 2026-11-15): image type, contributing institution (fewer than 10 images pooled as "Other"), sex, approximate age, body site. Ridge P(malignant): S6 ridge on the Directional Score, out-of-fold, mean over the 5 repeats; indeterminate images averaged over all outer models.</p>
+  <p><b>Limitations.</b> One replicate of answers and one answerer. All questions of a topic were asked in one prompt, so within-topic correlation mixes related features with consistency inside a prompt; a stateless run on a subset is needed to separate them. ISIC metadata are incomplete (sex unknown for 16%, age for 14%, body site for 19% of images). Associations with institution and diagnosis are entangled because the beta set's classes come from different contributors in different proportions.</p>`;
+}
+
+const RENDER = {"t-overview": renderOverview, "t-qmap": renderQmap, "t-corr": renderCorr, "t-topics": renderTopics, "t-dims": renderDims,
+  "t-imap": renderImap, "t-iclust": renderIclust, "t-heat": renderHeat, "t-qgroups": renderQgroups, "t-methods": renderMethods};
+readPalette();
+$("subtitle").textContent = `Claude Sonnet's answers to ${NQ} dermatology questions on ${NI} ISIC images: how the questions and the images group, and what the groups line up with.`;
+initTabs();
+const start = location.hash.slice(1);
+showTab(start in RENDER ? start : "t-overview");
+</script>
+</main>
+</body>
+</html>
