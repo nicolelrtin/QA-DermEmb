@@ -6,18 +6,25 @@ they are worded alike, or because they were asked in the same prompt (the first 
 independent dimensions do the 500 questions amount to? And when the images are grouped by their answers, do the groups
 follow the diagnosis, or the image type, the institution or the patient?
 
-**Interactive version.** [explorer.html](explorer.html) (5.7 MB, self-contained; open it in any browser, no internet
-needed). It has a map of the questions and a map of the images, the full correlation matrix with its dendrogram, the
-topic analysis, the principal components, the image clusters with thumbnails, the full questions-by-images heatmap,
-and the question clusters by subtype. Clicking a question shows its answers by subtype and the questions answered and
-worded most like it. Clicking an image shows its thumbnail, ISIC diagnosis, metadata, its most unusual answers and the
-images answered most like it.
+**Interactive version.** [explorer.html](explorer.html) (about 6 MB, self-contained; open it in any browser, no internet
+needed). Rebuilt on 2026-11-15 (explore `a35b9e7a2913`) as one continuous story in six chapters:
+1. the answers;
+2. whether questions in a topic are answered alike;
+3. how many dimensions the questions amount to;
+4. what the images' answer profiles follow;
+5. whether the answers classify, from the S10 ridge run;
+6. which questions carry the decision, from the S7 importance run.
+
+A flow diagram at the top links to each chapter and shows its main result. Each chapter opens with one finding, then
+the evidence. The heavier interactive tools (correlation matrix, question map, image clusters, full heatmap) sit in
+expandable panels inside the chapter they belong to. Clicking a question anywhere opens it on the question map, and
+clicking an image opens its panel.
 
 ## Runs covered
 
 | Run | Experiments (meaning) | Stage hashes |
 |---|---|---|
-| [20261115-105528_s9-explore](../../outputs/qaemb/runs/20261115-105528_s9-explore/report.md) | `D1_train` (all 1,000 beta images), `I1_claude_max` (images shrunk only, to at most 3.6 MP), `Q0_orig` (500 questions as written plus the control question, no negations), `M_topic` (one prompt per topic), `ANS_claude_sonnet` (Claude Sonnet 5.5 through the Batch API, effort low), `G1` (whole image), `R1` (replicate 1). Stage `explore`. | embed `6cd6f95ebcbd`, classify `670746415c57`, importance `43a20169f0c0`, explore `e0f6b40a7715` |
+| [20261115-105528_s9-explore](../../outputs/qaemb/runs/20261115-105528_s9-explore/report.md); page rebuilt in [20261115-123900_s9-explore](../../outputs/qaemb/runs/20261115-123900_s9-explore/report.md) (explore `a35b9e7a2913`, reading also ridge `159decea7f3d` and importance `43a20169f0c0`) | `D1_train` (all 1,000 beta images), `I1_claude_max` (images shrunk only, to at most 3.6 MP), `Q0_orig` (500 questions as written plus the control question, no negations), `M_topic` (one prompt per topic), `ANS_claude_sonnet` (Claude Sonnet 5.5 through the Batch API, effort low), `G1` (whole image), `R1` (replicate 1). Stage `explore`. | embed `6cd6f95ebcbd`, classify `670746415c57`, importance `43a20169f0c0`, explore `e0f6b40a7715` |
 
 Three earlier runs the same morning are superseded: `20261115-104059_s9-dev` (explore `04b4417cca54`; average-linkage
 clustering and a placeholder page) and two runs of `s9-explore` (explore `91c40697ad8d`; the page had a start-up bug

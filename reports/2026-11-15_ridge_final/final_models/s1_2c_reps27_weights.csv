@@ -1,0 +1,28 @@
+question_id,question,topic,weight_towards_malignant
+DQ008,Does the lesion present as a red nodule?,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",-0.0724107157931754
+DQ011,Is an atypical pigment network present?,Dermoscopy algorithms for melanoma,-0.011858290604745775
+DQ018,Is there asymmetry in the distribution of dermoscopic structures?,Dermoscopy algorithms for melanoma,0.23338827420697816
+DQ026,Are shiny white structures present?,Dermoscopy algorithms for melanoma,0.16396324385881697
+DQ031,Is grey colour present in the lesion?,Dermoscopy algorithms for melanoma,0.09592228429828364
+DQ046,Are grey or blue dots arranged in a peripheral clustered or linear pattern?,Dermoscopy terminology consensus,0.3852900417199312
+DQ061,Are vessels arranged in a serpiginous (string-of-pearls) line?,Dermoscopy terminology consensus,0.10556741019732072
+DQ066,Are vessels distributed randomly without a specific arrangement?,Dermoscopy terminology consensus,0.19013732446893775
+DQ136,Is perifollicular tubular scaling present?,Inflammatory dermoscopy & general dermatology,-0.01281759583685778
+DQ156,Are maple-leaf-like structureless black areas present on a pink background?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.05969855222433951
+DQ177,Is surface keratin present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.14028280184809694
+DQ186,Is ulceration present in a non-pigmented lesion?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.13151907471288707
+DQ205,Is the contrast between epidermal structures and background low because of dark skin?,Skin of colour presentation,-0.12821403301975473
+DQ214,Does the visible skin match Monk Skin Tone 1–3?,"Skin tone measurement (Fitzpatrick, Monk, ITA)",-0.06978305984977837
+DQ227,Are rhomboidal structures present around follicles?,"Special sites (acral, face/LM, nail, mucosa)",-0.28498168395499557
+DQ249,Is the lesion located on the heel?,"Special sites (acral, face/LM, nail, mucosa)",0.04742020818173167
+DQ266,Is a longitudinal red band (erythronychia) present in the nail?,"Special sites (acral, face/LM, nail, mucosa)",-0.03758351990985515
+DQ295,Are dotted vessels located within the brown globular portions of a negative network?,Spitz / pink / amelanotic & paediatric lesions,-0.11272892007368818
+DQ308,Are hairpin vessels present?,Vascular structures in dermoscopy,0.17427545597401795
+DQ324,Is the lesion located on the trunk?,Anatomic site & body-region lesion density,-0.039754685484030924
+DQ336,Does a facial haemangioma involve both sides of the face?,Congenital nevi & vascular anomalies/birthmarks,-0.0816667430724461
+DQ342,Do the lesions follow a dermatomal pattern?,"Distribution & configuration (Blaschko, segmental, mosaic)",-0.006406034333365223
+DQ360,Are multiple actinic keratoses visible in one field?,Field cancerization & actinic damage scoring,0.0888086874558971
+DQ364,Does the image show more than 50 common naevi?,Nevus count & atypical mole phenotype,-0.17337008043958171
+DQ379,Are deep wrinkles visible?,Photoaging scales & image grading,0.0015492648471831403
+DQ420,Is the lesion clearly separable from the background for segmentation?,Public datasets & challenges,-0.3486938225856195
+DQ480,Is epidermal pigmentation visibly heterogeneous across the normal skin?,Skin optical properties & chromophores,0.24053420981173315

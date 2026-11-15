@@ -30,8 +30,8 @@ from ..models import explore as ex
 from ..models import plots
 from .s6_classify import GROUPS, SOURCE_NAMES, load_labels
 
-UPSTREAM = ["manifest", "embed", "classify", "importance"]
-VERSION = 1
+UPSTREAM = ["manifest", "embed", "importance", "ridge"]
+VERSION = 2
 TEMPLATE = Path(__file__).resolve().parents[1] / "templates" / "explore.html"
 
 
@@ -75,15 +75,104 @@ def load_metadata(cfg, image_ids, min_inst: int) -> pd.DataFrame:
 
 
 def ridge_probs(inputs, image_ids) -> pd.Series:
-    """Ridge on the Directional Score, benign vs malignant: out-of-fold P(malignant) averaged over the 5 repeats; the
-    indeterminate images are scored by every outer model and averaged (S6 indeterminate_2c.csv)."""
-    d = inputs["classify"]
-    o = pd.read_parquet(d / "oof_predictions.parquet", columns=["image_id", "p::malignant", "source", "task", "model"])
-    o = o[(o.task == "s1_2c") & (o.model == "l2") & (o.source == "dir")]
+    """S10 main model (ridge on the Directional Score, folds grouped by patient), benign vs malignant: out-of-fold
+    P(malignant) averaged over the 5 repeats; the indeterminate images are scored by every outer model and averaged."""
+    d = inputs["ridge"]
+    o = pd.read_parquet(d / "oof_predictions.parquet")
+    o = o[(o.task == "s1_2c") & (o.set == "all") & (o.grouping == "patient")]
     p = o.groupby("image_id")["p::malignant"].mean()
-    ind = pd.read_csv(d / "indeterminate_2c.csv")
-    ind = ind[(ind.model == "l2") & (ind.source == "dir")].groupby("image_id").p_malignant.mean()
+    ind = pd.read_csv(d / "indeterminate_2c.csv").set_index("image_id").p_malignant
     return pd.concat([p, ind]).reindex(image_ids)
+
+
+def roc_points(y, s, max_pts=160):
+    from sklearn.metrics import roc_auc_score, roc_curve
+
+    fpr, tpr, thr = roc_curve(y, s)
+    keep = np.unique(np.round(np.linspace(0, len(fpr) - 1, min(max_pts, len(fpr)))).astype(int))
+    ok = tpr >= 0.95
+    i95 = int(np.argmax(ok))
+    return {"pts": [[round(float(fpr[i]), 4), round(float(tpr[i]), 4)] for i in keep], "auc": float(roc_auc_score(y, s)),
+            "op": {"fpr": float(fpr[i95]), "tpr": float(tpr[i95]), "spec": float(1 - fpr[i95])}}
+
+
+def eval_payload(inputs, ids, lab, meta, ctrl, sub_order) -> dict:
+    """Everything the 'Does it classify?' chapter draws, from the S10 ridge run."""
+    d = inputs["ridge"]
+    summ = pd.read_csv(d / "summary.csv")
+    folds = pd.read_csv(d / "metrics_folds.csv")
+    o = pd.read_parquet(d / "oof_predictions.parquet")
+    derm = meta.image_type.reindex(ids).eq("dermoscopic").values
+    # ROC: out-of-fold P averaged over repeats (each still from a model that never saw the image)
+    a = o[(o.task == "s1_2c") & (o.set == "all") & (o.grouping == "patient")].groupby("image_id").agg(
+        p=("p::malignant", "mean"), true=("true", "first"))
+    pos = {im: i for i, im in enumerate(ids)}
+    ii = np.array([pos[i] for i in a.index])
+    y = (a.true.values == "malignant").astype(int)
+    roc = {"ridge_all": roc_points(y, a.p.values), "ridge_derm": roc_points(y[derm[ii]], a.p.values[derm[ii]])}
+    if ctrl is not None:
+        roc["ctrl_all"] = roc_points(y, ctrl[ii])
+        roc["ctrl_derm"] = roc_points(y[derm[ii]], ctrl[ii][derm[ii]])
+    # paired folds
+    f = folds[(folds.task == "s1_2c") & (folds.grouping == "patient")]
+    pf = []
+    for sub in ("all images", "dermoscopic only"):
+        g = f[f.subset == sub]
+        r_ = g[g.set == "all"].set_index(["repeat", "fold"])
+        c_ = g[g.set == "control question"].set_index(["repeat", "fold"])
+        for k in r_.index:
+            pf.append({"subset": sub, "ridge_auc": r_.loc[k, "auroc"], "ctrl_auc": c_.loc[k, "auroc"] if k in c_.index else None,
+                       "ridge_spec": r_.loc[k, "spec_at_sens95"], "ctrl_spec": c_.loc[k, "spec_at_sens95"] if k in c_.index else None})
+    # 10-class confusion, row-normalised, averaged over repeats
+    c10 = o[(o.task == "flat_10c") & (o.set == "all") & (o.grouping == "patient")]
+    pcols = [f"p::{c}" for c in sub_order]
+    M = np.zeros((len(sub_order), len(sub_order)))
+    pred = c10[pcols].values.argmax(1)
+    for t, pr in zip(c10.true.values, pred):
+        M[sub_order.index(t), pr] += 1
+    M = M / M.sum(1, keepdims=True)
+    # summary rows the page quotes
+    def row(task, set_, grouping, subset):
+        r = summ[(summ.task == task) & (summ.set == set_) & (summ.grouping == grouping) & (summ.subset == subset)]
+        return r.iloc[0].to_dict() if len(r) else None
+    key = {f"{t}|{s_}|{g}|{sb}": row(t, s_, g, sb) for t in ("s1_2c", "flat_10c") for s_ in ("all", "control question")
+           for g in ("patient", "lesion") for sb in ("all images", "dermoscopic only")}
+    trim = summ[(summ.task == "s1_2c") & (summ.grouping == "patient") & (summ.subset == "all images")]
+    trim = trim[trim.set.str.match(r"^(lasso|reps|rand|top|pca)\d+$")].copy()
+    trim["family"] = trim.set.str.extract(r"^([a-z]+)")[0]
+    trim["k"] = trim.set.str.extract(r"(\d+)")[0].astype(int)
+    groups = pd.read_csv(d / "groups.csv")
+    gs = groups.group.value_counts()
+    return {"roc": roc, "folds": pf, "confusion": np.round(M, 3).tolist(), "key": key,
+            "trim": trim[["family", "k", "fold_mean", "draw_min", "draw_max"]].to_dict("records"),
+            "groups": {"n_groups": int(len(gs)), "multi": int((gs > 1).sum()), "largest": int(gs.max()),
+                       "dups": int(len(pd.read_csv(d / "duplicates.csv")))}}
+
+
+def importance_payload(inputs, qids, sub_order, top_n=25) -> dict:
+    """The most important questions for benign vs malignant (S7 consensus over six models, Directional Score), the
+    marker questions of each subtype, and the 27 questions of the final lasso model (S10)."""
+    d = inputs["importance"]
+    c = pd.read_csv(d / "consensus.csv")
+    c = c[(c.task == "s1_2c") & (c.source == "dir")].sort_values("consensus_rank")
+    c = c[c.question_id.isin(qids)].head(top_n)
+    top = [{"q": qids.index(r.question_id), "rank": int(r.consensus_rank), "ridge": r.ridge_coef,
+            "sign": r.ridge_sign_agreement, "lasso": r.lasso_kept_share, "auc": r.auroc_alone, "towards": r.towards,
+            "doubt": bool(r.rarely_yes), "p_b": r.mean_p_yes_benign, "p_m": r.mean_p_yes_malignant,
+            "y_b": r.yes_rate_benign, "y_m": r.yes_rate_malignant} for r in c.itertuples()]
+    m = pd.read_csv(d / "subtype_markers.csv")
+    markers = {s: [{"q": qids.index(r.question_id), "ridge": r.ridge_coef, "lasso": r.lasso_kept_share,
+                    "p_in": r.mean_p_yes_in_subtype, "p_out": r.mean_p_yes_other_subtypes}
+                   for r in m[m.subtype == s].sort_values("rank").itertuples() if r.question_id in qids] for s in sub_order}
+    w = pd.read_csv(inputs["ridge"] / "final_models" / "s1_2c_lasso27_weights.csv")
+    final = [{"q": qids.index(r.question_id), "w": float(r.weight_towards_malignant)} for r in w.itertuples() if r.question_id in qids]
+    allc = pd.read_csv(d / "consensus.csv")
+    allc = allc[(allc.task == "s1_2c") & (allc.source == "dir")]
+    best = allc.sort_values("auroc_alone", ascending=False).iloc[0]
+    return {"top": top, "markers": markers, "final27": final,
+            "best_alone": {"q": qids.index(best.question_id) if best.question_id in qids else None, "auc": float(best.auroc_alone)},
+            "n_rarely_yes": int(allc.rarely_yes.sum()), "n_questions": int(len(allc)),
+            "n_top20_doubt": int(c.head(20).rarely_yes.sum())}
 
 
 def thumbnails(paths, px: int, n_jobs: int) -> list[str]:
@@ -341,6 +430,12 @@ def _run(cfg, out, inputs, ctx) -> dict:
                 "n_for": {str(k): v for k, v in pc["n_for"].items()}, "pr": pc["participation_ratio"],
                 "assoc": pca_assoc.round(4).to_dict("records")},
         "ica": ica.round(4).to_dict("records"),
+        "eval": eval_payload(inputs, ids, lab, meta, ctrl, sub_order),
+        "imp": importance_payload(inputs, qids, sub_order),
+        "answers": {"yes_share": float((Pq >= 0.5).mean()),
+                    "p_hist": np.histogram(Pq.ravel(), bins=20, range=(0, 1))[0].tolist(),
+                    "q_yes_hist": np.histogram((Pq >= 0.5).mean(0), bins=20, range=(0, 1))[0].tolist(),
+                    "n_rarely": int(((Pq >= 0.5).mean(0) < 0.05).sum())},
     }
     data = json.dumps(_clean(payload), ensure_ascii=False, separators=(",", ":"), allow_nan=False, default=_json_default)
     html = TEMPLATE.read_text(encoding="utf-8").replace("__DATA__", data.replace("</", "<\\/"))

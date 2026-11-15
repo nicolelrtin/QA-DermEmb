@@ -1,0 +1,61 @@
+question_id,question,topic,weight_towards_malignant
+DQ001,Is the lesion diameter larger than 6 mm?,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",0.19456607436086848
+DQ004,Is the lesion outline asymmetric?,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",0.10566455053803364
+DQ009,Does one pigmented lesion in the image look different from the other naevi visible in the same image?,"Clinical melanoma criteria (ABCDE, EFG, ugly duckling)",0.08074440491015407
+DQ011,Is an atypical pigment network present?,Dermoscopy algorithms for melanoma,-0.0665970815805725
+DQ014,Are irregular dots or globules present?,Dermoscopy algorithms for melanoma,0.04366764499067198
+DQ019,Does the lesion show a multicomponent global pattern?,Dermoscopy algorithms for melanoma,0.10766638657114513
+DQ021,Are areas of irregular homogeneous pigmentation present?,Dermoscopy algorithms for melanoma,-0.13926020246769244
+DQ031,Is grey colour present in the lesion?,Dermoscopy algorithms for melanoma,0.18043404374921063
+DQ046,Are grey or blue dots arranged in a peripheral clustered or linear pattern?,Dermoscopy terminology consensus,0.4186395334167019
+DQ061,Are vessels arranged in a serpiginous (string-of-pearls) line?,Dermoscopy terminology consensus,0.1276220979769089
+DQ066,Are vessels distributed randomly without a specific arrangement?,Dermoscopy terminology consensus,0.14325156453073296
+DQ073,Is a grey-black structureless area present in the lesion?,Dermoscopy terminology consensus,0.11902654057966311
+DQ086,Are pustules present?,ILDS morphology / lesion terminology,-0.008741797703804668
+DQ095,Does the lesion have a well-defined edge and a round or oval outline?,ILDS morphology / lesion terminology,-0.049399941248403655
+DQ096,Are chalky-white macules or patches present?,ILDS morphology / lesion terminology,-0.09438085132913417
+DQ116,Are white rosettes (four-dot clods) present?,Inflammatory dermoscopy & general dermatology,0.025256740298242344
+DQ117,Is a honeycomb pigmentation pattern present?,Inflammatory dermoscopy & general dermatology,-0.12227473743892589
+DQ132,Is perifollicular scaling present?,Inflammatory dermoscopy & general dermatology,0.00989971066880241
+DQ134,Is yellow exudate present?,Inflammatory dermoscopy & general dermatology,0.16946523330133767
+DQ139,Does erythema appear violaceous or hyperpigmented rather than red?,Inflammatory dermoscopy & general dermatology,-0.30329039847450157
+DQ156,Are maple-leaf-like structureless black areas present on a pink background?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.10136015133909848
+DQ159,Are central tumour vessels present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.12045855296924045
+DQ162,Are white-to-yellow surface scales present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),-0.02235845478376375
+DQ176,Are whitish structureless areas present?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.148066250404761
+DQ186,Is ulceration present in a non-pigmented lesion?,Keratinocyte tumour dermoscopy (BCC/SCC/AK/KA),0.11259847313122809
+DQ196,Is homogeneous brown pigmentation present?,Seborrhoeic keratosis & benign mimics,-0.1457065959714188
+DQ203,Is the lesion a firm-appearing pink to red papule?,Seborrhoeic keratosis & benign mimics,0.02304705283755556
+DQ205,Is the contrast between epidermal structures and background low because of dark skin?,Skin of colour presentation,-0.07860898193741117
+DQ214,Does the visible skin match Monk Skin Tone 1–3?,"Skin tone measurement (Fitzpatrick, Monk, ITA)",-0.09802165963865808
+DQ215,Does the visible skin match Monk Skin Tone 4–7?,"Skin tone measurement (Fitzpatrick, Monk, ITA)",0.07450002307434882
+DQ222,Does the visible skin have a yellow (rather than red) undertone?,"Skin tone measurement (Fitzpatrick, Monk, ITA)",0.041721230415860434
+DQ227,Are rhomboidal structures present around follicles?,"Special sites (acral, face/LM, nail, mucosa)",-0.26027216553417626
+DQ242,Are short parallel lines crossing the ridges (fibrillar pattern) present?,"Special sites (acral, face/LM, nail, mucosa)",0.008317348781149187
+DQ249,Is the lesion located on the heel?,"Special sites (acral, face/LM, nail, mucosa)",0.06769488921662985
+DQ266,Is a longitudinal red band (erythronychia) present in the nail?,"Special sites (acral, face/LM, nail, mucosa)",-0.036682123607614976
+DQ294,Do shiny white structures coincide with hypopigmented lines in the lesion?,Spitz / pink / amelanotic & paediatric lesions,0.09532089594938734
+DQ295,Are dotted vessels located within the brown globular portions of a negative network?,Spitz / pink / amelanotic & paediatric lesions,-0.0759981446128373
+DQ301,Does the lesion resemble a vascular lesion?,Spitz / pink / amelanotic & paediatric lesions,-0.4969845604705806
+DQ308,Are hairpin vessels present?,Vascular structures in dermoscopy,0.06994169399691766
+DQ312,Are vessels seen on a milky-red background?,Vascular structures in dermoscopy,0.45383436421304596
+DQ324,Is the lesion located on the trunk?,Anatomic site & body-region lesion density,-0.08394891285227055
+DQ325,Is the lesion located on a limb?,Anatomic site & body-region lesion density,-0.010585658792998127
+DQ327,Is the lesion located on the face?,Anatomic site & body-region lesion density,-0.12157327256112226
+DQ329,Are nodules visible within a large congenital naevus?,Congenital nevi & vascular anomalies/birthmarks,-0.2181259478307533
+DQ339,Does a facial haemangioma involve the mandibular (S3) segment?,Congenital nevi & vascular anomalies/birthmarks,0.012086766450759701
+DQ342,Do the lesions follow a dermatomal pattern?,"Distribution & configuration (Blaschko, segmental, mosaic)",0.03961215761511145
+DQ354,Are pigmented scaly papules present on sun-exposed skin?,Field cancerization & actinic damage scoring,-0.003805988659358766
+DQ360,Are multiple actinic keratoses visible in one field?,Field cancerization & actinic damage scoring,0.06203465945374253
+DQ364,Does the image show more than 50 common naevi?,Nevus count & atypical mole phenotype,-0.1606449135381535
+DQ370,Does the image show any naevus of at least 5 mm?,Nevus count & atypical mole phenotype,-0.006966271910234601
+DQ372,Is fair or red hair visible in the image?,Nevus count & atypical mole phenotype,0.14186969102841596
+DQ379,Are deep wrinkles visible?,Photoaging scales & image grading,-0.010163825160450824
+DQ384,Are freckles visible?,Photoaging scales & image grading,0.23983452238959152
+DQ420,Is the lesion clearly separable from the background for segmentation?,Public datasets & challenges,-0.39404304428559067
+DQ423,Is the lesion border low in contrast with the surrounding skin?,Segmentation & handcrafted ABCD features,0.006137397255066294
+DQ431,Is the lesion more than twice as long as it is wide?,Segmentation & handcrafted ABCD features,-0.17199278274918545
+DQ448,Is the presence of irregular streaks unambiguous in the image?,Concept-based explanations,0.2155614075453467
+DQ486,Are wrinkles closely spaced (short wrinkle pitch)?,Skin surface texture & microrelief,-0.03704436025815562
+DQ494,Is the lesion texture less homogeneous than the surrounding skin texture?,Texture descriptors & radiomics for lesions,-0.1916765907220681
+DQ497,Does lesion texture differ markedly between the red and blue colour channels?,Texture descriptors & radiomics for lesions,0.20833704935755584

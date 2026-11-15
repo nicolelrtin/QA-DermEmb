@@ -193,3 +193,16 @@ explore:                         # S9: unsupervised structure of the answers + i
   n_perm_pca: 50                 # shuffles for parallel analysis
   thumb_px: 160
   n_jobs: 16
+
+ridge:                           # S10: main model with leakage controls, trimmed question sets, final models (qaemb/stages/s10_ridge.py)
+  source: dir
+  tasks: [s1_2c, flat_10c]
+  group_by: patient              # patient (ISIC patient_id where recorded, else lesion) | lesion (as in S6)
+  dup_hamming: 12                # near-duplicate pictures (difference hash, of 256 bits) are put in one group
+  feature_sets: [all, lasso27, lasso60, lasso120, top27, top60, reps27, reps60, pca27, pca60, rand27, rand60, rand120]
+  n_random: 5                    # random draws for each randK
+  compare_lesion_grouping: true  # also run 'all' with S6's grouping by lesion
+  final_sets: [all, lasso27, lasso60, lasso120, reps27, reps60]
+  final_cv_folds: 5
+  log10_C: [-5, 0]               # lambda = 1/C from 1 to 100,000, four values per decade (S8)
+  n_jobs: -1

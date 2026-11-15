@@ -403,3 +403,38 @@ def explore_figures(fdir, coh_topic, coh_all, tva, pc, agr, ica, qsum, sub_order
     fig.tight_layout()
     fig.savefig(fdir / "question_clusters_by_subtype.png", dpi=150)
     plt.close(fig)
+
+
+# S10 ridge --------------------------------------------------------------------------------------------------------
+def ridge_sets_figure(summ, path, n_all):
+    """Score against number of questions: cluster representatives, principal components, random questions (mean of
+    draws, bar = range over draws), all questions. Panels: benign vs malignant (all images, dermoscopic only), 10-class."""
+    panels = [("s1_2c", "all images", "AUROC, benign vs malignant"), ("s1_2c", "dermoscopic only", "AUROC, dermoscopic images only"),
+              ("flat_10c", "all images", "balanced accuracy, 10 subtypes")]
+    panels = [p for p in panels if ((summ.task == p[0]) & (summ.subset == p[1])).any()]
+    fig, axes = plt.subplots(1, len(panels), figsize=(4.3 * len(panels), 3.8), squeeze=False)
+    fams = [("lasso", "chosen jointly by the lasso (in-fold)", SERIES[0]), ("reps", "most typical question per cluster", SERIES[1]),
+            ("rand", "random questions", SERIES[2]), ("top", "best-separating one by one (in-fold)", INK2), ("pca", "principal components (all asked)", REF)]
+    for ax, (t, sub, title) in zip(axes[0], panels):
+        s = summ[(summ.task == t) & (summ.subset == sub) & (summ.grouping == "patient")]
+        for fam, lab, c in fams:
+            g = s[s.set.str.startswith(fam)].copy()
+            if g.empty:
+                continue
+            g["k"] = g.set.str.extract(r"(\d+)").astype(int)
+            g = g.sort_values("k")
+            ax.errorbar(g.k, g.fold_mean, yerr=[g.fold_mean - g.draw_min, g.draw_max - g.fold_mean] if fam == "rand" else None,
+                        color=c, lw=2, marker="o", ms=5, capsize=3, label=lab, ls=":" if fam in ("pca", "top") else "-")
+        a = s[s.set == "all"]
+        if len(a):
+            ax.axhline(a.fold_mean.iloc[0], color=INK2, ls="--", lw=1.2, label=f"all {n_all} questions")
+        cq = s[s.set == "control question"]
+        if len(cq):
+            ax.axhline(cq.fold_mean.iloc[0], color=REF, ls=":", lw=1.2, label='Sonnet asked "malignant?"')
+        ax.set_xlabel("number of features")
+        ax.set_title(title)
+    axes[0][0].legend(fontsize=7, loc="lower right")
+    fig.suptitle("Ridge, nested CV grouped by patient (mean over 25 outer folds)", color=INK, fontsize=10)
+    fig.tight_layout(rect=(0, 0, 1, 0.94))
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
