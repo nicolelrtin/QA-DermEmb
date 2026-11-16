@@ -34,7 +34,7 @@ UPSTREAM = ["manifest", "embed", "importance", "ridge"]
 VERSION = 2
 TEMPLATE = Path(__file__).resolve().parents[1] / "templates" / "explore.html"
 FONTS = [  # (family, style, file): embedded so the page needs no network (templates/fonts/README.md)
-    ("Fraktur", "normal", "fraktur.woff2"), ("Garamond", "normal", "garamond.woff2"), ("Garamond", "italic", "garamond-italic.woff2")]
+    ("Garamond", "normal", "garamond.woff2"), ("Garamond", "italic", "garamond-italic.woff2")]
 
 
 def font_css() -> str:

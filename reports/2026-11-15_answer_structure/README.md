@@ -7,7 +7,7 @@ independent dimensions do the 500 questions amount to? And when the images are g
 follow the diagnosis, or the image type, the institution or the patient?
 
 **Interactive version.** [explorer.html](explorer.html) (about 6 MB, self-contained; open it in any browser, no internet
-needed). Last rebuilt on 2026-11-15 (explore `3c3bb1a3d4d0`, run `20261115-220539_s9-explore-tabs`) with tabs: an
+needed). Last rebuilt on 2026-11-16 (explore `5e1e8b163035`, run `20261116-010945_s9-explore-garamond`) with tabs: an
 overview (abstract, a flow diagram of the analysis whose boxes open the chapters, and one line per principal result),
 then seven chapters:
 1. the answer matrix;
@@ -21,14 +21,16 @@ then seven chapters:
 Each chapter opens with its principal result, then numbered figures with captions and an interpretation. The heavier
 interactive tools (correlation matrix, question map, image clusters, full heatmap) sit in expandable panels inside the
 chapter they belong to. Selecting a question anywhere opens it on the question map, and selecting an image opens its
-panel. The page is light only; its fonts (UnifrakturMaguntia, EB Garamond; SIL Open Font License) are embedded from
-`qaemb/templates/fonts/`. The data are identical to the earlier narrative build (explore `a35b9e7a2913`).
+panel. The page is light only, set in EB Garamond (SIL Open Font License, embedded from `qaemb/templates/fonts/`), with
+charts and tables in a plain sans. An intermediate build on 2026-11-15 (explore `3c3bb1a3d4d0`) used a blackletter
+face for the title, chapter names and drop cap; it was replaced by Garamond as hard to read. The data are identical to the earlier narrative
+build (explore `a35b9e7a2913`).
 
 ## Runs covered
 
 | Run | Experiments (meaning) | Stage hashes |
 |---|---|---|
-| [20261115-105528_s9-explore](../../outputs/qaemb/runs/20261115-105528_s9-explore/report.md); page rebuilt in [20261115-220539_s9-explore-tabs](../../outputs/qaemb/runs/20261115-220539_s9-explore-tabs/report.md) (explore `3c3bb1a3d4d0`, reading also ridge `159decea7f3d` and importance `43a20169f0c0`) | `D1_train` (all 1,000 beta images), `I1_claude_max` (images shrunk only, to at most 3.6 MP), `Q0_orig` (500 questions as written plus the control question, no negations), `M_topic` (one prompt per topic), `ANS_claude_sonnet` (Claude Sonnet 5.5 through the Batch API, effort low), `G1` (whole image), `R1` (replicate 1). Stage `explore`. | embed `6cd6f95ebcbd`, classify `670746415c57`, importance `43a20169f0c0`, explore `e0f6b40a7715` |
+| [20261115-105528_s9-explore](../../outputs/qaemb/runs/20261115-105528_s9-explore/report.md); page rebuilt in [20261116-010945_s9-explore-garamond](../../outputs/qaemb/runs/20261116-010945_s9-explore-garamond/report.md) (explore `5e1e8b163035`, reading also ridge `159decea7f3d` and importance `43a20169f0c0`) | `D1_train` (all 1,000 beta images), `I1_claude_max` (images shrunk only, to at most 3.6 MP), `Q0_orig` (500 questions as written plus the control question, no negations), `M_topic` (one prompt per topic), `ANS_claude_sonnet` (Claude Sonnet 5.5 through the Batch API, effort low), `G1` (whole image), `R1` (replicate 1). Stage `explore`. | embed `6cd6f95ebcbd`, classify `670746415c57`, importance `43a20169f0c0`, explore `e0f6b40a7715` |
 
 Three earlier runs the same morning are superseded: `20261115-104059_s9-dev` (explore `04b4417cca54`; average-linkage
 clustering and a placeholder page) and two runs of `s9-explore` (explore `91c40697ad8d`; the page had a start-up bug
