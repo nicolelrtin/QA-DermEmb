@@ -211,6 +211,27 @@ h4 { font-weight: 600; }
 .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
 @media (max-width: 760px) { .twocol { grid-template-columns: 1fr; } }
 .twocol h4 { margin: 0 0 6px; font-size: 16px; display: flex; gap: 8px; align-items: center; }
+.qlist .x { float: right; margin-left: 10px; font-size: 11.5px; color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.qlist .x.in { color: var(--text-primary); }
+.qlist .x.flip { color: var(--accent); font-weight: 600; }
+.imp[hidden], .twocol[hidden] { display: none; }
+.cases { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+@media (max-width: 960px) { .cases { grid-template-columns: 1fr; } }
+.cases .fig { margin-bottom: 0; }
+.cases img { width: 100%; height: 300px; object-fit: contain; background: #1a1713; display: block; margin: 10px 0 6px; cursor: pointer; }
+.cases .idl { font: 12px var(--sans); color: var(--text-muted); margin: 0 0 12px; }
+.path { display: grid; grid-template-columns: minmax(0, 1fr) 150px 44px; gap: 0 10px; font: 12.5px/1.35 var(--sans); }
+.path > div, .path .row > div { padding: 6px 0; border-bottom: 1px solid var(--grid); display: flex; align-items: center; }
+.path .row { display: contents; }
+.path .row.q { cursor: pointer; }
+.path .row.q:hover > div { background: var(--surface-2); }
+.path .h { font-size: 11px; color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--text-secondary); padding: 2px 0 4px; }
+.path .t { display: block; }
+.path .t small { display: block; color: var(--text-muted); font-size: 11.5px; margin-top: 2px; }
+.path .pv { justify-content: flex-end; font-variant-numeric: tabular-nums; }
+.path .row.end > div { font-weight: 650; border-top: 1px solid var(--text-primary); border-bottom: 0; font-size: 13.5px; }
+.cases .verdict { font: 13px var(--sans); color: var(--text-secondary); margin: 10px 0 0; }
+.twocol-note { grid-column: 1 / -1; font-size: 12.5px; color: var(--text-muted); margin: 0; }
 .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex: none; }
 #methods p { font-size: 16.5px; max-width: 86ch; }
 #methods p b { font-variant: all-small-caps; letter-spacing: .08em; color: var(--accent); font-weight: 600; font-size: 17px; }
@@ -395,14 +416,24 @@ footer::before { content: "❦"; display: block; color: var(--gold); font-size: 
   <div class="finding" id="c6-find"></div>
   <div class="fig"><h3><span class="fn">Fig. 6.1</span>The twenty highest-ranked questions</h3>
     <p class="cap">Weight: standardised ridge coefficient (red toward malignant, blue toward benign). Mean P(yes) in <span class="dot" id="dotb"></span> benign and <span class="dot" id="dotm"></span> malignant images. Alone: univariate AUROC. Kept: selection frequency over 25 lasso fits. <span class="badge">doubt</span> affirmed in fewer than 5% of images of every class, so the signal lies in the confidence of the negative answer.</p>
+    <div class="controls"><div class="control"><span>View</span><div class="seg" id="imp-view"></div></div></div>
     <div class="imp" id="imp"></div>
+    <div class="twocol" id="imp-dir" hidden></div>
     <p class="take" id="c6-take1"></p></div>
   <div class="fig"><h3><span class="fn">Fig. 6.2</span>Subtype marker questions</h3><p class="cap">Largest positive coefficients for each class in the ten-class ridge model, with mean P(yes) within the subtype against all others.</p><div class="markers" id="markers"></div></div>
-  <div class="fig"><h3><span class="fn">Fig. 6.3</span>The 27-question lasso model</h3><p class="cap">Final malignant-against-benign model fitted on all labelled images; frozen and not scored on them (cross-validated estimate <span id="l27"></span>).</p><div class="twocol" id="final27"></div></div>
+  <div class="fig"><h3><span class="fn">Fig. 6.3</span>The 27-question lasso model</h3><p class="cap">Final malignant-against-benign model fitted on all labelled images; frozen and not scored on them (cross-validated estimate <span id="l27"></span>). Each question also shows its consensus rank among all <span id="nq27"></span> questions from Fig. 6.1, and its ridge weight where the direction differs.</p><div class="twocol" id="final27"></div></div>
 </section>
 
-<section class="chapter" id="c7" data-long="Methods" data-title="Methods" data-rn="VII" hidden>
-  <header class="chead"><div class="initial">VII</div><div><div class="kicker">Notes</div><h2>Procedures, assumptions and limitations</h2></div></header>
+<!-- 7 -->
+<section class="chapter" id="c7" data-long="Case Studies" data-title="Cases" data-rn="VII" hidden>
+  <header class="chead"><div class="initial">VII</div><div><div class="kicker">Worked examples</div><h2>How is a single prediction formed?</h2>
+    <p class="aim">One melanoma and one naevus. The model starts from an average image; each question then moves the estimate toward malignant (red) or benign (blue), and the sum of these steps is the prediction. Each image is scored by a model refitted without that patient's images.</p></div></header>
+  <div class="cases" id="cases"></div>
+  <details class="method"><summary>How the steps are computed</summary><div id="c7-method"></div></details>
+</section>
+
+<section class="chapter" id="c8" data-long="Methods" data-title="Methods" data-rn="VIII" hidden>
+  <header class="chead"><div class="initial">VIII</div><div><div class="kicker">Notes</div><h2>Procedures, assumptions and limitations</h2></div></header>
   <div id="methods"></div>
 </section>
 <footer id="foot"></footer>
@@ -540,6 +571,7 @@ const CH = [
   {id: "c4", n: "IV", t: "Image structure", s: () => `AMI ${fmt((D.ica.find(r => r.k === D.meta.ki && r.variable === "subtype") || {}).ami)} with subtype`, u: () => "then institution, modality", x: 378, y: 222},
   {id: "c5", n: "V", t: "Classification", s: () => `AUROC ${fmt(KEY("s1_2c|all|patient|all images").fold_mean)}`, u: () => `direct question ${fmt(KEY("s1_2c|control question|patient|all images").fold_mean)}`, x: 745, y: 125},
   {id: "c6", n: "VI", t: "Importance", s: () => `best item ${fmt(IMP.best_alone.auc)}`, u: () => "signal distributed over many", x: 945, y: 232},
+  {id: "c7", n: "VII", t: "Case studies", s: () => D.cases.cases.map(c => fmt(c.models.all.p)).join(" and "), u: () => "melanoma and naevus, held out", x: 945, y: 18},
 ];
 const NW = 205, NH = 78;
 function renderFlow() {
@@ -550,7 +582,8 @@ function renderFlow() {
   const edge = (a, b) => { const A = by[a], B = by[b]; const x1 = A.x + NW, y1 = A.y + NH / 2, x2 = B.x, y2 = B.y + NH / 2, mx = (x1 + x2) / 2;
     svg.appendChild(svgEl("path", {class: "edge", d: `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2 - 2},${y2}`, "marker-end": "url(#arr)"})); };
   edge("c1", "c2"); edge("c2", "c3"); edge("c3", "c5"); edge("c1", "c4"); edge("c4", "c5");
-  const A = by.c5, B = by.c6;
+  const A = by.c5, B = by.c6, K = by.c7;
+  svg.appendChild(svgEl("path", {class: "edge", d: `M${A.x + NW / 2},${A.y} C${A.x + NW / 2},${K.y + NH / 2} ${K.x - 30},${K.y + NH / 2} ${K.x - 2},${K.y + NH / 2}`, "marker-end": "url(#arr)"}));
   svg.appendChild(svgEl("path", {class: "edge", d: `M${A.x + NW / 2},${A.y + NH} C${A.x + NW / 2},${B.y + NH / 2} ${B.x - 30},${B.y + NH / 2} ${B.x - 2},${B.y + NH / 2}`, "marker-end": "url(#arr)"}));
   svgText(svg, 255, 20, "QUESTIONS", {class: "branch"}); svgText(svg, 378, 322, "IMAGES", {class: "branch"});
   CH.forEach(c => {
@@ -602,7 +635,8 @@ function renderC0() {
     ["c3", "III", `<b>${D.pca.n_parallel} components exceed the permutation null;</b> ${D.pca.n_for["0.9"]} are needed for 90% of the variance.`],
     ["c4", "IV", `<b>Image clusters follow subtype</b> (AMI ${ami("subtype")}), and to a lesser degree institution (${ami("institution")}) and modality (${ami("image type")}).`],
     ["c5", "V", `<b>Ridge reaches AUROC ${fmt(main.fold_mean)} ± ${fmt(main.fold_sd)}</b>, against ${fmt(ctl.fold_mean)} for the direct question; specificity ${pct(main.spec_at_sens)} at 95% sensitivity.`],
-    ["c6", "VI", `<b>No single question exceeds AUROC ${fmt(IMP.best_alone.auc)};</b> the signal is distributed over many partially redundant items.`]];
+    ["c6", "VI", `<b>No single question exceeds AUROC ${fmt(IMP.best_alone.auc)};</b> the signal is distributed over many partially redundant items.`],
+    ["c7", "VII", `<b>Worked examples:</b> a melanoma (P = ${fmt(D.cases.cases[0].models.all.p)}) and a naevus (P = ${fmt(D.cases.cases[1].models.all.p)}), each traced from the average image through the questions that moved it.`]];
   $("summary").innerHTML = S.map(([id, rn, t]) => `<div data-id="${id}"><span class="rn">${rn}</span><p>${t}</p></div>`).join("");
   $("summary").querySelectorAll("div[data-id]").forEach(d => d.onclick = () => showTab(d.dataset.id));
 }
@@ -1064,13 +1098,72 @@ function renderC6() {
   $("imp").innerHTML = `<div class="h"></div><div class="h">question</div><div class="h">weight (benign | malignant)</div><div class="h opt">mean P(yes), 0 to ${fmt(pmax, 1)}</div><div class="h num opt">alone</div><div class="h num opt">kept</div>` +
     top.map(t => `<div class="row" data-q="${t.q}"><div class="rk">${t.rank}</div><div>${esc(D.q.text[t.q])}${t.doubt ? '<span class="badge">doubt</span>' : ""}</div><div>${bar(t.ridge)}</div><div class="opt">${db(t.p_b, t.p_m)}</div><div class="num opt">${fmt(t.auc)}</div><div class="num opt">${pct(t.lasso)}</div></div>`).join("");
   $("imp").querySelectorAll(".row").forEach(r => r.onclick = () => openQuestion(+r.dataset.q));
+  // same twenty questions split by the sign of the ridge weight, in the layout of Fig. 6.3, ordered by weight
+  const w27 = new Map(IMP.final27.map(f => [f.q, f.w]));
+  const sgn = v => (v > 0 ? "+" : "") + v.toFixed(2);
+  const tag27 = t => { if (!w27.has(t.q)) return `<span class="x">not in 27</span>`;
+    const w = w27.get(t.q), flip = (w > 0) !== (t.ridge > 0);
+    return `<span class="x ${flip ? "flip" : "in"}">27-model ${sgn(w)}${flip ? " · opposite" : ""}</span>`; };
+  const dcol = (list, title, c) => `<div><h4><span class="dot" style="background:${c}"></span>${title} (${list.length})</h4><ul class="qlist">${list.map(t => `<li data-q="${t.q}">${tag27(t)}<span class="r">#${t.rank}</span><span class="r">${sgn(t.ridge)}</span>${esc(D.q.text[t.q])}</li>`).join("")}</ul></div>`;
+  const byW = [...top].sort((a, b) => b.ridge - a.ridge), nIn = top.filter(t => w27.has(t.q)).length;
+  $("imp-dir").innerHTML = dcol(byW.filter(t => t.ridge > 0), "Toward malignant", rgb(PAL.pos)) + dcol(byW.filter(t => t.ridge < 0).reverse(), "Toward benign", rgb(PAL.neg)) +
+    `<p class="twocol-note">Ordered by standardised ridge weight, strongest first; # is the consensus rank. Right: weight of the same question in the 27-question lasso model of Fig. 6.3. ${nIn} of these 20 are among its 27 questions. Ridge and lasso weights are on different scales; compare order and direction, not size.</p>`;
+  $("imp-dir").querySelectorAll("li[data-q]").forEach(l => l.onclick = () => openQuestion(+l.dataset.q));
+  seg($("imp-view"), [["table", "Table"], ["dir", "By direction"]], "table", v => { $("imp").hidden = v !== "table"; $("imp-dir").hidden = v !== "dir"; });
   $("c6-take1").innerHTML = `${top.filter(t => t.ridge > 0).length} of the 20 carry positive (malignant) weight. Several describe the <b>perilesional skin</b> (surface roughness, chronic actinic damage, dyspigmentation) rather than the lesion itself; such features may not transfer to images from other acquisition sources.`;
   $("markers").innerHTML = subOrder.map(s => `<div class="mk"><h4>${grpDot(D.sub_group[s])}${esc(SUB[s])}</h4><ol>${(IMP.markers[SUB[s]] || []).map(m => `<li data-q="${m.q}">${esc(D.q.text[m.q])} <span class="muted">${fmt(m.p_in)} vs ${fmt(m.p_out)}</span></li>`).join("")}</ol></div>`).join("");
   $("markers").querySelectorAll("li[data-q]").forEach(l => l.onclick = () => openQuestion(+l.dataset.q));
   const F = [...IMP.final27].sort((a, b) => b.w - a.w);
-  const col = (list, title, c) => `<div><h4><span class="dot" style="background:${c}"></span>${title} (${list.length})</h4><ul class="qlist">${list.map(f => `<li data-q="${f.q}"><span class="r">${f.w > 0 ? "+" : ""}${f.w.toFixed(2)}</span>${esc(D.q.text[f.q])}</li>`).join("")}</ul></div>`;
+  $("nq27").textContent = IMP.n_questions;
+  const rk = q => IMP.rank_all[q], rw = q => IMP.ridge_all[q];
+  const tagR = f => { const r = rk(f.q), w = rw(f.q); if (r == null) return "";
+    const flip = w != null && (w > 0) !== (f.w > 0);
+    return `<span class="x ${flip ? "flip" : r <= 20 ? "in" : ""}">rank ${r}${r <= 20 ? " · top 20" : ""}${flip ? ` · ridge ${sgn(w)}` : ""}</span>`; };
+  const col = (list, title, c) => `<div><h4><span class="dot" style="background:${c}"></span>${title} (${list.length})</h4><ul class="qlist">${list.map(f => `<li data-q="${f.q}">${tagR(f)}<span class="r">${f.w > 0 ? "+" : ""}${f.w.toFixed(2)}</span>${esc(D.q.text[f.q])}</li>`).join("")}</ul></div>`;
   $("final27").innerHTML = col(F.filter(f => f.w > 0), "Positive weight (malignant)", rgb(PAL.pos)) + col(F.filter(f => f.w < 0).reverse(), "Negative weight (benign)", rgb(PAL.neg));
   $("final27").querySelectorAll("li[data-q]").forEach(l => l.onclick = () => openQuestion(+l.dataset.q));
+}
+
+
+// ------------------------------------------------------------------ 7 case studies
+function renderC7() {
+  const C = D.cases.cases, NTOP = 8, lg = p => Math.log(p / (1 - p)), sig = v => 1 / (1 + Math.exp(-v));
+  $("cases").innerHTML = C.map((c, ci) => {
+    const M = c.models.all, T = [...M.terms].sort((a, b) => Math.abs(b.c) - Math.abs(a.c));
+    const top = T.slice(0, NTOP), rest = T.slice(NTOP).reduce((s, t) => s + t.c, 0);
+    const steps = []; let run = M.b0;
+    top.forEach(t => { steps.push({t, a: run, b: run + t.c}); run += t.c; });
+    steps.push({rest: true, a: run, b: run + rest}); run += rest;
+    const vals = steps.flatMap(s => [s.a, s.b]).concat([0]), lo = Math.min(...vals) - .3, hi = Math.max(...vals) + .3, W = 150;
+    const X = v => 4 + (v - lo) / (hi - lo) * (W - 8);
+    const zero = `<line x1="${X(0)}" x2="${X(0)}" y1="0" y2="20" stroke="${PAL.ink3}" stroke-dasharray="2 2"/>`;
+    const seg = (a, b) => `<svg width="${W}" height="20">${zero}<line x1="${X(a)}" x2="${X(a)}" y1="2" y2="18" stroke="${PAL.border}"/><rect x="${X(Math.min(a, b))}" y="4" width="${Math.max(1.5, Math.abs(X(b) - X(a)))}" height="12" rx="2" fill="${rgb(b > a ? PAL.pos : PAL.neg)}"/></svg>`;
+    const dot = v => `<svg width="${W}" height="20">${zero}<circle cx="${X(v)}" cy="10" r="5" fill="${PAL.ink}"/></svg>`;
+    const ticks = [.05, .1, .25, .5, .75, .9, .95].filter(p => lg(p) > lo && lg(p) < hi);
+    const axis = `<svg width="${W}" height="14">${ticks.map(p => `<text x="${X(lg(p))}" y="11" text-anchor="middle" style="font-size:10px;fill:${PAL.ink3}">${p}</text>`).join("")}</svg>`;
+    const rel = t => { const yes = t.py >= .5, up = t.z > 0;
+      return yes ? (up ? "a firmer yes than most images" : "a weaker yes than most images") : (up ? "a less certain no than most images" : "a firmer no than most images"); };
+    const ans = t => `Claude: <b>${t.py >= .5 ? "yes" : "no"}</b> (P(yes) ${fmt(t.py)}, confidence ${fmt(t.cf)}), ${rel(t)} · weight ${t.w > 0 ? "+" : ""}${t.w.toFixed(2)}`;
+    const rows = [`<div class="h">step</div><div class="h">${axis}</div><div class="h" style="justify-content:flex-end">P</div>`,
+      `<div class="row"><div><span class="t">Start: the average image<small>every question answered as the average image answers it</small></span></div><div>${dot(M.b0)}</div><div class="pv">${fmt(sig(M.b0))}</div></div>`,
+      ...steps.map(s => s.rest
+        ? `<div class="row"><div><span class="t">The other ${T.length - NTOP} questions together<small>many small steps, summed</small></span></div><div>${seg(s.a, s.b)}</div><div class="pv">${fmt(sig(s.b))}</div></div>`
+        : `<div class="row q" data-q="${s.t.q}"><div><span class="t">${esc(D.q.text[s.t.q])}<small>${ans(s.t)}</small></span></div><div>${seg(s.a, s.b)}</div><div class="pv">${fmt(sig(s.b))}</div></div>`),
+      `<div class="row end"><div>Prediction: ${M.p >= .5 ? "malignant" : "benign"}</div><div>${dot(M.logit)}</div><div class="pv">${fmt(M.p)}</div></div>`];
+    const correct = (M.p >= .5) === (c.grp === 2), sub = SUB[c.sub], i = c.i;
+    const info = [D.img.imtype[i], D.img.site[i], D.img.age[i] != null ? `age about ${D.img.age[i]}` : "", D.img.sex[i], D.img.dx3[i], D.img.confirm[i]].filter(Boolean).map(esc).join(" · ");
+    return `<div class="fig"><h3><span class="fn">Fig. 7.${ci + 1}</span>${c.grp === 2 ? "Malignant" : "Benign"}: ${esc(sub)}</h3>
+      <img src="data:image/jpeg;base64,${c.image}" alt="${esc(c.id)}" data-i="${i}" title="Open on the image map">
+      <p class="idl">${esc(c.id)} · ${info}</p>
+      <div class="path">${rows.join("")}</div>
+      <p class="verdict">True diagnosis ${c.grp === 2 ? "malignant" : "benign"}; prediction ${correct ? "correct" : "incorrect"}. For comparison: the cross-validated estimate of Ch. V gave ${fmt(c.oof)}, and asking Claude directly “Is this a malignant lesion?” gave P(yes) ${fmt(c.ctrl)}.</p></div>`;
+  }).join("");
+  $("cases").querySelectorAll(".row.q").forEach(r => r.onclick = () => openQuestion(+r.dataset.q));
+  $("cases").querySelectorAll("img[data-i]").forEach(m => m.onclick = () => openImage(+m.dataset.i));
+  const c0 = C[0];
+  $("c7-method").innerHTML = `<p>The model is the main ridge model (Ch. V) on all ${c0.models.all.terms.length} clinical questions, refitted with the same penalty (C = ${c0.models.all.C}) on every labelled image except those of the case's patient (${C.map(c => `${c.n_train} training images, ${c.n_left_out} left out`).join("; ")}). The penalty itself was chosen with the case included, so the hold-out is close to, but not quite, a clean test.</p>
+  <p>The model works in log-odds. Each step adds weight × standardised answer: the question's weight, times how far this image's Directional Score lies from the training average, in standard deviations. The steps are exact and sum to the prediction; the probability shown after each step is the running total converted back to a probability, read on the scale above the bars (dashed line: 0.5). The eight steps shown are the largest in size for this image; the order of the steps does not change the end point.</p>
+  <p>Because each step depends on how the answer compares with other images, a “no” can push either way. A question with a positive weight pushes toward malignant whenever the answer leans more toward yes than usual, which includes a less certain “no”; a firmer “no” than usual pushes toward benign. The note under each question says which applies. ${D.cases.auto ? "Cases chosen automatically: dermoscopic, correctly classified out of fold, and the most typical of their subtype (out-of-fold probability closest to the subtype median)." : "Cases named in the configuration."}</p>`;
 }
 
 // ------------------------------------------------------------------ methods
@@ -1086,7 +1179,7 @@ function renderMethods() {
 
 // ------------------------------------------------------------------ rendering on demand, per tab
 const RENDERERS = {renderCorr, renderQmap, renderIclust, renderHeat};
-const TABR = {c0: renderC0, c1: renderC1, c2: renderC2, c3: renderC3, c4: renderC4, c5: renderC5, c6: renderC6, c7: renderMethods};
+const TABR = {c0: renderC0, c1: renderC1, c2: renderC2, c3: renderC3, c4: renderC4, c5: renderC5, c6: renderC6, c7: renderC7, c8: renderMethods};
 const done = new Set(), rendered = new Set();
 function renderTab(id) {
   if (!done.has(id)) { TABR[id](); done.add(id); }

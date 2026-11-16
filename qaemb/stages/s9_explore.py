@@ -181,13 +181,79 @@ def importance_payload(inputs, qids, sub_order, top_n=25) -> dict:
     allc = pd.read_csv(d / "consensus.csv")
     allc = allc[(allc.task == "s1_2c") & (allc.source == "dir")]
     best = allc.sort_values("auroc_alone", ascending=False).iloc[0]
-    return {"top": top, "markers": markers, "final27": final,
+    # consensus rank and ridge weight of every question, so the 27-question model can be read against the ranking
+    ra = allc.set_index("question_id").reindex(qids)
+    rank_all = [None if np.isnan(v) else int(v) for v in ra.consensus_rank]
+    ridge_all = [None if np.isnan(v) else round(float(v), 5) for v in ra.ridge_coef]
+    return {"top": top, "markers": markers, "final27": final, "rank_all": rank_all, "ridge_all": ridge_all,
             "best_alone": {"q": qids.index(best.question_id) if best.question_id in qids else None, "auc": float(best.auroc_alone)},
             "n_rarely_yes": int(allc.rarely_yes.sum()), "n_questions": int(len(allc)),
             "n_top20_doubt": int(c.head(20).rarely_yes.sum())}
 
 
-def thumbnails(paths, px: int, n_jobs: int) -> list[str]:
+def pick_cases(lab, meta, rp, ids, wanted) -> list[str]:
+    """Case-study images. Unless named in explore.case_images: one melanoma and one naevus ('malignant melanocytic',
+    'benign melanocytic'), dermoscopic, correctly classified out of fold, each the one whose out-of-fold P(malignant)
+    is closest to the median of the correctly classified images of its subtype, i.e. a typical case, not an extreme."""
+    if wanted:
+        return list(wanted)
+    p = pd.Series(rp, index=ids)
+    out = []
+    for sub, mal in [("malignant melanocytic", True), ("benign melanocytic", False)]:
+        ok = (lab.c10.values == sub) & (meta.image_type.values == "dermoscopic") & ((p.values >= 0.5) == mal) & ~np.isnan(p.values)
+        q = p[ok]
+        out.append(str((q - q.median()).abs().idxmin()))
+    return out
+
+
+def case_payload(cfg, inputs, lab, meta, man, ids, qids, rp, ctrl, sub_order) -> dict:
+    """For each case image: its answers, and how the ridge model's prediction is built from them. The final model
+    (all 446 questions) is refitted with the same lambda and the same questions on every
+    labelled image except those of the case's patient, so the case is held out; the log-odds of malignancy is then
+    exactly the intercept plus, for each question, weight x standardised answer."""
+    import joblib
+    from sklearn.base import clone
+
+    e = cfg.explore
+    case_ids = pick_cases(lab, meta, rp, ids, e.get("case_images"))
+    X = pd.read_parquet(inputs["embed"] / f"X_image_{e.source}.parquet").loc[ids]
+    a = pd.read_parquet(inputs["embed"] / "answers.parquet", columns=["image_id", "question_id", "original", "p_yes", "confidence"])
+    a = a[(a.original.astype(int) == 1) & a.image_id.isin(case_ids)]
+    groups = pd.read_csv(inputs["ridge"] / "groups.csv").set_index("image_id").group.reindex(ids).values
+    rows = lab.c3.isin(["benign", "malignant"]).values
+    y = (lab.c3.values == "malignant").astype(int)
+    paths = man.set_index("image_id").path
+    fm = inputs["ridge"] / "final_models"
+    models = {"all": joblib.load(fm / "s1_2c_all.joblib")}
+    out = []
+    for cid in case_ids:
+        i = ids.index(cid)
+        train = rows & (groups != groups[i])
+        ans = a[a.image_id == cid].set_index("question_id")
+        case = {"id": cid, "i": i, "sub": sub_order.index(lab.c10.values[i]), "grp": GROUPS.index(lab.c3.values[i]),
+                "oof": None if np.isnan(rp[i]) else float(rp[i]), "ctrl": None if np.isnan(ctrl[i]) else float(ctrl[i]),
+                "n_left_out": int((rows & (groups == groups[i])).sum()), "n_train": int(train.sum()),
+                "image": thumbnails([paths[cid]], 560, 1, quality=86)[0], "models": {}}
+        for name, m in models.items():
+            q = list(m["question_ids"])
+            Xq = X[q].values.astype(float)
+            scale, clf = clone(m["model"]["scale"]), clone(m["model"]["clf"])
+            Zt = scale.fit_transform(Xq[train])
+            clf.fit(Zt, y[train])
+            z = scale.transform(Xq[[i]])[0]
+            w, b = clf.coef_[0], float(clf.intercept_[0])
+            logit = b + float(w @ z)
+            p = float(clf.predict_proba(z[None])[0, 1])
+            assert abs(1 / (1 + np.exp(-logit)) - p) < 1e-9
+            case["models"][name] = {"b0": b, "logit": logit, "p": p, "C": float(m["C"]), "terms": [
+                {"q": qids.index(qq), "x": float(Xq[i, k]), "z": float(z[k]), "w": float(w[k]), "c": float(w[k] * z[k]),
+                 "py": float(ans.p_yes.get(qq, np.nan)), "cf": float(ans.confidence.get(qq, np.nan))}
+                for k, qq in enumerate(q) if qq in qids]}
+        out.append(case)
+    return {"cases": out, "auto": not e.get("case_images")}
+
+
+def thumbnails(paths, px: int, n_jobs: int, quality: int = 72) -> list[str]:
     from joblib import Parallel, delayed
 
     def one(p):
@@ -198,7 +264,7 @@ def thumbnails(paths, px: int, n_jobs: int) -> list[str]:
         im = im.convert("RGB")
         im.thumbnail((px, px))
         b = io.BytesIO()
-        im.save(b, "JPEG", quality=72, optimize=True)
+        im.save(b, "JPEG", quality=quality, optimize=True)
         return base64.b64encode(b.getvalue()).decode()
 
     return Parallel(n_jobs=n_jobs)(delayed(one)(p) for p in paths)
@@ -444,6 +510,7 @@ def _run(cfg, out, inputs, ctx) -> dict:
         "ica": ica.round(4).to_dict("records"),
         "eval": eval_payload(inputs, ids, lab, meta, ctrl, sub_order),
         "imp": importance_payload(inputs, qids, sub_order),
+        "cases": case_payload(cfg, inputs, lab, meta, man, ids, qids, rp, ctrl, sub_order),
         "answers": {"yes_share": float((Pq >= 0.5).mean()),
                     "p_hist": np.histogram(Pq.ravel(), bins=20, range=(0, 1))[0].tolist(),
                     "q_yes_hist": np.histogram((Pq >= 0.5).mean(0), bins=20, range=(0, 1))[0].tolist(),

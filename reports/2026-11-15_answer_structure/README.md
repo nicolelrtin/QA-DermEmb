@@ -7,16 +7,17 @@ independent dimensions do the 500 questions amount to? And when the images are g
 follow the diagnosis, or the image type, the institution or the patient?
 
 **Interactive version.** [explorer.html](explorer.html) (about 6 MB, self-contained; open it in any browser, no internet
-needed). Last rebuilt on 2026-11-16 (explore `5e1e8b163035`, run `20261116-010945_s9-explore-garamond`) with tabs: an
+needed). Last rebuilt on 2026-11-16 (explore `a29d7e4fe69b`, run `20261116-151909_s9-explore-cases`) with tabs: an
 overview (abstract, a flow diagram of the analysis whose boxes open the chapters, and one line per principal result),
-then seven chapters:
+then eight chapters:
 1. the answer matrix;
 2. topic coherence (whether questions in a topic are answered alike);
 3. dimensionality of the questions;
 4. what the images' answer profiles follow;
 5. classification, from the S10 ridge run;
 6. question importance, from the S7 importance run;
-7. methods and limitations.
+7. case studies: how the prediction for one melanoma and one naevus is built, question by question;
+8. methods and limitations.
 
 Each chapter opens with its principal result, then numbered figures with captions and an interpretation. The heavier
 interactive tools (correlation matrix, question map, image clusters, full heatmap) sit in expandable panels inside the
@@ -26,11 +27,31 @@ charts and tables in a plain sans. An intermediate build on 2026-11-15 (explore 
 face for the title, chapter names and drop cap; it was replaced by Garamond as hard to read. The data are identical to the earlier narrative
 build (explore `a35b9e7a2913`).
 
+The rebuild of 2026-11-16 (`20261116-134236_s9-explore-coefdir`) changed only the importance chapter. Fig. 6.1 gained a
+second view, "By direction", which lists the same twenty questions in two columns, toward malignant and toward benign,
+ordered by ridge weight, in the layout of Fig. 6.3. Each entry also shows its weight in the 27-question lasso model, or
+that the lasso dropped it. Fig. 6.3 in turn shows each question's consensus rank among the 446. Read together, 15 of the
+top 20 are kept by the lasso, every shared question points the same way in both models, and the lasso's strongest
+benign question ("bluish-purple, suggesting low blood oxygen saturation", rank 5) and malignant question (chronic sun
+damage, rank 3) are near the top of the consensus ranking. To support this the stage now passes the consensus rank
+and ridge weight of every question to the page.
+
+The rebuild later the same day (`20261116-151909_s9-explore-cases`) added chapter VII, case studies. It shows two images,
+a melanoma (ISIC_2742711) and a naevus (ISIC_0029550), chosen automatically as dermoscopic, correctly classified out of
+fold, and the most typical of their subtype (out-of-fold probability closest to the subtype median; other images can be
+named in `explore.case_images`). For each, the main ridge model is refitted with the same penalty on every labelled
+image except that patient's, and its prediction is traced as a path: it starts from the average image (P(malignant)
+0.40), then each question adds its weight times how far this image's answer lies from the average, and the steps sum
+exactly to the prediction. The eight largest steps are shown with Claude's answer and the question's weight; the other
+438 are summed. The melanoma ends at 0.71 and the naevus at 0.13. In the melanoma, most of the largest steps are
+less certain "no" answers to questions that do not apply to it (for example an acral site on dark skin), rather than
+melanoma features; this is the same reliance on the confidence of negative answers noted in Ch. VI.
+
 ## Runs covered
 
 | Run | Experiments (meaning) | Stage hashes |
 |---|---|---|
-| [20261115-105528_s9-explore](../../outputs/qaemb/runs/20261115-105528_s9-explore/report.md); page rebuilt in [20261116-010945_s9-explore-garamond](../../outputs/qaemb/runs/20261116-010945_s9-explore-garamond/report.md) (explore `5e1e8b163035`, reading also ridge `159decea7f3d` and importance `43a20169f0c0`) | `D1_train` (all 1,000 beta images), `I1_claude_max` (images shrunk only, to at most 3.6 MP), `Q0_orig` (500 questions as written plus the control question, no negations), `M_topic` (one prompt per topic), `ANS_claude_sonnet` (Claude Sonnet 5.5 through the Batch API, effort low), `G1` (whole image), `R1` (replicate 1). Stage `explore`. | embed `6cd6f95ebcbd`, classify `670746415c57`, importance `43a20169f0c0`, explore `e0f6b40a7715` |
+| [20261115-105528_s9-explore](../../outputs/qaemb/runs/20261115-105528_s9-explore/report.md); page rebuilt in [20261116-010945_s9-explore-garamond](../../outputs/qaemb/runs/20261116-010945_s9-explore-garamond/report.md) (explore `5e1e8b163035`) [20261116-134236_s9-explore-coefdir](../../outputs/qaemb/runs/20261116-134236_s9-explore-coefdir/report.md) (explore `4e20b9e8faf3`) and [20261116-151909_s9-explore-cases](../../outputs/qaemb/runs/20261116-151909_s9-explore-cases/report.md) (explore `a29d7e4fe69b`, reading also ridge `159decea7f3d` and importance `43a20169f0c0`) | `D1_train` (all 1,000 beta images), `I1_claude_max` (images shrunk only, to at most 3.6 MP), `Q0_orig` (500 questions as written plus the control question, no negations), `M_topic` (one prompt per topic), `ANS_claude_sonnet` (Claude Sonnet 5.5 through the Batch API, effort low), `G1` (whole image), `R1` (replicate 1). Stage `explore`. | embed `6cd6f95ebcbd`, classify `670746415c57`, importance `43a20169f0c0`, explore `e0f6b40a7715` |
 
 Three earlier runs the same morning are superseded: `20261115-104059_s9-dev` (explore `04b4417cca54`; average-linkage
 clustering and a placeholder page) and two runs of `s9-explore` (explore `91c40697ad8d`; the page had a start-up bug

@@ -192,6 +192,7 @@ explore:                         # S9: unsupervised structure of the answers + i
   n_perm_agreement: 200          # for the adjusted mutual information nulls
   n_perm_pca: 50                 # shuffles for parallel analysis
   thumb_px: 160
+  case_images: null               # case-study images (ISIC ids); null = one typical melanoma and one naevus (pick_cases)
   n_jobs: 16
 
 ridge:                           # S10: main model with leakage controls, trimmed question sets, final models (qaemb/stages/s10_ridge.py)
