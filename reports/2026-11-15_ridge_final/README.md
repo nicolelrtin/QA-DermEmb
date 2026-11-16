@@ -12,7 +12,7 @@ images, without scoring them.
 
 | Run | Experiments (meaning) | Stage hashes |
 |---|---|---|
-| [20261115-114159_s10-ridge](../../outputs/qaemb/runs/20261115-114159_s10-ridge/report.md) | `D1_train` (all 1,000 beta images), `I1_claude_max` (images shrunk only, to at most 3.6 MP), `Q0_orig` (500 questions as written plus the control question, no negations), `M_topic` (one prompt per topic), `ANS_claude_sonnet` (Claude Sonnet 5.5 through the Batch API, effort low), `G1` (whole image), `R1` (replicate 1). Stage `ridge`. | embed `6cd6f95ebcbd`, ridge `7608bf69bf96` |
+| [20261115-122004_s10-ridge](../../outputs/qaemb/runs/20261115-122004_s10-ridge/report.md) | `D1_train` (all 1,000 beta images), `I1_claude_max` (images shrunk only, to at most 3.6 MP), `Q0_orig` (500 questions as written plus the control question, no negations), `M_topic` (one prompt per topic), `ANS_claude_sonnet` (Claude Sonnet 5.5 through the Batch API, effort low), `G1` (whole image), `R1` (replicate 1). Stage `ridge`. | embed `6cd6f95ebcbd`, ridge `159decea7f3d` (identical results to `20261115-114159_s10-ridge`, ridge `7608bf69bf96`) |
 
 Two earlier runs the same morning are superseded. `20261115-113136_s10-ridge` (ridge `03da52e7e270`) did not yet
 include the question sets chosen with labels. `20261115-113628_s10-ridge` (ridge `890cabcf2acc`) added the

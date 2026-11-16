@@ -33,6 +33,17 @@ from .s6_classify import GROUPS, SOURCE_NAMES, load_labels
 UPSTREAM = ["manifest", "embed", "importance", "ridge"]
 VERSION = 2
 TEMPLATE = Path(__file__).resolve().parents[1] / "templates" / "explore.html"
+FONTS = [  # (family, style, file): embedded so the page needs no network (templates/fonts/README.md)
+    ("Fraktur", "normal", "fraktur.woff2"), ("Garamond", "normal", "garamond.woff2"), ("Garamond", "italic", "garamond-italic.woff2")]
+
+
+def font_css() -> str:
+    out = []
+    for fam, style, f in FONTS:
+        b64 = base64.b64encode((TEMPLATE.parent / "fonts" / f).read_bytes()).decode()
+        out.append(f"@font-face {{ font-family: '{fam}'; font-style: {style}; font-weight: 400 800; font-display: swap; "
+                   f"src: url(data:font/woff2;base64,{b64}) format('woff2'); }}")
+    return "\n".join(out)
 
 
 def key(cfg, ctx) -> dict:
@@ -40,7 +51,8 @@ def key(cfg, ctx) -> dict:
     files = [e.metadata, *e.text_embeddings.values(), e.text_questions]
     return {"explore": e, "label_columns": cfg.classify.label_columns, "seed": cfg.seed,
             "labels_sha": file_hash(ROOT / cfg.data.root / cfg.data.manifest),
-            "files": {f: file_hash(ROOT / f) for f in files}, "template": file_hash(TEMPLATE)}
+            "files": {f: file_hash(ROOT / f) for f in files}, "template": file_hash(TEMPLATE),
+            "fonts": {f: file_hash(TEMPLATE.parent / "fonts" / f) for _, _, f in FONTS}}
 
 
 # ------------------------------------------------------------------ inputs
@@ -438,7 +450,8 @@ def _run(cfg, out, inputs, ctx) -> dict:
                     "n_rarely": int(((Pq >= 0.5).mean(0) < 0.05).sum())},
     }
     data = json.dumps(_clean(payload), ensure_ascii=False, separators=(",", ":"), allow_nan=False, default=_json_default)
-    html = TEMPLATE.read_text(encoding="utf-8").replace("__DATA__", data.replace("</", "<\\/"))
+    html = (TEMPLATE.read_text(encoding="utf-8").replace("/*__FONTS__*/", font_css())
+            .replace("__DATA__", data.replace("</", "<\\/")))
     (out / "explorer.html").write_text(html, encoding="utf-8")
     mb = (out / "explorer.html").stat().st_size / 1e6
     return {"n_images": N, "n_questions": Q, "n_parallel_components": pc["n_parallel"],
