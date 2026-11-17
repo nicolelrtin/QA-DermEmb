@@ -144,6 +144,50 @@ class QwenVL:
         return ps, masses, len(first), n_out + 1, prefill_ms, (time.perf_counter() - t) * 1e3
 
     @torch.no_grad()
+    def prefill_hidden(self, image: Image.Image, text: str, layers: list[int]):
+        """Prefill a full prompt (already chat-formatted, ending where the answer starts) and keep, for each requested
+        layer (0 = token embeddings, where the image positions hold the vision encoder's output after the merger;
+        num_hidden_layers = last), the mean over the image tokens and the hidden state at the last position.
+        Returns (Prefix, last-position logits [V], {layer: (image_mean [H], last [H])}, n_image_tokens)."""
+        _sync()
+        t = time.perf_counter()
+        inputs = self.processor(text=[text], images=[image], return_tensors="pt").to(self.device)
+        out = self.model(**inputs, use_cache=True, output_hidden_states=True)
+        _sync()
+        L0 = inputs["input_ids"].shape[1]
+        delta = int(self.model.model.rope_deltas.reshape(-1)[0])
+        img = inputs["input_ids"][0] == self.model.config.image_token_id
+        hs = {l: (out.hidden_states[l][0, img].float().mean(0).cpu(), out.hidden_states[l][0, -1].float().cpu()) for l in layers}
+        return (Prefix(out.past_key_values, L0, L0 + delta, (time.perf_counter() - t) * 1e3), out.logits[0, -1],
+                hs, int(img.sum()))
+
+    @torch.no_grad()
+    def sequence_logprobs(self, prefix: Prefix, last_logits: torch.Tensor, seqs: list[list[int]]) -> list[float]:
+        """log P(seq | prefix) for each token sequence: the first token from the prefix's last logits, the rest from one
+        batched continuation (all positions kept)."""
+        lp0 = torch.log_softmax(last_logits.float(), dim=-1)
+        B, Ls = len(seqs), max(len(s) for s in seqs)
+        ids = torch.full((B, Ls), self.pad_id, dtype=torch.long)
+        mask = torch.zeros((B, Ls), dtype=torch.long)
+        for i, s in enumerate(seqs):
+            ids[i, : len(s)] = torch.tensor(s)
+            mask[i, : len(s)] = 1
+        cache = copy.deepcopy(prefix.cache)
+        cache.batch_repeat_interleave(B)
+        attn = torch.cat([torch.ones((B, prefix.length), dtype=torch.long), mask], dim=1)
+        pos = (prefix.next_pos + torch.arange(Ls)).view(1, 1, Ls).expand(3, B, Ls)
+        out = self.model(input_ids=ids.to(self.device), attention_mask=attn.to(self.device),
+                         position_ids=pos.to(self.device), past_key_values=cache, use_cache=False)
+        lp = torch.log_softmax(out.logits.float(), dim=-1)
+        res = []
+        for i, s in enumerate(seqs):
+            v = lp0[s[0]]
+            for j in range(1, len(s)):
+                v = v + lp[i, j - 1, s[j]]
+            res.append(float(v))
+        return res
+
+    @torch.no_grad()
     def reference_p_yes(self, image: Image.Image, text: str) -> float:
         """Uncached single forward over the full prompt; used to verify the prefix-cache path."""
         inputs = self.processor(text=[text], images=[image], return_tensors="pt").to(self.device)

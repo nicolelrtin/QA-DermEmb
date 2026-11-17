@@ -438,3 +438,94 @@ def ridge_sets_figure(summ, path, n_all):
     fig.tight_layout(rect=(0, 0, 1, 0.94))
     fig.savefig(path, dpi=150)
     plt.close(fig)
+
+
+def pair_roc(curves: dict, names: dict, aucs: dict, sens: float, title: str, path):
+    """ROC curves of several scores on the same images; dashed line at the target sensitivity."""
+    cols = {"pair": SERIES[0], "tenclass": SERIES[1], "twoclass": SERIES[2], "direct": REF}
+    fig, ax = plt.subplots(figsize=(4.6, 4.4))
+    _identity(ax)
+    for k, pts in curves.items():
+        a = np.array(pts)
+        ax.plot(a[:, 0], a[:, 1], color=cols.get(k, INK2), lw=2, ls=":" if k == "direct" else "-",
+                label=f"{names[k]} (AUROC {aucs[k]:.2f})")
+    ax.axhline(sens, color=INK2, lw=0.8, ls="--")
+    ax.set_xlabel("1 − specificity (naevi called melanoma)")
+    ax.set_ylabel("sensitivity (melanomas caught)")
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1.01)
+    ax.legend(fontsize=7, loc="lower right")
+    ax.set_title(title)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+# S12 (benchmarks) figures. One colour per kind of method: questions orange (the Directional Score slot of S6), SkinGPT-R1
+# embeddings blue, SkinGPT-R1 diagnosis green, Sonnet's direct answer grey.
+def _bench_colour(m: str) -> str:
+    if m == "questions":
+        return SERIES[1]
+    if m.startswith("skingpt_emb"):
+        return SERIES[0]
+    if m.startswith("skingpt_diagnosis"):
+        return SERIES[2]
+    return REF
+
+
+def bench_figure(summ, methods: list, name, path):
+    """Fold mean ± sd over the 25 outer folds for each method; panels: benign vs malignant (all images, dermoscopic
+    only), 10 subtypes. The questions' mean is drawn as a vertical line across each panel."""
+    panels = [("s1_2c", "all images", "AUROC, benign vs malignant"), ("s1_2c", "dermoscopic only", "AUROC, dermoscopic images only"),
+              ("flat_10c", "all images", "balanced accuracy, 10 subtypes")]
+    panels = [p for p in panels if ((summ.task == p[0]) & (summ.subset == p[1])).any()]
+    fig, axes = plt.subplots(1, len(panels), figsize=(3.6 * len(panels) + 2.6, 0.42 * len(methods) + 1.3), squeeze=False,
+                             sharey=True)
+    ys = np.arange(len(methods))[::-1]
+    for i, (ax, (t, sub, title)) in enumerate(zip(axes[0], panels)):
+        s = summ[(summ.task == t) & (summ.subset == sub)].set_index("set")
+        for y, m in zip(ys, methods):
+            if m not in s.index:
+                continue
+            x = s.loc[m]
+            c = _bench_colour(m)
+            ax.errorbar(x.fold_mean, y, xerr=x.fold_sd, color=c, lw=2, marker="o", ms=6, capsize=3)
+            ax.annotate(f"{x.fold_mean:.3f}", (x.fold_mean, y), xytext=(0, 6), textcoords="offset points",
+                        ha="center", fontsize=7, color=INK2)
+        if "questions" in s.index:
+            ax.axvline(s.loc["questions"].fold_mean, color=SERIES[1], ls="--", lw=1, zorder=0)
+        if t != "s1_2c":
+            K = 10
+            ax.axvline(1 / K, color=REF, ls=":", lw=1, zorder=0)
+        else:
+            ax.axvline(0.5, color=REF, ls=":", lw=1, zorder=0)
+        ax.set_title(title)
+        ax.grid(axis="y", visible=False)
+        if i == 0:
+            ax.set_yticks(ys, [name(m) for m in methods], fontsize=8)
+    fig.suptitle("Same 25 outer folds (patient-grouped); mean ± sd over folds; dotted line = chance", color=INK, fontsize=10)
+    fig.tight_layout(rect=(0, 0, 1, 1 - 0.35 / fig.get_figheight()))
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def bench_roc(roc: dict, name, sens: float, path):
+    """Pooled out-of-fold ROC curves (first repeat) for benign vs malignant."""
+    from sklearn.metrics import roc_auc_score, roc_curve
+
+    fig, ax = plt.subplots(figsize=(5.4, 4.8))
+    _identity(ax)
+    for m, (y, p) in roc.items():
+        fpr, tpr, _ = roc_curve(y, p)
+        c = INK2 if m == "skingpt_diagnosis" else _bench_colour(m)     # its own colour next to the fitted readout
+        ax.plot(fpr, tpr, color=c, lw=2, ls=":" if m == "control question" else "-", label=f"{name(m)} ({roc_auc_score(y, p):.3f})")
+    ax.axhline(sens, color=INK2, lw=0.8, ls="--")
+    ax.set_xlabel("1 − specificity (benign lesions called malignant)")
+    ax.set_ylabel("sensitivity (malignant lesions caught)")
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1.01)
+    ax.legend(fontsize=6.5, loc="lower right", title="pooled AUROC, repeat 1", title_fontsize=7)
+    ax.set_title("Benign vs malignant, out-of-fold predictions")
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)

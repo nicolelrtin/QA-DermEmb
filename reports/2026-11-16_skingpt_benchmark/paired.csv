@@ -1,0 +1,31 @@
+task,subset,set,vs,mean_diff,sd_diff,folds_higher,n_folds
+flat_10c,all images,skingpt_diagnosis,questions,-0.2376,0.04223249144122725,0,25
+flat_10c,all images,skingpt_diagnosis_fitted,questions,-0.11199999999999997,0.04587119648174295,0,25
+flat_10c,all images,skingpt_emb:img_L0,questions,0.0056000000000000424,0.03515797680944304,13,25
+flat_10c,all images,skingpt_emb:img_L14,questions,0.006200000000000012,0.031631998566852094,14,25
+flat_10c,all images,skingpt_emb:img_L21,questions,-0.003199999999999972,0.039127995093027695,10,25
+flat_10c,all images,skingpt_emb:img_L28,questions,-0.005799999999999996,0.038424167742017096,10,25
+flat_10c,all images,skingpt_emb:last_L28,questions,-0.04100000000000001,0.03350994877147182,3,25
+flat_10c,dermoscopic only,skingpt_diagnosis,questions,-0.24065733148860083,0.04157959827856363,0,25
+flat_10c,dermoscopic only,skingpt_diagnosis_fitted,questions,-0.12408689495918597,0.05393104770700748,0,25
+flat_10c,dermoscopic only,skingpt_emb:img_L0,questions,-0.012533689152264986,0.045970693709917534,11,25
+flat_10c,dermoscopic only,skingpt_emb:img_L14,questions,-0.017412517015148576,0.03484135278053716,10,25
+flat_10c,dermoscopic only,skingpt_emb:img_L21,questions,-0.02743173223405421,0.040110326335954224,6,25
+flat_10c,dermoscopic only,skingpt_emb:img_L28,questions,-0.02472000807929601,0.04175847820038585,8,25
+flat_10c,dermoscopic only,skingpt_emb:last_L28,questions,-0.057069198912542564,0.03661781399718464,2,25
+s1_2c,all images,control question,questions,-0.05321666666666665,0.031568286506602844,1,25
+s1_2c,all images,skingpt_diagnosis,questions,-0.24006666666666665,0.03466219255316361,0,25
+s1_2c,all images,skingpt_diagnosis_fitted,questions,-0.14128666666666664,0.03544301372939699,0,25
+s1_2c,all images,skingpt_emb:img_L0,questions,-0.024446666666666627,0.03192506851989518,6,25
+s1_2c,all images,skingpt_emb:img_L14,questions,-0.04646666666666663,0.035762203304399276,3,25
+s1_2c,all images,skingpt_emb:img_L21,questions,-0.05142666666666665,0.03813921501843242,2,25
+s1_2c,all images,skingpt_emb:img_L28,questions,-0.05132666666666666,0.039306796603885925,2,25
+s1_2c,all images,skingpt_emb:last_L28,questions,-0.07326666666666666,0.0390600795546401,2,25
+s1_2c,dermoscopic only,control question,questions,-0.0388878482655121,0.035965365611437206,4,25
+s1_2c,dermoscopic only,skingpt_diagnosis,questions,-0.2049670420650408,0.04146865429478474,0,25
+s1_2c,dermoscopic only,skingpt_diagnosis_fitted,questions,-0.14359338749845965,0.03903190036360854,0,25
+s1_2c,dermoscopic only,skingpt_emb:img_L0,questions,-0.029552450340220096,0.03661542179515456,6,25
+s1_2c,dermoscopic only,skingpt_emb:img_L14,questions,-0.04741360116983588,0.0390466671363892,5,25
+s1_2c,dermoscopic only,skingpt_emb:img_L21,questions,-0.05171895169100868,0.04135569185398454,5,25
+s1_2c,dermoscopic only,skingpt_emb:img_L28,questions,-0.049018895407561595,0.04562659189494644,4,25
+s1_2c,dermoscopic only,skingpt_emb:last_L28,questions,-0.07033845815365464,0.0431566927038512,3,25

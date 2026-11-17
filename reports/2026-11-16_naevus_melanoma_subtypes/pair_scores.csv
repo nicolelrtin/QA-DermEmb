@@ -1,0 +1,201 @@
+image_id,subtype,melanoma,diagnosis,confirmation,image_type,score_pair,score_tenclass,score_twoclass,score_direct
+ISIC_1288034,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.6971237725924435,0.644300338449481,0.6450026411057783,0.2
+ISIC_2954422,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.255441421582686,0.1466111183374747,0.0838997117873653,0.12
+ISIC_0001890,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.016318607606430852,0.007387663430419961,0.05937288128405995,0.04
+ISIC_0028720,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.24776516321586844,0.19772450200167438,0.5060440431416876,0.45
+ISIC_6432413,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.13126445403391318,0.11995956824433296,0.10950401375691057,0.3
+ISIC_5730606,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.021143423018938432,0.01309337773469382,0.039587067138753707,0.12
+ISIC_0030509,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.06389056550686027,0.046682827130862074,0.07865116516277507,0.12
+ISIC_0025410,benign melanocytic,0,Nevus,histopathology,dermoscopic,0.1354691252421076,0.06931214262116477,0.06514321951258295,0.15
+ISIC_0176781,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.04797726896599693,0.03466062569356934,0.0831374144116713,0.2
+ISIC_0046332,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.49168917366812054,0.3827105954876811,0.6111507846373601,0.3
+ISIC_0026472,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.19198386847411597,0.2122567942737572,0.24517977615779998,0.3
+ISIC_0035161,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.15245067303297616,0.09295637891819902,0.3788621427545818,0.3
+ISIC_0005572,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.13089717214553892,0.08806003401185084,0.2344253142556898,0.25
+ISIC_9705632,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.08993112666619398,0.08268971761644248,0.223490710439822,0.12
+ISIC_2052216,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.07775690763306606,0.030056290243922822,0.05926395005886757,0.12
+ISIC_2058581,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.11505613294859711,0.07760547509335018,0.1640237978712475,0.2
+ISIC_6729290,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.053902887055087535,0.02735996566471628,0.09339587202336201,0.07
+ISIC_0009712,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.14947224034879564,0.07229281356956763,0.35303355795684055,0.12
+ISIC_0061796,benign melanocytic,0,Nevus,histopathology,dermoscopic,0.34946771130458676,0.3827353731345381,0.29322125308813474,0.35
+ISIC_3179153,benign melanocytic,0,Nevus,histopathology,dermoscopic,0.41913304721582956,0.3872657866331406,0.2556572275891903,0.12
+ISIC_1909382,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.19410038661388296,0.09035517551788128,0.03226050270231852,0.15
+ISIC_0029550,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.1569571581548535,0.13936261358986357,0.12500984211862112,0.2
+ISIC_0005646,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.10380172577926905,0.04515841081490644,0.058263818965145195,0.12
+ISIC_0000215,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.3954909186572231,0.43020334123401877,0.29712890946192794,0.2
+ISIC_5145347,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.30908465237032756,0.16024178624690907,0.09179338972285393,0.1
+ISIC_0005973,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.059439458492836925,0.028682692545033313,0.0641192545417293,0.05
+ISIC_2914469,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.25265984226649135,0.17260890600851556,0.12421148252270461,0.1
+ISIC_0008851,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.08734528024634813,0.0423564999789646,0.08603491448726534,0.06
+ISIC_0005726,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.07536756918244576,0.03666812750320331,0.14469969585411285,0.05
+ISIC_0005859,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.031867149387401185,0.01003963030002146,0.0755007998576089,0.04
+ISIC_5190537,benign melanocytic,0,Nevus,single image expert consensus,clinical: close-up,0.9293092113280181,0.8513589730631839,0.7944808036531839,0.5
+ISIC_0001357,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.05633750201837327,0.030852939928793188,0.05412470229316526,0.05
+ISIC_9740245,benign melanocytic,0,Nevus,histopathology,dermoscopic,0.23441935487419144,0.13196128418489186,0.03227502602094419,0.07
+ISIC_4755568,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.08061115571125997,0.05683898970467607,0.04024416852650962,0.08
+ISIC_5697382,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.6379006865054364,0.4400241464619438,0.16767057755586706,0.2
+ISIC_8919169,benign melanocytic,0,Nevus,histopathology,dermoscopic,0.05095614814014915,0.028367793942300296,0.04251782179290248,0.06
+ISIC_2315153,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.3785498114550425,0.21183463006027123,0.3430551432696019,0.2
+ISIC_0750403,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.4764277106341848,0.4082889424519488,0.3271410657763554,0.35
+ISIC_8503445,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.4818085296547473,0.3581028585474378,0.13049461579651192,0.3
+ISIC_0031164,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.416936259052313,0.25546436806817846,0.11690107460467718,0.2
+ISIC_8656015,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.5961051204418705,0.4521408700110726,0.604682076238835,0.45
+ISIC_0007498,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.03249116935085776,0.010906989629917912,0.02617287211327164,0.04
+ISIC_7951036,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.31019098521397737,0.42829087463254256,0.3684891916020089,0.15
+ISIC_0469046,benign melanocytic,0,Lentigo simplex,not recorded,dermoscopic,0.15093713036115797,0.08439059752043296,0.1551504572240053,0.1
+ISIC_0008500,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.1846757583120158,0.0911614933564128,0.16449088454330102,0.05
+ISIC_0002423,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.07157552034655024,0.02462953990228463,0.1322193531102147,0.04
+ISIC_0008247,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.12863539928515208,0.05830916593926859,0.1433645423356129,0.05
+ISIC_0076801,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.11902998170618695,0.08100821514549147,0.08873913196860932,0.2
+ISIC_4775807,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.029382497924120128,0.01200828656956203,0.07414263762569451,0.05
+ISIC_0027168,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.07412805934452008,0.09551775255600169,0.10752231270921483,0.15
+ISIC_0003616,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.10777230696810358,0.027615820447813178,0.11718636945512906,0.05
+ISIC_3272109,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.024895659385883263,0.009787938770762858,0.0476519974051141,0.05
+ISIC_0021406,benign melanocytic,0,Nevus,histopathology,dermoscopic,0.906444230361835,0.8886749888394265,0.15273767885306072,0.3
+ISIC_0009452,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.04575402476187233,0.03633673681448783,0.06757640742962286,0.05
+ISIC_8016608,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.06924325015621616,0.0433165901783169,0.16968611075830667,0.1
+ISIC_7788353,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.6036765126636944,0.5896339834331449,0.5076158522210676,0.3
+ISIC_0057749,benign melanocytic,0,Nevus,confocal microscopy with consensus dermoscopy,dermoscopic,0.12399523933778875,0.08069630848182811,0.17508740355420319,0.12
+ISIC_7905907,benign melanocytic,0,Nevus,histopathology,clinical: close-up,0.0928776384533295,0.10915110969308066,0.4796736916176731,0.12
+ISIC_8514788,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.03685456084650864,0.022268205723667698,0.12314692367579698,0.04
+ISIC_8609084,benign melanocytic,0,Nevus,histopathology,dermoscopic,0.44448276353225874,0.35609633433004123,0.24877474465595545,0.25
+ISIC_2838169,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.0612047138135333,0.046849391954631184,0.04841976646997097,0.12
+ISIC_0005540,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.023596456937027128,0.0062464249593687906,0.04836126193009392,0.04
+ISIC_0032701,benign melanocytic,0,Nevus,histopathology,dermoscopic,0.35105798211533445,0.3144012932896566,0.17746594587636422,0.15
+ISIC_0012739,benign melanocytic,0,Nevus,histopathology,dermoscopic,0.27482771784236604,0.39650975093614493,0.12392746988009407,0.2
+ISIC_7219570,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.1432802049982134,0.05033377124461587,0.15491411808661953,0.06
+ISIC_0002504,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.06390204726924506,0.017637097461677124,0.06705815323153043,0.05
+ISIC_7667239,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.22175284896025155,0.26811126546866115,0.08810339071502907,0.05
+ISIC_5762451,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.4725554593395779,0.5049118920443474,0.24937103514383283,0.12
+ISIC_0034841,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.4108079862078357,0.5514937902090786,0.38194671953342224,0.3
+ISIC_0008516,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.016971327099920885,0.006550093910431454,0.030802273695680428,0.04
+ISIC_1558004,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.2732685125252075,0.1641679770927929,0.24599170334078058,0.2
+ISIC_0006423,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.11380258561297034,0.030742798424966456,0.20390769832965439,0.05
+ISIC_3435535,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.21002858309735953,0.1622098460797367,0.25742776085406643,0.3
+ISIC_0025079,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.4816738589777426,0.3932083793067161,0.08570065506559695,0.12
+ISIC_0002615,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.11046521362319553,0.11140514545474092,0.07316050153102141,0.15
+ISIC_0024309,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.5242862613589087,0.4271604809663037,0.2904311994180473,0.6
+ISIC_0009906,benign melanocytic,0,Nevus,histopathology,dermoscopic,0.34192967433531263,0.3970706497202598,0.20748169603197905,0.2
+ISIC_8228073,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.417476563954568,0.2905531205157676,0.38430682291063095,0.2
+ISIC_0009165,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.10122032958418903,0.05784329384522564,0.14141257379284541,0.12
+ISIC_0009470,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.021118158875703084,0.014481794333589959,0.045954632279996466,0.07
+ISIC_0004966,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.04500540990327729,0.015738198519617795,0.05139167118356813,0.04
+ISIC_0640042,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.04732762298341226,0.013952211367147489,0.056164912026714475,0.04
+ISIC_0005318,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.0921462615507281,0.0416405938210282,0.12701988530103095,0.07
+ISIC_0010187,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.4168587587358399,0.48159639030408,0.2591155812110524,0.3
+ISIC_0018424,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.14281217452483871,0.08929130685086077,0.07090556186415312,0.12
+ISIC_9783961,benign melanocytic,0,Nevus,serial imaging showing no change,dermoscopic,0.10896940223757734,0.0450591108112394,0.10748126389545402,0.12
+ISIC_0004461,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.18164470692950999,0.17371681886972862,0.36041094658878825,0.12
+ISIC_0072444,benign melanocytic,0,Nevus,histopathology,dermoscopic,0.4012298053276668,0.5251526345074307,0.19118352380198506,0.3
+ISIC_7710534,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.14879044881278874,0.0795758792455282,0.23042552493436572,0.12
+ISIC_9906504,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.07086408210489932,0.04430588152013577,0.02683913254901129,0.12
+ISIC_0004282,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.23834467023544442,0.15313731999418548,0.08025463725021448,0.12
+ISIC_9653743,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.0901863617112035,0.08748655404108782,0.13314911022612516,0.08
+ISIC_0059068,benign melanocytic,0,Nevus,histopathology,dermoscopic,0.9071453764535546,0.9449954847298073,0.8030862073635685,0.8
+ISIC_0010557,benign melanocytic,0,Nevus,histopathology,dermoscopic,0.2516333283602296,0.28260969661572677,0.38580468722393224,0.3
+ISIC_5353496,benign melanocytic,0,Nevus,histopathology,TBP tile: close-up,0.8502418700608464,0.8759086649850358,0.47704871313647745,0.5
+ISIC_0005228,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.034502195384686025,0.01468407184400158,0.10317443042573535,0.04
+ISIC_0005926,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.2166747139234923,0.11996719092907475,0.22057315614156714,0.1
+ISIC_8603029,benign melanocytic,0,Nevus,not recorded,dermoscopic,0.7831103174135924,0.793509229406679,0.5119207567101904,0.2
+ISIC_0004980,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.07405693734909347,0.041700854600169805,0.16376635594194633,0.1
+ISIC_1441157,benign melanocytic,0,Nevus,single image expert consensus,dermoscopic,0.4062798990309534,0.23355274626699218,0.17725450883486732,0.12
+ISIC_0441714,malignant melanocytic,1,Melanoma Invasive,histopathology,clinical: close-up,0.6970260758333622,0.7390632551897547,0.698954134135919,0.6
+ISIC_2097603,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.9395810903621677,0.9534997143341591,0.8299574181754782,0.62
+ISIC_0061369,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.2858318647081301,0.3588984061341119,0.11335011560509951,0.12
+ISIC_0014079,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.7692498188699112,0.603082951900909,0.41683891201738393,0.3
+ISIC_5571861,malignant melanocytic,1,Melanoma in situ,not recorded,dermoscopic,0.10176028381702648,0.07716499158943439,0.10539487093888525,0.07
+ISIC_0026150,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.9208828713571311,0.9705115531430402,0.9215023238329781,0.72
+ISIC_0034949,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.9569061411408262,0.985886867646055,0.8646745660022906,0.8800000000000001
+ISIC_0025520,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.8551559729672448,0.9668424711532809,0.849119005026387,0.85
+ISIC_0011511,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.9937305217950726,0.9933738062882759,0.9178295360951999,0.85
+ISIC_0057996,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.9679930659108587,0.8891209430913667,0.6772295681847709,0.6
+ISIC_3803651,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.5438415941960701,0.6487405327377854,0.32650362636408214,0.4
+ISIC_2561898,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.4382358619101937,0.17021720197926843,0.21340766617386753,0.3
+ISIC_0054323,malignant melanocytic,1,Melanoma metastasis,histopathology,dermoscopic,0.8117210049064673,0.7001719626204723,0.5560630381998332,0.6
+ISIC_0010495,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.8623889216499585,0.7934974430312968,0.4177760204752118,0.3
+ISIC_0072787,malignant melanocytic,1,Melanoma metastasis,not recorded,dermoscopic,0.8274473510746058,0.7564458525215911,0.6258653174295494,0.72
+ISIC_0149568,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.6269842806026661,0.49675871415289724,0.1679979582105347,0.2
+ISIC_0070065,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.987069396385707,0.9629270420247144,0.8291308258348806,0.6
+ISIC_0481105,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.7920629460894866,0.7763742203344436,0.5816345843264711,0.72
+ISIC_4619903,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.09430886837758011,0.07631656403076109,0.12416092080446126,0.2
+ISIC_0028899,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.8133886981024341,0.8780283301007584,0.5818249271681848,0.4
+ISIC_0011288,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.6024367342269199,0.6774060365458852,0.8658645504094054,0.4
+ISIC_0010537,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.9449920425599938,0.9078027635544152,0.6087527082684853,0.3
+ISIC_5281117,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.9560956180597089,0.9761293663567712,0.8858880793338697,0.8
+ISIC_0033616,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.0330805058071615,0.059312179784673416,0.0301618480293816,0.3
+ISIC_4408559,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.7840345653883367,0.3779247935429461,0.44696208487522293,0.12
+ISIC_7146293,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.12715537536573443,0.06602683452891567,0.2997993893531796,0.07
+ISIC_0000147,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.971623048802775,0.9815559219574839,0.8583085906979072,0.9
+ISIC_3994385,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.992951525366148,0.9940954338995359,0.9548588894085188,0.9
+ISIC_0031118,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.7728066295195571,0.7415645190700567,0.5776000478015253,0.35
+ISIC_0023164,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.9743517254694245,0.9634860433228238,0.7892330351118892,0.4
+ISIC_8437493,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.9550600810458871,0.9640175483431758,0.8540845015122736,0.72
+ISIC_0055771,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.9712828155031905,0.9539160625714395,0.9384177310053904,0.6
+ISIC_0022783,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.9533188332300035,0.8925430377566996,0.40696694116597687,0.3
+ISIC_0010655,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.6516205654417518,0.5799717533350689,0.3518051609800428,0.4
+ISIC_7105988,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.4626844405270306,0.44079621074106445,0.42410239524282645,0.3
+ISIC_0036065,malignant melanocytic,1,Melanoma in situ,histopathology,clinical: overview,0.994502476364788,0.9837306937879126,0.9790264305087899,0.45
+ISIC_0055091,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.9897129665495248,0.9929943410857789,0.9478592083247831,0.8
+ISIC_2742711,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.9386467369827102,0.9731870111395977,0.748091568989776,0.3
+ISIC_4177450,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.5303502511912239,0.5668774890591706,0.31688588422166275,0.3
+ISIC_4661821,malignant melanocytic,1,"Melanoma, NOS",histopathology,clinical: overview,0.9394496107507946,0.9227496400913765,0.8845207483694899,0.6
+ISIC_8812932,malignant melanocytic,1,Melanoma Invasive,not recorded,dermoscopic,0.847367701619733,0.6792273903666733,0.704604284200449,0.72
+ISIC_8708106,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.9377115427236618,0.8584935290167863,0.4367597372583692,0.4
+ISIC_0046682,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.9753899235457663,0.9633911016151895,0.8004232405730516,0.8
+ISIC_0023399,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.9694679094852514,0.9693833604368123,0.5152128149976984,0.4
+ISIC_3895426,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.9824052906194964,0.9863918873157861,0.7199400736424719,0.93
+ISIC_7711587,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.9199874161394979,0.9023915775093485,0.7472554811063334,0.6
+ISIC_0023529,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.9654868544815292,0.9463482468812563,0.7374887516596997,0.62
+ISIC_3920914,malignant melanocytic,1,Melanoma Invasive,not recorded,dermoscopic,0.7455563124696021,0.781654326326904,0.7609703785078481,0.4
+ISIC_0024300,malignant melanocytic,1,Melanoma Invasive,histopathology,clinical: overview,0.7697242537809901,0.911622086221233,0.8432109401876721,0.3
+ISIC_3632087,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.55208364821551,0.7418309827912145,0.22314366798664,0.4
+ISIC_6526489,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.4324949234473718,0.488850867106111,0.6977573118239858,0.3
+ISIC_0648545,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.9232551509973774,0.9452819031062889,0.6399822938964107,0.4
+ISIC_1299452,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.8350701482015467,0.8585040960984562,0.6724056724446483,0.55
+ISIC_0011481,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.4639272633676928,0.4124291494476108,0.6025374512968901,0.25
+ISIC_0030798,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.9112965849342671,0.9670618664776305,0.9032876296483089,0.72
+ISIC_9176183,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.8802957555469808,0.8334011712363532,0.558741201260484,0.3
+ISIC_9850628,malignant melanocytic,1,Melanoma metastasis,histopathology,clinical: close-up,0.05687014594660298,0.037508027927464306,0.38910514405615665,0.08
+ISIC_8823228,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.8304979991714697,0.9083437250761538,0.7872371385027546,0.5
+ISIC_0046985,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.24950815322284453,0.1674586736880269,0.08019901809342059,0.1
+ISIC_0000308,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.9074593789392529,0.8593790833691202,0.5930783928117014,0.3
+ISIC_0013258,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.630752525879267,0.6586691990348251,0.36576652423400047,0.3
+ISIC_0067360,malignant melanocytic,1,Melanoma metastasis,histopathology,dermoscopic,0.41065116745447117,0.25752613103022987,0.7127016837959614,0.3
+ISIC_0013365,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.8808912091852419,0.7326573174401487,0.5722942090085287,0.6
+ISIC_0010000,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.9582819286494455,0.9521722420502762,0.8672171023253608,0.8
+ISIC_0022066,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.9794083024863129,0.9789838257950081,0.8978830662627958,0.72
+ISIC_0056292,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.9159351053487127,0.8004059678880402,0.556785368062381,0.3
+ISIC_7994462,malignant melanocytic,1,"Melanoma, NOS",histopathology,clinical: close-up,0.8457404023814487,0.8554136875842634,0.6863931607846234,0.4
+ISIC_3301517,malignant melanocytic,1,Melanoma in situ,histopathology,clinical: close-up,0.962488043119776,0.9642859021434177,0.9077084681940875,0.82
+ISIC_0061685,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.8877435364624766,0.8797625305372074,0.4964843444385518,0.5
+ISIC_0065560,malignant melanocytic,1,Melanoma metastasis,histopathology,dermoscopic,0.7137514346766666,0.7102500270016352,0.519717363344764,0.4
+ISIC_0000161,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.9394934156616994,0.9173918919918815,0.9153343418011509,0.8
+ISIC_0015115,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.9903846142141812,0.9820201629680225,0.9306061487107715,0.82
+ISIC_2620132,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.8883390802199745,0.9359064957106794,0.8460216741673058,0.72
+ISIC_1939413,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.9780246569186641,0.9295686237888955,0.6871397087775601,0.85
+ISIC_8816360,malignant melanocytic,1,Melanoma Invasive,not recorded,dermoscopic,0.5177870454029805,0.7209901309704908,0.6034322044247443,0.4
+ISIC_0054337,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.9770584650441709,0.970803417931613,0.921373902501605,0.6
+ISIC_8252406,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.37794024574186996,0.37567289456564984,0.14160680395235534,0.6
+ISIC_0046597,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.2882643409740536,0.42434996832521116,0.42699779992817993,0.35
+ISIC_0013739,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.4820816819607362,0.3270946870185413,0.2065125353897174,0.3
+ISIC_0000165,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.8527009638219901,0.9242790874528681,0.8670468333119885,0.8800000000000001
+ISIC_0036092,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.8706025777052033,0.8402681189193576,0.41770661389049096,0.2
+ISIC_0059318,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.20567385560202528,0.3309195437085357,0.13873428407125044,0.25
+ISIC_0057845,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.31640982593662886,0.26273803627095527,0.2788900684000494,0.15
+ISIC_7327423,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.9120409945920617,0.8508428220278292,0.901468664247566,0.6
+ISIC_0015522,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.7577638361037018,0.7274861205853345,0.655126359578907,0.62
+ISIC_0020975,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.8910764441202874,0.844751908579739,0.531887369939883,0.4
+ISIC_0023288,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.9723718109554514,0.9556048035389587,0.5636668002896028,0.1
+ISIC_8010616,malignant melanocytic,1,Melanoma Invasive,histopathology,clinical: close-up,0.8448370700478176,0.8725535123339341,0.8146553606586984,0.45
+ISIC_0018040,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.3039536312656258,0.2520786004701922,0.6142456979178279,0.3
+ISIC_9164054,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.9436820199825144,0.902869707785149,0.7144409593431869,0.4
+ISIC_0033089,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.9116582279228271,0.8672743721436621,0.8241633267543989,0.6
+ISIC_4536273,malignant melanocytic,1,Melanoma Invasive,histopathology,clinical: close-up,0.23921657425820944,0.21512666615507606,0.4263821079627351,0.12
+ISIC_0010909,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.9851355442507076,0.985688572385875,0.9002534552277771,0.8
+ISIC_8355446,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.5830133725215468,0.6686541604001399,0.4132199034920626,0.3
+ISIC_2337907,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.8868688916887372,0.9505290756667822,0.9153917636516808,0.6
+ISIC_3249814,malignant melanocytic,1,Melanoma Invasive,histopathology,dermoscopic,0.9873008875477796,0.983297262651002,0.7399709006591777,0.6
+ISIC_0057344,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.252341524019011,0.22758607979155582,0.21843034094199737,0.1
+ISIC_8525569,malignant melanocytic,1,Melanoma Invasive,histopathology,clinical: close-up,0.9504309666957921,0.9520692566722339,0.9340276656037482,0.8
+ISIC_2837581,malignant melanocytic,1,"Melanoma, NOS",histopathology,dermoscopic,0.714066168694681,0.5669179137570073,0.6842739870629906,0.4
+ISIC_5068413,malignant melanocytic,1,Melanoma in situ,histopathology,dermoscopic,0.8893045963647689,0.9414634835432631,0.8876647509782435,0.72

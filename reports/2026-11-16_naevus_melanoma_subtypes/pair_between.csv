@@ -1,0 +1,101 @@
+image_id,subtype,diagnosis,image_type,score_pair
+ISIC_2031343,indeterminate melanocytic,Atypical melanocytic neoplasm,TBP tile: close-up,0.05898958789466157
+ISIC_7427536,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.9057199781419267
+ISIC_9737755,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.6257318909374142
+ISIC_9592626,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.34862839710112076
+ISIC_2003785,indeterminate melanocytic,Atypical melanocytic neoplasm,TBP tile: close-up,0.30984898177878295
+ISIC_7976038,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.9722135488436513
+ISIC_0933158,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.25932075367332735
+ISIC_9816232,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.18812048930626296
+ISIC_0023881,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.4682788580305516
+ISIC_0021958,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.9739621988368805
+ISIC_0014455,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.12558660470134803
+ISIC_5943091,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.2986594977974571
+ISIC_8159613,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.7638138005617509
+ISIC_0021311,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.9798433485330136
+ISIC_0014258,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.5865426505522991
+ISIC_0022159,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.27570529577195624
+ISIC_0014488,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.27045017140554256
+ISIC_0012858,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.4086500566182004
+ISIC_7644866,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.32911271149263127
+ISIC_0890978,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.9711018082223886
+ISIC_8863818,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.18112828102475464
+ISIC_6999041,indeterminate melanocytic,Atypical melanocytic neoplasm,TBP tile: close-up,0.07440358844311609
+ISIC_0021452,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.20211199873369803
+ISIC_0013878,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.707276609195489
+ISIC_0014134,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.07320322790796846
+ISIC_0021957,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.9913109391409658
+ISIC_1028529,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.48230961940290784
+ISIC_6994680,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.10859733734703322
+ISIC_0292068,indeterminate melanocytic,Atypical melanocytic neoplasm,TBP tile: close-up,0.2338462991957921
+ISIC_0013745,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.2099573757795602
+ISIC_0014003,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.05915320532763399
+ISIC_0013866,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.5951046929312583
+ISIC_0013871,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.8443059812008086
+ISIC_8923222,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.9512054949749488
+ISIC_3339253,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.6173562285707079
+ISIC_1855530,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.9037486253442306
+ISIC_0016101,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.7545378453506568
+ISIC_7407079,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.17119250887679044
+ISIC_4622981,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.5518474207864498
+ISIC_6479083,indeterminate melanocytic,Atypical melanocytic neoplasm,TBP tile: close-up,0.06716373114858286
+ISIC_0013642,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.8455412120111996
+ISIC_0011054,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.39043660627046783
+ISIC_3900977,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.19087589070771915
+ISIC_0014322,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.8439031803859446
+ISIC_0021878,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.23195875675885055
+ISIC_0013993,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.07282981513196658
+ISIC_0557560,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.7058820619104591
+ISIC_0013868,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.3579616019035561
+ISIC_6775828,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.8403283193909595
+ISIC_3897960,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.6302605558061665
+ISIC_4741592,indeterminate melanocytic,Atypical melanocytic neoplasm,TBP tile: close-up,0.08114347717237796
+ISIC_0022788,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.09964610913944633
+ISIC_2928691,indeterminate melanocytic,Atypical melanocytic neoplasm,TBP tile: close-up,0.008070311852443083
+ISIC_2734121,indeterminate melanocytic,Atypical melanocytic neoplasm,TBP tile: close-up,0.03400244182982436
+ISIC_4065832,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,TBP tile: close-up,0.05998733939220333
+ISIC_6551901,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.6442270334773719
+ISIC_0014338,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.6586574626474024
+ISIC_9735478,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.9316977823767548
+ISIC_0022789,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.27496762000909375
+ISIC_0014143,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.37705114146669766
+ISIC_0023432,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.4806665422199099
+ISIC_0023379,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.8489918861127006
+ISIC_0014260,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.03688068870237589
+ISIC_2631616,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.34839333988761445
+ISIC_5170761,indeterminate melanocytic,Atypical melanocytic neoplasm,TBP tile: close-up,0.175501583377885
+ISIC_0014256,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.5259922387608801
+ISIC_9202586,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.9704404823148901
+ISIC_0013327,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.9274078880448939
+ISIC_4400063,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.03055713903411813
+ISIC_7980127,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.20288243926647848
+ISIC_6353793,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.9227745052684733
+ISIC_0014485,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.7664117551382139
+ISIC_8504492,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.26693894968398485
+ISIC_4987653,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.4192643862046084
+ISIC_0022223,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.8249701932957079
+ISIC_0021775,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.3727266901762091
+ISIC_8637215,indeterminate melanocytic,Atypical melanocytic neoplasm,TBP tile: close-up,0.47785822076283174
+ISIC_0199242,indeterminate melanocytic,Atypical melanocytic neoplasm,TBP tile: close-up,0.3514731480505884
+ISIC_0022220,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.6519852975860455
+ISIC_0021618,indeterminate melanocytic,Atypical proliferative nodules in congenital melanocytic nevus,dermoscopic,0.21698851273835246
+ISIC_0021952,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.1304761209610797
+ISIC_0013557,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.9409452704413118
+ISIC_9286502,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.9364913585259949
+ISIC_5800282,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,TBP tile: close-up,0.6836174267088458
+ISIC_5065175,indeterminate melanocytic,Atypical melanocytic neoplasm,TBP tile: close-up,0.1238878713016333
+ISIC_6516058,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.8518099602077902
+ISIC_0012934,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.26391762774195743
+ISIC_0021450,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.619640339282676
+ISIC_0013821,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.8235198864517563
+ISIC_0021951,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.25792299551990866
+ISIC_9223727,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.9403476339846337
+ISIC_4997067,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.652024262619488
+ISIC_3890561,indeterminate melanocytic,Atypical melanocytic neoplasm,TBP tile: close-up,0.5491367362370444
+ISIC_6958713,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.7253369264496944
+ISIC_0013240,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.7535052026901172
+ISIC_1442945,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.8909027962841368
+ISIC_0013324,indeterminate melanocytic,Atypical intraepithelial melanocytic proliferation,dermoscopic,0.7080537987193142
+ISIC_0021955,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.2479056296667638
+ISIC_0672006,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.8487785449794883
+ISIC_0435215,indeterminate melanocytic,Atypical melanocytic neoplasm,dermoscopic,0.5893592766214032

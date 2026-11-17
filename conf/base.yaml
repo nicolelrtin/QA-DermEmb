@@ -195,6 +195,11 @@ explore:                         # S9: unsupervised structure of the answers + i
   case_images: null               # case-study images (ISIC ids); null = one typical melanoma and one naevus (pick_cases)
   n_jobs: 16
 
+subtypes:                        # S11: 10-subtype detail and naevus against melanoma (qaemb/stages/s11_subtypes.py)
+  pair: [benign melanocytic, malignant melanocytic]   # negative (naevus), positive (melanoma)
+  between: [indeterminate melanocytic]                # never fitted; scored by every outer fit of the pair model
+  n_boot: 2000                   # bootstrap resamples of patients, for intervals and paired differences
+
 ridge:                           # S10: main model with leakage controls, trimmed question sets, final models (qaemb/stages/s10_ridge.py)
   source: dir
   tasks: [s1_2c, flat_10c]
@@ -206,4 +211,52 @@ ridge:                           # S10: main model with leakage controls, trimme
   final_sets: [all, lasso27, lasso60, lasso120, reps27, reps60]
   final_cv_folds: 5
   log10_C: [-5, 0]               # lambda = 1/C from 1 to 100,000, four values per decade (S8)
+  n_jobs: -1
+
+vlmfeat:                         # S12: SkinGPT-R1 image embeddings and candidate-label diagnosis (qaemb/stages/s12_vlmfeat.py)
+  id: skingpt-r1
+  checkpoint: yuhos16/SkinGPT-R1
+  subfolder: checkpoint
+  revision: main
+  dtype: float16                 # Turing GPU: no native bf16
+  attn: sdpa
+  device: cuda
+  max_pixels: 1003520            # SkinGPT-R1's own evaluation bounds (its configs/evaluation.json)
+  min_pixels: 3136
+  prompt: skingpt_classification_v1          # SkinGPT-R1's prompts/classification_user.txt, unchanged
+  # Reasoning skipped: the think block is closed empty and the answer opened in the format SkinGPT-R1 itself writes
+  # ("<answer> Final Answer:Melanoma </answer>", smoke test 2026-11-16). With reasoning, greedy generation took 840 s
+  # for 2 images on the Quadro RTX 8000, about 4-5 days for the 1,000 images.
+  answer_prefix: "<think>\n\n</think>\n<answer> Final Answer:"
+  label_suffix: " </answer>"
+  layers: [0, 14, 21, 28]        # 0 = vision encoder output after the merger (at the image positions); 28 = last layer
+  shard_images: 50
+  orders: [forward, reversed]     # candidate list as given and reversed; the diagnosis averages the two (position bias)
+  # Candidate labels, in the order shown to the model, with the subtype (classify.label_columns c10, short names) and
+  # group each one counts towards. Chosen 2026-11-16 from the ISIC diagnoses (diagnosis_3) of the beta images, plus
+  # seborrhoeic keratosis as the usual benign look-alike (no subtype: benign for the 2-class task, dropped for 10).
+  candidates:
+    - {label: Melanoma, subtype: malignant melanocytic, group: malignant}
+    - {label: Basal cell carcinoma, subtype: malignant adnexal follicular, group: malignant}
+    - {label: Squamous cell carcinoma, subtype: malignant epidermal, group: malignant}
+    - {label: Actinic keratosis, subtype: indeterminate epidermal, group: indeterminate}
+    - {label: Atypical melanocytic proliferation, subtype: indeterminate melanocytic, group: indeterminate}
+    - {label: Melanocytic nevus, subtype: benign melanocytic, group: benign}
+    - {label: Seborrheic keratosis, subtype: null, group: benign}
+    - {label: Solar lentigo, subtype: flat melanotic pigmentation, group: benign}
+    - {label: Dermatofibroma, subtype: benign fibro-histiocytic, group: benign}
+    - {label: Fibroepithelial polyp, subtype: benign fibro-histiocytic, group: benign}
+    - {label: Scar, subtype: benign fibro-histiocytic, group: benign}
+    - {label: Hemangioma, subtype: benign vascular, group: benign}
+    - {label: Angiokeratoma, subtype: benign vascular, group: benign}
+    - {label: Pyogenic granuloma, subtype: benign vascular, group: benign}
+    - {label: Verruca, subtype: inflammatory or infectious, group: benign}
+    - {label: Dermatitis, subtype: inflammatory or infectious, group: benign}
+
+bench:                           # S13: ridge on the questions against SkinGPT-R1, same outer folds as S10 (qaemb/stages/s13_bench.py)
+  tasks: [s1_2c, flat_10c]
+  # The first is the main embedding, fixed before any result: last layer, averaged over the image tokens (the image as
+  # SkinGPT-R1's dermatology-tuned language model represents it, before reading the question). The rest are secondary.
+  embeddings: [img_L28, img_L21, img_L14, img_L0, last_L28]
+  log10_C: [-7, 0]               # lambda = 1/C from 1 to 10^7 (wider than S10: thousands of correlated columns)
   n_jobs: -1

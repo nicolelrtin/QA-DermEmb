@@ -30,7 +30,7 @@ from ..models import explore as ex
 from ..models import plots
 from .s6_classify import GROUPS, SOURCE_NAMES, load_labels
 
-UPSTREAM = ["manifest", "embed", "importance", "ridge"]
+UPSTREAM = ["manifest", "embed", "importance", "ridge", "subtypes"]
 VERSION = 2
 TEMPLATE = Path(__file__).resolve().parents[1] / "templates" / "explore.html"
 FONTS = [  # (family, style, file): embedded so the page needs no network (templates/fonts/README.md)
@@ -135,14 +135,6 @@ def eval_payload(inputs, ids, lab, meta, ctrl, sub_order) -> dict:
         for k in r_.index:
             pf.append({"subset": sub, "ridge_auc": r_.loc[k, "auroc"], "ctrl_auc": c_.loc[k, "auroc"] if k in c_.index else None,
                        "ridge_spec": r_.loc[k, "spec_at_sens95"], "ctrl_spec": c_.loc[k, "spec_at_sens95"] if k in c_.index else None})
-    # 10-class confusion, row-normalised, averaged over repeats
-    c10 = o[(o.task == "flat_10c") & (o.set == "all") & (o.grouping == "patient")]
-    pcols = [f"p::{c}" for c in sub_order]
-    M = np.zeros((len(sub_order), len(sub_order)))
-    pred = c10[pcols].values.argmax(1)
-    for t, pr in zip(c10.true.values, pred):
-        M[sub_order.index(t), pr] += 1
-    M = M / M.sum(1, keepdims=True)
     # summary rows the page quotes
     def row(task, set_, grouping, subset):
         r = summ[(summ.task == task) & (summ.set == set_) & (summ.grouping == grouping) & (summ.subset == subset)]
@@ -155,10 +147,53 @@ def eval_payload(inputs, ids, lab, meta, ctrl, sub_order) -> dict:
     trim["k"] = trim.set.str.extract(r"(\d+)")[0].astype(int)
     groups = pd.read_csv(d / "groups.csv")
     gs = groups.group.value_counts()
-    return {"roc": roc, "folds": pf, "confusion": np.round(M, 3).tolist(), "key": key,
+    return {"roc": roc, "folds": pf, "key": key,
             "trim": trim[["family", "k", "fold_mean", "draw_min", "draw_max"]].to_dict("records"),
             "groups": {"n_groups": int(len(gs)), "multi": int((gs > 1).sum()), "largest": int(gs.max()),
                        "dups": int(len(pd.read_csv(d / "duplicates.csv")))}}
+
+
+def subtypes_payload(inputs, ids, qids, sub_order, meta) -> dict:
+    """The 'Ten subtypes' and 'Naevus and melanoma' chapters, from the S11 subtypes run."""
+    d = inputs["subtypes"]
+    per = pd.read_csv(d / "tenclass_per_class.csv").set_index("subtype").reindex(sub_order).reset_index()
+    cm = pd.read_csv(d / "tenclass_confusion.csv", index_col=0).reindex(index=sub_order, columns=sub_order)
+    ts = pd.read_csv(d / "tenclass_summary.csv")
+    ex = json.loads((d / "pair_extra.json").read_text())
+    q = pd.read_csv(d / "pair_questions.csv")
+    pos, qpos = {im: i for i, im in enumerate(ids)}, {x: i for i, x in enumerate(qids)}
+    sc = pd.read_csv(d / "pair_scores.csv")
+    bt = pd.read_csv(d / "pair_between.csv")
+    rows = []
+    for r in sc.itertuples():
+        if r.melanoma:
+            row = {"Melanoma, NOS": "melanoma, not otherwise specified", "Melanoma Invasive": "invasive melanoma",
+                   "Melanoma in situ": "melanoma in situ", "Melanoma metastasis": "melanoma metastasis"}.get(r.diagnosis, r.diagnosis.lower())
+        else:
+            row = "naevus, excised" if r.confirmation == "histopathology" else "naevus, not excised"
+        rows.append({"i": pos[r.image_id], "row": row, "s": round(float(r.score_pair), 4), "grp": 2 if r.melanoma else 0,
+                     "dx": r.diagnosis, "conf": r.confirmation})
+    for r in bt.itertuples():
+        rows.append({"i": pos[r.image_id], "row": r.diagnosis.lower(), "s": round(float(r.score_pair), 4), "grp": 1,
+                     "dx": r.diagnosis, "conf": "histopathology"})
+    qrow = lambda r: {"q": qpos[r.question_id], "auc": round(float(r.auroc_alone), 4), "w": round(float(r.final_weight), 4)}
+    sep = q[q.separation > 0.25].towards.value_counts()
+    return {"ten": {"per": per.to_dict("records"), "cm": np.round(cm.values, 2).tolist(),
+                    "bacc": [float(ts.balanced_accuracy.mean()), float(ts.balanced_accuracy.min()), float(ts.balanced_accuracy.max())],
+                    "top2": float(ts.top2.mean()), "top3": float(ts.top3.mean()), "acc": float(ts.accuracy.mean()),
+                    "same_lineage": float(ts.errors_same_lineage.mean()), "same_group": float(ts.errors_same_group.mean()),
+                    "collapsed_auc": float(ts.collapsed_2c_auroc.mean()), "twoclass_auc": float(np.mean(ex["twoclass_auroc_repeats"])),
+                    "lineage": ex["lineage"]},
+            "pair": {"metrics": pd.read_csv(d / "pair_metrics.csv").to_dict("records"),
+                     "diffs": pd.read_csv(d / "pair_differences.csv").to_dict("records"),
+                     "breakdown": pd.read_csv(d / "pair_breakdown.csv").to_dict("records"),
+                     "curves": ex["curves"], "between": ex["between"], "final_lambda": ex["final_lambda"], "images": rows,
+                     "q_mel": [qrow(r) for r in q[q.towards == "melanoma"].head(12).itertuples()],
+                     "q_nev": [qrow(r) for r in q[q.towards == "naevus"].head(8).itertuples()],
+                     "n_sep": {"melanoma": int(sep.get("melanoma", 0)), "naevus": int(sep.get("naevus", 0))},
+                     "n_q": int(len(q))},
+            "metrics": {"binary": pd.read_csv(d / "metrics_binary.csv").to_dict("records"),
+                        "ten": pd.read_csv(d / "metrics_10c.csv").to_dict("records")}}
 
 
 def importance_payload(inputs, qids, sub_order, top_n=25) -> dict:
@@ -510,6 +545,7 @@ def _run(cfg, out, inputs, ctx) -> dict:
         "ica": ica.round(4).to_dict("records"),
         "eval": eval_payload(inputs, ids, lab, meta, ctrl, sub_order),
         "imp": importance_payload(inputs, qids, sub_order),
+        "sub": subtypes_payload(inputs, ids, qids, sub_order, meta),
         "cases": case_payload(cfg, inputs, lab, meta, man, ids, qids, rp, ctrl, sub_order),
         "answers": {"yes_share": float((Pq >= 0.5).mean()),
                     "p_hist": np.histogram(Pq.ravel(), bins=20, range=(0, 1))[0].tolist(),

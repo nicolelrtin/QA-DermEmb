@@ -7,17 +7,20 @@ independent dimensions do the 500 questions amount to? And when the images are g
 follow the diagnosis, or the image type, the institution or the patient?
 
 **Interactive version.** [explorer.html](explorer.html) (about 6 MB, self-contained; open it in any browser, no internet
-needed). Last rebuilt on 2026-11-16 (explore `a29d7e4fe69b`, run `20261116-151909_s9-explore-cases`) with tabs: an
+needed). Last rebuilt on 2026-11-16 (explore `d374126c546a`, run `20261116-182605_s9-explore-metrics`) with tabs: an
 overview (abstract, a flow diagram of the analysis whose boxes open the chapters, and one line per principal result),
-then eight chapters:
+then eleven chapters:
 1. the answer matrix;
 2. topic coherence (whether questions in a topic are answered alike);
 3. dimensionality of the questions;
 4. what the images' answer profiles follow;
 5. classification, from the S10 ridge run;
 6. question importance, from the S7 importance run;
-7. case studies: how the prediction for one melanoma and one naevus is built, question by question;
-8. methods and limitations.
+7. the ten subtypes in detail, from the S11 subtypes run;
+8. naevus against melanoma, from the S11 subtypes run;
+9. model metrics: sensitivity, specificity, accuracy and F1 for every model and task, at a stated threshold;
+10. case studies: how the prediction for one melanoma and one naevus is built, question by question;
+11. methods and limitations.
 
 Each chapter opens with its principal result, then numbered figures with captions and an interpretation. The heavier
 interactive tools (correlation matrix, question map, image clusters, full heatmap) sit in expandable panels inside the
@@ -47,11 +50,29 @@ exactly to the prediction. The eight largest steps are shown with Claude's answe
 less certain "no" answers to questions that do not apply to it (for example an acral site on dark skin), rather than
 melanoma features; this is the same reliance on the confidence of negative answers noted in Ch. VI.
 
+The third rebuild that day (`20261116-174534_s9-explore-subtypes`, explore `f21e0ac0a1d6`) added two chapters from the new
+S11 subtypes stage, at the request of our collaborating dermatologist; the case studies became chapter IX and the methods
+chapter X, and the case-study figures were renumbered 9.x. Chapter VII, Ten Subtypes, shows per-subtype sensitivity,
+precision, F1 and one-against-rest AUROC with their range over repeats, the confusion matrix (moved from chapter V,
+where Fig. 5.4 is now the questionnaire-size figure and Fig. 5.5 points to the two new chapters) and the nature of the
+errors. Chapter VIII, Naevus and Melanoma, compares four scores on the 100 naevi and 100 melanomas (ROC, a table with
+bootstrap intervals and paired differences), plots the pair-model score of every naevus, melanoma and atypical
+melanocytic lesion by histopathological diagnosis, breaks AUROC down by melanoma type and naevus confirmation, and lists
+the questions that separate the two classes. The numbers are in [the S11 report](../2026-11-16_naevus_melanoma_subtypes/README.md).
+
+The last rebuild that day (`20261116-182605_s9-explore-metrics`, explore `d374126c546a`, reading subtypes `b88b736bdec8`)
+added chapter IX, Model Metrics. It shows sensitivity, specificity, accuracy and F1 (with precision and AUROC) for:
+- benign against malignant: ridge on all questions, ridge on the lasso-chosen 120, 60 and 27, and the direct question;
+- naevus against melanoma: the four scores of chapter VIII.
+These can be shown at P ≥ 0.5 or at the threshold that catches 95% of positive cases, on all or dermoscopic images.
+For the ten subtypes it shows per-subtype sensitivity, specificity, precision and F1. There are definitions of each
+measure and a CSV download of the table shown. Case studies became chapter X (figures 10.x) and methods chapter XI.
+
 ## Runs covered
 
 | Run | Experiments (meaning) | Stage hashes |
 |---|---|---|
-| [20261115-105528_s9-explore](../../outputs/qaemb/runs/20261115-105528_s9-explore/report.md); page rebuilt in [20261116-010945_s9-explore-garamond](../../outputs/qaemb/runs/20261116-010945_s9-explore-garamond/report.md) (explore `5e1e8b163035`) [20261116-134236_s9-explore-coefdir](../../outputs/qaemb/runs/20261116-134236_s9-explore-coefdir/report.md) (explore `4e20b9e8faf3`) and [20261116-151909_s9-explore-cases](../../outputs/qaemb/runs/20261116-151909_s9-explore-cases/report.md) (explore `a29d7e4fe69b`, reading also ridge `159decea7f3d` and importance `43a20169f0c0`) | `D1_train` (all 1,000 beta images), `I1_claude_max` (images shrunk only, to at most 3.6 MP), `Q0_orig` (500 questions as written plus the control question, no negations), `M_topic` (one prompt per topic), `ANS_claude_sonnet` (Claude Sonnet 5.5 through the Batch API, effort low), `G1` (whole image), `R1` (replicate 1). Stage `explore`. | embed `6cd6f95ebcbd`, classify `670746415c57`, importance `43a20169f0c0`, explore `e0f6b40a7715` |
+| [20261115-105528_s9-explore](../../outputs/qaemb/runs/20261115-105528_s9-explore/report.md); page rebuilt in [20261116-010945_s9-explore-garamond](../../outputs/qaemb/runs/20261116-010945_s9-explore-garamond/report.md) (explore `5e1e8b163035`) [20261116-134236_s9-explore-coefdir](../../outputs/qaemb/runs/20261116-134236_s9-explore-coefdir/report.md) (explore `4e20b9e8faf3`) [20261116-151909_s9-explore-cases](../../outputs/qaemb/runs/20261116-151909_s9-explore-cases/report.md) (explore `a29d7e4fe69b`), [20261116-174534_s9-explore-subtypes](../../outputs/qaemb/runs/20261116-174534_s9-explore-subtypes/report.md) (explore `f21e0ac0a1d6`) and [20261116-182605_s9-explore-metrics](../../outputs/qaemb/runs/20261116-182605_s9-explore-metrics/report.md) (explore `d374126c546a`, reading also ridge `159decea7f3d`, importance `43a20169f0c0` and subtypes `b88b736bdec8`) | `D1_train` (all 1,000 beta images), `I1_claude_max` (images shrunk only, to at most 3.6 MP), `Q0_orig` (500 questions as written plus the control question, no negations), `M_topic` (one prompt per topic), `ANS_claude_sonnet` (Claude Sonnet 5.5 through the Batch API, effort low), `G1` (whole image), `R1` (replicate 1). Stage `explore`. | embed `6cd6f95ebcbd`, classify `670746415c57`, importance `43a20169f0c0`, explore `e0f6b40a7715` |
 
 Three earlier runs the same morning are superseded: `20261115-104059_s9-dev` (explore `04b4417cca54`; average-linkage
 clustering and a placeholder page) and two runs of `s9-explore` (explore `91c40697ad8d`; the page had a start-up bug
