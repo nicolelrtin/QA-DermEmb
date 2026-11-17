@@ -14,9 +14,31 @@ Images:
   map and clusters  UMAP and Ward clustering on the leading principal components of the answers
   association       adjusted mutual information of the image clusters, and variance explained in each leading
                     component, by diagnosis, group, image type, institution, body site, sex and age (ISIC metadata)
+The ten-subtype model (payload key ten2; see tenclass_payload): the paper leads with S10's ten-subtype ridge, so the
+page data also carry, for that model, the per-image out-of-fold probabilities and their benign-against-malignant reading
+(S11's collapse), its ROC and per-fold AUROC, question importance (contrast and spread of the final model's weights, with
+stability over S10's 25 outer training splits), marker questions per subtype, and the two worked cases held out by
+patient. The two-class keys (eval, imp, cases, thr) are unchanged.
+  ten2.classes            the ten subtypes (= subtypes, model order); ten2.mal / ten2.ben: indices of malignant / benign ones
+  ten2.img.p              [1000][10] out-of-fold probabilities, mean over S10's 5 repeats (4 d.p.)
+  ten2.img.pm             [1000] collapsed P(malignant), per repeat then averaged (4 d.p.); indeterminate images included
+  ten2.roc.all / .derm    ROC of img.pm on the 800 benign + malignant images (all / dermoscopic): {pts, auc, op}, as
+                          eval.roc; the direct question on the same images is eval.roc.ctrl_all / ctrl_derm
+  ten2.folds              per outer fold (25) and subset: {subset, repeat, fold, n, n_mal, auc, spec (at 95% sensitivity,
+                          read on the fold)}; ten2.fold_summary[subset]: auc_mean, auc_sd, auc_min, auc_max, spec_mean,
+                          spec_sd, n_folds; ten2.pooled_auc[subset]: AUROC pooled per repeat (5 values; S11's numbers)
+  ten2.imp                per question, aligned with q.id (null for questions outside the model): contrast, spread,
+                          w ([10] class weights), contrast_rank (by |contrast|) and spread_rank (1 = largest), sign_share,
+                          contrast_rank_med, spread_rank_med, contrast_fold_sd (over the 25 refits); C, n_folds
+  ten2.markers[subtype]   the 5 largest positive weights of that subtype: {q, w, p_in, p_out} (mean P(yes) in / outside)
+  ten2.cases[]            {id, i, sub, contrast_sub, p [10], p_mal, pred, logratio = log(p[sub]/p[contrast_sub]), d0,
+                          sum_terms, oof_p [10], oof_p_mal, C, n_train, n_left_out, max_err, terms: [{q, x, z, dw, c, py,
+                          cf}]}, logratio = d0 + sum of terms.c
+  ten2.check              reproduction checks (S11 collapsed AUROC, S11 model 1, S10 fold refits, case decompositions)
 Outputs: explorer.html (self-contained), narrative.html (the same data in the order of the paper; copied to
 project_narrative/index.html), question_table.csv, question_clusters.csv, topic_cohesion.csv, agreement.csv,
-text_vs_answers.csv, pca.csv, pc_association.csv, image_table.csv, image_cluster_association.csv, figures/, summary.md.
+text_vs_answers.csv, pca.csv, pc_association.csv, image_table.csv, image_cluster_association.csv, tenclass_folds.csv,
+tenclass_importance.csv, tenclass.md, figures/, summary.md.
 """
 import base64
 import io
@@ -32,8 +54,8 @@ from ..models import plots
 from .s6_classify import GROUPS, SOURCE_NAMES, load_labels
 from .s11_subtypes import SECTION_ORDER, SECTIONS
 
-UPSTREAM = ["manifest", "embed", "importance", "ridge", "subtypes", "thresholds"]
-VERSION = 4                                       # 4: also writes narrative.html, the paper-narrative page (project_narrative/)
+UPSTREAM = ["manifest", "embed", "importance", "ridge", "subtypes", "thresholds", "qclusters"]
+VERSION = 6   # 4: also writes narrative.html (project_narrative/); 5: + payload key ten2 (ten-subtype model); 6: ten-subtype worked cases chosen by that model, with their image
 TEMPLATE = Path(__file__).resolve().parents[1] / "templates" / "explore.html"
 NARRATIVE = TEMPLATE.parent / "narrative.html"   # same payload, five chapters in the order of the paper
 FONTS = [  # (family, style, file): embedded so the page needs no network (templates/fonts/README.md)
@@ -54,6 +76,8 @@ def key(cfg, ctx) -> dict:
     files = [e.metadata, *e.text_embeddings.values(), e.text_questions]
     return {"explore": e, "label_columns": cfg.classify.label_columns, "seed": cfg.seed,
             "labels_sha": file_hash(ROOT / cfg.data.root / cfg.data.manifest),
+            "outer": [cfg.classify.outer_folds, cfg.classify.outer_repeats], "sens_target": cfg.classify.sens_target,
+            "reproduce_tol": cfg.thresholds.reproduce_tol,
             "files": {f: file_hash(ROOT / f) for f in files}, "template": file_hash(TEMPLATE), "narrative": file_hash(NARRATIVE),
             "fonts": {f: file_hash(TEMPLATE.parent / "fonts" / f) for _, _, f in FONTS}}
 
@@ -301,6 +325,213 @@ def case_payload(cfg, inputs, lab, meta, man, ids, qids, rp, ctrl, sub_order) ->
     return {"cases": out, "auto": not e.get("case_images")}
 
 
+CASE_CONTRAST = {"malignant melanocytic": "benign melanocytic", "benign melanocytic": "malignant melanocytic"}
+
+
+def pick_cases_tenclass(lab, meta, Pm, ids, classes) -> list[str]:
+    """Worked cases for the ten-subtype model: one melanoma and one naevus, dermoscopic, assigned to their own subtype
+    out of fold, each the one whose out-of-fold probability for its subtype is closest to the median of the correctly
+    assigned images of that subtype (a typical case, not an extreme)."""
+    out = []
+    for s in ["malignant melanocytic", "benign melanocytic"]:
+        k = classes.index(s)
+        ok = (lab.c10.values == s) & (meta.image_type.values == "dermoscopic") & (Pm.argmax(1) == k)
+        v = pd.Series(Pm[ok, k], index=np.array(ids)[ok])
+        out.append(str((v - v.median()).abs().idxmin()))
+    return out
+
+
+def tenclass_payload(cfg, inputs, ids, lab, meta, X, P, qids, ctrl, sub_order, case_ids, ev, out) -> dict:
+    """The ten-subtype ridge (S10 task flat_10c, all 446 questions, folds grouped by patient), which the paper leads
+    with, in the form the 'Model selection' chapter, the cutoff analysis, the question-importance figure and the worked
+    cases need. Payload key 'ten2'; nothing here changes the two-class keys (eval, imp, cases), which the explorer reads.
+
+    Benign against malignant: S11's collapse_malignant (malignant subtypes' summed probability over their number,
+    against the benign subtypes' over theirs, renormalised so 0.5 = equal prior odds), applied to each repeat's
+    out-of-fold probabilities and then averaged over the repeats (as eval averages the two-class P(malignant)). Scored
+    on the 800 benign and malignant images; the indeterminate images are a class of the model, so they have out-of-fold
+    probabilities too, but no benign/malignant label.
+
+    Importance, from the final model's weights on standardised answers (W, one row per subtype):
+      contrast  mean of the malignant-subtype weights minus mean of the benign-subtype weights. Since
+                log P_k = eta_k - log sum_j exp(eta_j), this is exactly the coefficient of the question in
+                (1/3) sum_malignant eta_k - (1/5) sum_benign eta_k = log(geometric mean of the three malignant
+                probabilities / geometric mean of the five benign ones): the question's push towards malignant on the
+                log scale. (The collapsed score uses arithmetic means, so contrast is its log-linear counterpart.)
+      spread    SD (population, ddof 0) of the question's ten class weights: how much it moves the choice among subtypes,
+                whatever the direction.
+    Stability: the ten-subtype ridge refitted on each of S10's 25 outer training splits with the penalty S10 chose for
+    that split (qaemb/models/refit.py; the refits reproduce S10's stored test-fold probabilities); per question the share
+    of splits in which contrast has the sign of the final model, and the median rank by spread (1 = largest).
+
+    Worked cases (the same images as 'cases'): flat_10c_all refitted with its penalty on all 1,000 images except those of
+    the case's patient (S10 trains the ten-subtype model on all images, indeterminate included). For the true subtype t
+    and a contrast subtype c, log(P_t / P_c) = (b_t - b_c) + sum_q (w_tq - w_cq) z_q exactly (multinomial logistic)."""
+    import joblib
+    from scipy.stats import rankdata
+    from sklearn.base import clone
+    from sklearn.metrics import roc_auc_score
+
+    from ..models.metrics import spec_at_sens
+    from ..models.refit import fold_penalties, refit_outer, reproduction, s10_splits
+    from .s11_subtypes import bin_summary, collapse_malignant
+
+    d, cc, e = inputs["ridge"], cfg.classify, cfg.explore
+    sens = float(cc.sens_target)
+    m = joblib.load(d / "final_models" / "flat_10c_all.joblib")
+    classes = list(m["classes"])
+    if classes != list(sub_order):
+        raise SystemExit(f"flat_10c class order {classes} differs from the page's subtype order {sub_order}")
+    grp3 = {c: lab.c3[lab.c10 == c].iloc[0] for c in classes}
+    g = np.array([grp3[c] for c in classes])
+    mal, ben = np.where(g == "malignant")[0], np.where(g == "benign")[0]
+    pc = [f"p::{c}" for c in classes]
+    N, K = len(ids), len(classes)
+    qpos = {x: k for k, x in enumerate(qids)}
+    mq = list(m["question_ids"])
+    Xq = X[mq].values.astype(float)
+    y10 = np.array([classes.index(v) for v in lab.c10.values])
+    bm = lab.c3.isin(["benign", "malignant"]).values
+    yb = (lab.c3.values == "malignant").astype(int)
+    derm = meta.image_type.reindex(ids).eq("dermoscopic").values
+    groups = pd.read_csv(d / "groups.csv").set_index("image_id").group.reindex(ids).values
+    check = {}
+
+    # ---------------- out-of-fold probabilities, per repeat
+    o = pd.read_parquet(d / "oof_predictions.parquet")
+    o = o[(o.task == "flat_10c") & (o.set == "all") & (o.grouping == "patient")]
+    reps = sorted(o.repeat.unique())
+    Pr = np.stack([o[o.repeat == r].set_index("image_id").reindex(ids)[pc].values for r in reps])      # R x N x K
+    if np.isnan(Pr).any():
+        raise SystemExit("S10's flat_10c out-of-fold predictions do not cover every image in every repeat")
+    Sr = np.stack([collapse_malignant(Pr[k], classes, grp3) for k in range(len(reps))])               # R x N
+    Pm, s = Pr.mean(0), Sr.mean(0)
+    check["collapse_of_mean_vs_mean_of_collapse_max_diff"] = float(np.abs(collapse_malignant(Pm, classes, grp3) - s).max())
+
+    # against S11: collapsed AUROC per repeat (tenclass_summary) and model 1 of model_comparison
+    ts = pd.read_csv(inputs["subtypes"] / "tenclass_summary.csv").set_index("repeat").reindex(reps)
+    rep_auc = np.array([roc_auc_score(yb[bm], Sr[k][bm]) for k in range(len(reps))])
+    check["s11_repeat_auroc"] = {"ours": rep_auc.round(6).tolist(), "s11": ts.collapsed_2c_auroc.round(6).tolist(),
+                                 "max_abs_diff": float(np.abs(rep_auc - ts.collapsed_2c_auroc.values).max())}
+    mc = pd.read_csv(inputs["subtypes"] / "model_comparison.csv")
+    mc = mc[(mc.no == 1) & (mc.task == "benign vs malignant")].iloc[0]
+    bs = bin_summary(yb[bm], Sr[:, bm], sens)
+    check["s11_model1"] = {k: {"ours": bs[k], "s11": float(mc[k])} for k in ("auroc", "sensitivity", "specificity", "spec95")}
+    check["s11_model1_max_abs_diff"] = float(max(abs(v["ours"] - v["s11"]) for v in check["s11_model1"].values()))
+    if check["s11_repeat_auroc"]["max_abs_diff"] > 1e-9 or check["s11_model1_max_abs_diff"] > 1e-9:
+        raise SystemExit(f"The collapsed ten-subtype score does not reproduce S11: {check}")
+
+    # ---------------- ROC (pooled, averaged over repeats) and per outer fold
+    roc = {"all": roc_points(yb[bm], s[bm]), "derm": roc_points(yb[bm & derm], s[bm & derm])}
+    # the direct question on the same 800 images is eval.roc.ctrl_all / ctrl_derm; confirm rather than duplicate
+    if ctrl is not None:
+        mine = {"ctrl_all": roc_points(yb[bm], ctrl[bm]), "ctrl_derm": roc_points(yb[bm & derm], ctrl[bm & derm])}
+        same = all(abs(mine[k]["auc"] - ev["roc"][k]["auc"]) < 1e-12 and mine[k]["op"] == ev["roc"][k]["op"]
+                   and mine[k]["pts"] == ev["roc"][k]["pts"] for k in mine)
+        if not same:
+            raise SystemExit("eval.roc.ctrl_* is not on the 800 benign and malignant images")
+    splits = s10_splits(lab.c10.values, groups, cc, cfg.seed)
+    folds = []
+    for r, f, tr, te in splits:
+        for sub, msk in (("all images", np.ones(N, bool)), ("dermoscopic only", derm)):
+            t = te[bm[te] & msk[te]]
+            if len(np.unique(yb[t])) < 2:
+                continue
+            folds.append({"subset": sub, "repeat": int(r), "fold": int(f), "n": int(len(t)), "n_mal": int(yb[t].sum()),
+                          "auc": float(roc_auc_score(yb[t], Sr[reps.index(r)][t])), "spec": spec_at_sens(yb[t], Sr[reps.index(r)][t], sens)})
+    fdf = pd.DataFrame(folds)
+    fdf.to_csv(out / "tenclass_folds.csv", index=False)
+    fsum = {sub: {"auc_mean": float(h.auc.mean()), "auc_sd": float(h.auc.std()), "auc_min": float(h.auc.min()),
+                  "auc_max": float(h.auc.max()), "spec_mean": float(h.spec.mean()), "spec_sd": float(h.spec.std()),
+                  "n_folds": int(len(h))} for sub, h in fdf.groupby("subset", sort=False)}
+    pooled = {sub: [float(roc_auc_score(yb[bm & msk], Sr[k][bm & msk])) for k in range(len(reps))]
+              for sub, msk in (("all images", np.ones(N, bool)), ("dermoscopic only", derm))}
+
+    # ---------------- importance: final model, then stability over the 25 outer training splits
+    W = m["model"]["clf"].coef_                                                   # K x Q, standardised answers
+    contrast = W[mal].mean(0) - W[ben].mean(0)
+    spread = W.std(0)
+    check["final_class_weight_sum_max"] = float(np.abs(W.sum(0)).max())          # L2 multinomial: weights sum to ~0
+    fits = refit_outer(Xq, y10, groups, splits, fold_penalties(d, "flat_10c"), cfg.seed, e.n_jobs, keep_model=True)
+    rp = reproduction(fits, o, np.array(ids), pc)
+    check["refit_reproduction_max_diff"] = float(rp.max_abs_diff.max())
+    if rp.max_abs_diff.max() > cfg.thresholds.reproduce_tol or rp.n_missing.any():
+        raise SystemExit(f"Refitted ten-subtype fold models do not reproduce S10 (largest difference {rp.max_abs_diff.max():.3g})")
+    Wf = np.stack([F["model"]["clf"].coef_ for F in fits])                       # folds x K x Q
+    cf = Wf[:, mal].mean(1) - Wf[:, ben].mean(1)
+    sf = Wf.std(1)
+    sign_share = (np.sign(cf) == np.sign(contrast)[None]).mean(0)
+    spread_rank_f = np.stack([rankdata(-x, method="min") for x in sf])
+    contrast_rank_f = np.stack([rankdata(-np.abs(x), method="min") for x in cf])
+    itab = pd.DataFrame({"question_id": mq, "contrast": contrast, "spread": spread,
+                         "contrast_rank": rankdata(-np.abs(contrast), method="min").astype(int),
+                         "spread_rank": rankdata(-spread, method="min").astype(int),
+                         "sign_share": sign_share, "contrast_fold_mean": cf.mean(0), "contrast_fold_sd": cf.std(0, ddof=1),
+                         "contrast_rank_median": np.median(contrast_rank_f, 0), "spread_rank_median": np.median(spread_rank_f, 0),
+                         **{f"w_{c}": W[k] for k, c in enumerate(classes)}})
+    itab.to_csv(out / "tenclass_importance.csv", index=False)
+
+    def per_q(v, nd=5):
+        a = dict(zip(mq, v))
+        r = (lambda x: int(x)) if nd == 0 else (lambda x: round(float(x), nd) if np.isscalar(x) else np.round(x, nd).tolist())
+        return [r(a[q]) if q in a else None for q in qids]
+    imp = {"contrast": per_q(contrast), "spread": per_q(spread), "w": per_q(list(W.T)),
+           "contrast_rank": per_q(itab.contrast_rank, 0), "spread_rank": per_q(itab.spread_rank, 0),
+           "sign_share": per_q(sign_share, 3), "contrast_rank_med": per_q(itab.contrast_rank_median, 1),
+           "spread_rank_med": per_q(itab.spread_rank_median, 1), "contrast_fold_sd": per_q(itab.contrast_fold_sd),
+           "C": float(m["C"]), "n_folds": len(fits), "n_model_questions": len(mq)}
+    Pyes = P.reindex(ids)
+    markers = {}
+    for k, c in enumerate(classes):
+        inside = lab.c10.values == c
+        top = [j for j in np.argsort(-W[k]) if W[k, j] > 0][:5]
+        markers[c] = [{"q": qpos[mq[j]], "w": round(float(W[k, j]), 5), "p_in": float(Pyes[mq[j]].values[inside].mean()),
+                       "p_out": float(Pyes[mq[j]].values[~inside].mean())} for j in top if mq[j] in qpos]
+
+    # ---------------- worked cases, held out by patient
+    # chosen with this model's own out-of-fold predictions unless named in explore.case_images: the two-class choice
+    # (case_ids) gave a melanoma that the ten-subtype model assigns to 'inflammatory or infectious' (2026-11-17)
+    if not e.get("case_images"):
+        case_ids = pick_cases_tenclass(lab, meta, Pm, ids, classes)
+    a = pd.read_parquet(inputs["embed"] / "answers.parquet", columns=["image_id", "question_id", "original", "p_yes", "confidence"])
+    a = a[(a.original.astype(int) == 1) & a.image_id.isin(case_ids)]
+    paths = pd.read_parquet(inputs["manifest"] / "manifest.parquet").set_index("image_id").path
+    cases = []
+    for cid in case_ids:
+        i = ids.index(cid)
+        train = groups != groups[i]
+        scale, clf = clone(m["model"]["scale"]), clone(m["model"]["clf"])
+        clf.fit(scale.fit_transform(Xq[train]), y10[train])
+        z = scale.transform(Xq[[i]])[0]
+        eta = clf.intercept_ + clf.coef_ @ z
+        p = clf.predict_proba(z[None])[0]
+        soft = np.exp(eta - eta.max()) / np.exp(eta - eta.max()).sum()
+        t = int(y10[i])
+        c = classes.index(CASE_CONTRAST[classes[t]]) if classes[t] in CASE_CONTRAST else \
+            int(np.argsort(-p)[1] if np.argmax(p) == t else np.argmax(p))
+        dw, d0 = clf.coef_[t] - clf.coef_[c], float(clf.intercept_[t] - clf.intercept_[c])
+        contrib = dw * z
+        lr = float(np.log(p[t] / p[c]))
+        err = {"softmax": float(np.abs(soft - p).max()), "decomposition": abs(d0 + float(contrib.sum()) - lr)}
+        assert err["softmax"] < 1e-9 and err["decomposition"] < 1e-9, err
+        ans = a[a.image_id == cid].set_index("question_id")
+        pm_case = float(collapse_malignant(p[None], classes, grp3)[0])
+        cases.append({"id": cid, "i": i, "sub": t, "contrast_sub": c, "image": thumbnails([paths[cid]], 560, 1, quality=86)[0], "p": np.round(p, 6).tolist(), "p_mal": pm_case,
+                      "pred": int(np.argmax(p)), "logratio": lr, "d0": d0, "sum_terms": float(contrib.sum()),
+                      "oof_p": np.round(Pm[i], 6).tolist(), "oof_p_mal": float(s[i]), "C": float(m["C"]),
+                      "n_train": int(train.sum()), "n_left_out": int((~train).sum()), "max_err": max(err.values()),
+                      "terms": [{"q": qpos[qq], "x": float(Xq[i, k]), "z": float(z[k]), "dw": float(dw[k]), "c": float(contrib[k]),
+                                 "py": float(ans.p_yes.get(qq, np.nan)), "cf": float(ans.confidence.get(qq, np.nan))}
+                                for k, qq in enumerate(mq) if qq in qpos]})
+    check["case_max_err"] = max(c_["max_err"] for c_ in cases)
+
+    return {"classes": classes, "mal": mal.tolist(), "ben": ben.tolist(), "cases_auto": not e.get("case_images"),
+            "img": {"p": np.round(Pm, 4).tolist(), "pm": np.round(s, 4).tolist()},
+            "roc": roc, "ctrl_roc": "eval.roc.ctrl_all / eval.roc.ctrl_derm (same 800 images)",
+            "folds": folds, "fold_summary": fsum, "pooled_auc": pooled,
+            "imp": imp, "markers": markers, "cases": cases, "check": check}
+
+
 def thumbnails(paths, px: int, n_jobs: int, quality: int = 72) -> list[str]:
     from joblib import Parallel, delayed
 
@@ -512,6 +743,13 @@ def _run(cfg, out, inputs, ctx) -> dict:
     write_summary(out, cfg, N, Q, dropped, qt, coh_all, coh_topic, coh_src, mantels, tva, pc, m_img, agr, ica, pca_assoc,
                   qsum, topics, sub_order, meta, lab, e)
 
+    # ---------------- the ten-subtype model (payload key ten2)
+    ev = eval_payload(inputs, ids, lab, meta, ctrl, sub_order)
+    print("  ten-subtype model: collapsed score, 25 fold refits, worked cases ...", flush=True)
+    ten2 = tenclass_payload(cfg, inputs, ids, lab, meta, X, P, qids, ctrl, sub_order,
+                            pick_cases(lab, meta, rp, ids, e.get("case_images")), ev, out)
+    write_tenclass_summary(out, ten2, qids, qt)
+
     # ---------------- page
     print("  thumbnails ...", flush=True)
     thumbs = thumbnails(man.set_index("image_id").loc[ids, "path"].tolist(), e.thumb_px, e.n_jobs)
@@ -556,11 +794,13 @@ def _run(cfg, out, inputs, ctx) -> dict:
                 "n_for": {str(k): v for k, v in pc["n_for"].items()}, "pr": pc["participation_ratio"],
                 "assoc": pca_assoc.round(4).to_dict("records")},
         "ica": ica.round(4).to_dict("records"),
-        "eval": eval_payload(inputs, ids, lab, meta, ctrl, sub_order),
+        "eval": ev,
         "imp": importance_payload(inputs, qids, sub_order),
         "sub": subtypes_payload(inputs, ids, qids, sub_order, meta),
         "thr": thresholds_payload(inputs),
         "cases": case_payload(cfg, inputs, lab, meta, man, ids, qids, rp, ctrl, sub_order),
+        "ten2": ten2,
+        "qcl": json.loads((inputs["qclusters"] / "payload.json").read_text()),   # S15: questions answered alike, and the checks on why
         "answers": {"yes_share": float((Pq >= 0.5).mean()),
                     "p_hist": np.histogram(Pq.ravel(), bins=20, range=(0, 1))[0].tolist(),
                     "q_yes_hist": np.histogram((Pq >= 0.5).mean(0), bins=20, range=(0, 1))[0].tolist(),
@@ -602,6 +842,50 @@ def _json_default(o):
 
 
 # ------------------------------------------------------------------ summary
+def write_tenclass_summary(out, t, qids, qt):
+    """tenclass.md: the ten-subtype numbers in ten2, with the checks behind them."""
+    c, fs = t["check"], t["fold_summary"]
+    text = dict(zip(qids, qt.question))
+    L = ["# Ten-subtype ridge read as benign against malignant (payload key ten2)", "",
+         "S10 task flat_10c, all 446 questions, folds grouped by patient; malignant subtypes' summed probability over "
+         "their number against the benign subtypes' over theirs (S11 collapse_malignant), on the 800 benign and malignant images.", "",
+         "## Checks", "",
+         f"- Collapsed AUROC pooled per repeat, against S11 tenclass_summary.csv: largest difference {c['s11_repeat_auroc']['max_abs_diff']:.1e}.",
+         f"- AUROC, sensitivity and specificity at 0.5, specificity at 95% sensitivity, against S11 model_comparison.csv model 1: "
+         f"largest difference {c['s11_model1_max_abs_diff']:.1e}.",
+         f"- Ten-subtype ridge refitted on S10's 25 outer training splits with S10's penalties: test-fold probabilities within "
+         f"{c['refit_reproduction_max_diff']:.1e} of S10's stored ones.",
+         f"- Worked cases: softmax and log-ratio decomposition reproduce the model's probabilities to {c['case_max_err']:.1e}.",
+         f"- Collapse of the repeat-averaged probabilities against the average of the per-repeat collapsed scores: largest "
+         f"difference {c['collapse_of_mean_vs_mean_of_collapse_max_diff']:.1e} (the page uses the latter).",
+         f"- Final model: largest |sum of the ten class weights| of a question {c['final_class_weight_sum_max']:.1e} "
+         "(the weights are centred over the classes, so each class weight reads against the average class).", "",
+         "## Benign against malignant", "", "| images | AUROC per fold, mean ± SD (range) | pooled per repeat | ROC of repeat-averaged score | spec. at 95% sens. per fold |",
+         "|---|---|---|---|---|"]
+    for sub, k in (("all images", "all"), ("dermoscopic only", "derm")):
+        f = fs[sub]
+        L.append(f"| {sub} | {f['auc_mean']:.3f} ± {f['auc_sd']:.3f} ({f['auc_min']:.3f}–{f['auc_max']:.3f}), {f['n_folds']} folds | "
+                 f"{np.mean(t['pooled_auc'][sub]):.3f} | {t['roc'][k]['auc']:.3f} (spec. at 95% sens. {t['roc'][k]['op']['spec']:.3f}) | "
+                 f"{f['spec_mean']:.3f} ± {f['spec_sd']:.3f} |")
+    imp = t["imp"]
+    rows = sorted([k for k, v in enumerate(imp["contrast"]) if v is not None], key=lambda k: -abs(imp["contrast"][k]))[:15]
+    L += ["", "## Questions with the largest contrast (malignant minus benign mean weight)", "",
+          "| question | contrast | sign kept in folds | spread | spread rank (median over folds) |", "|---|---|---|---|---|"]
+    for k in rows:
+        L.append(f"| {text[qids[k]]} | {imp['contrast'][k]:+.4f} | {imp['sign_share'][k]:.0%} | {imp['spread'][k]:.4f} | "
+                 f"{imp['spread_rank'][k]} ({imp['spread_rank_med'][k]:.0f}) |")
+    L += ["", "## Worked cases (held out by patient)", ""]
+    cl = t["classes"]
+    for cs in t["cases"]:
+        L.append(f"- {cs['id']} ({cl[cs['sub']]}): held-out P({cl[cs['sub']]}) = {cs['p'][cs['sub']]:.3f}, "
+                 f"P({cl[cs['contrast_sub']]}) = {cs['p'][cs['contrast_sub']]:.3f}, most probable {cl[cs['pred']]}, collapsed "
+                 f"P(malignant) {cs['p_mal']:.3f} (out of fold {cs['oof_p_mal']:.3f}); log ratio {cs['logratio']:+.3f} = "
+                 f"{cs['d0']:+.3f} (intercepts) {cs['sum_terms']:+.3f} (questions); {cs['n_train']} training images, "
+                 f"{cs['n_left_out']} of the patient's left out.")
+    L.append("")
+    (out / "tenclass.md").write_text("\n".join(L), encoding="utf-8")
+
+
 def _f(v, d=2):
     return "n/a" if v is None or (isinstance(v, float) and np.isnan(v)) else f"{v:.{d}f}"
 

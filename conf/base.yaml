@@ -195,6 +195,24 @@ explore:                         # S9: unsupervised structure of the answers + i
   case_images: null               # case-study images (ISIC ids); null = one typical melanoma and one naevus (pick_cases)
   n_jobs: 16
 
+qclusters:                       # S15: questions answered alike at r >= r_main, and the checks on why (qaemb/stages/s15_qclusters.py)
+  main_component: judgement      # judgement = P(yes) (Spearman, so any monotone transform is the same); directional = Directional Score; confidence = stated confidence
+  r_main: 0.6                    # complete linkage cut at 1 - r_main: every pair in a cluster has r >= r_main
+  r_thresholds: [0.5, 0.6, 0.7]  # also summarised, as a sensitivity check
+  reword_top_share: 0.005        # near-identical wordings: the most similar 0.5% of question pairs
+  n_boot: 200                    # bootstrap resamples of the images (stratified on subtype) for cluster stability
+  n_split: 50                    # pairs of disjoint halves of the images for split-half agreement
+  n_perm_prompt: 200             # random reassignments of topics for the shared-confidence null
+  n_perm_null: 20                # column shuffles for the chance level of the largest |r|
+  graded_cap: 0.45               # graded-"no" check: P(yes) capped here keeps only the gradation among "no" answers
+  min_yes: 20                    # yes/no check: phi only for pairs in which both questions have this many "yes" images
+  n_pcs_impression: 5            # image-impression check: leading components of the other topics' answers removed
+  map_links: 2                   # cluster map: links to each cluster's closest clusters ...
+  map_min_r: 0.35                # ... where their mean rho is at least this
+  robust_grid:                   # "holds under every check" (spans prompts, stability, strict rho), counted over a grid
+    stability: [0.5, 0.6, 0.7, 0.8, 0.9]
+    strict: [0.4, 0.5, 0.6]
+
 thresholds:                      # S14: P(malignant) cutoffs chosen in the training split; fixed-cutoff sweep (qaemb/stages/s14_thresholds.py)
   sweep: [0.05, 0.95, 0.05]      # fixed cutoffs: from, to, step
   reproduce_tol: 1.0e-4          # S10's test-fold predictions must be reproduced to within this

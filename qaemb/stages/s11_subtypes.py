@@ -97,6 +97,17 @@ def roc_points(y, s, max_pts=200):
 
 
 # ------------------------------------------------------------------ ten subtypes
+def collapse_malignant(P, classes, grp3) -> np.ndarray:
+    """Ten-subtype probabilities read as benign against malignant: the malignant subtypes' summed probability divided
+    by their number, against the benign subtypes' summed probability divided by theirs, renormalised, so that 0.5 again
+    means equal prior odds (the model was trained with equal weight per subtype). Indeterminate subtypes enter neither
+    sum. P: [n x K] in the order of `classes`; grp3: subtype -> benign / indeterminate / malignant."""
+    P = np.asarray(P, float)
+    g = np.array([grp3[c] for c in classes])
+    m = P[:, g == "malignant"].sum(1) / (g == "malignant").sum()
+    return m / (m + P[:, g == "benign"].sum(1) / (g == "benign").sum())
+
+
 def tenclass(oof, lab, derm, lineage, classes):
     """Per-repeat confusion matrices and per-class scores of the S10 10-subtype model (all questions, patient groups)."""
     from sklearn.metrics import confusion_matrix, precision_recall_fscore_support, roc_auc_score
@@ -285,12 +296,10 @@ def model_comparison(out, oof10, oof6, oofb, classes, grp3, direct, pair_S, pid,
     a = oof10[(oof10.task == "flat_10c") & (oof10.set == "all") & (oof10.grouping == "patient") & (oof10.repeat == 0)]
     ids10, y10 = a.image_id.values, np.array([classes.index(v) for v in a.true])
     pc = [f"p::{c}" for c in classes]
-    mal = [f"p::{c}" for c in classes if grp3[c] == "malignant"]
-    ben = [f"p::{c}" for c in classes if grp3[c] == "benign"]
     ratio = lambda h: (h[f"p::{pos}"] / (h[f"p::{pos}"] + h[f"p::{neg}"])).values
     # ten subtypes collapsed to benign vs malignant: the summed probabilities, each group divided by its number of subtypes,
     # so that 0.5 again means equal prior odds (the model was trained with equal weight per subtype)
-    collapse = lambda h: ((m := h[mal].sum(1) / len(mal)) / (m + h[ben].sum(1) / len(ben))).values
+    collapse = lambda h: collapse_malignant(h[pc].values, classes, grp3)
     three = lambda h: (h["p::malignant"] / (h["p::malignant"] + h["p::benign"])).values
     pmal = lambda h: h["p::malignant"].values
     rows = []

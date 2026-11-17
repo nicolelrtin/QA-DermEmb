@@ -351,6 +351,47 @@ dialog.card .big-thumb { max-height: 320px; object-fit: contain; background: #1a
 .supp a { color: var(--accent); font-weight: 600; }
 .supp span { display: block; color: var(--text-secondary); font-size: 15.5px; }
 
+/* chapter II: clustering at a minimum correlation */
+.qcgrid { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 20px; align-items: start; }
+@media (max-width: 1000px) { .qcgrid { grid-template-columns: 1fr; } }
+.hmwrap { position: relative; width: 100%; aspect-ratio: 1; }
+.hmwrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+#qc-over { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+#qc-over rect.qcbox { pointer-events: stroke; cursor: pointer; }
+#qc-over rect.qcbox.hi { stroke: var(--text-primary) !important; stroke-width: 3 !important; }
+#qc-over .qclab { font: 600 9px var(--sans); paint-order: stroke; stroke: var(--surface-1); stroke-width: 2px; }
+.qclist { max-height: 760px; overflow: auto; border-top: 1px solid var(--text-secondary); font-family: var(--sans); }
+details.qci { border-bottom: 1px solid var(--grid); }
+details.qci > summary { list-style: none; cursor: pointer; padding: 7px 4px; display: grid; grid-template-columns: 38px 1fr; gap: 2px 8px; font-size: 12.5px; line-height: 1.35; }
+details.qci > summary::-webkit-details-marker { display: none; }
+details.qci > summary:hover, details.qci[open] > summary { background: var(--surface-2); }
+details.qci .cn { font: 600 14px var(--serif); color: var(--text-secondary); grid-row: span 2; }
+details.qci.robust .cn { color: var(--accent); }
+details.qci .cs { color: var(--text-secondary); }
+details.qci .cs b { color: var(--text-primary); font-weight: 650; }
+details.qci .bd { display: flex; flex-wrap: wrap; gap: 4px; }
+.qb { font: 600 10.5px var(--sans); padding: 1px 6px; border-radius: 2px; border: 1px solid var(--border); color: var(--text-muted); white-space: nowrap; }
+.qb.gold { color: var(--gold); border-color: var(--gold); }
+.qb.ok { color: var(--text-primary); border-color: var(--text-secondary); }
+.qcb { padding: 4px 6px 12px 46px; font-size: 12.5px; }
+.qcb .qlist li .tp { display: block; color: var(--text-muted); font-size: 11px; }
+.qcb .kv { font-size: 12px; }
+.swatch { display: inline-block; width: 22px; height: 3px; vertical-align: middle; margin: 0 4px; border-radius: 1px; }
+.swatch.gold { background: var(--gold); } .swatch.grey { background: var(--text-muted); opacity: .6; }
+
+/* ten-subtype importance tables */
+.imp.t2 { grid-template-columns: 30px minmax(220px, 1.8fr) 140px 140px 140px 50px 56px; }
+.imp.rank.t2 { grid-template-columns: 34px minmax(220px, 1.8fr) 140px 140px 140px 50px 56px 52px; }
+@media (max-width: 900px) { .imp.t2, .imp.rank.t2 { grid-template-columns: 30px 1fr 100px 100px; } }
+#qc-zoom { margin-top: 6px; }
+table.zoom { font: 11px var(--sans); width: auto; }
+table.zoom td.cell { min-width: 30px; padding: 3px 2px; text-align: center; font-variant-numeric: tabular-nums; }
+table.zoom td.zq { min-width: 260px; max-width: 360px; cursor: pointer; font-size: 12px; line-height: 1.3; }
+table.zoom td.zq:hover { background: var(--surface-2); }
+table.zoom td.zq .tp { display: block; color: var(--text-muted); font-size: 10.5px; }
+table.zoom .zn { display: inline-block; min-width: 20px; color: var(--accent); font-weight: 600; }
+table.zoom sup { font-size: 8px; color: var(--gold); }
+
 </style>
 </head>
 <body>
@@ -390,47 +431,68 @@ dialog.card .big-thumb { max-height: 320px; object-fit: contain; background: #1a
 
 <!-- II questions -->
 <section class="chapter" id="c2" data-long="The Questions" data-title="Questions" data-rn="II" hidden>
-  <header class="chead"><div class="initial">II</div><div><div class="kicker">Structure of the questions</div><h2>How many independent things do the 500 questions measure, and which questions go together?</h2>
-    <p class="aim">Principal component analysis with parallel analysis estimates how many dimensions of the answers exceed shuffled data. Agglomerative (Ward) clustering on the correlation between answers then shows what those dimensions contain.</p></div></header>
+  <header class="chead"><div class="initial">II</div><div><div class="kicker">Structure of the questions</div><h2>Which questions are answered alike, and is that the image or the way the questions were asked?</h2>
+    <p class="aim">Agglomerative clustering on the distance 1 − <i>ρ</i> (Spearman correlation across the 1,000 images), with complete linkage cut at <i>ρ</i> = <span class="rmin"></span>: every pair of questions inside a cluster correlates at least that strongly. Each cluster is then tested against the explanations that do not involve the lesion's features: a shared prompt, a shared diagnosis, the model's overall impression of the image, and the way it grades its “no”.</p></div></header>
   <div class="finding" id="c2-find"></div>
+
+  <div class="fig wide" id="qc-fig"><h3><span class="fn">Fig. 2.1</span>Questions answered alike: agglomerative clustering at <i>ρ</i> ≥ <span class="rmin"></span></h3>
+    <p class="cap">Correlation between every pair of the <span id="qc-nq"></span> questions, ordered by the clustering tree. Outlined squares are clusters of three or more questions; every pair inside one correlates at <i>ρ</i> ≥ <span class="rmin"></span>. The list beside the matrix gives the same clusters in the same order, with their questions, their dominant topics and the checks of Fig. 2.3. Hover a cell for its two questions; select a square to open its cluster.</p>
+    <div class="controls">
+      <div class="control"><span>Answer component</span><div class="seg" id="qc-comp"></div></div>
+      <div class="control"><span>Correlation</span><div class="seg" id="qc-ctl"></div></div>
+      <div class="control"><span>Cells</span><div class="seg" id="qc-mask"></div></div>
+      <div class="control"><span>Clusters listed</span><div class="seg" id="qc-filter"></div></div>
+    </div>
+    <p class="muted" id="qc-comp-note" style="margin:0 0 10px"></p>
+    <div class="qcgrid">
+      <div class="qchm"><div class="hmwrap"><canvas class="hm" id="qc-canvas"></canvas><svg id="qc-over" preserveAspectRatio="none"></svg></div><div class="grad" id="qc-grad"></div>
+        <div id="qc-zoom"><p class="muted">Select a cluster (a square or a list entry) to see its questions and their correlations here.</p></div></div>
+      <div class="qclist" id="qc-list"></div>
+    </div></div>
+
+  <div class="fig wide"><h3><span class="fn">Fig. 2.2</span>A map of the question families</h3>
+    <p class="cap">One circle per cluster of Fig. 2.1 (area: number of questions), placed so that clusters whose questions are answered alike sit close together (multidimensional scaling on 1 − the mean <i>ρ</i> between the two clusters' questions). Each cluster is linked to its two closest clusters where their mean <i>ρ</i> is at least 0.35; <span class="swatch gold"></span> links join mostly questions from <b>separate prompts</b>, <span class="swatch grey"></span> links mostly questions from the same prompt; thicker is stronger. Hover for the cluster; select it to open it in Fig. 2.1.</p>
+    <div class="controls">
+      <div class="control"><span>Links</span><div class="seg" id="kg-edges"></div></div>
+      <div class="control"><span>Colour</span><div class="seg" id="kg-col"></div></div>
+    </div>
+    <div id="kg-legend"></div>
+    <svg class="plot" id="kg-svg" viewBox="0 0 1000 680" role="img" aria-label="Map of the question clusters"></svg>
+    <p class="take" id="kg-take"></p></div>
+
+  <h3 class="subhead"><span class="sn">II.i</span>Is it the image, or the prompt?</h3>
+  <p class="lead" id="qc-lead"></p>
   <div class="grid2">
-    <div class="fig"><h3><span class="fn">Fig. 2.1</span>Variance explained by each component, against parallel analysis</h3><p class="cap">Explained variance per principal component (log scale). Dashed: 95th percentile from 50 column-wise permutations of the answers, the variance a component would explain by chance.</p>
-      <div id="scree-legend"></div><svg class="plot" id="scree-svg" viewBox="0 0 520 330"></svg><p class="take" id="c2-take1"></p></div>
-    <div class="fig"><h3><span class="fn">Fig. 2.2</span>Agglomerative clustering of the questions</h3>
-      <p class="cap">Pearson correlation between every pair of questions across the 1,000 images, ordered by Ward clustering on correlation distance (1 − <i>r</i>); the dendrogram above shows the merge order. The grey strip alternates shade between clusters at the chosen <i>k</i>. Hover for the two questions; select a row to open its question.</p>
-      <div class="controls">
-        <div class="control"><span>Order</span><div class="seg" id="corr-order"></div></div>
-        <label class="control"><span>Clusters (k)</span><select id="corr-k"></select></label>
-        <label class="control"><span>Mark topic</span><select id="corr-topic"></select></label>
-      </div>
-      <svg id="corr-dendro" viewBox="0 0 1000 110" preserveAspectRatio="none" style="width:100%;height:80px;display:block"></svg>
-      <canvas class="hm" id="corr-strip" height="2" style="height:10px"></canvas>
-      <canvas class="hm" id="corr-strip2" height="1" style="height:6px;margin-bottom:2px"></canvas>
-      <canvas class="hm" id="corr-canvas"></canvas>
-      <div class="grad" id="corr-grad"></div></div>
+    <div class="fig"><h3><span class="fn">Fig. 2.3</span>Same prompt against separate prompts, at matched wording</h3>
+      <p class="cap">Pairs of questions binned by how similar their wording is (deciles of the cosine between text embeddings); mean <i>ρ</i> within subtype, so that a shared diagnosis is not the explanation. If questions agreed only because they describe related features, pairs with similar wording would agree equally whether asked together or apart.</p>
+      <div class="controls"><div class="control"><span>Answer component</span><div class="seg" id="wm-comp"></div></div></div>
+      <div id="wm-legend"></div><svg class="plot" id="wm-svg" viewBox="0 0 520 330"></svg><p class="take" id="wm-take"></p></div>
+    <div class="fig"><h3><span class="fn">Table 2.4</span>Three components of one answer</h3>
+      <p class="cap">Each answer has a probability of “yes” and a stated confidence; the Directional Score used by the classifier combines them. Mean <i>ρ</i> between questions asked in the same prompt and in separate prompts, the number of pairs at <i>ρ</i> ≥ <span class="rmin"></span> and the share of those asked together (5% of all pairs are). Last two columns: near-identical wordings (the most similar 0.5% of pairs, which include opposites such as “hazy border” and “sharply demarcated border”, hence |<i>ρ</i>|), asked together or apart.</p>
+      <div id="qc-table"></div><p class="take" id="qc-take"></p></div>
   </div>
-  <div class="fig"><h3><span class="fn">Fig. 2.3</span>The question clusters and their subtype profiles</h3>
-    <p class="cap">Clusters from Fig. 2.2, ordered by how well the cluster's mean score separates malignant from benign images (|AUROC − 0.5|). Cells: the cluster's mean z-score in each subtype (red above, blue below the average image). Select a row to list its questions.</p>
-    <div class="controls"><label class="control"><span>Number of clusters (k)</span><select id="qg-k"></select></label></div>
-    <div id="qg-table" class="scroll" style="max-height:560px"></div><div id="qg-members"></div>
-    <p class="take">Clusters correspond to dermoscopic families (vascular patterns, keratinocytic features, pigment network, blue-grey structures) and to the perilesional skin (photodamage, actinic change). Artefact clusters are the least coherent.</p></div>
+  <div class="grid2">
+    <div class="fig"><h3><span class="fn">Fig. 2.5</span>How many independent dimensions?</h3><p class="cap">Variance explained by each principal component of the Directional Scores (log scale). Dashed: 95th percentile from 50 column-wise permutations of the answers, the variance a component would explain by chance.</p>
+      <div id="scree-legend"></div><svg class="plot" id="scree-svg" viewBox="0 0 520 330"></svg><p class="take" id="c2-take1"></p></div>
+    <div class="fig"><h3><span class="fn">Box 2.6</span>What the data can and cannot settle</h3><div id="qc-box"></div></div>
+  </div>
   <details class="method"><summary>Methods for this chapter</summary><div id="c2-method"></div></details>
 </section>
 
 <!-- III modeling -->
-<section class="chapter" id="c3" data-long="Modeling" data-title="Modeling" data-rn="III" hidden>
-  <header class="chead"><div class="initial">III</div><div><div class="kicker">The classifier</div><h2>Do the answers discriminate malignant from benign, and how does the model compare with others?</h2>
-    <p class="aim">L2-penalised logistic regression (ridge) on the standardised Directional Scores of the 446 clinical questions, evaluated by nested cross-validation with folds grouped by patient. It is compared on identical folds with the model's direct answer to <i>“Is this a malignant lesion?”</i>, with models trained on other targets, and with SkinGPT-R1.</p></div></header>
+<section class="chapter" id="c3" data-long="Model Selection" data-title="Model selection" data-rn="III" hidden>
+  <header class="chead"><div class="initial">III</div><div><div class="kicker">The classifier</div><h2>Which model, and how well does it separate malignant from benign?</h2>
+    <p class="aim">L2-penalised logistic regression (ridge) on the standardised Directional Scores of the 446 clinical questions, trained to name the ten subtypes and evaluated by nested cross-validation with folds grouped by patient. Read as benign against malignant, it is compared on identical folds with the model's direct answer to <i>“Is this a malignant lesion?”</i>, with models trained on two or three classes, and with SkinGPT-R1; the last part fixes the cutoff at which it would be used.</p></div></header>
   <div class="finding" id="c3-find"></div>
   <h3 class="subhead"><span class="sn">III.i</span>Benign against malignant</h3>
   <div class="grid2">
-    <div class="fig"><h3><span class="fn">Fig. 3.1</span>ROC: question-based model against the direct question</h3><p class="cap">Pooled out-of-fold predictions, averaged over the five repeats (hence small differences from the fold means). Markers: operating point at 95% sensitivity.</p>
+    <div class="fig"><h3><span class="fn">Fig. 3.1</span>ROC: the ten-subtype model, read as benign against malignant, against the direct question</h3><p class="cap">The 800 benign and malignant images; each image's out-of-fold score averaged over the five repeats (hence small differences from the fold means). Markers: operating point at 95% sensitivity, read on these predictions (Table 3.5 fixes it from the training images instead).</p>
       <div class="controls"><div class="control"><span>Images</span><div class="seg" id="roc-sub"></div></div></div>
       <div id="roc-legend"></div><svg class="plot" id="roc-svg" viewBox="0 0 420 400"></svg></div>
     <div class="fig"><h3><span class="fn">Box 3.1</span>Controls against leakage</h3><p class="cap">Every estimate in this chapter and the next was made under these conditions.</p>
       <ul class="checks one" id="c3-checks"></ul></div>
   </div>
-  <div class="fig"><h3><span class="fn">Fig. 3.2</span>Out-of-fold P(malignant) by subtype</h3><p class="cap">Ridge prediction for every image (mean over five repeats). The indeterminate subtypes were excluded from training and scored by every fold model. Black ticks: medians. Hover for the image; select to open it.</p>
+  <div class="fig"><h3><span class="fn">Fig. 3.2</span>Out-of-fold P(malignant) by subtype</h3><p class="cap">The ten-subtype model's probabilities for every image, read as benign against malignant (mean over five repeats). Black ticks: medians. Hover for the image and the model's first choice of subtype; select to open it.</p>
     <svg class="plot" id="strip-svg" viewBox="0 0 900 380"></svg><p class="take" id="c5-take-strip"></p></div>
 
   <h3 class="subhead"><span class="sn">III.ii</span>Comparison across models and tasks</h3>
@@ -441,7 +503,17 @@ dialog.card .big-thumb { max-height: 320px; object-fit: contain; background: #1a
     <div id="cmp-T"></div><p class="take" id="c11-take2"></p>
     <h4 class="tsub">The same question in the S6 pipeline, with three classes added</h4><p class="cap" id="cmp-cap-U"></p>
     <div id="cmp-U"></div></div>
-  <div class="fig"><h3><span class="fn">Table 3.5</span>Threshold metrics by model</h3><p class="cap" id="mt-cap"></p>
+  <h3 class="subhead"><span class="sn">III.iii</span>Choosing the cutoff</h3>
+  <p class="lead">AUROC needs no cutoff, but any statement about sensitivity or specificity does. On an external test set the cutoff must be fixed beforehand, so here every rule is turned into a cutoff using the training images only (cross-validated predictions inside the training split) and then applied unchanged to the held-out fold.</p>
+  <div class="fig"><h3><span class="fn">Table 3.5</span>Choosing the P(malignant) cutoff</h3>
+    <p class="cap">Benign against malignant. Values are means over the 25 held-out folds, with the range across folds in brackets. Grey rows: the same rule with the cutoff read on the held-out fold itself, after seeing its labels (how specificity at 95% sensitivity is usually reported, and slightly optimistic).</p>
+    <div class="controls"><div class="control"><span>Score</span><div class="seg" id="thr-score"></div></div><div class="control"><span>Images</span><div class="seg" id="thr-sub"></div></div></div>
+    <div id="thr-table" style="overflow:auto"></div><p class="take" id="thr-take1"></p></div>
+  <div class="fig"><h3><span class="fn">Fig. 3.6</span>Sensitivity and specificity across cutoffs</h3>
+    <p class="cap">The same held-out folds at fixed cutoffs from 0.05 to 0.95 (an image is called malignant if P ≥ cutoff). Lines: mean over 25 folds; bands: range across folds. Vertical lines: the training-split cutoffs for 95% sensitivity (dashed) and for Youden's index (dotted). Hover for the values at each cutoff. Uses the score and image controls of Table 3.5.</p>
+    <div id="thr-legend"></div><svg class="plot" id="thr-svg" viewBox="0 0 900 380"></svg><p class="take" id="thr-take2"></p></div>
+  <div class="fig"><h3><span class="fn">Table 3.7</span>Sensitivity, specificity and F1 by model, at a stated cutoff</h3>
+<p class="cap" id="mt-cap"></p>
     <div class="controls"><div class="control"><span>Task</span><div class="seg" id="mt-task"></div></div>
       <div class="control" id="mt-rule-c"><span>Threshold</span><div class="seg" id="mt-rule"></div></div>
       <div class="control" id="mt-model-c" hidden><span>Model</span><div class="seg" id="mt-model"></div></div>
@@ -492,20 +564,20 @@ dialog.card .big-thumb { max-height: 320px; object-fit: contain; background: #1a
 <!-- V importance -->
 <section class="chapter" id="c5" data-long="Question Importance" data-title="Importance" data-rn="V" hidden>
   <header class="chead"><div class="initial">V</div><div><div class="kicker">Interpretation</div><h2>Which questions carry the decision, and how is a single prediction formed?</h2>
-    <p class="aim">Importance is ranked by consensus across six model families for malignant against benign (stage S7), with the standardised ridge weight giving the direction; the marker questions of each subtype come from the ten-subtype ridge model. Two worked cases then show how one prediction is assembled from the answers. Selecting any question opens it.</p></div></header>
+    <p class="aim">Everything here comes from the ten-subtype ridge model. Each question has one weight per subtype; we rank questions by how much they move the choice among subtypes (the spread of their ten weights) and give their direction for malignant against benign (the mean malignant-subtype weight minus the mean benign-subtype weight). Two worked cases then show how one prediction is assembled from the answers. Selecting any question opens it.</p></div></header>
   <div class="finding" id="c6-find"></div>
-  <div class="fig"><h3><span class="fn">Fig. 5.1</span>The twenty highest-ranked questions</h3>
-    <p class="cap">Weight: standardised ridge coefficient (red toward malignant, blue toward benign). Mean P(yes) in <span class="dot" id="dotb"></span> benign and <span class="dot" id="dotm"></span> malignant images. Alone: univariate AUROC. Kept: selection frequency over 25 lasso fits, a measure of how stable the question's contribution is. <span class="badge">doubt</span> affirmed in fewer than 5% of images of every class, so the signal lies in the confidence of the negative answer.</p>
-    <div class="imp" id="imp"></div>
+  <div class="fig"><h3><span class="fn">Fig. 5.1</span>The twenty questions that most move the choice of subtype</h3>
+    <p class="cap">Ranked by how much each question moves the choice among the ten subtypes (standard deviation of its ten weights, on standardised answers). Benign | malignant: the mean weight of the malignant subtypes minus that of the benign subtypes (red toward malignant, blue toward benign). Mean P(yes) in <span class="dot" id="dotb"></span> benign and <span class="dot" id="dotm"></span> malignant images. Alone: univariate AUROC. Sign kept: share of the 25 fold refits in which the benign | malignant weight keeps its sign. <span class="badge">doubt</span> affirmed in fewer than 5% of benign and of malignant images, so the signal lies in how firm the negative answer is.</p>
+    <div class="imp t2" id="imp"></div>
     <p class="take" id="c6-take1"></p></div>
-  <div class="fig"><h3><span class="fn">Fig. 5.2</span>Subtype marker questions</h3><p class="cap">Largest positive coefficients for each class in the ten-subtype ridge model, with mean P(yes) within the subtype against all others.</p><div class="markers" id="markers"></div></div>
+  <div class="fig"><h3><span class="fn">Fig. 5.2</span>Subtype marker questions</h3><p class="cap">The five largest positive weights of each subtype in the ten-subtype ridge model, with mean P(yes) within the subtype against all other images.</p><div class="markers" id="markers"></div></div>
   <div class="fig"><h3><span class="fn">Fig. 5.3</span>Ranking of all <span id="nq-all"></span> clinical questions</h3>
-    <p class="cap">Every question in the classifier, by consensus rank (malignant against benign). Columns as in Fig. 5.1, with the question's cluster from Fig. 2.3 (k = <span id="rk-k"></span>). Search the wording, or sort by another column.</p>
+    <p class="cap">Every question in the model, by how much it moves the choice of subtype. Columns as in Fig. 5.1, with the question's cluster from Fig. 2.1 (judgement, <i>ρ</i> ≥ 0.6). Search the wording, or sort by another column.</p>
     <div class="controls"><label class="control"><span>Search</span><input type="search" id="rk-search" placeholder="e.g. vessels, sun damage"></label>
       <div class="control"><span>Sort by</span><div class="seg" id="rk-sort"></div></div>
       <div class="control"><span>Direction</span><div class="seg" id="rk-dir"></div></div>
       <div class="control"><span>&nbsp;</span><button class="dl" id="rk-csv">Download ranking (CSV)</button></div></div>
-    <div class="scroll" style="max-height:620px"><div class="imp rank" id="rk"></div></div>
+    <div class="scroll" style="max-height:620px"><div class="imp rank t2" id="rk"></div></div>
     <p class="muted" id="rk-note" style="margin:8px 0 0"></p></div>
   <h3 class="subhead"><span class="sn">V.i</span>Two worked cases</h3>
   <p class="lead" id="cases-lead"></p>
@@ -548,7 +620,8 @@ function readPalette() {
   PAL = {c: [css("--c1"), css("--c2"), css("--c3")], muted: css("--mark-muted"), ink: css("--text-primary"), ink2: css("--text-secondary"), ink3: css("--text-muted"),
     neg: hex2rgb(css("--neg")), pos: hex2rgb(css("--pos")), mid: hex2rgb(css("--mid")), surf: hex2rgb(css("--surface-1")),
     seq: css("--seq").split(",").map(s => hex2rgb(s.trim())), grid: css("--grid"), border: css("--border"), accent: css("--accent")};
-  PAL.grp = [PAL.c[0], PAL.c[2], PAL.c[1]];     // benign blue, indeterminate aqua, malignant orange
+  PAL.grp = [PAL.c[0], PAL.c[2], PAL.c[1]];
+  PAL.gold = css("--gold");     // benign blue, indeterminate aqua, malignant orange
 }
 const onFill = c => (0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) > 150 ? "#0b0b0b" : "#ffffff";
 function divRGB(t) { t = Math.max(-1, Math.min(1, t)); return t < 0 ? mix(PAL.mid, PAL.neg, -t) : mix(PAL.mid, PAL.pos, t); }
@@ -642,98 +715,7 @@ function showTab(id, keepScroll) {
 }
 
 // ------------------------------------------------------------------ correlation explorer
-const C = {order: "tree", k: D.meta.kq, topic: -1};
-function qOrder(kind) {
-  const leaves = D.q.dendro.leaves; if (kind === "tree") return leaves;
-  const pos = new Map(leaves.map((q, i) => [q, i]));
-  return [...Array(NQ).keys()].sort((a, b) => D.q.topic[a] - D.q.topic[b] || pos.get(a) - pos.get(b));
-}
-function renderCorr() {
-  seg($("corr-order"), [["tree", "Clustering"], ["topic", "Topic"]], C.order, v => { C.order = v; drawCorr(); });
-  fillSelect($("corr-k"), kOptions(D.meta.qks), C.k); $("corr-k").onchange = e => { C.k = +e.target.value; drawCorr(); };
-  fillSelect($("corr-topic"), [[-1, "none"], ...TOP.map((t, i) => [i, t])], C.topic); $("corr-topic").onchange = e => { C.topic = +e.target.value; drawCorr(); };
-  $("corr-grad").innerHTML = gradHTML("div", "−1", "+1", "Pearson r across images · select a row to open its question");
-  drawCorr();
-}
-function drawCorr() {
-  const ord = qOrder(C.order), cv = $("corr-canvas"), n = ord.length; cv.width = n; cv.height = n;
-  const ctx = cv.getContext("2d"), img = ctx.createImageData(n, n);
-  for (let a = 0; a < n; a++) for (let b = 0; b < n; b++) { const c = divRGB(r_(ord[a], ord[b])), o = 4 * (a * n + b); img.data[o] = c[0]; img.data[o + 1] = c[1]; img.data[o + 2] = c[2]; img.data[o + 3] = 255; }
-  ctx.putImageData(img, 0, 0);
-  const cl = D.q.cl[String(C.k)], s1 = $("corr-strip"), s2 = $("corr-strip2"); s1.width = n; s2.width = n;
-  const c1 = s1.getContext("2d"), c2 = s2.getContext("2d");
-  for (let a = 0; a < n; a++) { c1.fillStyle = cl[ord[a]] % 2 ? PAL.ink2 : PAL.muted; c1.fillRect(a, 0, 1, 2); c2.fillStyle = D.q.topic[ord[a]] === C.topic ? PAL.c[1] : PAL.grid; c2.fillRect(a, 0, 1, 1); }
-  const dg = $("corr-dendro"); dg.innerHTML = "";
-  if (C.order === "tree") { const ymax = Math.max(...D.q.dendro.y.flat());
-    D.q.dendro.x.forEach((xs, s) => { const ys = D.q.dendro.y[s];
-      dg.appendChild(svgEl("polyline", {points: xs.map((x, j) => `${(x + .5) / n * 1000},${108 - ys[j] / ymax * 104}`).join(" "), fill: "none", stroke: PAL.ink2, "stroke-width": 1, "vector-effect": "non-scaling-stroke"})); }); }
-  cv.onmousemove = ev => { const rc = cv.getBoundingClientRect(), b = Math.floor((ev.clientX - rc.left) / rc.width * n), a = Math.floor((ev.clientY - rc.top) / rc.height * n);
-    if (a < 0 || b < 0 || a >= n || b >= n) return hideTip(); const i = ord[a], j = ord[b];
-    showTip(`r = <b>${r_(i, j).toFixed(2)}</b><br><b>${esc(D.q.text[i])}</b><br><span class="k">${esc(TOP[D.q.topic[i]])}</span><br><b>${esc(D.q.text[j])}</b><br><span class="k">${esc(TOP[D.q.topic[j]])}</span>`, ev); };
-  cv.onmouseleave = hideTip;
-  cv.onclick = ev => { const rc = cv.getBoundingClientRect(), a = Math.floor((ev.clientY - rc.top) / rc.height * n); if (a >= 0 && a < n) openQuestion(ord[a]); };
-}
-
-const QG = {k: D.meta.kq, row: -1};
-function drawQG() {
-  const qs = D.qsum[String(QG.k)];
-  const order = [...qs.keys()].sort((a, b) => Math.abs(qs[b].auroc - .5) - Math.abs(qs[a].auroc - .5));
-  $("qg-table").innerHTML = `<table><tr><th>cluster</th><th class="num">n</th><th class="num">AUROC</th><th>most central question</th>${subOrder.map(i => `<th class="cell" style="writing-mode:vertical-rl;transform:rotate(180deg);max-height:150px;border-bottom:3px solid ${PAL.grp[D.sub_group[i]]};font-weight:500">${esc(SUB[i])}</th>`).join("")}</tr>` +
-    order.map(c => { const d = qs[c]; return `<tr data-c="${c}" style="cursor:pointer"><td><b>${c + 1}</b></td><td class="num">${d.n}</td><td class="num">${fmt(d.auroc)}</td>
-      <td style="max-width:340px">${esc(D.q.text[d.central[0]])}<div class="muted">${d.topics.slice(0, 2).map(([t, n]) => `${esc(TOP[t].split(" (")[0])} (${n})`).join(" · ")}</div></td>
-      ${subOrder.map(i => `<td class="cell" style="${divCell(d.prof[i] / 1.2)}">${fmt(d.prof[i], 1)}</td>`).join("")}</tr>`; }).join("") + `</table>`;
-  $("qg-table").querySelectorAll("tr[data-c]").forEach(tr => tr.onclick = () => { QG.row = +tr.dataset.c; members(); });
-  members();
-}
-function members() {
-  if (QG.row < 0) { $("qg-members").innerHTML = ""; return; }
-  const cl = D.q.cl[String(QG.k)], mem = [...Array(NQ).keys()].filter(i => cl[i] === QG.row).sort((a, b) => Math.abs((D.q.auc[b] ?? .5) - .5) - Math.abs((D.q.auc[a] ?? .5) - .5));
-  $("qg-members").innerHTML = `<h4 style="margin:14px 0 6px">Cluster ${QG.row + 1}: ${mem.length} questions, ordered by univariate |AUROC − 0.5|</h4><div class="scroll" style="max-height:300px"><table><tr><th>question</th><th>topic</th><th class="num">affirmed</th><th class="num">AUROC alone</th></tr>` +
-    mem.map(i => `<tr data-q="${i}" style="cursor:pointer"><td>${esc(D.q.text[i])}</td><td class="muted">${esc(TOP[D.q.topic[i]])}</td><td class="num">${pct(D.q.yes[i])}</td><td class="num">${fmt(D.q.auc[i])}</td></tr>`).join("") + `</table></div>`;
-  $("qg-members").querySelectorAll("tr[data-q]").forEach(tr => tr.onclick = () => openQuestion(+tr.dataset.q));
-}
-
 const EV = {sub: "all", metric: "auc"};
-function drawROC() {
-  const svg = $("roc-svg"); svg.innerHTML = "";
-  const R1 = E.roc[EV.sub === "all" ? "ridge_all" : "ridge_derm"], R2 = E.roc[EV.sub === "all" ? "ctrl_all" : "ctrl_derm"];
-  $("roc-legend").innerHTML = legendRow([[PAL.c[0], `question-based (ridge) · ${fmt(R1.auc, 3)}`], [PAL.c[1], `direct question · ${fmt(R2.auc, 3)}`]]);
-  const ax = axes(svg, 420, 400, {l: 50, r: 14, t: 10, b: 42}, [0, 1], [0, 1], "false positive rate (1 − specificity)", "sensitivity", {xt: [0, .25, .5, .75, 1], yt: [0, .25, .5, .75, 1], xgrid: true});
-  svg.appendChild(svgEl("line", {x1: ax.X(0), y1: ax.Y(0), x2: ax.X(1), y2: ax.Y(1), stroke: PAL.muted, "stroke-dasharray": "4 4"}));
-  svg.appendChild(svgEl("line", {x1: ax.X(0), y1: ax.Y(.95), x2: ax.X(1), y2: ax.Y(.95), stroke: PAL.ink3, "stroke-dasharray": "2 3"}));
-  svgText(svg, ax.X(1) - 4, ax.Y(.95) + 14, "95% sensitivity", {"text-anchor": "end", style: `font-size:10.5px;fill:${PAL.ink3}`});
-  const hov = [];
-  [[R2, PAL.c[1], "direct question"], [R1, PAL.c[0], "question-based"]].forEach(([r, col, name]) => {
-    line(svg, r.pts.map(([x, y]) => [ax.X(x), ax.Y(y)]), col, "", 2.5);
-    svg.appendChild(svgEl("circle", {cx: ax.X(r.op.fpr), cy: ax.Y(r.op.tpr), r: 6, fill: col, stroke: rgb(PAL.surf), "stroke-width": 2}));
-    hov.push([ax.X(r.op.fpr), ax.Y(r.op.tpr), `<b>${name}</b><br>sensitivity ${pct(r.op.tpr)}, specificity ${pct(r.op.spec)}`]); });
-  const bx = ax.X(.42), by = ax.Y(.34);
-  svg.appendChild(svgEl("rect", {x: bx, y: by, width: ax.X(.98) - bx, height: 64, rx: 8, fill: rgb(PAL.surf), stroke: PAL.border}));
-  svgText(svg, bx + 10, by + 18, "Specificity at 95% sensitivity", {style: `font-size:11px;fill:${PAL.ink3}`});
-  svgText(svg, bx + 10, by + 37, `● question-based  ${pct(R1.op.spec)}`, {style: `font-size:12.5px;font-weight:700;fill:${PAL.c[0]}`});
-  svgText(svg, bx + 10, by + 55, `● direct question  ${pct(R2.op.spec)}`, {style: `font-size:12.5px;font-weight:700;fill:${PAL.c[1]}`});
-  hoverPoints(svg, hov);
-}
-function drawStrip() {
-  const svg = $("strip-svg"); svg.innerHTML = "";
-  const W = 900, m = {l: 230, r: 20, t: 10, b: 36}, rowH = 33, Hh = m.t + m.b + rowH * subOrder.length; svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`);
-  const ax = axes(svg, W, Hh, m, [0, 1], [0, 1], "P(malignant), out of fold", "", {xt: [0, .25, .5, .75, 1], xgrid: true});
-  const hov = [], meds = [];
-  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  subOrder.forEach((s, row) => { const y0 = m.t + row * rowH + rowH / 2, gi = D.sub_group[s];
-    svgText(svg, m.l - 12, y0 + 4, SUB[s], {"text-anchor": "end", style: `font-size:12px;fill:${PAL.ink}`});
-    svg.appendChild(svgEl("circle", {cx: 12, cy: y0, r: 4.5, fill: PAL.grp[gi]}));
-    const ims = [...Array(NI).keys()].filter(i => D.img.sub[i] === s && D.img.ridge[i] !== null), vs = ims.map(i => D.img.ridge[i]).sort((a, b) => a - b);
-    ims.forEach(i => { const x = ax.X(D.img.ridge[i]), y = y0 + (rnd() - .5) * (rowH - 12);
-      svg.appendChild(svgEl("circle", {cx: x, cy: y, r: 2.6, fill: PAL.grp[gi], "fill-opacity": .75}));
-      hov.push([x, y, `<img src="data:image/jpeg;base64,${D.img.thumb[i]}" style="width:100px;border-radius:3px;float:right;margin-left:8px"><b>${esc(SUB[s])}</b><br>P(malignant) ${fmt(D.img.ridge[i])}<br>${esc(D.img.imtype[i])}<br><span class="k">select to open</span>`, () => openImage(i)]); });
-    const med = vs[Math.floor(vs.length / 2)]; meds.push([s, med]);
-    svg.appendChild(svgEl("line", {x1: ax.X(med), x2: ax.X(med), y1: y0 - rowH / 2 + 3, y2: y0 + rowH / 2 - 3, stroke: PAL.ink, "stroke-width": 2.5}));
-    if (row < subOrder.length - 1 && D.sub_group[subOrder[row + 1]] !== gi) svg.appendChild(svgEl("line", {x1: 4, x2: W - m.r, y1: y0 + rowH / 2, y2: y0 + rowH / 2, stroke: PAL.border})); });
-  hoverPoints(svg, hov);
-  const ind = meds.filter(([s]) => D.sub_group[s] === 1).map(([s, v]) => `${SUB[s]} ${fmt(v)}`).join(", ");
-  $("c5-take-strip").innerHTML = `The indeterminate subtypes, absent from training, fall between the benign and malignant distributions (medians: ${esc(ind)}), as expected of a graded malignancy score.`;
-}
 // ------------------------------------------------------------------ 7 ten subtypes
 const TM = {m: "sensitivity"};
 const TMET = {sensitivity: ["Sensitivity", "share of the subtype's images assigned to it", .1], precision: ["Precision", "share of images assigned to the subtype that belong to it", .1],
@@ -965,7 +947,7 @@ function renderCmp() {
     <dt>Specificity</dt><dd>of the truly negative cases, the share the model correctly leaves alone at P ≥ 0.5. 1 − specificity is the false-alarm rate.</dd>
     <dt>Accuracy</dt><dd>the share of all images classified correctly. With equal class sizes, as in the naevus–melanoma comparison and the ten subtypes, it equals balanced accuracy; in benign against malignant there are 500 benign and 300 malignant images, so it leans toward specificity.</dd>
     <dt>F1</dt><dd>the harmonic mean of precision (the share of flagged cases that are truly positive) and sensitivity: high only when the model both finds the positive cases and does not over-call them.</dd>
-    <dt>Specificity at 95% sensitivity</dt><dd>the share of negatives still cleared when the threshold is lowered until 95% of positives are caught; chosen on the same predictions, so slightly optimistic. The project's pre-set main score for benign against malignant. Table 9.10 of the full explorer gives the version with the cutoff fixed from the training images.</dd>
+    <dt>Specificity at 95% sensitivity</dt><dd>the share of negatives still cleared when the threshold is lowered until 95% of positives are caught; chosen on the same predictions, so slightly optimistic. The project's pre-set main score for benign against malignant. Table 3.5 gives the version with the cutoff fixed from the training images.</dd>
     <dt>P cutoff</dt><dd>the value of P(malignant) at or above which an image is called malignant. Lowering it catches more malignancies (sensitivity up) at the cost of more false alarms (specificity down).</dd>
     <dt>PPV, NPV</dt><dd>positive predictive value: of the images called malignant, the share that are; negative predictive value: of those called benign, the share that are. Both depend on how common malignancy is (37.5% of these 800 images), so they will differ in a clinic.</dd>
     <dt>Youden's index</dt><dd>the cutoff that maximises sensitivity + specificity, weighting a missed malignancy and a false alarm equally.</dd>
@@ -1054,59 +1036,7 @@ function typicalIndeterminate() {
 }
 
 // ------------------------------------------------------------------ graphical abstract (overview)
-function renderAbstract() {
-  const ims = [[CASE_B().i, 0], [typicalIndeterminate(), 1], [CASE_M().i, 2]];
-  const thumb = i => `data:image/jpeg;base64,${D.img.thumb[i]}`;
-  const arrow = `<div class="arrow" aria-hidden="true"><svg viewBox="0 0 34 14"><line x1="1" y1="7" x2="29" y2="7" stroke="${PAL.muted}" stroke-width="1.6"/><path d="M26,2 L33,7 L26,12" fill="none" stroke="${PAL.muted}" stroke-width="1.6"/></svg></div>`;
-  const pn = (id, cls, k, body) => `<div class="pn ${cls}" tabindex="0" role="link" data-id="${id}"><div class="k"><span>${k}</span><span class="go">${$(id).dataset.rn || ""}</span></div>${body}</div>`;
-  const nG = g => D.img.grp.filter(x => x === g).length;
-  const qShow = [0, 1, 2, 3];
-  const colA = `<div class="col">
-    ${pn("c2", "", "Literature", `<div class="big">400+ papers <small>read</small></div><div class="s">${nSources()} of them cited directly by the questions</div>`)}
-    <div class="vlink"></div>
-    ${pn("c2", "dash", "Questionnaire", `<div class="big">${NQ} questions <small>in ${TOP.length} topics</small></div>
-      <ol>${qShow.map(q => `<li>${esc(D.q.text[q])}</li>`).join("")}<li class="more">… and ${NQ - qShow.length} more, each answered yes or no</li></ol>`)}
-    <div class="vlink"></div>
-    ${pn("c1", "grow", "Images", `<div class="big">${NI.toLocaleString()} ISIC images <small>ten subtypes of 100</small></div>
-      <div class="thumbs">${ims.map(([i, g]) => `<figure><img src="${thumb(i)}" alt="" style="border-color:${PAL.grp[g]}"><figcaption>${GRP[g]}</figcaption></figure>`).join("")}</div>
-      <div class="s">${nG(0)} benign · ${nG(1)} indeterminate · ${nG(2)} malignant</div>`)}</div>`;
-  const qs = [0, 1, 2], last = NQ - 1;
-  const colB = `<div class="col">${pn("c1", "grow", "Answerer", `<div class="big">Claude Sonnet 5.5 <small>answers every question</small></div>
-    <div class="s" style="margin-bottom:4px">P(yes) for each question, with a stated confidence</div>
-    ${ims.map(([i, g]) => `<div class="ans"><img src="${thumb(i)}" alt="" style="border-color:${PAL.grp[g]}"><table>${qs.map(q => `<tr><td>Q${q + 1}</td><td class="num">${fmt(p_(i, q))}</td></tr>`).join("")}<tr><td>…</td><td></td></tr><tr><td>Q${last + 1}</td><td class="num">${fmt(p_(i, last))}</td></tr></table></div>`).join("")}
-    <div class="s" style="margin-top:6px">${(NQ * NI).toLocaleString()} answers, each turned into a Directional Score</div>`)}</div>`;
-  const M = PM();
-  const colC = `<div class="col">${pn("c3", "", "Classifier", `<div class="big">Ridge regression <small>on ${IMP.n_questions} clinical questions</small></div>
-      <div class="stat3"><div><b>AUROC ${fmt(MAIN().fold_mean)}</b><span>benign against malignant; asking “Is this malignant?” directly gives ${fmt(CTRL().fold_mean)}</span></div></div>`)}
-    <div class="vlink"></div>
-    ${pn("c4", "grow", "Ten subtypes", `<div class="stat3"><div><b>${pct(TEN.bacc[0])}</b><span>balanced accuracy over ten subtypes (chance 10%); true subtype among the first three choices for ${pct(TEN.top3)}</span></div>
-      <div><b>AUROC ${fmt(M.tenclass.auroc_repeat_mean)}</b><span>naevus against melanoma, read from the same model</span></div></div>`)}</div>`;
-  const top = [...IMP.top.slice(0, 20)].sort((a, b) => b.ridge - a.ridge), pick = [...top.slice(0, 3), ...top.slice(-3)];
-  const wmax = Math.max(...pick.map(t => Math.abs(t.ridge)));
-  const bar = w => { const f = Math.abs(w) / wmax * 40; return `<svg width="88" height="12"><line x1="44" x2="44" y1="0" y2="12" stroke="${PAL.ink3}"/><rect x="${w > 0 ? 44 : 44 - f}" y="2" width="${f}" height="8" rx="2" fill="${rgb(w > 0 ? PAL.pos : PAL.neg)}"/></svg>`; };
-  const colD = `<div class="col">${pn("c5", "grow", "Interpretation", `<div class="big">Which questions decide <small>and in which direction</small></div>
-    <div class="wq"><div class="h">question</div><div class="h">benign | malignant</div>${pick.map(t => `<div>${esc(D.q.text[t.q])}</div><div>${bar(t.ridge)}</div>`).join("")}</div>
-    <div class="s" style="margin-top:8px">Three strongest questions each way among the top 20 (standardised ridge weight). The full ranking, the subtype markers and two worked cases are in Ch. V.</div>`)}</div>`;
-  $("ga").innerHTML = colA + arrow + colB + arrow + colC + arrow + colD;
-  $("ga").querySelectorAll(".pn[data-id]").forEach(p => { p.onclick = () => { showTab(p.dataset.id); scrollTo(0, 0); }; p.onkeydown = e => { if (e.key === "Enter") p.click(); }; });
-}
-
 // ------------------------------------------------------------------ overview
-function renderC0() {
-  const M = PM();
-  $("hero-lede").innerHTML = `Claude Sonnet 5.5 answered ${NQ} yes-or-no dermatological questions, drafted from the clinical literature, for each of ${NI.toLocaleString()} ISIC images spanning ten diagnostic subtypes. Each answer carries a stated probability and confidence, so every image becomes a profile of ${NQ} interpretable values. We describe what these answers contain, train a ridge classifier on them under patient-grouped nested cross-validation, measure how well it distinguishes the ten subtypes and, among them, melanoma from naevus, and identify the questions on which its decisions rest.
-    <span class="kw">The answers (I) and the structure of the questions (II) come first; the classifier and its comparison with other models (III) then lead to the ten subtypes (IV) and to the questions that carry the decision, with two worked cases (V).</span>`;
-  renderAbstract();
-  const S = [
-    ["c1", "I", `<b>${pct(D.answers.yes_share)} of answers are affirmative.</b> ${D.answers.n_rarely} of ${NQ} questions are affirmed in fewer than 5% of images; their information lies in the confidence of the “no”.`],
-    ["c2", "II", `<b>The ${NQ} questions span about ${D.pca.n_parallel} dimensions</b> above chance; agglomerative clustering groups them into families that follow dermoscopic structure and the perilesional skin.`],
-    ["c3", "III", `<b>Ridge reaches AUROC ${fmt(MAIN().fold_mean)}</b> for benign against malignant, against ${fmt(CTRL().fold_mean)} for the direct question; training on the ten subtypes costs nothing on this task.`],
-    ["c4", "IV", `<b>Ten subtypes are assigned correctly in ${pct(TEN.bacc[0])} of images</b> (chance 10%); the same model separates melanoma from naevus with AUROC ${fmt(M.tenclass.auroc_repeat_mean)}.`],
-    ["c5", "V", `<b>No single question exceeds AUROC ${fmt(IMP.best_alone.auc)};</b> the decision rests on many weak, partly redundant items, several describing the skin around the lesion.`]];
-  $("summary").innerHTML = S.map(([id, rn, t]) => `<div data-id="${id}"><span class="rn">${rn}</span><p>${t}</p></div>`).join("");
-  $("summary").querySelectorAll("div[data-id]").forEach(d => d.onclick = () => { showTab(d.dataset.id); scrollTo(0, 0); });
-}
-
 // ------------------------------------------------------------------ I answers
 function renderC1() {
   const A = D.answers;
@@ -1123,174 +1053,19 @@ function renderC1() {
 }
 
 // ------------------------------------------------------------------ II questions
-function renderC2() {
-  const pc = D.pca;
-  $("c2-find").innerHTML = `<div class="stat">${pc.n_parallel}<small>components above the permutation null</small></div><div class="say">The ${NQ} questions span approximately <b>${pc.n_parallel} independent dimensions</b>; ${pc.n_for["0.5"]} components account for half of the variance and ${pc.n_for["0.9"]} for 90%. Agglomerative clustering groups the questions into <b>families that follow dermoscopic structure</b> (vessels, keratinisation, pigment network, blue-grey structures) and <b>the perilesional skin</b>.</div>`;
-  const svg = $("scree-svg"); svg.innerHTML = "";
-  $("scree-legend").innerHTML = legendRow([[PAL.c[0], "observed"], [PAL.ink2, "permuted, 95th percentile", true]]);
-  const n = pc.ratio.length, ymin = Math.min(...pc.ratio, ...pc.null95) * .8, ymax = pc.ratio[0] * 1.3;
-  const ax = axes(svg, 520, 330, {l: 52, r: 12, t: 10, b: 40}, [1, n], [ymin, ymax], "principal component", "explained variance", {ylog: true, yt: [.001, .003, .01, .03, .1, .3].filter(v => v >= ymin && v <= ymax), yf: v => (100 * v) + "%", xt: [1, 10, 20, 30, 40, 50].filter(v => v <= n)});
-  svg.appendChild(svgEl("line", {x1: ax.X(pc.n_parallel + .5), x2: ax.X(pc.n_parallel + .5), y1: 10, y2: 290, stroke: PAL.ink2, "stroke-dasharray": "2 3"}));
-  svgText(svg, ax.X(pc.n_parallel + .5) + 5, 24, `${pc.n_parallel} components`, {style: `font-size:11px;fill:${PAL.ink2}`});
-  line(svg, pc.null95.map((v, i) => [ax.X(i + 1), ax.Y(v)]), PAL.ink2, "4 3", 1.5);
-  line(svg, pc.ratio.map((v, i) => [ax.X(i + 1), ax.Y(v)]), PAL.c[0], "", 2.5);
-  hoverPoints(svg, pc.ratio.map((v, i) => [ax.X(i + 1), ax.Y(v), `PC${i + 1}: ${(100 * v).toFixed(1)}% (null ${(100 * pc.null95[i]).toFixed(2)}%)<br>cumulative ${(100 * pc.cum[i]).toFixed(0)}%`]));
-  $("c2-take1").innerHTML = `The first component explains ${(100 * pc.ratio[0]).toFixed(0)}% of the variance; beyond component ${pc.n_parallel}, each explains no more than shuffled answers would. Many questions are therefore partly redundant, which is what the clustering in Fig. 2.2 makes visible.`;
-  renderCorr();
-  fillSelect($("qg-k"), kOptions(D.meta.qks), QG.k); $("qg-k").onchange = e => { QG.k = +e.target.value; QG.row = -1; drawQG(); };
-  drawQG();
-  $("c2-method").innerHTML = `<p>All ${NQ} questions as written, clinical and artefact, on the standardised Directional Score. <b>Correlation:</b> Pearson <i>r</i> between two questions across the ${NI.toLocaleString()} images. <b>Agglomerative clustering:</b> Ward linkage on correlation distance 1 − <i>r</i>; every question starts as its own cluster and the two clusters whose merger least increases the within-cluster variance are joined, until one remains. Cutting the tree at <i>k</i> gives the clusters (default k = ${D.meta.kq}). <b>Dimensions:</b> principal component analysis of the same matrix; parallel analysis keeps the components whose explained variance exceeds the 95th percentile of 50 permutations in which each question's answers are shuffled independently across images. Stage S9.</p>`;
-}
-
 // ------------------------------------------------------------------ III modeling
-function renderC3() {
-  const main = MAIN(), ctl = CTRL(), derm = KEY("s1_2c|all|patient|dermoscopic only"), les = KEY("s1_2c|all|lesion|all images");
-  const fa = E.folds.filter(f => f.subset === "all images"), better = fa.filter(f => f.ridge_auc > f.ctrl_auc).length;
-  $("c3-find").innerHTML = `<div class="stat">${fmt(main.fold_mean, 3)}<small>AUROC, ± ${fmt(main.fold_sd, 3)} (s.d. over 25 folds)</small></div><div class="say">The question-based model exceeds the direct question (<b>${fmt(ctl.fold_mean, 3)}</b>) in <b>${better} of ${fa.length} folds</b>. At 95% sensitivity its specificity is <b>${pct(main.spec_at_sens)}</b>, against ${pct(ctl.spec_at_sens)}. Restricted to dermoscopic images, AUROC is <b>${fmt(derm.fold_mean, 3)}</b>.</div>`;
-  const G = E.groups;
-  $("c3-checks").innerHTML = [
-    ["Patient-grouped folds", `${G.n_groups} groups; the ${G.multi} patients with 2 to ${G.largest} images are never split across training and test. Lesion-grouped estimate: ${fmt(les.fold_mean, 3)}.`],
-    ["Near-duplicate merging", `Perceptual hash (dHash, 256 bits, threshold 12 bits) over all image pairs; ${G.dups} pair found, already within one patient.`],
-    ["In-fold fitting", "Standardisation, penalty selection and any feature selection are refitted within every training split, inner and outer."],
-    ["Unscored final model", "Fitted on all labelled images and frozen; it will be evaluated once, on the external test set."]].map(([a, b]) => `<li><b>${a}</b>${esc(b)}</li>`).join("");
-  seg($("roc-sub"), [["all", "All images"], ["derm", "Dermoscopic only"]], EV.sub, v => { EV.sub = v; drawROC(); });
-  drawROC(); drawStrip();
-  renderCmp();
-  renderMtDetail();
-  $("c3-method").innerHTML = `<p><b>Classifier.</b> Ridge denotes L2-penalised logistic regression on the standardised Directional Scores of the 446 clinical questions (artefact questions and the control question excluded), with balanced class weights. Performance is estimated by nested cross-validation: five repeats of 5-fold, stratified on the ten subtypes and grouped by ISIC patient (by lesion where no patient is recorded). The penalty is selected from 21 values (λ = 1 to 10⁵) by grouped 3-fold inner cross-validation on log loss. Headline values are means over the 25 outer test folds; ROC curves pool each image's out-of-fold prediction averaged over repeats. Stage S10.</p>` + C11_METHOD;
-}
-
 // ------------------------------------------------------------------ IV classification
 function renderC4() { renderC9(); renderC10(); }
 
 // ------------------------------------------------------------------ V importance
-function renderC5() {
-  const best = IMP.best_alone;
-  $("c6-find").innerHTML = `<div class="stat">${fmt(best.auc)}<small>best univariate AUROC</small></div><div class="say">The strongest single item (<i>“${esc(best.q !== null ? D.q.text[best.q] : "")}”</i>) falls below both the combined model (${fmt(MAIN().fold_mean)}) and the direct question. Discrimination arises from <b>many weak, partially redundant items</b>; for <b>${IMP.n_top20_doubt} of the top 20</b> the signal lies in the confidence of a negative answer.</div>`;
-  $("dotb").style.background = PAL.grp[0]; $("dotm").style.background = PAL.grp[2];
-  const top = IMP.top.slice(0, 20), wmax = Math.max(...top.map(t => Math.abs(t.ridge))), pmax = Math.max(...top.flatMap(t => [t.p_b, t.p_m]));
-  $("imp").innerHTML = `<div class="h"></div><div class="h">question</div><div class="h">weight (benign | malignant)</div><div class="h opt">mean P(yes), 0 to ${fmt(pmax, 1)}</div><div class="h num opt">alone</div><div class="h num opt">kept</div>` +
-    top.map(t => `<div class="row" data-q="${t.q}"><div class="rk">${t.rank}</div><div>${esc(D.q.text[t.q])}${t.doubt ? '<span class="badge">doubt</span>' : ""}</div><div>${wBar(t.ridge, wmax)}</div><div class="opt">${dumbbell(t.p_b, t.p_m, pmax)}</div><div class="num opt">${fmt(t.auc)}</div><div class="num opt">${pct(t.lasso)}</div></div>`).join("");
-  $("imp").querySelectorAll(".row").forEach(r => r.onclick = () => openQuestion(+r.dataset.q));
-  $("c6-take1").innerHTML = `${top.filter(t => t.ridge > 0).length} of the 20 carry positive (malignant) weight. Several describe the <b>perilesional skin</b> (surface roughness, chronic actinic damage, dyspigmentation) rather than the lesion itself; such features may not transfer to images from other acquisition sources.`;
-  $("markers").innerHTML = subOrder.map(s => `<div class="mk"><h4>${grpDot(D.sub_group[s])}${esc(SUB[s])}</h4><ol>${(IMP.markers[SUB[s]] || []).map(m => `<li data-q="${m.q}">${esc(D.q.text[m.q])} <span class="muted">${fmt(m.p_in)} vs ${fmt(m.p_out)}</span></li>`).join("")}</ol></div>`).join("");
-  $("markers").querySelectorAll("li[data-q]").forEach(l => l.onclick = () => openQuestion(+l.dataset.q));
-  renderRank();
-  renderCases();
-}
 const wBar = (w, wmax, W = 140) => { const h = W / 2, f = Math.min(Math.abs(w) / wmax, 1) * (h - 4), col = rgb(w > 0 ? PAL.pos : PAL.neg);
   return `<svg width="${W}" height="14"><line x1="${h}" x2="${h}" y1="0" y2="14" stroke="${PAL.ink3}"/><rect x="${w > 0 ? h : h - f}" y="2" width="${f}" height="10" rx="2" fill="${col}"/></svg>`; };
 const dumbbell = (b, m, pmax) => { const X = v => 6 + Math.min(v / pmax, 1) * 128;
   return `<svg width="140" height="14"><line x1="${X(Math.min(b, m))}" x2="${X(Math.max(b, m))}" y1="7" y2="7" stroke="${PAL.muted}" stroke-width="2"/><circle cx="${X(b)}" cy="7" r="4.5" fill="${PAL.grp[0]}"/><circle cx="${X(m)}" cy="7" r="4.5" fill="${PAL.grp[2]}"/></svg>`; };
 
 // the full ranking of the clinical questions
-const RK = {sort: "rank", dir: "all", search: "", rows: null};
-function rankRows() {
-  if (RK.rows) return RK.rows;
-  const k = String(QG.k);
-  RK.rows = [...Array(NQ).keys()].filter(q => IMP.rank_all[q] !== null && IMP.rank_all[q] !== undefined).map(q => {
-    const yb = yesRate(BEN, q), ym = yesRate(MAL, q);
-    return {q, rank: IMP.rank_all[q], w: IMP.ridge_all[q], auc: D.q.auc[q], pb: meanP(BEN, q), pm: meanP(MAL, q), yes: D.q.yes[q],
-      doubt: yb < .05 && ym < .05, cl: D.q.cl[k][q] + 1, text: D.q.text[q]}; });
-  return RK.rows;
-}
-function renderRank() {
-  $("nq-all").textContent = IMP.n_questions; $("rk-k").textContent = QG.k;
-  seg($("rk-sort"), [["rank", "Consensus rank"], ["w", "Ridge weight"], ["auc", "AUROC alone"]], RK.sort, v => { RK.sort = v; drawRank(); });
-  seg($("rk-dir"), [["all", "Both"], ["mal", "Toward malignant"], ["ben", "Toward benign"]], RK.dir, v => { RK.dir = v; drawRank(); });
-  $("rk-search").oninput = e => { RK.search = e.target.value.trim().toLowerCase(); drawRank(); };
-  $("rk-csv").onclick = () => {
-    const rows = rankRows().slice().sort((a, b) => a.rank - b.rank), qq = v => typeof v === "string" ? `"${v.replace(/"/g, '""')}"` : v ?? "";
-    const keys = [["rank", "consensus_rank"], ["q", "question_id"], ["text", "question"], ["w", "ridge_weight_toward_malignant"], ["auc", "auroc_alone"], ["pb", "mean_p_yes_benign"], ["pm", "mean_p_yes_malignant"], ["yes", "affirmation_rate"], ["cl", "cluster_k" + QG.k]];
-    const csv = [keys.map(k => k[1]).join(","), ...rows.map(r => keys.map(([k]) => k === "q" ? qq(D.q.id[r.q]) : qq(r[k])).join(","))].join("\n");
-    const a = el("a", {href: URL.createObjectURL(new Blob([csv], {type: "text/csv"})), download: "question_ranking.csv"}); document.body.appendChild(a); a.click(); a.remove(); };
-  drawRank();
-}
-function drawRank() {
-  const all = rankRows(), s = RK.search;
-  let R = all.filter(r => (!s || r.text.toLowerCase().includes(s)) && (RK.dir === "all" || (RK.dir === "mal" ? r.w > 0 : r.w < 0)));
-  const key = {rank: r => r.rank, w: r => -Math.abs(r.w), auc: r => -Math.abs((r.auc ?? .5) - .5)}[RK.sort];
-  R = R.sort((a, b) => key(a) - key(b));
-  const wmax = Math.max(...all.map(r => Math.abs(r.w))), pmax = Math.max(...all.flatMap(r => [r.pb, r.pm]));
-  $("rk").innerHTML = `<div class="h">#</div><div class="h">question</div><div class="h">ridge weight (benign | malignant)</div><div class="h opt">mean P(yes), 0 to ${fmt(pmax, 1)}</div><div class="h num opt">alone</div><div class="h num opt">affirmed</div><div class="h num opt">cluster</div>` +
-    R.map(r => `<div class="row" data-q="${r.q}"><div class="rk">${r.rank}</div><div>${esc(r.text)}${r.doubt ? '<span class="badge">doubt</span>' : ""}</div><div>${wBar(r.w, wmax)}</div><div class="opt">${dumbbell(r.pb, r.pm, pmax)}</div><div class="num opt">${fmt(r.auc)}</div><div class="num opt">${pct(r.yes)}</div><div class="num opt">${r.cl}</div></div>`).join("");
-  $("rk").querySelectorAll(".row").forEach(x => x.onclick = () => openQuestion(+x.dataset.q));
-  $("rk-note").textContent = `${R.length} of ${all.length} questions shown. Rank 1 is the most important. “Affirmed”: share of all images with P(yes) ≥ 0.5. Badge: affirmed in fewer than 5% of benign and of malignant images.`;
-}
-
 // ------------------------------------------------------------------ V.i case studies: evidence toward each side
-function renderCases() {
-  const C = D.cases.cases, NSIDE = 6, sig = v => 1 / (1 + Math.exp(-v));
-  const c0 = C[0], p0 = sig(c0.models.all.b0);
-  $("cases-lead").innerHTML = `One melanoma and one naevus, each typical of its subtype. The benign-against-malignant model, refitted without the patient's images, starts every image at the average image (P(malignant) ${fmt(p0)}). Each question then adds evidence toward malignant or toward benign, according to its weight and to how this image's answer compares with the average image's; the evidence on both sides sums exactly to the prediction. For each case we show where the prediction ends, the total evidence on each side, and the six strongest questions on each side, with the image's answer placed beside the average benign and the average malignant answer.`;
-  const cmax = Math.max(...C.flatMap(c => c.models.all.terms.map(t => Math.abs(t.c))));
-  const ZL = 2.5, SW = 190;
-  const strip = (t, mb, mm) => { const X = v => 8 + (Math.max(-ZL, Math.min(ZL, v)) + ZL) / (2 * ZL) * (SW - 16);
-    return `<svg width="${SW}" height="20"><line x1="8" x2="${SW - 8}" y1="10" y2="10" stroke="${PAL.border}" stroke-width="2"/><line x1="${X(0)}" x2="${X(0)}" y1="4" y2="16" stroke="${PAL.ink3}" stroke-dasharray="2 2"/>
-      <circle cx="${X(mb)}" cy="10" r="5" fill="${PAL.grp[0]}"/><circle cx="${X(mm)}" cy="10" r="5" fill="${PAL.grp[2]}"/><circle cx="${X(t.z)}" cy="10" r="6" fill="${PAL.ink}" stroke="${rgb(PAL.surf)}" stroke-width="1.5"/></svg>`; };
-  const cbar = v => { const W = 124, f = Math.abs(v) / cmax * (W - 36);
-    return `<svg width="${W}" height="16"><rect x="0" y="3" width="${Math.max(f, 1.5)}" height="10" rx="2" fill="${rgb(v > 0 ? PAL.pos : PAL.neg)}"/><text x="${f + 4}" y="12" style="font-size:11px;fill:${PAL.ink2}">${v > 0 ? "+" : "−"}${Math.abs(v).toFixed(2)}</text></svg>`; };
-  const ansTxt = t => `Claude: <b>${t.py >= .5 ? "yes" : "no"}</b> (P(yes) ${fmt(t.py)}, confidence ${fmt(t.cf)})`;
-  $("cases").innerHTML = C.map((c, ci) => {
-    const M = c.models.all, T = M.terms, pos = T.filter(t => t.c > 0).sort((a, b) => b.c - a.c), neg = T.filter(t => t.c < 0).sort((a, b) => a.c - b.c);
-    const sp = pos.reduce((a, t) => a + t.c, 0), sn = neg.reduce((a, t) => a + t.c, 0);
-    // where the prediction starts and ends, on the probability scale
-    const gW = 600, X = v => 20 + v * (gW - 40), pa = sig(M.b0), pe = M.p, up = pe > pa;
-    // label positions: centred over their points, kept inside the frame and at least 170 apart
-    const cl = v => Math.max(80, Math.min(gW - 80, v)), LX = [cl(X(pa)), cl(X(pe))];
-    if (Math.abs(LX[1] - LX[0]) < 170) { const m = (LX[0] + LX[1]) / 2, s = LX[1] >= LX[0] ? 1 : -1; LX[0] = cl(m - s * 85); LX[1] = cl(m + s * 85);
-      if (Math.abs(LX[1] - LX[0]) < 170) { if (LX[0] <= 80 || LX[1] <= 80) { LX[s > 0 ? 1 : 0] = (s > 0 ? LX[0] : LX[1]) + 170; } else { LX[s > 0 ? 0 : 1] = (s > 0 ? LX[1] : LX[0]) - 170; } } }
-    const gauge = `<svg viewBox="0 0 ${gW} 58"><line x1="${X(0)}" x2="${X(1)}" y1="30" y2="30" stroke="${PAL.border}" stroke-width="6" stroke-linecap="round"/>
-      ${[0, .25, .5, .75, 1].map(v => `<text x="${X(v)}" y="54" text-anchor="middle" style="font-size:11px;fill:${PAL.ink3}">${v}</text>`).join("")}
-      <line x1="${X(.5)}" x2="${X(.5)}" y1="20" y2="40" stroke="${PAL.ink3}" stroke-dasharray="2 2"/>
-      <line x1="${X(pa)}" x2="${X(pe)}" y1="30" y2="30" stroke="${rgb(up ? PAL.pos : PAL.neg)}" stroke-width="6"/>
-      <circle cx="${X(pa)}" cy="30" r="6" fill="${rgb(PAL.surf)}" stroke="${PAL.ink2}" stroke-width="2"/><circle cx="${X(pe)}" cy="30" r="8" fill="${PAL.ink}"/>
-      <text x="${LX[0]}" y="13" text-anchor="middle" style="font-size:12px;fill:${PAL.ink2}">average image ${fmt(pa)}</text>
-      <text x="${LX[1]}" y="13" text-anchor="middle" style="font-size:12.5px;font-weight:700;fill:${PAL.ink}">this image ${fmt(pe)}</text></svg>`;
-    // the total evidence on each side, as a tug of war around the starting point
-    const tW = 600, mid = tW / 2, tmax = Math.max(...C.flatMap(cc => { const tt = cc.models.all.terms; return [tt.filter(t => t.c > 0).reduce((a, t) => a + t.c, 0), -tt.filter(t => t.c < 0).reduce((a, t) => a + t.c, 0)]; })), sc = v => v / tmax * (mid - 10);
-    const net = sp + sn;
-    const tug = `<svg viewBox="0 0 ${tW} 62"><rect x="${mid - sc(-sn)}" y="8" width="${sc(-sn)}" height="18" rx="2" fill="${rgb(PAL.neg)}"/><rect x="${mid}" y="8" width="${sc(sp)}" height="18" rx="2" fill="${rgb(PAL.pos)}"/>
-      <line x1="${mid}" x2="${mid}" y1="2" y2="32" stroke="${PAL.ink}" stroke-width="1.5"/>
-      <line x1="${mid}" x2="${mid + sc(net)}" y1="40" y2="40" stroke="${PAL.ink}" stroke-width="3"/><circle cx="${mid + sc(net)}" cy="40" r="4" fill="${PAL.ink}"/>
-      <text x="${mid - 6}" y="56" text-anchor="end" style="font-size:11.5px;fill:${rgb(PAL.neg)}">toward benign ${sn.toFixed(2)} (${neg.length} questions)</text>
-      <text x="${mid + 6}" y="56" text-anchor="start" style="font-size:11.5px;fill:${rgb(PAL.pos)}">toward malignant +${sp.toFixed(2)} (${pos.length} questions)</text></svg>`;
-    const col = (list, title, colr, total) => { const shown = list.slice(0, NSIDE), rest = total - shown.reduce((a, t) => a + t.c, 0);
-      return `<div><h4><span class="dot" style="background:${rgb(colr)}"></span>${title}</h4>` + shown.map(t => `<div class="row" data-q="${t.q}"><div class="qt">${esc(D.q.text[t.q])}</div>
-        <div>${strip(t, meanZ(BEN, t.q), meanZ(MAL, t.q))}<small>${ansTxt(t)}</small></div><div>${cbar(t.c)}</div></div>`).join("") +
-        `<div class="rest">The other ${list.length - shown.length} questions on this side add ${rest > 0 ? "+" : "−"}${Math.abs(rest).toFixed(2)}.</div></div>`; };
-    const correct = (M.p >= .5) === (c.grp === 2), i = c.i;
-    const info = [D.img.imtype[i], D.img.site[i], D.img.age[i] != null ? `age about ${D.img.age[i]}` : "", D.img.sex[i], D.img.dx3[i], D.img.confirm[i]].filter(Boolean).map(esc).join(" · ");
-    return `<div class="fig"><h3><span class="fn">Fig. 5.${4 + ci}</span>${c.grp === 2 ? "Malignant" : "Benign"}: ${esc(SUB[c.sub])}</h3>
-      <div class="case"><div class="pic"><img src="data:image/jpeg;base64,${c.image}" alt="${esc(c.id)}" data-i="${i}" title="Open the image">
-        <p class="idl">${esc(c.id)} · ${info}</p>
-        <p class="verdict">True diagnosis ${c.grp === 2 ? "malignant" : "benign"}; prediction ${M.p >= .5 ? "malignant" : "benign"}, ${correct ? "correct" : "incorrect"}. The cross-validated estimate of Ch. III gave ${fmt(c.oof)}; asking Claude directly “Is this a malignant lesion?” gave P(yes) ${fmt(c.ctrl)}.</p></div>
-      <div><h4 class="tsub" style="margin-top:0">Where the prediction ends: P(malignant)</h4><div class="gauge">${gauge}</div>
-        <h4 class="tsub" style="margin-top:4px">The evidence on each side, and its balance</h4><div class="tug">${tug}</div>
-        <div class="evkey"><span><span class="dot" style="background:${PAL.grp[0]}"></span>average benign answer</span><span><span class="dot" style="background:${PAL.grp[2]}"></span>average malignant answer</span><span><span class="dot" style="background:${PAL.ink}"></span>this image</span><span style="color:var(--text-muted)">scale: firmer “no” on the left, firmer “yes” on the right; dashed: the average image</span></div>
-        <div class="ev">${col(pos, "Strongest evidence toward malignant", PAL.pos, sp)}${col(neg, "Strongest evidence toward benign", PAL.neg, sn)}</div></div></div></div>`;
-  }).join("");
-  $("cases").querySelectorAll(".row[data-q]").forEach(r => r.onclick = () => openQuestion(+r.dataset.q));
-  $("cases").querySelectorAll("img[data-i]").forEach(m => m.onclick = () => openImage(+m.dataset.i));
-  $("c7-method").innerHTML = `<p>The model is the main ridge model (Ch. III) on all ${c0.models.all.terms.length} clinical questions, refitted with the same penalty (C = ${c0.models.all.C}) on every labelled image except those of the case's patient (${C.map(c => `${c.n_train} training images, ${c.n_left_out} left out`).join("; ")}). The penalty itself was chosen with the case included, so the hold-out is close to, but not quite, a clean test.</p>
-  <p>The model works in log-odds. Each question contributes its weight times how far this image's Directional Score lies from the training average, in standard deviations; the contributions and the intercept (the average image) sum exactly to the log-odds of the prediction. The bars give each contribution in log-odds; the tug of war sums them on each side, and its black line is the net shift from the average image. The answer scale shows the image's standardised Directional Score beside the mean of the benign and of the malignant images, clipped at ±${ZL} standard deviations.</p>
-  <p>Because each contribution depends on how the answer compares with other images, a “no” can push either way. A question with a positive weight pushes toward malignant whenever the answer leans more toward yes than usual, which includes a less certain “no”; on the answer scale, the black dot then sits nearer the malignant average. ${D.cases.auto ? "Cases chosen automatically: dermoscopic, correctly classified out of fold, and the most typical of their subtype (out-of-fold probability closest to the subtype median)." : "Cases named in the configuration."}</p>`;
-}
-
 // ------------------------------------------------------------------ cards for a question or an image
-function qCard(i) {
-  const q = D.q, corr = [...Array(NQ).keys()].filter(j => j !== i).map(j => [j, r_(i, j)]).sort((a, b) => b[1] - a[1]);
-  const li = ([j, r]) => `<li data-q="${j}"><span class="r">${r >= 0 ? "+" : ""}${r.toFixed(2)}</span>${esc(q.text[j])}</li>`;
-  const rk = IMP.rank_all[i];
-  return `<h3>${esc(q.text[i])}</h3>
-    <dl class="kv"><dt>Topic</dt><dd>${esc(TOP[q.topic[i]])}</dd><dt>Cluster</dt><dd>${q.cl[String(QG.k)][i] + 1} of ${QG.k} (Fig. 2.3)</dd>
-    <dt>Affirmed</dt><dd>${pct(q.yes[i])} of images</dd><dt>AUROC alone</dt><dd>${fmt(q.auc[i])}</dd><dt>Ridge weight</dt><dd>${fmt(q.ridge[i], 3)}</dd>
-    <dt>Consensus rank</dt><dd>${rk == null ? "not in the classifier" : `${rk} of ${IMP.n_questions}`}</dd><dt>ID</dt><dd>${esc(q.id[i])} · ${esc(q.kind[i])}</dd></dl>
-    <h4>Mean z-score by subtype</h4>${profBars(q.prof[i], SUB, 1.2)}
-    <h4>Most correlated answers</h4><ul class="qlist">${corr.slice(0, 6).map(li).join("")}</ul>
-    <h4>Most anticorrelated answers</h4><ul class="qlist">${corr.slice(-3).reverse().map(li).join("")}</ul>
-    <h4>Most similar wording</h4><ul class="qlist">${q.nn_text[i].slice(0, 5).map(j => li([j, r_(i, j)])).join("")}</ul>`;
-}
 function iCard(i) {
   const g = D.img, z = [...Array(NQ).keys()].map(q => [q, z_(i, q)]).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1])).slice(0, 8);
   const d = []; for (let j = 0; j < NI; j++) { if (j === i) continue; let s = 0; for (let q = 0; q < NQ; q++) { const t = Z[i * NQ + q] - Z[j * NQ + q]; s += t * t; } d.push([j, s]); }
@@ -1316,17 +1091,518 @@ function openImage(i) { hideTip(); showCard(iCard(i)); }
 $("card-x").onclick = () => $("card").close();
 $("card").addEventListener("click", e => { if (e.target === $("card")) $("card").close(); });
 
+// ------------------------------------------------------------------ II questions: clustering at a minimum correlation (S15)
+const QCL = D.qcl, RMIN = QCL.meta.r_min;
+const QIDX = QCL.questions.id.map(id => D.q.id.indexOf(id));             // S15 question index -> page question index
+const COMP_NAME = {judgement: "Judgement, P(yes)", directional: "Directional Score", confidence: "Stated confidence"};
+const QC = {comp: QCL.meta.main, ctl: "raw", mask: "all", filter: "all", sel: -1, edges: "all", col: "robust"};
+const QR = {};
+const QR_KEY = {raw: "R", sub: "Rsub", strict: "Rstrict"};
+const qcR = (comp, ctl) => { const k = comp + ctl; if (!QR[k]) QR[k] = dec(QCL.comp[comp][QR_KEY[ctl]], Int8Array); return QR[k]; };
+const ROBUST = {stab: .7, strict: .5};                                    // the middle of the grid in QCL.comp[...].robust_grid
+const isRobust = d => d.n_topics > 1 && d.stability >= ROBUST.stab && d.mean_r_strict >= ROBUST.strict;
+const qcClusters = comp => QCL.comp[comp].clusters;                      // clusters of 2+, in leaf order
+const qcName = (comp, d) => "C" + (qcClusters(comp).indexOf(d) + 1);
+const topicShort = t => t.split(" (")[0].replace(/ & /g, " and ");
+const FILTERS = [["all", "All"], ["span", "Separate prompts"], ["robust", "Hold under every check"]];
+const passes = d => QC.filter === "all" || (QC.filter === "span" ? d.n_topics > 1 : isRobust(d));
+
+function renderC2() {
+  document.querySelectorAll(".rmin").forEach(s => s.textContent = RMIN);
+  $("qc-nq").textContent = QCL.meta.n_questions;
+  const mainC = QCL.comp[QCL.meta.main], main = mainC.clusters, span = main.filter(d => d.n_topics > 1), rob = main.filter(isRobust), g = QCL.graded;
+  const grid = mainC.robust_grid, gmin = Math.min(...grid.map(x => x.n)), gmax = Math.max(...grid.map(x => x.n));
+  const nq = main.reduce((a, d) => a + d.n, 0);
+  $("c2-find").innerHTML = `<div class="stat">${rob.length}<small>clusters joining questions from separate prompts that hold under every check (${gmin} to ${gmax} as the criteria vary)</small></div><div class="say">On the yes/no judgement, ${nq} of ${QCL.meta.n_questions} questions fall into <b>${main.length} clusters</b> in which every pair correlates at <i>ρ</i> ≥ ${RMIN}. <b>${span.length}</b> join questions asked in separate prompts, which no shared prompt can explain; they survive removing the diagnosis and the image type, are stable across resamples, and form recognisable dermatological families. What they share is <b>how firmly the model says “no”</b>: ${pct(g.kept_with_graded_no_only)} of the strong pairs between separate prompts survive when only the gradation among “no” answers is kept, ${pct(g.kept_with_yes_no_only)} when only the yes/no split is kept. They describe how the model grades related features together, which may be its overall impression of the image; they are not yet evidence that the features co-occur in the lesions.</div>`;
+  seg($("qc-comp"), QCL.meta.components.map(c => [c, COMP_NAME[c]]), QC.comp, v => { QC.comp = v; QC.sel = -1; drawQC(); drawKG(); qcZoom(); });
+  seg($("qc-ctl"), [["raw", "As answered"], ["sub", "Within subtype"], ["strict", "Strict controls"]], QC.ctl, v => { QC.ctl = v; drawQCmap(); qcZoom(); });
+  seg($("qc-mask"), [["all", "All values"], ["thr", `ρ ≥ ${RMIN} only`]], QC.mask, v => { QC.mask = v; drawQCmap(); });
+  seg($("qc-filter"), FILTERS, QC.filter, v => { QC.filter = v; drawQClist(); });
+  seg($("kg-edges"), [["all", "All"], ["sep", "Mostly separate prompts"]], QC.edges, v => { QC.edges = v; drawKG(); });
+  seg($("kg-col"), [["robust", "Holds under every check"], ["auc", "Malignant against benign"], ["topic", "Prompts in the cluster"]], QC.col, v => { QC.col = v; drawKG(); });
+  $("qc-grad").innerHTML = gradHTML("div", "−1", "+1", "Spearman ρ across images");
+  const first = [...main].filter(isRobust).sort((a, b) => b.n - a.n)[0];
+  drawQC(); drawKG(); drawWM(); qcTable();
+  if (first && QC.sel < 0) requestAnimationFrame(() => qcSelect(first.k, true)); else qcZoom();
+  const pc = D.pca;
+  const svg = $("scree-svg"); svg.innerHTML = "";
+  $("scree-legend").innerHTML = legendRow([[PAL.c[0], "observed"], [PAL.ink2, "permuted, 95th percentile", true]]);
+  const n = pc.ratio.length, ymin = Math.min(...pc.ratio, ...pc.null95) * .8, ymax = pc.ratio[0] * 1.3;
+  const ax = axes(svg, 520, 330, {l: 52, r: 12, t: 10, b: 40}, [1, n], [ymin, ymax], "principal component", "explained variance", {ylog: true, yt: [.001, .003, .01, .03, .1, .3].filter(v => v >= ymin && v <= ymax), yf: v => (100 * v) + "%", xt: [1, 10, 20, 30, 40, 50].filter(v => v <= n)});
+  svg.appendChild(svgEl("line", {x1: ax.X(pc.n_parallel + .5), x2: ax.X(pc.n_parallel + .5), y1: 10, y2: 290, stroke: PAL.ink2, "stroke-dasharray": "2 3"}));
+  svgText(svg, ax.X(pc.n_parallel + .5) + 5, 24, `${pc.n_parallel} components`, {style: `font-size:11px;fill:${PAL.ink2}`});
+  line(svg, pc.null95.map((v, i) => [ax.X(i + 1), ax.Y(v)]), PAL.ink2, "4 3", 1.5);
+  line(svg, pc.ratio.map((v, i) => [ax.X(i + 1), ax.Y(v)]), PAL.c[0], "", 2.5);
+  hoverPoints(svg, pc.ratio.map((v, i) => [ax.X(i + 1), ax.Y(v), `PC${i + 1}: ${(100 * v).toFixed(1)}% (null ${(100 * pc.null95[i]).toFixed(2)}%)<br>cumulative ${(100 * pc.cum[i]).toFixed(0)}%`]));
+  $("c2-take1").innerHTML = `About ${pc.n_parallel} components exceed chance and ${pc.n_for["0.9"]} carry 90% of the variance, so the ${NQ} questions are far from independent. ${impTxt()}`;
+  const cp = QCL.conf_prompt, jp = QCL.judgement_prompt;
+  $("qc-lead").innerHTML = `In topic mode the ${D.topics.length} topics are separate requests, so two questions from different topics can agree only through the image, or through how Sonnet reads that image as a whole. Two questions from the same topic also share a prompt, and may agree because the model forms one impression and carries it across the list. Fig. 2.3 and Table 2.4 measure how much each explanation can carry.`;
+  const imp = span.filter(d => d.mean_r_impression_removed !== null), impMed = imp.map(d => d.mean_r_impression_removed).sort((a, b) => a - b)[Math.floor(imp.length / 2)];
+  const yesC = span.filter(d => d.yes_pairs > 0);
+  $("qc-box").innerHTML = `<div class="hyp"><h4><span class="sc">shown</span> The stated confidence is set largely per prompt</h4><p>After removing image and question means, the mean of the image's prompt explains ${pct(cp.prompt_share_of_residual)} of the remaining variance in confidence, against ${pct(cp.null_mean)} for topics reassigned at random; in the judgement (ranks of P(yes)) ${pct(jp.prompt_share_of_residual)} against ${pct(jp.null_mean)}. Clusters of the confidence follow the topics almost exactly, and the Directional Score inherits part of this.</p></div>
+    <div class="hyp"><h4><span class="sc">shown</span> Across separate prompts, graded answers move together</h4><p>${span.length} clusters join questions asked in separate requests, beyond the diagnosis and the image type, and recur across resamples. The agreement lies in the gradation of “no” (${pct(g.share_answers_below_half)} of answers are below 0.5; ${g.never_yes} questions are never answered yes). Where both questions are answered “yes” on at least ${g.min_yes} images (${g.pairs_both_min_yes} of the strong pairs), their yes/no agreement is modest (median φ ${fmt(g.median_phi_those)} against median <i>ρ</i> ${fmt(g.median_rho_those)}).</p></div>
+    <div class="hyp"><h4><span class="sc">open</span> Seen features, or one impression?</h4><p>Separate requests rule out a shared context, not the model's own reading of the lesion: it may judge an image “a red vascular nodule” and grade every related question from that. Removing the five leading components of the other topics' answers, which over-controls, leaves a median mean <i>ρ</i> of ${fmt(impMed)} inside these clusters; some families keep most of their agreement, others lose it. Agreement within one prompt also cannot be separated from the prompt itself with one replicate and a fixed question order.</p></div>
+    <div class="hyp" style="margin-bottom:0"><h4><span class="sc">test</span> What would settle it <span class="tag">proposed</span></h4><p>(a) Expert dermoscopic attribute labels on overlapping images (ISIC 2018 Task 2: pigment network, globules, streaks, milia-like cysts, negative network; or Derm7pt): do features that co-occur in the labels also cluster here? (b) About 200 images re-asked with the question order shuffled and topics re-mixed, plus a second replicate: prompt and order effects, and each question's test–retest reliability. (c) A second answering model on the same images: are the clusters the model's or the lesions'? None has been run.</p></div>`;
+  const G = QCL.stability.map(s => `${COMP_NAME[s.component].toLowerCase()} ${fmt(s.split_half_ari_mean)}`).join(", ");
+  $("c2-method").innerHTML = `<p><b>Components.</b> P(yes) as stated (the judgement); the stated confidence; the Directional Score, (2 P(yes) − 1) × confidence, as used by the classifiers. All ${QCL.meta.n_questions} questions as written, clinical and artefact; the control question is never included. <b>Correlation.</b> Spearman's <i>ρ</i> across the ${QCL.meta.n_images.toLocaleString()} images. Most questions are answered “no” on nearly every image; Pearson <i>r</i> between two such questions is decided by whether their one or two “yes” images coincide (it reached 0.70 between shuffled answers on log-odds), whereas the largest <i>ρ</i> between shuffled answers is ${Object.entries(QCL.null_max_r).map(([c, v]) => `${fmt(v)} (${COMP_NAME[c].toLowerCase()})`).join(", ")}. This shuffle shows only that the answers are not independent across images; it says nothing about why. <b>Clustering.</b> Agglomerative, complete linkage on 1 − <i>ρ</i>, cut at 1 − ${RMIN}: two clusters merge at the distance of their least similar pair, so every pair inside a cluster has <i>ρ</i> ≥ ${RMIN}. Cuts at 0.5 and 0.7 are in the stage summary. <b>Controls.</b> Within subtype: ranks residualised on the ten subtype means. Strict: also on image type and the image's mean stated confidence. <b>Graded “no”.</b> P(yes) capped at ${g.graded_cap} keeps only the gradation among “no” answers; the yes/no split alone is P(yes) ≥ 0.5, compared by φ where both questions have at least ${g.min_yes} “yes” images. <b>Image impression.</b> For each cluster, its questions' ranks are residualised on the five leading principal components of the answers to every question from topics outside the cluster; an upper bound, since those components also carry real features. <b>Stability.</b> ${QCL.meta.n_boot} bootstrap resamples of the images stratified on subtype; a cluster's stability is the mean share of resamples in which its pairs stay together. It mostly measures how far the pairs sit from the cut, not whether the cluster is valid (the confidence, a prompt artefact, is the most stable). Split-half agreement (adjusted Rand index between the clusterings of disjoint halves, ${QCL.meta.n_split} splits): ${G}. <b>Holds under every check:</b> questions from at least two prompts, stability ≥ ${ROBUST.stab}, mean strict <i>ρ</i> ≥ ${ROBUST.strict}; over stability 0.5 to 0.9 and strict <i>ρ</i> 0.4 to 0.6 the count runs from ${gmin} to ${gmax}. ${mainC.map.mirror_pairs} pairs of clusters mirror each other (mean <i>ρ</i> ≤ −0.5, such as hair present and hair absent), so the count overstates the number of distinct families. <b>Rewordings.</b> Pairs with wording cosine ≥ ${fmt(QCL.meta.reword_cos_min)} (the most similar 0.5% of pairs; ${esc(QCL.meta.text_model)} text embeddings); embeddings ignore negation, so these include opposites, and agreement is summarised as |<i>ρ</i>|. The analysis was revised after an independent review of an earlier version (the stage docstring lists the changes). Stage S15.</p>`;
+}
+function impTxt() {
+  const sp = qcClusters(QCL.meta.main).filter(d => d.n_topics > 1 && d.mean_r_impression_removed !== null);
+  const ratio = sp.map(d => d.mean_r_impression_removed / d.mean_r).sort((a, b) => a - b), med = ratio[Math.floor(ratio.length / 2)];
+  const low = sp.filter(d => d.mean_r_impression_removed < .4).length;
+  return `Removing the five leading components of the other topics' answers keeps a median ${pct(med)} of the agreement inside the clusters that span prompts; ${low} of ${sp.length} fall below <i>ρ</i> = 0.4, so for those a few image-wide axes may be most of the story (Box 2.6).`;
+}
+function drawQC() {
+  $("qc-comp-note").innerHTML = {judgement: "The yes/no judgement alone, without the stated confidence: the most direct reading of what Sonnet sees.",
+    directional: "The Directional Score, as used by the classifiers. It mixes the judgement with the stated confidence, and inherits the confidence's dependence on the prompt.",
+    confidence: "The stated confidence alone. Shown for contrast: its clusters follow the prompts (topics) almost exactly."}[QC.comp];
+  drawQCmap(); drawQClist();
+}
+function drawQCmap() {
+  const comp = QCL.comp[QC.comp], ord = comp.order, n = ord.length, R = qcR(QC.comp, QC.ctl), cv = $("qc-canvas");
+  cv.width = n; cv.height = n;
+  const ctx = cv.getContext("2d"), img = ctx.createImageData(n, n), pale = mix(PAL.mid, PAL.surf, .4);
+  for (let a = 0; a < n; a++) for (let b = 0; b < n; b++) { const r = R[ord[a] * n + ord[b]] / 127, c = QC.mask === "thr" && r < RMIN && a !== b ? pale : divRGB(r), o = 4 * (a * n + b);
+    img.data[o] = c[0]; img.data[o + 1] = c[1]; img.data[o + 2] = c[2]; img.data[o + 3] = 255; }
+  ctx.putImageData(img, 0, 0);
+  const pos = new Map(ord.map((q, i) => [q, i])), over = $("qc-over"); over.setAttribute("viewBox", `0 0 ${n} ${n}`); over.innerHTML = "";
+  qcClusters(QC.comp).forEach(d => { if (d.n < 3) return;
+    const p = d.members.map(q => pos.get(q)), x = Math.min(...p), w = Math.max(...p) - x + 1, rob = isRobust(d), sel = QC.sel === d.k;
+    const r = svgEl("rect", {x, y: x, width: w, height: w, fill: "none", stroke: sel ? PAL.ink : rob ? PAL.accent : PAL.ink2, "stroke-width": sel ? 2.4 : rob ? 1.6 : .9, "vector-effect": "non-scaling-stroke", "data-k": d.k, class: "qcbox"});
+    r.onclick = e => { e.stopPropagation(); qcSelect(d.k, true); };
+    over.appendChild(r);
+    if (w >= 6) { const t = svgText(over, x + w + 1.5, x + 4, qcName(QC.comp, d), {class: "qclab"}); t.setAttribute("fill", rob ? PAL.accent : PAL.ink2); } });
+  const lbl = {raw: "", sub: " (within subtype)", strict: " (strict controls)"}[QC.ctl];
+  cv.onmousemove = ev => { const rc = cv.getBoundingClientRect(), b = Math.floor((ev.clientX - rc.left) / rc.width * n), a = Math.floor((ev.clientY - rc.top) / rc.height * n);
+    if (a < 0 || b < 0 || a >= n || b >= n) return hideTip(); const i = ord[a], j = ord[b], T = QCL.questions;
+    showTip(`ρ = <b>${(R[i * n + j] / 127).toFixed(2)}</b>${lbl}${T.topic[i] === T.topic[j] ? " · same prompt" : " · <b>separate prompts</b>"}<br><b>${esc(T.text[i])}</b><br><span class="k">${esc(T.topic[i])}</span><br><b>${esc(T.text[j])}</b><br><span class="k">${esc(T.topic[j])}</span>`, ev); };
+  cv.onmouseleave = hideTip;
+  cv.onclick = ev => { const rc = cv.getBoundingClientRect(), a = Math.floor((ev.clientY - rc.top) / rc.height * n); if (a < 0 || a >= n) return;
+    const q = ord[a], d = qcClusters(QC.comp).find(x => x.members.includes(q)); if (d) qcSelect(d.k, true); else openQuestion(QIDX[q]); };
+}
+function qcBadges(d) {
+  const b = [], ok = (v, t) => v !== null && v !== undefined && v >= t;
+  b.push(d.n_topics > 1 ? `<span class="qb gold" title="questions from ${d.n_topics} separate prompts">${d.n_topics} prompts</span>` : `<span class="qb" title="all questions from one prompt">1 prompt</span>`);
+  b.push(`<span class="qb${ok(d.stability, ROBUST.stab) ? " ok" : ""}" title="share of bootstrap resamples in which its pairs stay together">stable ${fmt(d.stability)}</span>`);
+  b.push(`<span class="qb${ok(d.mean_r_strict, ROBUST.strict) ? " ok" : ""}" title="mean ρ after removing subtype, image type and mean stated confidence">strict ρ ${fmt(d.mean_r_strict)}</span>`);
+  if (d.mean_r_impression_removed !== null) b.push(`<span class="qb${ok(d.mean_r_impression_removed, .5) ? " ok" : ""}" title="mean ρ after removing the five leading components of the other topics' answers (over-controls)">impression removed ${fmt(d.mean_r_impression_removed)}</span>`);
+  if (d.artefact_share > 0) b.push(`<span class="qb" title="share of artefact (non-clinical) questions">artefact ${pct(d.artefact_share)}</span>`);
+  return b.join("");
+}
+function drawQClist() {
+  const L = qcClusters(QC.comp).filter(passes), T = QCL.questions;
+  $("qc-list").innerHTML = `<p class="muted" style="margin:0 0 6px">${L.length} clusters of two or more, in the order of the matrix.</p>` + L.map(d => {
+    const tp = d.topics.slice(0, 3).map(([t, v]) => `${esc(topicShort(t))} (${v})`).join(" · ");
+    const mem = d.members.map(q => `<li data-q="${q}">${esc(T.text[q])}<span class="tp">${esc(topicShort(T.topic[q]))}</span></li>`).join("");
+    return `<details class="qci${isRobust(d) ? " robust" : ""}" data-k="${d.k}"${QC.sel === d.k ? " open" : ""}><summary><span class="cn">${qcName(QC.comp, d)}</span><span class="cs"><b>${d.n} questions</b> · ${tp}${d.topics.length > 3 ? " …" : ""}</span><span class="bd">${qcBadges(d)}</span></summary>
+      <div class="qcb"><ul class="qlist">${mem}</ul>
+      <dl class="kv"><dt>ρ inside</dt><dd>min ${fmt(d.min_r)}, mean ${fmt(d.mean_r)}; within subtype ${fmt(d.mean_r_within_subtype)}; strict ${fmt(d.mean_r_strict)}</dd>
+      ${d.mean_r_graded_no_only !== null ? `<dt>Graded “no” only</dt><dd>mean ρ ${fmt(d.mean_r_graded_no_only)}${d.yes_pairs ? `; yes/no agreement φ ${fmt(d.mean_phi_yes_pairs)} over ${d.yes_pairs} pairs with ≥ ${QCL.graded.min_yes} “yes” images each` : "; too few “yes” answers for a yes/no comparison"}</dd>` : ""}
+      <dt>Impression removed</dt><dd>mean ρ ${fmt(d.mean_r_impression_removed)}</dd>
+      <dt>Other components</dt><dd>${Object.entries(d.mean_r_other).map(([c, v]) => `${COMP_NAME[c].toLowerCase()} ${fmt(v)}`).join("; ")}</dd>
+      <dt>Pairs</dt><dd>${d.n_pairs}: ${d.cross_pairs} from separate prompts; ${d.reworded_pairs} near-identical wordings (or opposites)</dd>
+      <dt>Wording</dt><dd>mean cosine ${fmt(d.mean_cos)} (above ${pct(d.cos_pct)} of all pairs)</dd>
+      <dt>Stability</dt><dd>${fmt(d.stability)} of ${QCL.meta.n_boot} resamples</dd>
+      <dt>Malignant vs benign</dt><dd>AUROC of the cluster mean ${fmt(d.auroc)}</dd>
+      <dt>Shared source</dt><dd>${pct(d.shared_source_share)} of pairs cite a common paper</dd></dl>
+      <h4 style="margin:8px 0 4px;font-size:13.5px">Mean score by subtype</h4>${profBars(d.prof, SUB, 1.2)}</div></details>`; }).join("");
+  $("qc-list").querySelectorAll("details.qci").forEach(det => {
+    det.addEventListener("toggle", () => { if (det.open && QC.sel !== +det.dataset.k) { QC.sel = +det.dataset.k; drawQCmapSel(); drawKG(); qcZoom(); } });
+    det.onmouseenter = () => qcHi(+det.dataset.k, true); det.onmouseleave = () => qcHi(+det.dataset.k, false); });
+  $("qc-list").querySelectorAll("li[data-q]").forEach(l => l.onclick = () => openQuestion(QIDX[+l.dataset.q]));
+}
+function qcHi(k, on) { const r = $("qc-over").querySelector(`rect[data-k="${k}"]`); if (r) r.classList.toggle("hi", on); }
+function drawQCmapSel() { $("qc-over").querySelectorAll("rect.qcbox").forEach(r => { const d = qcClusters(QC.comp).find(x => x.k === +r.dataset.k), sel = QC.sel === d.k, rob = isRobust(d);
+  r.setAttribute("stroke", sel ? PAL.ink : rob ? PAL.accent : PAL.ink2); r.setAttribute("stroke-width", sel ? 2.4 : rob ? 1.6 : .9); }); }
+function qcSelect(k, scroll) {
+  QC.sel = k; const d = qcClusters(QC.comp).find(x => x.k === k);
+  if (!passes(d)) { QC.filter = "all"; seg($("qc-filter"), FILTERS, "all", v => { QC.filter = v; drawQClist(); }); drawQClist(); }
+  const det = $("qc-list").querySelector(`details[data-k="${k}"]`);
+  if (det) { det.open = true; if (scroll) { const box = $("qc-list"); box.scrollTop = det.offsetTop - box.offsetTop - 8; } }
+  drawQCmapSel(); drawKG(); qcZoom();
+}
+// the selected cluster, large enough to read: its questions and every pairwise rho
+function qcZoom() {
+  const d = qcClusters(QC.comp).find(x => x.k === QC.sel), box = $("qc-zoom");
+  if (!d) { box.innerHTML = `<p class="muted">Select a cluster (a square or a list entry) to see its questions and their correlations here.</p>`; return; }
+  const R = qcR(QC.comp, QC.ctl), n = QCL.meta.n_questions, T = QCL.questions, M = d.members.slice(0, 30);
+  const tops = [...new Set(M.map(q => T.topic[q]))], tcol = t => PAL.c[tops.indexOf(t) % 3];
+  const head = `<tr><th></th>${M.map((q, i) => `<th class="cell" title="${esc(T.text[q])}">${i + 1}</th>`).join("")}</tr>`;
+  const rows = M.map((qi, i) => `<tr><td class="zq"><span class="zn">${i + 1}</span>${esc(T.text[qi])}<span class="tp">${esc(topicShort(T.topic[qi]))}</span></td>${M.map(qj => { const r = R[qi * n + qj] / 127;
+    return qi === qj ? `<td class="cell" style="background:var(--surface-2)"></td>` : `<td class="cell" style="${divCell(r)}" title="${esc(T.text[qi])} · ${esc(T.text[qj])}${T.topic[qi] === T.topic[qj] ? " (same prompt)" : " (separate prompts)"}">${r.toFixed(2).replace("0.", ".")}${T.topic[qi] !== T.topic[qj] ? "<sup>•</sup>" : ""}</td>`; }).join("")}</tr>`).join("");
+  box.innerHTML = `<h4 class="tsub" style="margin:14px 0 4px">${qcName(QC.comp, d)}: ${d.n} questions from ${d.n_topics} prompt${d.n_topics > 1 ? "s" : ""}${d.n > 30 ? " (first 30 shown)" : ""}</h4>
+    <p class="muted" style="margin:0 0 6px">ρ between every pair${{raw: "", sub: ", within subtype", strict: ", under strict controls"}[QC.ctl]}; <sup>•</sup> marks a pair asked in separate prompts. Select a question to open it.</p>
+    <div style="overflow:auto"><table class="zoom">${head}${rows}</table></div>`;
+  box.querySelectorAll("td.zq").forEach((td, i) => td.onclick = () => openQuestion(QIDX[M[i]]));
+}
+function drawKG() {
+  const C = QCL.comp[QC.comp], cl = C.clusters, mp = C.map, svg = $("kg-svg"); svg.innerHTML = "";
+  const W = 1000, H = 680, pad = 46, X = v => pad + v * (W - 2 * pad), Y = v => pad + v * (H - 2 * pad);
+  const rad = d => 4 + 3.2 * Math.sqrt(d.n);
+  const gE = svgEl("g"), gN = svgEl("g"), gL = svgEl("g"); svg.append(gE, gN, gL);
+  const sel = QC.sel, nb = new Set();
+  let nSep = 0;
+  mp.links.forEach(([a, b, r, s]) => { const sep = s > .5; if (sep) nSep++; if (QC.edges === "sep" && !sep) return;
+    const A = mp.xy[a], B = mp.xy[b], hot = sel >= 0 && (cl[a].k === sel || cl[b].k === sel);
+    if (hot) { nb.add(a); nb.add(b); }
+    gE.appendChild(svgEl("line", {x1: X(A[0]), y1: Y(A[1]), x2: X(B[0]), y2: Y(B[1]), stroke: sep ? PAL.gold : PAL.ink3, "stroke-opacity": hot ? .95 : sep ? .6 : .3, "stroke-width": .8 + 6 * Math.max(0, r - .3)})); });
+  const col = d => { if (QC.col === "robust") return isRobust(d) ? PAL.gold : PAL.muted;
+    if (QC.col === "auc") return d.auroc == null ? PAL.muted : rgb(divRGB((d.auroc - .5) / .25));
+    return rgb(seqRGB(Math.min((d.n_topics - 1) / 5, 1))); };
+  const hov = [];
+  const big = [...cl].sort((a, b) => b.n - a.n).slice(0, 16).map(d => d.k), placed = [];
+  cl.forEach((d, i) => { const [x, y] = mp.xy[i], on = sel < 0 || d.k === sel || nb.has(i);
+    gN.appendChild(svgEl("circle", {cx: X(x), cy: Y(y), r: rad(d), fill: col(d), "fill-opacity": on ? .9 : .25, stroke: d.k === sel ? PAL.ink : rgb(PAL.surf), "stroke-width": d.k === sel ? 2.5 : 1.2}));
+    if (big.includes(d.k) || d.k === sel) { const t = QCL.questions.text[d.central], s = t.length > 34 ? t.slice(0, 32).replace(/\s+\S*$/, "") + "…" : t;
+      const lx = X(x), ly = Y(y) - rad(d) - 4, w = 6.2 * (s.length + 5);
+      if (d.k === sel || !placed.some(([px, py, pw]) => Math.abs(px - lx) < (pw + w) / 2 && Math.abs(py - ly) < 14)) { placed.push([lx, ly, w]);
+        svgText(gL, lx, ly, `${qcName(QC.comp, d)} ${s}`, {"text-anchor": "middle", class: "lbl", style: `font-size:10.5px;opacity:${on ? 1 : .35}`}); } }
+    hov.push([X(x), Y(y), `<b>${qcName(QC.comp, d)}</b>: ${d.n} questions, ${d.n_topics} prompt${d.n_topics > 1 ? "s" : ""}<br>${d.members.slice(0, 5).map(q => "· " + esc(QCL.questions.text[q])).join("<br>")}${d.n > 5 ? "<br>…" : ""}<br>strict ρ ${fmt(d.mean_r_strict)} · stable ${fmt(d.stability)} · AUROC ${fmt(d.auroc)}<br><span class="k">select to open in Fig. 2.1</span>`, () => qcSelect(d.k, true)]); });
+  hoverPoints(svg, hov);
+  $("kg-legend").innerHTML = (sel >= 0 ? `<div class="legend"><span class="chip" style="cursor:pointer" id="kg-clear"><span class="sw" style="background:${PAL.ink}"></span>${qcName(QC.comp, cl.find(d => d.k === sel))} selected · show all</span></div>` : "") +
+    (QC.col === "auc" ? `<div class="grad">${gradHTML("div", "0.25 benign", "0.75 malignant", "AUROC of the cluster's mean answer")}</div>` : QC.col === "topic" ? `<div class="grad">${gradHTML("seq", "1 prompt", "6+ prompts", "prompts represented in the cluster")}</div>` :
+      `<div class="legend"><span class="chip" style="cursor:default"><span class="sw" style="background:${PAL.gold}"></span>holds under every check</span><span class="chip" style="cursor:default"><span class="sw" style="background:${PAL.muted}"></span>other</span></div>`);
+  const clr = $("kg-clear"); if (clr) clr.onclick = () => { QC.sel = -1; drawQCmapSel(); drawKG(); qcZoom(); $("qc-list").querySelectorAll("details[open]").forEach(d => d.open = false); };
+  $("kg-take").innerHTML = `${cl.length} clusters and ${mp.links.length} links; ${pct(nSep / Math.max(mp.links.length, 1))} of the links join mostly questions from separate prompts (${COMP_NAME[QC.comp].toLowerCase()}). ${QC.comp === "confidence" ? "In the stated confidence the families are the topics: few links cross prompts." : "Pigmented and blue-grey families sit apart from vascular, keratinising, ulcerated and nodular ones, consistent with a few image-wide axes; most of the closest links still join questions from separate prompts."}`;
+}
+function drawWM() {
+  const comps = QCL.meta.components;
+  seg($("wm-comp"), comps.map(c => [c, COMP_NAME[c]]), QC.wm || QCL.meta.main, v => { QC.wm = v; drawWM(); });
+  const c = QC.wm || QCL.meta.main, rows = QCL.wording.filter(r => r.component === c).sort((a, b) => a.decile - b.decile);
+  const svg = $("wm-svg"); svg.innerHTML = "";
+  const ys = rows.flatMap(r => [r.mean_r_same_prompt, r.mean_r_separate_prompts]), hi = Math.max(.8, ...ys);
+  const ax = axes(svg, 520, 330, {l: 52, r: 14, t: 10, b: 42}, [.5, 10.5], [Math.min(0, ...ys), hi], "wording similarity (decile, low to high)", "mean ρ within subtype", {xt: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], yt: [0, .2, .4, .6, .8].filter(v => v <= hi), xgrid: false});
+  $("wm-legend").innerHTML = legendRow([[PAL.ink2, "same prompt"], [PAL.gold, "separate prompts"]]);
+  const hov = [];
+  [["mean_r_same_prompt", PAL.ink2, "same prompt", "n_same"], ["mean_r_separate_prompts", PAL.gold, "separate prompts", "n_separate"]].forEach(([k, col, nm, nk]) => {
+    line(svg, rows.map(r => [ax.X(r.decile), ax.Y(r[k])]), col, "", 2.5);
+    rows.forEach(r => { svg.appendChild(svgEl("circle", {cx: ax.X(r.decile), cy: ax.Y(r[k]), r: 4.5, fill: col, stroke: rgb(PAL.surf), "stroke-width": 1.5}));
+      hov.push([ax.X(r.decile), ax.Y(r[k]), `<b>${nm}</b>, wording cosine ${fmt(r.cos_lo)} to ${fmt(r.cos_hi)}<br>mean ρ ${fmt(r[k], 3)} over ${r[nk].toLocaleString()} pairs`]); }); });
+  hoverPoints(svg, hov);
+  const lo = rows[0], top = rows[rows.length - 1];
+  $("wm-take").innerHTML = `Even for the least similar wordings, questions asked in the same prompt agree at <i>ρ</i> ≈ ${fmt(lo.mean_r_same_prompt)}, against ${fmt(lo.mean_r_separate_prompts)} when asked apart; for the most similar the gap remains (${fmt(top.mean_r_same_prompt)} against ${fmt(top.mean_r_separate_prompts)}). Shared wording does not explain the prompt effect. ${c === "confidence" ? "In the confidence the gap is widest." : "Topics also group related features, so part of the gap may still be real; Box 2.6 says how to separate the two."}`;
+}
+function qcTable() {
+  const rows = QCL.meta.components.map(c => { const p = QCL.pairs.find(r => r.component === c && r.control === "none" && r.r_min === RMIN), ps = QCL.pairs.find(r => r.component === c && r.control === "strict" && r.r_min === RMIN);
+    const a = QCL.rewordings.find(r => r.component === c && r.asked === "same prompt"), b = QCL.rewordings.find(r => r.component === c && r.asked === "separate prompts");
+    return `<tr><td><b>${COMP_NAME[c]}</b></td><td class="num">${fmt(p.mean_r_same_prompt)}</td><td class="num">${fmt(p.mean_r_separate_prompts)}</td><td class="num">${p.pairs_at_or_above.toLocaleString()}</td><td class="num">${pct(p.same_prompt_share_of_those)}</td><td class="num">${pct(ps.same_prompt_share_of_those)}</td><td class="num">${fmt(a.median_abs_r)}</td><td class="num">${fmt(b.median_abs_r)}</td></tr>`; }).join("");
+  $("qc-table").innerHTML = `<div style="overflow:auto"><table class="mtab"><tr><th rowspan="2">component</th><th class="num" colspan="2">mean ρ</th><th class="num" colspan="3">pairs at ρ ≥ ${RMIN}</th><th class="num" colspan="2">rewordings, median |ρ|</th></tr>
+    <tr><th class="num">same prompt</th><th class="num">separate</th><th class="num">n</th><th class="num">same prompt</th><th class="num">same, strict</th><th class="num">together</th><th class="num">apart</th></tr>${rows}</table></div>`;
+  const cp = QCL.conf_prompt, jp = QCL.judgement_prompt, j = QCL.pairs.find(r => r.component === "judgement" && r.control === "strict" && r.r_min === RMIN);
+  const rj = c => QCL.rewordings.find(r => r.component === "judgement" && r.asked === c);
+  $("qc-take").innerHTML = `The prompt shows most in the confidence: ${pct(cp.prompt_share_of_residual)} of its variance (after image and question means) is shared by the questions of one prompt, against ${pct(cp.null_mean)} for random groups of the same sizes. The judgement carries less of it (${pct(jp.prompt_share_of_residual)} against ${pct(jp.null_mean)}), and under strict controls ${j.pairs_separate_prompts_at_or_above.toLocaleString()} pairs from separate prompts still reach <i>ρ</i> ≥ ${RMIN}. Near-identical questions asked apart agree at a median |<i>ρ</i>| of ${fmt(rj("separate prompts").median_abs_r)} in the judgement (${fmt(rj("same prompt").median_abs_r)} when asked together), a rough indication of how consistently the model answers the same thing twice.`;
+}
+
+
+// ------------------------------------------------------------------ the ten-subtype model (payload ten2), used throughout
+const T2 = D.ten2, T2F = T2.fold_summary;
+const T2IMP = T2.imp;
+const t2Thr = (score, rule, sub = "all images", on = "training split") => D.thr.rules.find(r => r.score === score && r.subset === sub && r.rule === rule && r.chosen_on === on);
+const qcLabelOf = i => { const j = QCL.questions.id.indexOf(D.q.id[i]); if (j < 0) return null; const k = QCL.comp[QCL.meta.main].labels[j], d = qcClusters(QCL.meta.main).find(x => x.k === k); return d ? qcName(QCL.meta.main, d) : null; };
+
+// ------------------------------------------------------------------ graphical abstract (overview)
+function renderAbstract() {
+  const cm = T2.cases.find(c => SUB[c.sub] === "malignant melanocytic"), cb = T2.cases.find(c => SUB[c.sub] === "benign melanocytic");
+  const ims = [[cb.i, 0], [typicalIndeterminate(), 1], [cm.i, 2]];
+  const thumb = i => `data:image/jpeg;base64,${D.img.thumb[i]}`;
+  const arrow = `<div class="arrow" aria-hidden="true"><svg viewBox="0 0 34 14"><line x1="1" y1="7" x2="29" y2="7" stroke="${PAL.muted}" stroke-width="1.6"/><path d="M26,2 L33,7 L26,12" fill="none" stroke="${PAL.muted}" stroke-width="1.6"/></svg></div>`;
+  const pn = (id, cls, k, body) => `<div class="pn ${cls}" tabindex="0" role="link" data-id="${id}"><div class="k"><span>${k}</span><span class="go">${$(id).dataset.rn || ""}</span></div>${body}</div>`;
+  const nG = g => D.img.grp.filter(x => x === g).length;
+  const rob = qcClusters(QCL.meta.main).filter(isRobust).length;
+  const colA = `<div class="col">
+    ${pn("c2", "", "Literature", `<div class="big">400+ papers <small>read</small></div><div class="s">${nSources()} of them cited directly by the questions</div>`)}
+    <div class="vlink"></div>
+    ${pn("c2", "dash", "Questionnaire", `<div class="big">${NQ} questions <small>in ${TOP.length} topics</small></div>
+      <ol>${[0, 1, 2, 3].map(q => `<li>${esc(D.q.text[q])}</li>`).join("")}<li class="more">… and ${NQ - 4} more, each answered yes or no</li></ol>
+      <div class="s" style="margin-top:6px">${rob} stable families of questions answered alike across separate prompts</div>`)}
+    <div class="vlink"></div>
+    ${pn("c1", "grow", "Images", `<div class="big">${NI.toLocaleString()} ISIC images <small>ten subtypes of 100</small></div>
+      <div class="thumbs">${ims.map(([i, g]) => `<figure><img src="${thumb(i)}" alt="" style="border-color:${PAL.grp[g]}"><figcaption>${GRP[g]}</figcaption></figure>`).join("")}</div>
+      <div class="s">${nG(0)} benign · ${nG(1)} indeterminate · ${nG(2)} malignant</div>`)}</div>`;
+  const last = NQ - 1;
+  const colB = `<div class="col">${pn("c1", "grow", "Answerer", `<div class="big">Claude Sonnet 5.5 <small>answers every question</small></div>
+    <div class="s" style="margin-bottom:4px">P(yes) for each question, with a stated confidence</div>
+    ${ims.map(([i, g]) => `<div class="ans"><img src="${thumb(i)}" alt="" style="border-color:${PAL.grp[g]}"><table>${[0, 1, 2].map(q => `<tr><td>Q${q + 1}</td><td class="num">${fmt(p_(i, q))}</td></tr>`).join("")}<tr><td>…</td><td></td></tr><tr><td>Q${last + 1}</td><td class="num">${fmt(p_(i, last))}</td></tr></table></div>`).join("")}
+    <div class="s" style="margin-top:6px">${(NQ * NI).toLocaleString()} answers, each turned into a Directional Score</div>`)}</div>`;
+  const M = PM();
+  const colC = `<div class="col">${pn("c3", "", "Model", `<div class="big">Ridge regression <small>on ${T2IMP.n_model_questions} clinical questions, trained on the ten subtypes</small></div>
+      <div class="stat3"><div><b>AUROC ${fmt(T2F["all images"].auc_mean)}</b><span>benign against malignant, read from the ten-subtype model; asking “Is this malignant?” directly gives ${fmt(CTRL().fold_mean)}</span></div></div>`)}
+    <div class="vlink"></div>
+    ${pn("c4", "grow", "Ten subtypes", `<div class="stat3"><div><b>${pct(TEN.bacc[0])}</b><span>balanced accuracy over ten subtypes (chance 10%); true subtype among the first three choices for ${pct(TEN.top3)}</span></div>
+      <div><b>AUROC ${fmt(M.tenclass.auroc_repeat_mean)}</b><span>naevus against melanoma, read from the same model</span></div></div>`)}</div>`;
+  const ix = T2IMP.contrast.map((v, q) => [q, v]).filter(([, v]) => v !== null).sort((a, b) => b[1] - a[1]);
+  const pick = [...ix.slice(0, 3), ...ix.slice(-3)], wmax = Math.max(...pick.map(([, v]) => Math.abs(v)));
+  const bar = w => { const f = Math.abs(w) / wmax * 40; return `<svg width="88" height="12"><line x1="44" x2="44" y1="0" y2="12" stroke="${PAL.ink3}"/><rect x="${w > 0 ? 44 : 44 - f}" y="2" width="${f}" height="8" rx="2" fill="${rgb(w > 0 ? PAL.pos : PAL.neg)}"/></svg>`; };
+  const colD = `<div class="col">${pn("c5", "grow", "Interpretation", `<div class="big">Which questions decide <small>and in which direction</small></div>
+    <div class="wq"><div class="h">question</div><div class="h">benign | malignant</div>${pick.map(([q, w]) => `<div>${esc(D.q.text[q])}</div><div>${bar(w)}</div>`).join("")}</div>
+    <div class="s" style="margin-top:8px">The three questions that push most strongly each way in the ten-subtype model (malignant-subtype weights against benign-subtype weights). Full ranking, subtype markers and two worked cases in Ch. V.</div>`)}</div>`;
+  $("ga").innerHTML = colA + arrow + colB + arrow + colC + arrow + colD;
+  $("ga").querySelectorAll(".pn[data-id]").forEach(p => { p.onclick = () => { showTab(p.dataset.id); scrollTo(0, 0); }; p.onkeydown = e => { if (e.key === "Enter") p.click(); }; });
+}
+
+// ------------------------------------------------------------------ overview
+function renderC0() {
+  const M = PM(), rob = qcClusters(QCL.meta.main).filter(isRobust).length;
+  $("hero-lede").innerHTML = `Claude Sonnet 5.5 answered ${NQ} yes-or-no dermatological questions, drafted from the clinical literature, for each of ${NI.toLocaleString()} ISIC images spanning ten diagnostic subtypes. Each answer carries a stated probability and confidence, so every image becomes a profile of ${NQ} interpretable values. We ask which questions the model answers alike and whether that reflects the lesions or the way the questions were posed, train a ridge classifier on the answers to name the ten subtypes under patient-grouped nested cross-validation, and identify the questions on which its decisions rest.
+    <span class="kw">The answers (I) and their structure (II) come first; model selection (III) leads to the ten subtypes (IV) and to the questions that carry the decision, with two worked cases (V).</span>`;
+  renderAbstract();
+  const S = [
+    ["c1", "I", `<b>${pct(D.answers.yes_share)} of answers are affirmative.</b> ${D.answers.n_rarely} of ${NQ} questions are affirmed in fewer than 5% of images; their information lies in how firm the “no” is.`],
+    ["c2", "II", `<b>Across separate prompts the answers fall into ${rob} stable families</b> (${Math.min(...QCL.comp[QCL.meta.main].robust_grid.map(x => x.n))} to ${Math.max(...QCL.comp[QCL.meta.main].robust_grid.map(x => x.n))} by criteria). They follow how firmly the model says “no” and may be its overall impression of the image; within a prompt, part of the agreement is the prompt itself.`],
+    ["c3", "III", `<b>The ten-subtype ridge reaches AUROC ${fmt(T2F["all images"].auc_mean)}</b> for benign against malignant, against ${fmt(CTRL().fold_mean)} for the direct question, and at least matches the two-class model and SkinGPT-R1.`],
+    ["c4", "IV", `<b>Ten subtypes are assigned correctly in ${pct(TEN.bacc[0])} of images</b> (chance 10%); the same model separates melanoma from naevus with AUROC ${fmt(M.tenclass.auroc_repeat_mean)}.`],
+    ["c5", "V", `<b>No single question exceeds AUROC ${fmt(IMP.best_alone.auc)};</b> the decision rests on many weak, partly redundant items, several describing the skin around the lesion.`]];
+  $("summary").innerHTML = S.map(([id, rn, t]) => `<div data-id="${id}"><span class="rn">${rn}</span><p>${t}</p></div>`).join("");
+  $("summary").querySelectorAll("div[data-id]").forEach(d => d.onclick = () => { showTab(d.dataset.id); scrollTo(0, 0); });
+}
+
+// ------------------------------------------------------------------ III model selection
+function renderC3() {
+  const F = T2F["all images"], Fd = T2F["dermoscopic only"], ctl = CTRL(), main2 = MAIN();
+  const s95 = t2Thr("tenclass", "sens95"), d95 = t2Thr("direct question", "sens95");
+  $("c3-find").innerHTML = `<div class="stat">${fmt(F.auc_mean, 3)}<small>AUROC, benign against malignant, ten-subtype model; ± ${fmt(F.auc_sd, 3)} over 25 folds</small></div><div class="say">Read as benign against malignant, the model trained on the ten subtypes exceeds the direct question (<b>${fmt(ctl.fold_mean, 3)}</b>) and matches the model trained on the two classes directly (${fmt(main2.fold_mean, 3)}). With the cutoff fixed on the training images to catch 95% of malignancies, it catches <b>${pct(s95.sensitivity_mean)}</b> on the held-out folds and clears <b>${pct(s95.specificity_mean)}</b> of benign lesions, against ${pct(d95.specificity_mean)} for the direct question. Dermoscopic images only: AUROC ${fmt(Fd.auc_mean, 3)}.</div>`;
+  const G = E.groups;
+  $("c3-checks").innerHTML = [
+    ["Patient-grouped folds", `${G.n_groups} groups; the ${G.multi} patients with 2 to ${G.largest} images are never split across training and test.`],
+    ["Near-duplicate merging", `Perceptual hash (dHash, 256 bits, threshold 12 bits) over all image pairs; ${G.dups} pair found, already within one patient.`],
+    ["In-fold fitting", "Standardisation, penalty selection, any feature selection and every cutoff are fitted within the training split, inner and outer."],
+    ["Unscored final model", "Fitted on all labelled images and frozen; it will be evaluated once, on the external test set."]].map(([a, b]) => `<li><b>${a}</b>${esc(b)}</li>`).join("");
+  seg($("roc-sub"), [["all", "All images"], ["derm", "Dermoscopic only"]], EV.sub, v => { EV.sub = v; drawROC10(); });
+  drawROC10(); drawStrip10();
+  renderCmp();
+  renderThr();
+  renderMtDetail();
+  $("c3-method").innerHTML = `<p><b>The model.</b> Ridge (L2-penalised multinomial logistic regression) on the standardised Directional Scores of the 446 clinical questions, trained to name the ten subtypes on all 1,000 images, with balanced class weights. Performance is estimated by nested cross-validation: five repeats of 5-fold, stratified on the ten subtypes and grouped by ISIC patient (by lesion where no patient is recorded); the penalty is chosen by grouped 3-fold inner cross-validation on log loss (stage S10). <b>Benign against malignant</b> is read from the ten probabilities: the malignant subtypes' summed probability divided by their number, against the benign subtypes' divided by theirs, renormalised so that 0.5 means equal prior odds; scored on the 800 benign and malignant images. Fold values are means over the 25 outer test folds; the ROC pools each image's out-of-fold score averaged over repeats.</p>` + C11_METHOD +
+    `<p><b>Cutoffs.</b> Stage S14 refits each of S10's 25 outer models, reproduces S10's stored test-fold predictions exactly, and chooses every cutoff from cross-validated predictions inside the training split only. The ten-subtype rows use S10's ten-subtype folds, which are drawn over all 1,000 images, so they are not paired fold by fold with the two-class or direct-question rows.</p>`;
+}
+function drawROC10() {
+  const svg = $("roc-svg"); svg.innerHTML = "";
+  const R1 = T2.roc[EV.sub === "all" ? "all" : "derm"], R2 = E.roc[EV.sub === "all" ? "ctrl_all" : "ctrl_derm"];
+  $("roc-legend").innerHTML = legendRow([[PAL.c[0], `ten-subtype ridge · ${fmt(R1.auc, 3)}`], [PAL.c[1], `direct question · ${fmt(R2.auc, 3)}`]]);
+  const ax = axes(svg, 420, 400, {l: 50, r: 14, t: 10, b: 42}, [0, 1], [0, 1], "false positive rate (1 − specificity)", "sensitivity", {xt: [0, .25, .5, .75, 1], yt: [0, .25, .5, .75, 1], xgrid: true});
+  svg.appendChild(svgEl("line", {x1: ax.X(0), y1: ax.Y(0), x2: ax.X(1), y2: ax.Y(1), stroke: PAL.muted, "stroke-dasharray": "4 4"}));
+  svg.appendChild(svgEl("line", {x1: ax.X(0), y1: ax.Y(.95), x2: ax.X(1), y2: ax.Y(.95), stroke: PAL.ink3, "stroke-dasharray": "2 3"}));
+  svgText(svg, ax.X(1) - 4, ax.Y(.95) + 14, "95% sensitivity", {"text-anchor": "end", style: `font-size:10.5px;fill:${PAL.ink3}`});
+  const hov = [];
+  [[R2, PAL.c[1], "direct question"], [R1, PAL.c[0], "ten-subtype ridge"]].forEach(([r, col, name]) => {
+    line(svg, r.pts.map(([x, y]) => [ax.X(x), ax.Y(y)]), col, "", 2.5);
+    svg.appendChild(svgEl("circle", {cx: ax.X(r.op.fpr), cy: ax.Y(r.op.tpr), r: 6, fill: col, stroke: rgb(PAL.surf), "stroke-width": 2}));
+    hov.push([ax.X(r.op.fpr), ax.Y(r.op.tpr), `<b>${name}</b><br>sensitivity ${pct(r.op.tpr)}, specificity ${pct(r.op.spec)} (cutoff read on these predictions)`]); });
+  hoverPoints(svg, hov);
+}
+function drawStrip10() {
+  const svg = $("strip-svg"); svg.innerHTML = "";
+  const W = 900, m = {l: 230, r: 20, t: 10, b: 36}, rowH = 33, Hh = m.t + m.b + rowH * subOrder.length; svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`);
+  const ax = axes(svg, W, Hh, m, [0, 1], [0, 1], "P(malignant) from the ten-subtype model, out of fold", "", {xt: [0, .25, .5, .75, 1], xgrid: true});
+  const hov = [], meds = [];
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  subOrder.forEach((s, row) => { const y0 = m.t + row * rowH + rowH / 2, gi = D.sub_group[s];
+    svgText(svg, m.l - 12, y0 + 4, SUB[s], {"text-anchor": "end", style: `font-size:12px;fill:${PAL.ink}`});
+    svg.appendChild(svgEl("circle", {cx: 12, cy: y0, r: 4.5, fill: PAL.grp[gi]}));
+    const ims = [...Array(NI).keys()].filter(i => D.img.sub[i] === s), vs = ims.map(i => T2.img.pm[i]).sort((a, b) => a - b);
+    ims.forEach(i => { const x = ax.X(T2.img.pm[i]), y = y0 + (rnd() - .5) * (rowH - 12);
+      svg.appendChild(svgEl("circle", {cx: x, cy: y, r: 2.6, fill: PAL.grp[gi], "fill-opacity": .75}));
+      const top = T2.img.p[i].map((p, k) => [k, p]).sort((a, b) => b[1] - a[1])[0];
+      hov.push([x, y, `<img src="data:image/jpeg;base64,${D.img.thumb[i]}" style="width:100px;border-radius:3px;float:right;margin-left:8px"><b>${esc(SUB[s])}</b><br>P(malignant) ${fmt(T2.img.pm[i])}<br>most probable: ${esc(T2.classes[top[0]])} (${fmt(top[1])})<br>${esc(D.img.imtype[i])}<br><span class="k">select to open</span>`, () => openImage(i)]); });
+    const med = vs[Math.floor(vs.length / 2)]; meds.push([s, med]);
+    svg.appendChild(svgEl("line", {x1: ax.X(med), x2: ax.X(med), y1: y0 - rowH / 2 + 3, y2: y0 + rowH / 2 - 3, stroke: PAL.ink, "stroke-width": 2.5}));
+    if (row < subOrder.length - 1 && D.sub_group[subOrder[row + 1]] !== gi) svg.appendChild(svgEl("line", {x1: 4, x2: W - m.r, y1: y0 + rowH / 2, y2: y0 + rowH / 2, stroke: PAL.border})); });
+  hoverPoints(svg, hov);
+  const ind = meds.filter(([s]) => D.sub_group[s] === 1).map(([s, v]) => `${SUB[s]} ${fmt(v)}`).join(", ");
+  $("c5-take-strip").innerHTML = `The indeterminate subtypes are classes of their own in this model, neither benign nor malignant; read as benign against malignant they fall between the two groups (medians: ${esc(ind)}). Within the benign and malignant groups, each subtype has its own spread: the fibro-histiocytic and inflammatory lesions reach furthest toward malignant.`;
+}
+
+// cutoffs (S14), with the ten-subtype score first
+const THR = {score: "tenclass", sub: "all images"};
+const THR_NAME = {tenclass: "Ten-subtype ridge", ridge: "Two-class ridge", "direct question": "Direct question"};
+function renderThr() {
+  seg($("thr-score"), Object.entries(THR_NAME), THR.score, v => { THR.score = v; drawThr(); });
+  seg($("thr-sub"), [["all images", "All images"], ["dermoscopic only", "Dermoscopic only"]], THR.sub, v => { THR.sub = v; drawThr(); });
+  drawThr();
+}
+
+// ------------------------------------------------------------------ V importance, from the ten-subtype model
+function renderC5() {
+  const best = IMP.best_alone, I = T2IMP;
+  const qs = I.spread.map((v, q) => [q, v]).filter(([, v]) => v !== null);
+  const allKept = qs.filter(([q]) => I.sign_share[q] === 1).length, top30 = I.contrast.map((v, q) => [q, v]).filter(([, v]) => v !== null).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1])).slice(0, 30);
+  $("c6-find").innerHTML = `<div class="stat">${fmt(best.auc)}<small>best single question, AUROC for malignant against benign</small></div><div class="say">No question decides alone: the strongest (<i>“${esc(best.q !== null ? D.q.text[best.q] : "")}”</i>) falls well below the ten-subtype model (${fmt(T2F["all images"].auc_mean)}). The model spreads its weight over many weak, partly redundant items. The weights are stable: refitted on each of the 25 training folds, ${allKept} of ${I.n_model_questions} questions keep the sign of their malignant-against-benign weight every time, including all ${top30.filter(([q]) => I.sign_share[q] === 1).length === 30 ? "30" : top30.filter(([q]) => I.sign_share[q] === 1).length + " of the 30"} with the largest weights.</div>`;
+  $("dotb").style.background = PAL.grp[0]; $("dotm").style.background = PAL.grp[2];
+  const top = [...qs].sort((a, b) => I.spread_rank[a[0]] - I.spread_rank[b[0]]).slice(0, 20).map(([q]) => q);
+  const smax = Math.max(...qs.map(([, v]) => v)), cmax = Math.max(...I.contrast.filter(v => v !== null).map(Math.abs));
+  const pb = q => meanP(BEN, q), pm = q => meanP(MAL, q), pmax = Math.max(...top.flatMap(q => [pb(q), pm(q)]));
+  $("imp").innerHTML = `<div class="h"></div><div class="h">question</div><div class="h">moves the subtype choice</div><div class="h">benign | malignant</div><div class="h opt">mean P(yes), 0 to ${fmt(pmax, 1)}</div><div class="h num opt">alone</div><div class="h num opt">sign kept</div>` +
+    top.map(q => `<div class="row" data-q="${q}"><div class="rk">${I.spread_rank[q]}</div><div>${esc(D.q.text[q])}${rarelyYes(q) ? '<span class="badge">doubt</span>' : ""}</div><div>${sBar(I.spread[q], smax)}</div><div>${wBar(I.contrast[q], cmax)}</div><div class="opt">${dumbbell(pb(q), pm(q), pmax)}</div><div class="num opt">${fmt(D.q.auc[q])}</div><div class="num opt">${pct(I.sign_share[q])}</div></div>`).join("");
+  $("imp").querySelectorAll(".row").forEach(r => r.onclick = () => openQuestion(+r.dataset.q));
+  const nMal = top.filter(q => I.contrast[q] > 0).length;
+  $("c6-take1").innerHTML = `The questions that most move the choice among subtypes are not all malignancy markers: ${nMal} of these 20 lean toward the malignant subtypes, the rest toward benign ones, and several mark a single subtype or site (vascular lesions; the nail or mucosa). Several also describe the <b>perilesional skin</b> rather than the lesion itself; such features may not transfer to images from other acquisition sources.`;
+  $("markers").innerHTML = subOrder.map(s => `<div class="mk"><h4>${grpDot(D.sub_group[s])}${esc(SUB[s])}</h4><ol>${(T2.markers[SUB[s]] || []).map(m => `<li data-q="${m.q}">${esc(D.q.text[m.q])} <span class="muted">${fmt(m.p_in)} vs ${fmt(m.p_out)}</span></li>`).join("")}</ol></div>`).join("");
+  $("markers").querySelectorAll("li[data-q]").forEach(l => l.onclick = () => openQuestion(+l.dataset.q));
+  renderRank();
+  renderCases();
+}
+const rarelyYes = q => yesRate(BEN, q) < .05 && yesRate(MAL, q) < .05;
+const sBar = (v, vmax, W = 140) => { const f = Math.min(v / vmax, 1) * (W - 8); return `<svg width="${W}" height="14"><rect x="2" y="2" width="${Math.max(f, 1)}" height="10" rx="2" fill="${PAL.gold}"/></svg>`; };
+
+// the full ranking of the clinical questions
+const RK = {sort: "spread", dir: "all", search: "", rows: null};
+function rankRows() {
+  if (RK.rows) return RK.rows;
+  const I = T2IMP;
+  RK.rows = [...Array(NQ).keys()].filter(q => I.spread[q] !== null && I.spread[q] !== undefined).map(q => ({q, rank: I.spread_rank[q], spread: I.spread[q], w: I.contrast[q],
+    sign: I.sign_share[q], auc: D.q.auc[q], pb: meanP(BEN, q), pm: meanP(MAL, q), yes: D.q.yes[q], doubt: rarelyYes(q), cl: qcLabelOf(q), text: D.q.text[q]}));
+  return RK.rows;
+}
+function renderRank() {
+  $("nq-all").textContent = T2IMP.n_model_questions;
+  seg($("rk-sort"), [["spread", "Moves the subtype choice"], ["w", "Benign | malignant weight"], ["auc", "AUROC alone"]], RK.sort, v => { RK.sort = v; drawRank(); });
+  seg($("rk-dir"), [["all", "Both"], ["mal", "Toward malignant"], ["ben", "Toward benign"]], RK.dir, v => { RK.dir = v; drawRank(); });
+  $("rk-search").oninput = e => { RK.search = e.target.value.trim().toLowerCase(); drawRank(); };
+  $("rk-csv").onclick = () => {
+    const rows = rankRows().slice().sort((a, b) => a.rank - b.rank), qq = v => typeof v === "string" ? `"${v.replace(/"/g, '""')}"` : v ?? "";
+    const keys = [["rank", "rank_moves_subtype_choice"], ["q", "question_id"], ["text", "question"], ["spread", "sd_of_ten_class_weights"], ["w", "malignant_minus_benign_weight"], ["sign", "sign_kept_share_25_folds"], ["auc", "auroc_alone"], ["pb", "mean_p_yes_benign"], ["pm", "mean_p_yes_malignant"], ["yes", "affirmation_rate"], ["cl", "cluster_fig_2_1"]];
+    const csv = [keys.map(k => k[1]).join(","), ...rows.map(r => keys.map(([k]) => k === "q" ? qq(D.q.id[r.q]) : qq(r[k])).join(","))].join("\n");
+    const a = el("a", {href: URL.createObjectURL(new Blob([csv], {type: "text/csv"})), download: "question_ranking_ten_subtype.csv"}); document.body.appendChild(a); a.click(); a.remove(); };
+  drawRank();
+}
+function drawRank() {
+  const all = rankRows(), s = RK.search;
+  let R = all.filter(r => (!s || r.text.toLowerCase().includes(s)) && (RK.dir === "all" || (RK.dir === "mal" ? r.w > 0 : r.w < 0)));
+  const key = {spread: r => r.rank, w: r => -Math.abs(r.w), auc: r => -Math.abs((r.auc ?? .5) - .5)}[RK.sort];
+  R = R.sort((a, b) => key(a) - key(b));
+  const smax = Math.max(...all.map(r => r.spread)), wmax = Math.max(...all.map(r => Math.abs(r.w))), pmax = Math.max(...all.flatMap(r => [r.pb, r.pm]));
+  $("rk").innerHTML = `<div class="h">#</div><div class="h">question</div><div class="h">moves the subtype choice</div><div class="h">benign | malignant</div><div class="h opt">mean P(yes), 0 to ${fmt(pmax, 1)}</div><div class="h num opt">alone</div><div class="h num opt">sign kept</div><div class="h num opt">cluster</div>` +
+    R.map(r => `<div class="row" data-q="${r.q}"><div class="rk">${r.rank}</div><div>${esc(r.text)}${r.doubt ? '<span class="badge">doubt</span>' : ""}</div><div>${sBar(r.spread, smax)}</div><div>${wBar(r.w, wmax)}</div><div class="opt">${dumbbell(r.pb, r.pm, pmax)}</div><div class="num opt">${fmt(r.auc)}</div><div class="num opt">${pct(r.sign)}</div><div class="num opt">${r.cl || "–"}</div></div>`).join("");
+  $("rk").querySelectorAll(".row").forEach(x => x.onclick = () => openQuestion(+x.dataset.q));
+  $("rk-note").textContent = `${R.length} of ${all.length} questions shown. Rank 1 moves the choice among the ten subtypes most. “Sign kept”: share of the 25 fold refits in which the malignant-against-benign weight has the final model's sign. Cluster: Fig. 2.1, judgement.`;
+}
+
+// ------------------------------------------------------------------ V.i worked cases, ten-subtype model
+function renderCases() {
+  const C = T2.cases, NSIDE = 6, sig = v => 1 / (1 + Math.exp(-v));
+  $("cases-lead").innerHTML = `One melanoma and one naevus, each assigned to its own subtype out of fold and typical of it (its probability for that subtype closest to the median of the correctly assigned images). The ten-subtype model is refitted without the patient's images. Each case is read as a choice between its own subtype and the one it is most important not to confuse it with, melanoma against naevus: the log-odds of that choice is a sum over the questions, exactly. For each case we show the ten probabilities, where the two-way choice starts (the average image) and ends, the total evidence for each side, and the six strongest questions on each side, with the image's answer placed beside the average answers of the two subtypes.`;
+  const cmax = Math.max(...C.flatMap(c => c.terms.map(t => Math.abs(t.c))));
+  const ZL = 2.5, SW = 190;
+  const strip = (t, ma, mb, ca, cb) => { const X = v => 8 + (Math.max(-ZL, Math.min(ZL, v)) + ZL) / (2 * ZL) * (SW - 16);
+    return `<svg width="${SW}" height="20"><line x1="8" x2="${SW - 8}" y1="10" y2="10" stroke="${PAL.border}" stroke-width="2"/><line x1="${X(0)}" x2="${X(0)}" y1="4" y2="16" stroke="${PAL.ink3}" stroke-dasharray="2 2"/>
+      <circle cx="${X(mb)}" cy="10" r="5" fill="${cb}"/><circle cx="${X(ma)}" cy="10" r="5" fill="${ca}"/><circle cx="${X(t.z)}" cy="10" r="6" fill="${PAL.ink}" stroke="${rgb(PAL.surf)}" stroke-width="1.5"/></svg>`; };
+  const cbar = (v, colr) => { const W = 124, f = Math.abs(v) / cmax * (W - 36);
+    return `<svg width="${W}" height="16"><rect x="0" y="3" width="${Math.max(f, 1.5)}" height="10" rx="2" fill="${colr}"/><text x="${f + 4}" y="12" style="font-size:11px;fill:${PAL.ink2}">${v > 0 ? "+" : "−"}${Math.abs(v).toFixed(2)}</text></svg>`; };
+  const ansTxt = t => `Claude: <b>${t.py >= .5 ? "yes" : "no"}</b> (P(yes) ${fmt(t.py)}, confidence ${fmt(t.cf)})`;
+  const subMeanZ = (s, q) => meanZ([...Array(NI).keys()].filter(i => D.img.sub[i] === s), q);
+  $("cases").innerHTML = C.map((c, ci) => {
+    const T = c.terms, A = c.sub, B = c.contrast_sub, ca = PAL.grp[D.sub_group[A]], cb = PAL.grp[D.sub_group[B]];
+    const pos = T.filter(t => t.c > 0).sort((a, b) => b.c - a.c), neg = T.filter(t => t.c < 0).sort((a, b) => a.c - b.c);
+    const sp = pos.reduce((a, t) => a + t.c, 0), sn = neg.reduce((a, t) => a + t.c, 0);
+    // ten probabilities
+    const pW = 600, rows = subOrder.map(s => [s, c.p[s]]), bh = 17;
+    const probs = `<svg viewBox="0 0 ${pW} ${rows.length * bh + 6}">${rows.map(([s, p], k) => { const y = 3 + k * bh, w = p * (pW - 260);
+      return `<text x="196" y="${y + 12}" text-anchor="end" style="font-size:11.5px;fill:${s === A ? PAL.ink : PAL.ink2};font-weight:${s === A ? 700 : 400}">${esc(SUB[s])}</text><rect x="204" y="${y + 3}" width="${Math.max(w, 1)}" height="11" rx="2" fill="${PAL.grp[D.sub_group[s]]}" fill-opacity="${s === A || s === B ? 1 : .45}"/><text x="${208 + w}" y="${y + 12}" style="font-size:11px;fill:${PAL.ink2}">${fmt(p)}</text>`; }).join("")}</svg>`;
+    // the two-way choice, on the probability scale P(A) / (P(A) + P(B))
+    const gW = 600, X = v => 20 + v * (gW - 40), pa = sig(c.d0), pe = sig(c.logratio), up = pe > pa;
+    const cl = v => Math.max(80, Math.min(gW - 80, v)), LX = [cl(X(pa)), cl(X(pe))];
+    if (Math.abs(LX[1] - LX[0]) < 170) { const m = (LX[0] + LX[1]) / 2, s = LX[1] >= LX[0] ? 1 : -1; LX[0] = cl(m - s * 85); LX[1] = cl(m + s * 85);
+      if (Math.abs(LX[1] - LX[0]) < 170) { if (LX[0] <= 80 || LX[1] <= 80) { LX[s > 0 ? 1 : 0] = (s > 0 ? LX[0] : LX[1]) + 170; } else { LX[s > 0 ? 0 : 1] = (s > 0 ? LX[1] : LX[0]) - 170; } } }
+    const gauge = `<svg viewBox="0 0 ${gW} 58"><line x1="${X(0)}" x2="${X(1)}" y1="30" y2="30" stroke="${PAL.border}" stroke-width="6" stroke-linecap="round"/>
+      ${[0, .25, .5, .75, 1].map(v => `<text x="${X(v)}" y="54" text-anchor="middle" style="font-size:11px;fill:${PAL.ink3}">${v}</text>`).join("")}
+      <line x1="${X(.5)}" x2="${X(.5)}" y1="20" y2="40" stroke="${PAL.ink3}" stroke-dasharray="2 2"/>
+      <line x1="${X(pa)}" x2="${X(pe)}" y1="30" y2="30" stroke="${up ? ca : cb}" stroke-width="6"/>
+      <circle cx="${X(pa)}" cy="30" r="6" fill="${rgb(PAL.surf)}" stroke="${PAL.ink2}" stroke-width="2"/><circle cx="${X(pe)}" cy="30" r="8" fill="${PAL.ink}"/>
+      <text x="${LX[0]}" y="13" text-anchor="middle" style="font-size:12px;fill:${PAL.ink2}">average image ${fmt(pa)}</text>
+      <text x="${LX[1]}" y="13" text-anchor="middle" style="font-size:12.5px;font-weight:700;fill:${PAL.ink}">this image ${fmt(pe)}</text></svg>`;
+    const tW = 600, mid = tW / 2, tmax = Math.max(...C.flatMap(cc => [cc.terms.filter(t => t.c > 0).reduce((a, t) => a + t.c, 0), -cc.terms.filter(t => t.c < 0).reduce((a, t) => a + t.c, 0)])), sc = v => v / tmax * (mid - 10);
+    const net = sp + sn;
+    const tug = `<svg viewBox="0 0 ${tW} 62"><rect x="${mid - sc(-sn)}" y="8" width="${sc(-sn)}" height="18" rx="2" fill="${cb}"/><rect x="${mid}" y="8" width="${sc(sp)}" height="18" rx="2" fill="${ca}"/>
+      <line x1="${mid}" x2="${mid}" y1="2" y2="32" stroke="${PAL.ink}" stroke-width="1.5"/>
+      <line x1="${mid}" x2="${mid + sc(net)}" y1="40" y2="40" stroke="${PAL.ink}" stroke-width="3"/><circle cx="${mid + sc(net)}" cy="40" r="4" fill="${PAL.ink}"/>
+      <text x="${mid - 6}" y="56" text-anchor="end" style="font-size:11.5px;fill:${PAL.ink2}">toward ${esc(SUB[B])} ${sn.toFixed(2)} (${neg.length})</text>
+      <text x="${mid + 6}" y="56" text-anchor="start" style="font-size:11.5px;fill:${PAL.ink2}">toward ${esc(SUB[A])} +${sp.toFixed(2)} (${pos.length})</text></svg>`;
+    const col = (list, title, colr, total) => { const shown = list.slice(0, NSIDE), rest = total - shown.reduce((a, t) => a + t.c, 0);
+      return `<div><h4><span class="dot" style="background:${colr}"></span>${title}</h4>` + shown.map(t => `<div class="row" data-q="${t.q}"><div class="qt">${esc(D.q.text[t.q])}</div>
+        <div>${strip(t, subMeanZ(A, t.q), subMeanZ(B, t.q), ca, cb)}<small>${ansTxt(t)}</small></div><div>${cbar(t.c, colr)}</div></div>`).join("") +
+        `<div class="rest">The other ${list.length - shown.length} questions on this side add ${rest > 0 ? "+" : "−"}${Math.abs(rest).toFixed(2)}.</div></div>`; };
+    const i = c.i, correct = c.pred === A;
+    const info = [D.img.imtype[i], D.img.site[i], D.img.age[i] != null ? `age about ${D.img.age[i]}` : "", D.img.sex[i], D.img.dx3[i], D.img.confirm[i]].filter(Boolean).map(esc).join(" · ");
+    return `<div class="fig"><h3><span class="fn">Fig. 5.${4 + ci}</span>${esc(SUB[A])}, read against ${esc(SUB[B])}</h3>
+      <div class="case"><div class="pic"><img src="data:image/jpeg;base64,${c.image}" alt="${esc(c.id)}" data-i="${i}" title="Open the image">
+        <p class="idl">${esc(c.id)} · ${info}</p>
+        <p class="verdict">Held out by patient, the model's first choice is ${esc(SUB[c.pred])} (${fmt(c.p[c.pred])}), ${correct ? "correct" : "incorrect"}; read as benign against malignant, P(malignant) ${fmt(c.p_mal)}. Asking Claude directly “Is this a malignant lesion?” gave P(yes) ${fmt(D.img.ctrl[i])}.</p></div>
+      <div><h4 class="tsub" style="margin-top:0">The ten subtypes</h4><div class="gauge">${probs}</div>
+        <h4 class="tsub">${esc(SUB[A])} or ${esc(SUB[B])}? P(${esc(SUB[A])}) of the two</h4><div class="gauge">${gauge}</div>
+        <h4 class="tsub" style="margin-top:4px">The evidence on each side, and its balance</h4><div class="tug">${tug}</div>
+        <div class="evkey"><span><span class="dot" style="background:${ca}"></span>average ${esc(SUB[A])} answer</span><span><span class="dot" style="background:${cb}"></span>average ${esc(SUB[B])} answer</span><span><span class="dot" style="background:${PAL.ink}"></span>this image</span><span style="color:var(--text-muted)">scale: firmer “no” on the left, firmer “yes” on the right; dashed: the average image</span></div>
+        <div class="ev">${col(pos, `Strongest evidence for ${SUB[A]}`, ca, sp)}${col(neg, `Strongest evidence for ${SUB[B]}`, cb, sn)}</div></div></div></div>`;
+  }).join("");
+  $("cases").querySelectorAll(".row[data-q]").forEach(r => r.onclick = () => openQuestion(+r.dataset.q));
+  $("cases").querySelectorAll("img[data-i]").forEach(m => m.onclick = () => openImage(+m.dataset.i));
+  const c0 = C[0];
+  $("c7-method").innerHTML = `<p>The model is the ten-subtype ridge model (Ch. III) on all ${c0.terms.length} clinical questions, refitted with its final penalty (C = ${c0.C}) on every image except those of the case's patient (${C.map(c => `${c.n_train} training images, ${c.n_left_out} left out`).join("; ")}). The penalty itself was chosen with the case included, so the hold-out is close to, but not quite, a clean test. ${T2.cases_auto ? "Cases chosen automatically from this model's out-of-fold predictions: dermoscopic, assigned to their own subtype, and closest to the median probability of the correctly assigned images of that subtype." : "Cases named in the configuration."}</p>
+  <p>A multinomial model gives each subtype a linear score; the log-odds between two subtypes is the difference of their scores, so log[P(A) / P(B)] equals the difference of the two intercepts plus, for each question, the difference of the two weights times how far this image's Directional Score lies from the training average in standard deviations. The sum is exact (largest error ${c0.max_err.toExponential(0)}). The bars give each question's contribution in log-odds; the tug of war sums them on each side, and its black line is the net shift from the average image.</p>
+  <p>Because each contribution depends on how the answer compares with other images, a “no” can push either way: a firmer or a less certain “no” than usual counts as evidence according to which subtype tends to answer that way. On the answer scale the black dot then sits nearer that subtype's average.</p>`;
+}
+
+// ------------------------------------------------------------------ cards for a question or an image
+function qCard(i) {
+  const q = D.q, corr = [...Array(NQ).keys()].filter(j => j !== i).map(j => [j, r_(i, j)]).sort((a, b) => b[1] - a[1]);
+  const li = ([j, r]) => `<li data-q="${j}"><span class="r">${r >= 0 ? "+" : ""}${r.toFixed(2)}</span>${esc(q.text[j])}</li>`;
+  const I = T2IMP, cl = qcLabelOf(i);
+  return `<h3>${esc(q.text[i])}</h3>
+    <dl class="kv"><dt>Topic</dt><dd>${esc(TOP[q.topic[i]])}</dd><dt>Cluster</dt><dd>${cl ? `${cl} (Fig. 2.1, judgement)` : "none at ρ ≥ " + RMIN}</dd>
+    <dt>Affirmed</dt><dd>${pct(q.yes[i])} of images</dd><dt>AUROC alone</dt><dd>${fmt(q.auc[i])}</dd>
+    <dt>Ten-subtype model</dt><dd>${I.spread[i] == null ? "not in the model" : `rank ${I.spread_rank[i]} of ${I.n_model_questions} for moving the subtype choice; malignant against benign weight ${fmt(I.contrast[i], 3)}, same sign in ${pct(I.sign_share[i])} of fold refits`}</dd>
+    <dt>ID</dt><dd>${esc(q.id[i])} · ${esc(q.kind[i])}</dd></dl>
+    ${I.w[i] ? `<h4>Weight in each subtype's score</h4>${profBars(I.w[i], SUB, Math.max(...I.w[i].map(Math.abs)) || 1)}` : ""}
+    <h4>Mean z-score by subtype</h4>${profBars(q.prof[i], SUB, 1.2)}
+    <h4>Most correlated answers (Directional Score, Pearson)</h4><ul class="qlist">${corr.slice(0, 6).map(li).join("")}</ul>
+    <h4>Most similar wording</h4><ul class="qlist">${q.nn_text[i].slice(0, 5).map(j => li([j, r_(i, j)])).join("")}</ul>`;
+}
+
+function drawThr() {
+  const R = D.thr.rules.filter(r => r.score === THR.score && r.subset === THR.sub);
+  const rg = (r, m, d = 2) => `${fmt(r[m + "_mean"], d)} <span class="muted">(${fmt(r[m + "_min"], d)}–${fmt(r[m + "_max"], d)})</span>`;
+  const order = ["p50", "youden", "sens90", "sens95", "sens975", "sens99", "spec90", "spec95"];
+  const row = (r, hind) => `<tr${hind ? ' style="color:var(--text-muted)"' : ""}><td>${hind ? "&nbsp;&nbsp;read on the held-out fold" : esc(r.rule_label)}</td><td class="num">${rg(r, "cutoff")}</td><td class="num">${rg(r, "sensitivity")}</td><td class="num">${rg(r, "specificity")}</td><td class="num">${fmt(r.ppv_mean)}</td><td class="num">${fmt(r.npv_mean)}</td><td class="num">${pct(r.called_malignant_mean)}</td></tr>`;
+  $("thr-table").innerHTML = `<table class="mtab"><tr><th>Rule</th><th class="num">P cutoff</th><th class="num">Sensitivity</th><th class="num">Specificity</th><th class="num">PPV</th><th class="num">NPV</th><th class="num">Called malignant</th></tr>` +
+    order.map(k => { const t = R.find(r => r.rule === k && r.chosen_on === "training split"), h = R.find(r => r.rule === k && r.chosen_on !== "training split");
+      return (t ? row(t, false) : "") + (h ? row(h, true) : ""); }).join("") + `</table>`;
+  const s95 = R.find(r => r.rule === "sens95" && r.chosen_on === "training split"), h95 = R.find(r => r.rule === "sens95" && r.chosen_on !== "training split");
+  const yo = R.find(r => r.rule === "youden" && r.chosen_on === "training split");
+  $("thr-take1").innerHTML = `Fixed from the training images, the 95%-sensitivity rule gives a cutoff of P = ${fmt(s95.cutoff_mean)} (${fmt(s95.cutoff_min)} to ${fmt(s95.cutoff_max)} across folds). On the held-out folds it catches ${pct(s95.sensitivity_mean)} of malignancies on average (${pct(s95.sensitivity_min)} to ${pct(s95.sensitivity_max)} in a single fold) and clears <b>${pct(s95.specificity_mean)} of benign lesions</b>, against ${pct(h95.specificity_mean)} when the cutoff is read in hindsight. The cutoffs chosen from training images vary little between folds; read on a held-out fold of about 160 images they range from ${fmt(h95.cutoff_min)} to ${fmt(h95.cutoff_max)}, so the hindsight figure owes part of its value to fitting the fold. The Youden cutoff (${fmt(yo.cutoff_mean)}) is close to 0.5, as expected from the balanced class weights.`;
+  // sweep
+  const S = D.thr.sweep.filter(r => r.score === THR.score && r.subset === THR.sub).sort((a, b) => a.cutoff - b.cutoff);
+  const svg = $("thr-svg"); svg.innerHTML = "";
+  const ax = axes(svg, 900, 380, {l: 52, r: 16, t: 12, b: 42}, [0, 1], [0, 1], "P cutoff (called malignant if P ≥ cutoff)", "", {xt: [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1], xgrid: true, yt: [0, .2, .4, .6, .8, 1]});
+  const M = [["sensitivity", "Sensitivity", rgb(PAL.pos), true], ["specificity", "Specificity", rgb(PAL.neg), true], ["ppv", "PPV", PAL.c[1], false], ["npv", "NPV", PAL.c[2], false]];
+  M.forEach(([m, , c, band]) => { if (!band) return;
+    const pts = S.map(r => [ax.X(r.cutoff), ax.Y(r[m + "_max"])]).concat([...S].reverse().map(r => [ax.X(r.cutoff), ax.Y(r[m + "_min"])]));
+    svg.appendChild(svgEl("polygon", {points: pts.map(p => p.join(",")).join(" "), fill: c, "fill-opacity": .14, stroke: "none"})); });
+  M.forEach(([m, , c, band]) => line(svg, S.map(r => [ax.X(r.cutoff), ax.Y(r[m + "_mean"])]), c, band ? "" : "5 3", band ? 2.5 : 1.8));
+  [[s95, "6 4", "95% sensitivity"], [yo, "2 3", "Youden"]].forEach(([r, d, t]) => { const x = ax.X(r.cutoff_mean);
+    svg.appendChild(svgEl("line", {x1: x, x2: x, y1: 12, y2: 338, stroke: PAL.ink2, "stroke-dasharray": d, "stroke-width": 1.3}));
+    svgText(svg, x + 4, 24, t, {style: `font-size:11px;fill:${PAL.ink2}`}); });
+  $("thr-legend").innerHTML = legendRow(M.map(([, n, c, band]) => [c, n, !band]));
+  hoverPoints(svg, S.flatMap(r => M.map(([m]) => [ax.X(r.cutoff), ax.Y(r[m + "_mean"]),
+    `<b>P ≥ ${fmt(r.cutoff)}</b><br>sensitivity ${fmt(r.sensitivity_mean)} (${fmt(r.sensitivity_min)}–${fmt(r.sensitivity_max)})<br>specificity ${fmt(r.specificity_mean)} (${fmt(r.specificity_min)}–${fmt(r.specificity_max)})<br>PPV ${fmt(r.ppv_mean)} · NPV ${fmt(r.npv_mean)}<br>called malignant ${pct(r.called_malignant_mean)}`])));
+  const at = c => S.find(r => Math.abs(r.cutoff - c) < 1e-6);
+  const a = at(.15), b = at(.3), c5 = at(.5);
+  $("thr-take2").innerHTML = THR.score !== "direct question"
+    ? `The ${THR_NAME[THR.score].toLowerCase()} curves change smoothly, with no cutoff at which many images switch at once, so the result is not fragile to the exact choice. Between P = 0.15 and 0.30 sensitivity falls only from ${fmt(a.sensitivity_mean)} to ${fmt(b.sensitivity_mean)} while specificity rises from ${fmt(a.specificity_mean)} to ${fmt(b.specificity_mean)}; at 0.5 the two meet near ${fmt(c5.sensitivity_mean)}. The bands show that a single fold of about 160 images can sit well away from the mean, especially for sensitivity, which rests on about 60 malignant images per fold.`
+    : `The direct question moves in steps, because Sonnet's stated P(yes) takes only a few distinct values; a small change of cutoff can move many images at once, which makes it the less robust score to set a cutoff on.`;
+}
+
 // ------------------------------------------------------------------ methods and supplement
 function renderMethods() {
   $("methods").innerHTML = `
   <p><b>Answers.</b> Claude Sonnet 5.5 (effort low) in topic mode, one prompt per topic (${TOP.length} prompts per image), images downscaled to at most 3.6 MP, one replicate. The Directional Score is (2 P(yes) − 1) multiplied by the stated confidence and standardised per question. Chapters I and II use all ${NQ} questions as written, clinical and artefact; the classifier uses the ${IMP.n_questions} clinical questions. The control question, “Is this a malignant lesion?”, is never used as a feature.</p>
-  <p><b>Questions.</b> Pearson correlation across images; agglomerative (Ward) clustering on correlation distance; principal component analysis with parallel analysis (50 permutations).</p>
-  <p><b>Classifier.</b> Stage S10: ridge under nested 5 × 5 cross-validation, grouped by patient, with every learned step fitted inside the training folds. Model comparison with SkinGPT-R1 on the same folds: stages S12 and S13; tables assembled by stage S11. Importance from stage S7: consensus ranking over six model families (whose folds were grouped by lesion, not patient).</p>
+  <p><b>Questions.</b> Spearman correlation across images; agglomerative clustering with complete linkage on 1 − <i>ρ</i>, cut at <i>ρ</i> = ${RMIN}; checks for prompt, diagnosis, image type, graded “no”, image-wide impression and stability (stage S15, details in Ch. II). Principal component analysis with parallel analysis (50 permutations; stage S9).</p>
+  <p><b>Classifier.</b> Stage S10: ridge trained on the ten subtypes under nested 5 × 5 cross-validation, grouped by patient, with every learned step fitted inside the training folds; read as benign against malignant by stage S11's collapse of the ten probabilities. Model comparison with SkinGPT-R1 on the same folds: stages S12 and S13; tables assembled by stage S11. Cutoffs: stage S14. Importance, markers and worked cases: from the final ten-subtype model and its 25 fold refits (stage S9).</p>
   <p><b>Subtypes and naevus against melanoma.</b> Stage S11. The ten-subtype results are read from the S10 out-of-fold predictions. The pair model is a ridge model refitted on the 200 naevi and melanomas under the same nested, patient-grouped cross-validation; intervals come from a bootstrap over patients (2,000 resamples). Melanoma types and the naevus confirmation method are taken from the ISIC metadata (<i>diagnosis_3</i>, <i>diagnosis_confirm_type</i>).</p>
-  <p><b>Limitations.</b> A single answering model, one replicate, and topic mode only. Answers to questions posed in the same prompt covary more than wording alone explains, so part of the correlation in Ch. II may reflect consistency within a prompt rather than shared features (explorer, Ch. II). ISIC metadata are incomplete (patient unknown for about half of the images). Institution and diagnosis are entangled in this beta set. No external test set has yet been scored.</p>
+  <p><b>Limitations.</b> A single answering model, one replicate, topic mode only and a fixed question order. The stated confidence is largely set once per prompt, and the judgement partly so (Ch. II); the classifiers' Directional Score inherits this. The question clusters rest on how firmly the model says “no” and have not been checked against expert dermoscopic annotations or a second answering model. ISIC metadata are incomplete (patient unknown for about half of the images). Institution and diagnosis are entangled in this beta set. No external test set has yet been scored.</p>
   <h3 class="subhead" style="margin-top:28px">Supplementary material</h3>
   <ul class="supp">
     <li><a href="../reports/2026-11-15_answer_structure/explorer.html">Answer Structure Explorer</a><span>The full interactive analysis in eleven chapters, including those not carried into this narrative: topic coherence, image structure and its covariates, questionnaire size, the 27-question lasso model and the choice of P(malignant) cutoff.</span></li>
+    <li><a href="../reports/2026-11-17_question_clusters/README.md">Questions answered alike</a><span>The clustering of Ch. II, its checks, and the independent review that revised it.</span></li>
+    <li><a href="../reports/2026-11-17_tenclass_lead/README.md">The ten-subtype model throughout</a><span>Its benign-against-malignant reading, cutoffs, importance and worked cases (Ch. III and V).</span></li>
     <li><a href="../reports/2026-11-16_skingpt_benchmark/README.md">SkinGPT-R1 benchmark</a><span>Its image embedding and its own diagnosis on the same folds (Table 3.3).</span></li>
     <li><a href="../reports/2026-11-16_naevus_melanoma_subtypes/README.md">Ten subtypes, naevus and melanoma</a><span>The report behind Ch. IV.</span></li>
     <li><a href="../reports/2026-11-16_cutoffs/README.md">Choosing the P(malignant) cutoff</a><span>Cutoffs fixed on the training images and applied unchanged to the held-out fold.</span></li>
