@@ -14,7 +14,8 @@ Images:
   map and clusters  UMAP and Ward clustering on the leading principal components of the answers
   association       adjusted mutual information of the image clusters, and variance explained in each leading
                     component, by diagnosis, group, image type, institution, body site, sex and age (ISIC metadata)
-Outputs: explorer.html (self-contained), question_table.csv, question_clusters.csv, topic_cohesion.csv, agreement.csv,
+Outputs: explorer.html (self-contained), narrative.html (the same data in the order of the paper; copied to
+project_narrative/index.html), question_table.csv, question_clusters.csv, topic_cohesion.csv, agreement.csv,
 text_vs_answers.csv, pca.csv, pc_association.csv, image_table.csv, image_cluster_association.csv, figures/, summary.md.
 """
 import base64
@@ -32,8 +33,9 @@ from .s6_classify import GROUPS, SOURCE_NAMES, load_labels
 from .s11_subtypes import SECTION_ORDER, SECTIONS
 
 UPSTREAM = ["manifest", "embed", "importance", "ridge", "subtypes", "thresholds"]
-VERSION = 3                                       # 3: chapter IX leads with the model comparison tables (S11)
+VERSION = 4                                       # 4: also writes narrative.html, the paper-narrative page (project_narrative/)
 TEMPLATE = Path(__file__).resolve().parents[1] / "templates" / "explore.html"
+NARRATIVE = TEMPLATE.parent / "narrative.html"   # same payload, five chapters in the order of the paper
 FONTS = [  # (family, style, file): embedded so the page needs no network (templates/fonts/README.md)
     ("Garamond", "normal", "garamond.woff2"), ("Garamond", "italic", "garamond-italic.woff2")]
 
@@ -52,7 +54,7 @@ def key(cfg, ctx) -> dict:
     files = [e.metadata, *e.text_embeddings.values(), e.text_questions]
     return {"explore": e, "label_columns": cfg.classify.label_columns, "seed": cfg.seed,
             "labels_sha": file_hash(ROOT / cfg.data.root / cfg.data.manifest),
-            "files": {f: file_hash(ROOT / f) for f in files}, "template": file_hash(TEMPLATE),
+            "files": {f: file_hash(ROOT / f) for f in files}, "template": file_hash(TEMPLATE), "narrative": file_hash(NARRATIVE),
             "fonts": {f: file_hash(TEMPLATE.parent / "fonts" / f) for _, _, f in FONTS}}
 
 
@@ -565,9 +567,10 @@ def _run(cfg, out, inputs, ctx) -> dict:
                     "n_rarely": int(((Pq >= 0.5).mean(0) < 0.05).sum())},
     }
     data = json.dumps(_clean(payload), ensure_ascii=False, separators=(",", ":"), allow_nan=False, default=_json_default)
-    html = (TEMPLATE.read_text(encoding="utf-8").replace("/*__FONTS__*/", font_css())
-            .replace("__DATA__", data.replace("</", "<\\/")))
-    (out / "explorer.html").write_text(html, encoding="utf-8")
+    fonts, data = font_css(), data.replace("</", "<\\/")
+    for tpl, name in [(TEMPLATE, "explorer.html"), (NARRATIVE, "narrative.html")]:
+        html = tpl.read_text(encoding="utf-8").replace("/*__FONTS__*/", fonts).replace("__DATA__", data)
+        (out / name).write_text(html, encoding="utf-8")
     mb = (out / "explorer.html").stat().st_size / 1e6
     return {"n_images": N, "n_questions": Q, "n_parallel_components": pc["n_parallel"],
             "components_90pct": pc["n_for"][0.9], "topic_within_r": round(coh_all["within_mean_r"], 3),

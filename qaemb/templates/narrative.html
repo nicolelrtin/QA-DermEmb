@@ -1,0 +1,1355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Questions as a Representation</title>
+<style>
+/*__FONTS__*/
+:root {
+  color-scheme: light;
+  --surface-0: #f4f1e9; --surface-1: #fbfaf6; --surface-2: #ebe6da; --border: #d6cfbf; --grid: #e7e1d4;
+  --text-primary: #1a1713; --text-secondary: #4d4840; --text-muted: #7a7366;
+  --accent: #9b2c22; --accent-soft: #f2e1da; --gold: #94762c; --mark-muted: #c8c1b2; --mid: #eeeae2;
+  --c1: #2a78d6; --c2: #eb6834; --c3: #1baf7a; --neg: #2a78d6; --pos: #e34948; --good: #0ca30c;
+  --seq: #cde2fb,#9ec5f4,#6da7ec,#3987e5,#256abf,#184f95,#0d366b;
+  --serif: "Garamond", "EB Garamond", Georgia, "Times New Roman", serif;
+  --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--surface-0); color: var(--text-primary); font: 17.5px/1.55 var(--serif);
+  font-variant-numeric: lining-nums; -webkit-font-smoothing: antialiased; }
+main { max-width: 1180px; margin: 0 auto; padding: 0 16px 80px; position: relative; }
+p { margin: 0 0 12px; }
+b, strong { font-weight: 650; }
+em { font-style: italic; }
+.muted { color: var(--text-muted); font-size: 14.5px; }
+.sc { font-variant: all-small-caps; letter-spacing: .06em; }
+
+/* masthead */
+.mast { padding: 34px 0 18px; text-align: center; position: relative; }
+.mast .meta { font-variant: all-small-caps; letter-spacing: .14em; font-size: 15px; color: var(--text-muted); }
+.mast h1 { font-weight: 600; font-size: clamp(38px, 5.4vw, 60px); line-height: 1.05; margin: 10px 0 8px; letter-spacing: -.005em; }
+.mast .sub { font-style: italic; font-size: clamp(18px, 2.2vw, 22px); color: var(--text-secondary); margin: 0; }
+.rule { display: flex; align-items: center; gap: 14px; color: var(--gold); margin: 16px auto 0; max-width: 520px; }
+.rule::before, .rule::after { content: ""; flex: 1; border-top: 1px solid var(--gold); opacity: .7; }
+
+/* tabs */
+nav.tabs { position: sticky; top: 0; z-index: 6; background: var(--surface-0); border-top: 1px solid var(--text-primary);
+  border-bottom: 1px solid var(--text-primary); box-shadow: 0 3px 0 -2px var(--surface-0), 0 4px 0 -2px var(--text-primary); margin-bottom: 8px; }
+nav.tabs .row { display: flex; justify-content: center; overflow-x: auto; scrollbar-width: none; }
+nav.tabs button { flex: none; font: 15.5px var(--serif); background: none; border: 0; color: var(--text-muted); cursor: pointer;
+  padding: 11px 7.5px 9px; border-bottom: 2px solid transparent; margin-bottom: -1px; display: flex; align-items: baseline; gap: 6px; white-space: nowrap; }
+nav.tabs button .rn { font-size: 15px; letter-spacing: .04em; color: var(--accent); opacity: .7; }
+nav.tabs button:hover { color: var(--text-primary); }
+nav.tabs button[aria-selected="true"] { color: var(--text-primary); border-bottom-color: var(--accent); }
+nav.tabs button[aria-selected="true"] .rn { opacity: 1; }
+nav.tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+/* overview */
+.abstract { max-width: 760px; margin: 30px auto 26px; font-size: 19px; line-height: 1.6; }
+.abstract::first-letter { float: left; font-size: 68px; line-height: .84; padding: 6px 10px 0 0; color: var(--accent); font-weight: 500; }
+.abstract .kw { display: block; font-size: 15px; color: var(--text-muted); margin-top: 12px; font-style: italic; }
+.flowcard { border: 1px solid var(--border); background: var(--surface-1); padding: 14px 12px 8px; position: relative; }
+.flowcard::before { content: ""; position: absolute; inset: 4px; border: 1px solid var(--grid); pointer-events: none; }
+#flow { width: 100%; height: auto; display: block; position: relative; }
+#flow .node { cursor: pointer; }
+#flow .node rect.box { fill: var(--surface-1); stroke: var(--text-secondary); stroke-width: 1; transition: fill .15s, stroke .15s; }
+#flow .node:hover rect.box, #flow .node:focus rect.box { stroke: var(--accent); fill: var(--accent-soft); }
+#flow .node:focus { outline: none; }
+#flow .rn { fill: var(--accent); font-family: var(--serif); font-size: 17px; font-weight: 600; letter-spacing: .04em; }
+#flow .t { fill: var(--text-primary); font-family: var(--serif); font-size: 16px; font-weight: 600; }
+#flow .s { fill: var(--text-primary); font-family: var(--serif); font-size: 17px; font-weight: 600; font-variant-numeric: lining-nums; }
+#flow .u { fill: var(--text-muted); font-family: var(--serif); font-size: 13.5px; font-style: italic; }
+#flow .edge { fill: none; stroke: var(--mark-muted); stroke-width: 1.4; }
+#flow .branch { fill: var(--gold); font-family: var(--serif); font-size: 14px; letter-spacing: .2em; }
+.flowhint { text-align: center; margin: 10px 0 0; font-style: italic; }
+.summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 0 40px; margin: 30px 0 0; }
+.summary div { padding: 12px 0; border-top: 1px solid var(--border); display: grid; grid-template-columns: 38px 1fr; gap: 10px; cursor: pointer; }
+.summary div:hover p { color: var(--text-primary); }
+.summary .rn { font-size: 19px; color: var(--accent); line-height: 1.2; font-weight: 600; }
+.summary p { margin: 0; font-size: 16px; color: var(--text-secondary); }
+.summary p b { color: var(--text-primary); }
+
+/* chapters */
+.chapter[hidden] { display: none; }
+.chapter { animation: fade .25s ease-out; }
+@keyframes fade { from { transform: translateY(6px); } to { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .chapter { animation: none; } }
+.chead { display: grid; grid-template-columns: 110px 1fr; gap: 0 26px; align-items: start; padding: 30px 0 22px; border-bottom: 1px solid var(--border); margin-bottom: 26px; }
+.chead .initial { font-size: 76px; line-height: .95; color: var(--accent); text-align: right; font-weight: 400; padding-right: 22px; border-right: 1px solid var(--accent); }
+.chead .ctitle { font-size: clamp(30px, 3.4vw, 40px); font-weight: 600; line-height: 1.1; margin: 4px 0 8px; }
+.chead .kicker { font-variant: all-small-caps; letter-spacing: .14em; font-size: 15px; color: var(--gold); }
+.chead h2 { font-size: clamp(23px, 2.6vw, 29px); line-height: 1.2; margin: 0 0 10px; font-weight: 500; font-style: italic; }
+.chead .aim { font-size: 18px; color: var(--text-secondary); margin: 0; max-width: 74ch; }
+@media (max-width: 700px) { .chead { grid-template-columns: 62px 1fr; gap: 0 14px; } .chead .initial { font-size: 40px; padding-right: 12px; } }
+
+.finding { display: grid; grid-template-columns: auto 1fr; gap: 6px 28px; align-items: center; margin: 0 0 30px; padding: 30px 6px 18px;
+  border-top: 2px solid var(--text-primary); border-bottom: 1px solid var(--text-primary); position: relative; }
+.finding::before { content: "Principal result"; position: absolute; top: 7px; left: 6px; font-variant: all-small-caps; letter-spacing: .14em; font-size: 14.5px; color: var(--accent); }
+.finding .stat { font-size: 54px; font-weight: 500; line-height: .95; font-variant-numeric: lining-nums tabular-nums; }
+.finding .stat small { display: block; font-size: 14.5px; font-weight: 400; color: var(--text-muted); margin-top: 8px; font-style: italic; }
+.finding .say { font-size: 19px; line-height: 1.5; }
+@media (max-width: 640px) { .finding { grid-template-columns: 1fr; } }
+
+.fig { background: var(--surface-1); border: 1px solid var(--border); padding: 18px 20px 16px; margin-bottom: 22px; }
+.fig h3 { font-size: 19px; margin: 0 0 4px; font-weight: 600; line-height: 1.25; }
+.fig h3 .fn { font-variant: all-small-caps; letter-spacing: .1em; color: var(--accent); font-weight: 500; margin-right: 6px; }
+.fig .cap { color: var(--text-secondary); font-size: 15px; margin: 0 0 14px; max-width: 88ch; line-height: 1.45; }
+.fig .take { font-size: 16.5px; margin: 14px 0 0; padding: 10px 0 0 14px; border-left: 2px solid var(--gold); }
+.fig .take::before { content: "Interpretation. "; font-variant: all-small-caps; letter-spacing: .08em; color: var(--gold); font-weight: 600; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.grid2.wide-r { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+@media (max-width: 900px) { .grid2, .grid2.wide-r { grid-template-columns: 1fr; } }
+.hyp { padding: 10px 0 10px 14px; border-left: 2px solid var(--border); margin-bottom: 10px; }
+.hyp h4 { margin: 0 0 3px; font-size: 16.5px; font-weight: 600; }
+.hyp h4 .sc { color: var(--accent); margin-right: 4px; }
+.hyp p { font-size: 15.5px; color: var(--text-secondary); margin: 0; }
+.tag { font: 11.5px var(--sans); font-weight: 600; padding: 1px 7px; border-radius: 2px; background: var(--surface-2); color: var(--text-secondary); margin-left: 6px; vertical-align: 2px; }
+.checks { list-style: none; padding: 0; margin: 0 0 28px; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0 22px; counter-reset: ck; }
+.checks li { padding: 10px 0 10px 34px; position: relative; font-size: 15px; color: var(--text-secondary); border-top: 1px solid var(--border); counter-increment: ck; }
+.checks li::before { content: counter(ck, lower-roman) "."; position: absolute; left: 0; top: 9px; color: var(--accent); font-style: italic; font-size: 16px; }
+.checks li b { display: block; font-size: 16px; color: var(--text-primary); font-weight: 600; }
+.sechead { font-variant: all-small-caps; letter-spacing: .14em; font-size: 15px; color: var(--gold); margin: 0 0 4px; }
+
+details.explore, .split { scroll-margin-top: 62px; }
+details.explore { margin: 6px 0 22px; border: 1px solid var(--border); background: var(--surface-1); }
+details.explore > summary { list-style: none; cursor: pointer; padding: 14px 20px; font-size: 18px; font-weight: 600; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+details.explore > summary::-webkit-details-marker { display: none; }
+details.explore > summary::before { content: "❧"; color: var(--accent); font-weight: 400; transition: transform .15s; display: inline-block; }
+details.explore[open] > summary::before { transform: rotate(90deg); }
+details.explore > summary .muted { font-weight: 400; font-style: italic; }
+details.explore[open] > summary { border-bottom: 1px solid var(--grid); margin-bottom: 14px; }
+details.explore > .inner { padding: 0 20px 20px; }
+details.method { margin: -8px 0 22px; }
+details.method > summary { cursor: pointer; color: var(--text-muted); font-size: 15px; font-style: italic; }
+details.method > div { font-size: 15.5px; color: var(--text-secondary); padding: 8px 0 0 14px; border-left: 2px solid var(--border); margin-top: 6px; max-width: 88ch; }
+
+.pager { display: flex; justify-content: space-between; gap: 16px; margin-top: 40px; padding-top: 14px; border-top: 1px solid var(--text-primary); }
+.pager button { font: 17px var(--serif); background: none; border: 0; color: var(--text-secondary); cursor: pointer; padding: 6px 0; display: flex; gap: 8px; align-items: baseline; text-align: left; }
+.pager button:last-child { text-align: right; margin-left: auto; }
+.pager button:hover { color: var(--text-primary); }
+.pager button .rn { color: var(--accent); font-size: 19px; font-weight: 600; }
+.pager button small { display: block; font-variant: all-small-caps; letter-spacing: .12em; color: var(--text-muted); font-size: 14px; }
+
+/* controls, plots and tables use a plain sans for legibility */
+.controls, svg.plot, table, .tip, .legend, .grad, .bars, .imp, .markers, .qlist, .kv, .thumbgrid, canvas, select, input, .seg { font-family: var(--sans); }
+.controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: end; margin: 4px 0 10px; }
+.control { display: flex; flex-direction: column; gap: 3px; }
+.control[hidden] { display: none; }
+.control > span { font-size: 11.5px; color: var(--text-secondary); font-weight: 600; letter-spacing: .02em; }
+select, input[type="search"] { font-size: 13.5px; padding: 5px 8px; border: 1px solid var(--border); border-radius: 3px;
+  background: var(--surface-1); color: var(--text-primary); max-width: 100%; }
+input[type="search"] { width: 250px; }
+.seg { display: inline-flex; border: 1px solid var(--border); border-radius: 3px; overflow: hidden; background: var(--surface-1); }
+.seg button { border: 0; background: transparent; color: var(--text-secondary); padding: 5px 11px; font: 13px var(--sans); cursor: pointer; border-right: 1px solid var(--border); }
+.seg button:last-child { border-right: 0; }
+.seg button[aria-pressed="true"] { background: var(--text-primary); color: var(--surface-1); }
+.split { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: start; }
+@media (max-width: 960px) { .split { grid-template-columns: 1fr; } }
+.panel { position: sticky; top: 60px; max-height: calc(100vh - 72px); overflow: auto; background: var(--surface-1); padding: 14px 16px; border: 1px solid var(--border); font-size: 15px; }
+.mapcard { background: var(--surface-1); border: 1px solid var(--border); padding: 12px 16px; }
+svg.plot { display: block; width: 100%; height: auto; touch-action: none; }
+.pt { stroke: var(--surface-1); stroke-width: .8; }
+.lbl { font-size: 12px; fill: var(--text-primary); paint-order: stroke; stroke: var(--surface-1); stroke-width: 3px; pointer-events: none; font-weight: 650; }
+.axis text { font-size: 11px; fill: var(--text-muted); }
+.axis line { stroke: var(--grid); }
+.tip { position: fixed; pointer-events: none; z-index: 20; max-width: 380px; background: var(--surface-1); border: 1px solid var(--border);
+  border-radius: 3px; box-shadow: 0 6px 24px rgba(0,0,0,.16); padding: 8px 11px; font-size: 12.5px; display: none; }
+.tip .k { color: var(--text-muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; margin: 8px 0; max-height: 120px; overflow: auto; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 9px 2px 6px; border-radius: 999px; border: 1px solid var(--border);
+  background: transparent; color: var(--text-primary); font: 12px var(--sans); cursor: pointer; }
+.chip[aria-pressed="true"] { border-color: var(--text-primary); box-shadow: inset 0 0 0 1px var(--text-primary); }
+.chip .sw { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.chip .n { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.grad { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); margin: 8px 0; flex-wrap: wrap; }
+.grad .bar { width: 200px; height: 10px; border-radius: 2px; }
+.grad .muted { font-size: 12px; }
+table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+th { color: var(--text-secondary); font-weight: 600; position: sticky; top: 0; background: var(--surface-1); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+td.cell { text-align: center; font-variant-numeric: tabular-nums; min-width: 34px; }
+td .muted, .qlist .muted, .markers .muted { font-size: 11.5px; }
+.scroll { overflow: auto; max-height: 520px; border: 1px solid var(--border); }
+.qlist { list-style: none; margin: 0; padding: 0; font-size: 12.5px; }
+.qlist li { padding: 4px 2px; border-bottom: 1px solid var(--grid); cursor: pointer; }
+.qlist li:hover { background: var(--grid); }
+.qlist .r { color: var(--text-muted); font-variant-numeric: tabular-nums; margin-right: 6px; }
+.bars { display: grid; grid-template-columns: 150px 1fr 38px; gap: 2px 8px; align-items: center; font-size: 12px; }
+.bars .track { position: relative; height: 10px; }
+.bars .track .zero { position: absolute; left: 50%; top: -2px; bottom: -2px; width: 1px; background: var(--text-muted); }
+.bars .track .b { position: absolute; top: 1px; height: 8px; border-radius: 2px; }
+.thumbgrid { display: flex; flex-wrap: wrap; gap: 6px; }
+.thumbgrid figure { margin: 0; width: 92px; cursor: pointer; }
+.thumbgrid img { width: 92px; height: 92px; object-fit: cover; border-radius: 3px; border: 3px solid var(--border); display: block; }
+.thumbgrid figcaption { font-size: 10.5px; color: var(--text-secondary); line-height: 1.2; margin-top: 2px; }
+canvas.hm { display: block; width: 100%; image-rendering: pixelated; cursor: crosshair; }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; font-size: 12.5px; margin: 6px 0 10px; }
+.kv dt { color: var(--text-muted); } .kv dd { margin: 0; }
+.mtab td, .mtab th { vertical-align: middle; } .mtab th { white-space: nowrap; } .mtab tr.tot td { border-top: 1px solid var(--text-secondary); font-weight: 600; }
+.mbar { display: inline-block; width: 90px; height: 9px; background: var(--grid); border-radius: 2px; vertical-align: middle; margin-right: 8px; overflow: hidden; } .mbar span { display: block; height: 100%; border-radius: 2px; }
+.mval { font-variant-numeric: tabular-nums; }
+.cmpwrap { overflow-x: auto; margin: 4px 0 14px; } .cmpwrap h4 { margin: 12px 0 4px; font-size: 16px; font-weight: 600; } .cmpwrap h4 .muted { font-weight: 400; font-style: italic; font-size: 14px; color: var(--text-muted); }
+table.cmp { font-size: 13px; } table.cmp th { white-space: normal; vertical-align: bottom; } table.cmp td.num { white-space: nowrap; } table.cmp td.no { color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.cmp td.mname { min-width: 240px; } table.cmp td.meta { color: var(--text-secondary); font-size: 12px; min-width: 80px; max-width: 220px; }
+table.cmp td.num.best { font-weight: 700; color: var(--accent); background: var(--accent-soft); }
+table.cmp tr.ref td { font-style: italic; } .cmpnote { font-size: 15px; color: var(--text-secondary); max-width: 88ch; margin: 4px 0 8px; }
+.kdot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+.cmpkey { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--text-secondary); margin: 2px 0 8px; }
+.kv.defs { font-size: 15px; font-family: var(--serif); gap: 6px 18px; } .kv.defs dt { font-variant: all-small-caps; letter-spacing: .06em; color: var(--accent); font-size: 16px; }
+button.dl { font: 12.5px var(--sans); padding: 5px 12px; border: 1px solid var(--border); background: var(--surface-1); border-radius: 4px; cursor: pointer; color: var(--text-primary); } button.dl:hover { border-color: var(--text-primary); }
+.kv.big { font-size: 15.5px; gap: 10px 16px; font-family: var(--serif); } .kv.big a { color: var(--accent); margin-left: 6px; font-variant: all-small-caps; letter-spacing: .06em; }
+.big-thumb { width: 100%; border-radius: 3px; display: block; margin-bottom: 8px; }
+.panel h4 { margin: 14px 0 4px; font-size: 15px; font-weight: 600; }
+.panel h3 { margin: 0 0 6px; font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 6px; line-height: 1.25; }
+.panel .muted { font-style: italic; }
+h4 { font-weight: 600; }
+
+/* importance list */
+.imp { display: grid; grid-template-columns: 30px minmax(220px, 1.8fr) 150px 150px 56px 56px; gap: 0 12px; font-size: 13px; }
+.imp > div, .imp .row > div { padding: 7px 0; border-bottom: 1px solid var(--grid); display: flex; align-items: center; }
+.imp .h { font-size: 11.5px; color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--text-secondary); }
+.imp .row { display: contents; cursor: pointer; }
+.imp .row:hover > div { background: var(--surface-2); }
+.imp .rk { color: var(--accent); font-variant-numeric: tabular-nums; justify-content: flex-end; padding-right: 2px; font-family: var(--serif); font-size: 15px; }
+.imp .num { justify-content: flex-end; font-variant-numeric: tabular-nums; }
+.badge { font: 10.5px var(--sans); font-weight: 600; padding: 1px 6px; border-radius: 2px; border: 1px solid var(--border); color: var(--text-secondary); margin-left: 6px; white-space: nowrap; }
+@media (max-width: 900px) { .imp { grid-template-columns: 24px 1fr 150px; } .imp .opt { display: none !important; } }
+.markers { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0 22px; }
+.mk { border-top: 1px solid var(--border); padding: 10px 0 12px; font-size: 12.5px; }
+.mk h4 { margin: 0 0 6px; font: 600 15.5px var(--serif); display: flex; align-items: center; gap: 6px; }
+.mk ol { margin: 0; padding-left: 18px; }
+.mk li { margin-bottom: 4px; cursor: pointer; }
+.mk li:hover { text-decoration: underline; }
+.twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+@media (max-width: 760px) { .twocol { grid-template-columns: 1fr; } }
+.twocol h4 { margin: 0 0 6px; font-size: 16px; display: flex; gap: 8px; align-items: center; }
+.qlist .x { float: right; margin-left: 10px; font-size: 11.5px; color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.qlist .x.in { color: var(--text-primary); }
+.qlist .x.flip { color: var(--accent); font-weight: 600; }
+.imp[hidden], .twocol[hidden] { display: none; }
+.cases { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+@media (max-width: 960px) { .cases { grid-template-columns: 1fr; } }
+.cases .fig { margin-bottom: 0; }
+.cases img { width: 100%; height: 300px; object-fit: contain; background: #1a1713; display: block; margin: 10px 0 6px; cursor: pointer; }
+.cases .idl { font: 12px var(--sans); color: var(--text-muted); margin: 0 0 12px; }
+.path { display: grid; grid-template-columns: minmax(0, 1fr) 150px 44px; gap: 0 10px; font: 12.5px/1.35 var(--sans); }
+.path > div, .path .row > div { padding: 6px 0; border-bottom: 1px solid var(--grid); display: flex; align-items: center; }
+.path .row { display: contents; }
+.path .row.q { cursor: pointer; }
+.path .row.q:hover > div { background: var(--surface-2); }
+.path .h { font-size: 11px; color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--text-secondary); padding: 2px 0 4px; }
+.path .t { display: block; }
+.path .t small { display: block; color: var(--text-muted); font-size: 11.5px; margin-top: 2px; }
+.path .pv { justify-content: flex-end; font-variant-numeric: tabular-nums; }
+.path .row.end > div { font-weight: 650; border-top: 1px solid var(--text-primary); border-bottom: 0; font-size: 13.5px; }
+.cases .verdict { font: 13px var(--sans); color: var(--text-secondary); margin: 10px 0 0; }
+.twocol-note { grid-column: 1 / -1; font-size: 12.5px; color: var(--text-muted); margin: 0; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex: none; }
+#methods p { font-size: 16.5px; max-width: 86ch; }
+#methods p b { font-variant: all-small-caps; letter-spacing: .08em; color: var(--accent); font-weight: 600; font-size: 17px; }
+footer { margin-top: 60px; color: var(--text-muted); font-size: 14px; text-align: center; font-style: italic; }
+footer::before { content: "❦"; display: block; color: var(--gold); font-size: 22px; font-style: normal; margin-bottom: 6px; }
+
+/* ---------------------------------------------------------------- narrative additions */
+.grid2.wide-l { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+@media (max-width: 900px) { .grid2.wide-l { grid-template-columns: 1fr; } }
+h3.subhead { font-size: clamp(22px, 2.4vw, 27px); font-weight: 600; margin: 34px 0 14px; padding-bottom: 6px; border-bottom: 1px solid var(--gold);
+  display: flex; align-items: baseline; gap: 12px; }
+h3.subhead .sn { font-size: 16px; color: var(--accent); font-variant: all-small-caps; letter-spacing: .1em; font-weight: 500; }
+p.lead { font-size: 17.5px; color: var(--text-secondary); max-width: 82ch; margin: 0 0 20px; }
+.finding.sub::before { content: "Result"; }
+.finding.sub .stat { font-size: 44px; }
+.fig h4.tsub { font-size: 16.5px; margin: 22px 0 4px; font-weight: 600; }
+.checks.one { grid-template-columns: 1fr; margin: 0; }
+
+/* graphical abstract */
+.ga { display: grid; grid-template-columns: minmax(0, 1.25fr) 34px minmax(0, 1fr) 34px minmax(0, .95fr) 34px minmax(0, 1.3fr); align-items: stretch;
+  border: 1px solid var(--border); background: var(--surface-1); padding: 18px; position: relative; }
+.ga::before { content: ""; position: absolute; inset: 4px; border: 1px solid var(--grid); pointer-events: none; }
+.ga .col { display: flex; flex-direction: column; gap: 0; min-width: 0; }
+.ga .pn { border: 1px solid var(--text-secondary); background: var(--surface-1); padding: 10px 12px 12px; cursor: pointer; position: relative; transition: background .15s, border-color .15s; }
+.ga .pn:hover, .ga .pn:focus { border-color: var(--accent); background: var(--accent-soft); outline: none; }
+.ga .pn.dash { border-style: dashed; }
+.ga .pn.grow { flex: 1; }
+.ga .k { font-variant: all-small-caps; letter-spacing: .14em; font-size: 14px; color: var(--gold); display: flex; justify-content: space-between; gap: 8px; }
+.ga .k .go { color: var(--accent); letter-spacing: .04em; font-weight: 600; }
+.ga .big { font-size: 22px; font-weight: 600; line-height: 1.15; margin: 2px 0 2px; }
+.ga .big small { font-size: 15px; font-weight: 400; color: var(--text-secondary); font-style: italic; }
+.ga .s { font: 12.5px/1.35 var(--sans); color: var(--text-secondary); }
+.ga ol { margin: 6px 0 0; padding-left: 20px; font: 12px/1.35 var(--sans); color: var(--text-primary); }
+.ga ol li { margin-bottom: 3px; }
+.ga ol li.more { list-style: none; color: var(--text-muted); font-style: italic; margin-left: -20px; }
+.ga .vlink { height: 18px; position: relative; }
+.ga .vlink::after { content: ""; position: absolute; left: 50%; top: 2px; bottom: 2px; border-left: 1.4px solid var(--mark-muted); }
+.ga .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0 6px; }
+.ga .thumbs figure { margin: 0; position: relative; }
+.ga .thumbs img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; border-radius: 2px; border-bottom: 4px solid; }
+.ga .thumbs figcaption { font: 11.5px var(--sans); color: var(--text-secondary); margin-top: 3px; text-align: center; }
+.ga .ans { display: grid; grid-template-columns: 54px 1fr; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--grid); }
+.ga .ans:last-of-type { border-bottom: 0; }
+.ga .ans img { width: 54px; height: 54px; object-fit: cover; border-radius: 2px; border-left: 4px solid; display: block; }
+.ga .ans table { font: 11.5px var(--sans); width: auto; }
+.ga .ans td { border: 0; padding: 0 6px 0 0; line-height: 1.3; }
+.ga .ans td.num { font-variant-numeric: tabular-nums; }
+.ga .stat3 { display: grid; gap: 8px; margin-top: 8px; }
+.ga .stat3 div { border-top: 1px solid var(--grid); padding-top: 6px; }
+.ga .stat3 b { font: 600 22px var(--serif); display: block; line-height: 1.1; }
+.ga .stat3 span { font: 12px/1.3 var(--sans); color: var(--text-secondary); display: block; }
+.ga .wq { display: grid; grid-template-columns: minmax(0, 1fr) 88px; gap: 4px 8px; align-items: center; font: 12px/1.3 var(--sans); margin-top: 6px; }
+.ga .wq .h { font-size: 11px; color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--text-secondary); padding-bottom: 2px; }
+.ga .arrow { display: flex; align-items: center; justify-content: center; }
+.ga .arrow svg { width: 34px; height: 14px; overflow: visible; }
+@media (max-width: 960px) {
+  .ga { grid-template-columns: 1fr; padding: 14px; }
+  .ga .arrow { height: 26px; } .ga .arrow svg { transform: rotate(90deg); }
+}
+
+/* full question ranking */
+.imp.rank { grid-template-columns: 34px minmax(220px, 1.8fr) 150px 150px 52px 52px 50px; }
+.imp.rank .h { position: sticky; top: 0; background: var(--surface-1); z-index: 1; }
+.imp.rank .rk { font-size: 13.5px; }
+@media (max-width: 900px) { .imp.rank { grid-template-columns: 30px 1fr 150px; } }
+
+/* case studies: evidence for and against */
+.case { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 22px; }
+@media (max-width: 960px) { .case { grid-template-columns: 1fr; } }
+.case .pic img { width: 100%; height: 300px; object-fit: contain; background: #1a1713; display: block; cursor: pointer; border-radius: 2px; }
+.case .pic .idl { font: 12px var(--sans); color: var(--text-muted); margin: 6px 0 0; }
+.case .pic .verdict { font: 13px/1.45 var(--sans); color: var(--text-secondary); margin: 10px 0 0; }
+.gauge { font-family: var(--sans); margin: 2px 0 14px; }
+.gauge svg { display: block; width: 100%; height: auto; }
+.tug { margin: 0 0 14px; font-family: var(--sans); }
+.tug svg { display: block; width: 100%; height: auto; }
+.ev { display: grid; grid-template-columns: 1fr 1fr; gap: 0 22px; }
+@media (max-width: 760px) { .ev { grid-template-columns: 1fr; } }
+.ev h4 { margin: 0 0 4px; font-size: 16px; display: flex; gap: 8px; align-items: center; }
+.ev .row { display: grid; grid-template-columns: minmax(0, 1fr) 124px; gap: 2px 10px; padding: 7px 0; border-bottom: 1px solid var(--grid); font: 12.5px/1.35 var(--sans); cursor: pointer; }
+.ev .row:hover { background: var(--surface-2); }
+.ev .row .qt { grid-column: 1 / -1; }
+.ev .row small { color: var(--text-muted); font-size: 11.5px; display: block; }
+.ev .row svg { display: block; }
+.ev .rest { font: italic 12px var(--sans); color: var(--text-muted); padding: 6px 0 0; }
+.evkey { display: flex; flex-wrap: wrap; gap: 6px 16px; font: 12px var(--sans); color: var(--text-secondary); margin: 0 0 10px; align-items: center; }
+.evkey span { display: inline-flex; gap: 6px; align-items: center; }
+
+/* pop-up card for a question or an image */
+dialog.card { border: 1px solid var(--border); background: var(--surface-1); color: var(--text-primary); padding: 18px 20px; max-width: min(560px, 92vw);
+  max-height: 86vh; overflow: auto; box-shadow: 0 12px 40px rgba(0,0,0,.25); font-size: 15px; }
+dialog.card::backdrop { background: rgba(26, 23, 19, .35); }
+dialog.card .x { position: sticky; float: right; top: 0; border: 0; background: none; font-size: 26px; line-height: 1; cursor: pointer; color: var(--text-muted); }
+dialog.card .x:hover { color: var(--accent); }
+dialog.card h3 { margin: 0 0 8px; font-size: 19px; font-weight: 600; line-height: 1.25; display: flex; gap: 6px; align-items: center; padding-right: 30px; }
+dialog.card h4 { margin: 14px 0 4px; font-size: 15px; font-weight: 600; }
+dialog.card .big-thumb { max-height: 320px; object-fit: contain; background: #1a1713; }
+
+/* supplementary links */
+.supp { list-style: none; padding: 0; margin: 8px 0 0; }
+.supp li { padding: 9px 0; border-top: 1px solid var(--border); }
+.supp a { color: var(--accent); font-weight: 600; }
+.supp span { display: block; color: var(--text-secondary); font-size: 15.5px; }
+
+</style>
+</head>
+<body>
+<main>
+<header class="mast" id="top">
+  <div class="meta" id="hero-eyebrow"></div>
+  <h1>Questions as a Representation</h1>
+  <p class="sub">Claude Sonnet's answers to 500 literature-derived questions as an interpretable description of skin lesions, from the answers themselves to the ten diagnostic subtypes</p>
+  <div class="rule">❦</div>
+</header>
+<nav class="tabs" aria-label="Chapters"><div class="row" id="tabs" role="tablist"></div></nav>
+<p id="errors" style="color:#d03b3b;font-weight:600;margin:0;font-family:var(--sans)"></p>
+<script>window.onerror = (m, s, l) => { const e = document.getElementById("errors"); if (e) e.textContent += `Error: ${m} (line ${l}). `; };</script>
+
+<!-- overview -->
+<section class="chapter" id="c0" data-title="Overview" data-rn="" hidden>
+  <p class="abstract" id="hero-lede"></p>
+  <div class="ga" id="ga" role="group" aria-label="Graphical abstract; each panel opens its chapter"></div>
+  <p class="muted flowhint">Graphical abstract. Each panel opens the chapter that develops it; the values shown are taken from the analysis itself.</p>
+  <div class="summary" id="summary"></div>
+</section>
+
+<!-- I answers -->
+<section class="chapter" id="c1" data-long="The Answers" data-title="Answers" data-rn="I" hidden>
+  <header class="chead"><div class="initial">I</div><div><div class="kicker">The data</div><h2>What the model was asked, and how it answered</h2>
+    <p class="aim" id="c1-intro"></p></div></header>
+  <div class="finding" id="c1-find"></div>
+  <div class="grid2 wide-l">
+    <div class="fig"><h3><span class="fn">Fig. 1.1</span>Distribution of stated P(yes)</h3><p class="cap" id="c1-cap1"></p><svg class="plot" id="c1-hist1" viewBox="0 0 480 220"></svg>
+      <p class="take" id="c1-take1"></p></div>
+    <div class="fig"><h3><span class="fn">Box 1.1</span>The Directional Score</h3>
+      <p class="cap">Each answer is mapped to a signed confidence and standardised per question across images. Every later chapter uses this representation.</p>
+      <div id="c1-score"></div>
+      <p class="take">Because the score keeps the stated confidence, a question that is almost never affirmed can still vary informatively across images.</p></div>
+  </div>
+</section>
+
+<!-- II questions -->
+<section class="chapter" id="c2" data-long="The Questions" data-title="Questions" data-rn="II" hidden>
+  <header class="chead"><div class="initial">II</div><div><div class="kicker">Structure of the questions</div><h2>How many independent things do the 500 questions measure, and which questions go together?</h2>
+    <p class="aim">Principal component analysis with parallel analysis estimates how many dimensions of the answers exceed shuffled data. Agglomerative (Ward) clustering on the correlation between answers then shows what those dimensions contain.</p></div></header>
+  <div class="finding" id="c2-find"></div>
+  <div class="grid2">
+    <div class="fig"><h3><span class="fn">Fig. 2.1</span>Variance explained by each component, against parallel analysis</h3><p class="cap">Explained variance per principal component (log scale). Dashed: 95th percentile from 50 column-wise permutations of the answers, the variance a component would explain by chance.</p>
+      <div id="scree-legend"></div><svg class="plot" id="scree-svg" viewBox="0 0 520 330"></svg><p class="take" id="c2-take1"></p></div>
+    <div class="fig"><h3><span class="fn">Fig. 2.2</span>Agglomerative clustering of the questions</h3>
+      <p class="cap">Pearson correlation between every pair of questions across the 1,000 images, ordered by Ward clustering on correlation distance (1 − <i>r</i>); the dendrogram above shows the merge order. The grey strip alternates shade between clusters at the chosen <i>k</i>. Hover for the two questions; select a row to open its question.</p>
+      <div class="controls">
+        <div class="control"><span>Order</span><div class="seg" id="corr-order"></div></div>
+        <label class="control"><span>Clusters (k)</span><select id="corr-k"></select></label>
+        <label class="control"><span>Mark topic</span><select id="corr-topic"></select></label>
+      </div>
+      <svg id="corr-dendro" viewBox="0 0 1000 110" preserveAspectRatio="none" style="width:100%;height:80px;display:block"></svg>
+      <canvas class="hm" id="corr-strip" height="2" style="height:10px"></canvas>
+      <canvas class="hm" id="corr-strip2" height="1" style="height:6px;margin-bottom:2px"></canvas>
+      <canvas class="hm" id="corr-canvas"></canvas>
+      <div class="grad" id="corr-grad"></div></div>
+  </div>
+  <div class="fig"><h3><span class="fn">Fig. 2.3</span>The question clusters and their subtype profiles</h3>
+    <p class="cap">Clusters from Fig. 2.2, ordered by how well the cluster's mean score separates malignant from benign images (|AUROC − 0.5|). Cells: the cluster's mean z-score in each subtype (red above, blue below the average image). Select a row to list its questions.</p>
+    <div class="controls"><label class="control"><span>Number of clusters (k)</span><select id="qg-k"></select></label></div>
+    <div id="qg-table" class="scroll" style="max-height:560px"></div><div id="qg-members"></div>
+    <p class="take">Clusters correspond to dermoscopic families (vascular patterns, keratinocytic features, pigment network, blue-grey structures) and to the perilesional skin (photodamage, actinic change). Artefact clusters are the least coherent.</p></div>
+  <details class="method"><summary>Methods for this chapter</summary><div id="c2-method"></div></details>
+</section>
+
+<!-- III modeling -->
+<section class="chapter" id="c3" data-long="Modeling" data-title="Modeling" data-rn="III" hidden>
+  <header class="chead"><div class="initial">III</div><div><div class="kicker">The classifier</div><h2>Do the answers discriminate malignant from benign, and how does the model compare with others?</h2>
+    <p class="aim">L2-penalised logistic regression (ridge) on the standardised Directional Scores of the 446 clinical questions, evaluated by nested cross-validation with folds grouped by patient. It is compared on identical folds with the model's direct answer to <i>“Is this a malignant lesion?”</i>, with models trained on other targets, and with SkinGPT-R1.</p></div></header>
+  <div class="finding" id="c3-find"></div>
+  <h3 class="subhead"><span class="sn">III.i</span>Benign against malignant</h3>
+  <div class="grid2">
+    <div class="fig"><h3><span class="fn">Fig. 3.1</span>ROC: question-based model against the direct question</h3><p class="cap">Pooled out-of-fold predictions, averaged over the five repeats (hence small differences from the fold means). Markers: operating point at 95% sensitivity.</p>
+      <div class="controls"><div class="control"><span>Images</span><div class="seg" id="roc-sub"></div></div></div>
+      <div id="roc-legend"></div><svg class="plot" id="roc-svg" viewBox="0 0 420 400"></svg></div>
+    <div class="fig"><h3><span class="fn">Box 3.1</span>Controls against leakage</h3><p class="cap">Every estimate in this chapter and the next was made under these conditions.</p>
+      <ul class="checks one" id="c3-checks"></ul></div>
+  </div>
+  <div class="fig"><h3><span class="fn">Fig. 3.2</span>Out-of-fold P(malignant) by subtype</h3><p class="cap">Ridge prediction for every image (mean over five repeats). The indeterminate subtypes were excluded from training and scored by every fold model. Black ticks: medians. Hover for the image; select to open it.</p>
+    <svg class="plot" id="strip-svg" viewBox="0 0 900 380"></svg><p class="take" id="c5-take-strip"></p></div>
+
+  <h3 class="subhead"><span class="sn">III.ii</span>Comparison across models and tasks</h3>
+  <div class="finding sub" id="c11-find"></div>
+  <div class="fig"><h3><span class="fn">Table 3.3</span>Ten-subtype models on the same folds, scored on three tasks</h3><p class="cap" id="cmp-cap-M"></p>
+    <div id="cmp-M"></div><p class="take" id="c11-take1"></p></div>
+  <div class="fig"><h3><span class="fn">Table 3.4</span>How many classes to train on: two, three or ten</h3><p class="cap" id="cmp-cap-T"></p>
+    <div id="cmp-T"></div><p class="take" id="c11-take2"></p>
+    <h4 class="tsub">The same question in the S6 pipeline, with three classes added</h4><p class="cap" id="cmp-cap-U"></p>
+    <div id="cmp-U"></div></div>
+  <div class="fig"><h3><span class="fn">Table 3.5</span>Threshold metrics by model</h3><p class="cap" id="mt-cap"></p>
+    <div class="controls"><div class="control"><span>Task</span><div class="seg" id="mt-task"></div></div>
+      <div class="control" id="mt-rule-c"><span>Threshold</span><div class="seg" id="mt-rule"></div></div>
+      <div class="control" id="mt-model-c" hidden><span>Model</span><div class="seg" id="mt-model"></div></div>
+      <div class="control"><span>Images</span><div class="seg" id="mt-sub"></div></div>
+      <div class="control"><span>&nbsp;</span><button class="dl" id="mt-csv">Download table (CSV)</button></div></div>
+    <div id="mt-table" style="overflow:auto"></div><p class="take" id="c11-take3"></p></div>
+  <details class="explore" id="x-defs"><summary>Definitions <span class="muted">what each measure means, and what a good value looks like</span></summary><div class="inner" id="c11-defs"></div></details>
+  <details class="explore" id="x-cmp-index" data-render="renderCmpIndex"><summary>Model index <span class="muted">every numbered model, its training target, folds and stage</span></summary><div class="inner" id="cmp-index"></div></details>
+  <details class="method"><summary>Methods for this chapter</summary><div id="c3-method"></div></details>
+</section>
+
+<!-- IV classification -->
+<section class="chapter" id="c4" data-long="Classification" data-title="Classification" data-rn="IV" hidden>
+  <header class="chead"><div class="initial">IV</div><div><div class="kicker">The ten subtypes</div><h2>How well are the ten diagnostic subtypes distinguished, and melanoma from naevus among them?</h2>
+    <p class="aim">The ridge model of Ch. III, trained to predict all ten subtypes at once (100 images each) under the same patient-grouped nested cross-validation. Each image is assigned to the subtype of highest predicted probability; chance is 10%. The second part reads from the same model the distinction of greatest clinical consequence among pigmented lesions, naevus against melanoma.</p></div></header>
+  <div class="finding" id="c9-find"></div>
+  <h3 class="subhead"><span class="sn">IV.i</span>Ten diagnostic subtypes</h3>
+  <div class="fig"><h3><span class="fn">Fig. 4.1</span>Performance by subtype</h3><p class="cap" id="c9-cap1"></p>
+    <div class="controls"><div class="control"><span>Measure</span><div class="seg" id="ten-metric"></div></div></div>
+    <svg class="plot" id="ten-svg" viewBox="0 0 900 380"></svg><p class="take" id="c9-take1"></p></div>
+  <div class="grid2">
+    <div class="fig"><h3><span class="fn">Fig. 4.2</span>Confusion matrix</h3><p class="cap">Rows: true subtype; columns: predicted subtype. Percentage of each subtype's 100 images, averaged over the five repeats; diagonal outlined. Coloured rules mark the malignancy group. Hover a cell for its description.</p><div id="conf"></div><p class="take" id="c9-take2"></p></div>
+    <div class="fig"><h3><span class="fn">Fig. 4.3</span>Nature of the errors</h3><p class="cap">Above: share of images whose true subtype is the model's first, first two or first three choices. Below: the most frequent confusions.</p><div id="c9-err"></div><p class="take" id="c9-take3"></p></div>
+  </div>
+  <details class="method"><summary>Methods for the ten subtypes</summary><div id="c9-method"></div></details>
+
+  <h3 class="subhead"><span class="sn">IV.ii</span>Naevus against melanoma</h3>
+  <p class="lead">Asked at the request of our collaborating dermatologist: how well are the 100 melanomas separated from the 100 naevi (benign melanocytic subtype; 99 naevi and one lentigo simplex)? Four scores are compared on the same 200 images: the ten-subtype model above (its probability of melanoma relative to naevus), a ridge model trained on these two subtypes alone, the benign-against-malignant model of Ch. III, and the direct question.</p>
+  <div class="finding sub" id="c10-find"></div>
+  <div class="grid2 wide-r">
+    <div class="fig"><h3><span class="fn">Fig. 4.4</span>ROC curves</h3><p class="cap">Out-of-fold scores averaged over the five repeats; the direct question has a single value per image. Markers: operating point at 95% sensitivity for melanoma.</p>
+      <div id="nm-legend"></div><svg class="plot" id="nm-roc" viewBox="0 0 420 400"></svg></div>
+    <div class="fig"><h3><span class="fn">Fig. 4.5</span>Performance and paired comparisons</h3><p class="cap">AUROC and specificity (naevi correctly cleared) at 95% sensitivity, pooled within each repeat and averaged over the five repeats. Square brackets: 95% bootstrap interval over patients, on the repeat-averaged score.</p>
+      <div id="nm-table"></div><p class="take" id="c10-take2"></p></div>
+  </div>
+  <div class="fig"><h3><span class="fn">Fig. 4.6</span>Pair-model score by histopathological diagnosis</h3><p class="cap">Out-of-fold score of the pair model for every naevus and melanoma (mean over repeats), and for the 100 atypical melanocytic proliferations, which were never used for training and were scored by each of the 25 fold models. Dashed line: the threshold at which 95% of melanomas are detected. Black ticks: medians. Hover for the image; select to open it.</p>
+    <svg class="plot" id="nm-strip" viewBox="0 0 900 360"></svg><p class="take" id="c10-take3"></p></div>
+  <div class="grid2">
+    <div class="fig"><h3><span class="fn">Fig. 4.7</span>Performance by melanoma type and naevus confirmation</h3><p class="cap">AUROC with 95% bootstrap interval. Each melanoma type is compared with all 100 naevi; each naevus group with all 100 melanomas. Grey: the direct question on the same images.</p>
+      <div class="controls"><div class="control"><span>Model</span><div class="seg" id="nm-model"></div></div></div>
+      <svg class="plot" id="nm-break" viewBox="0 0 520 330"></svg><p class="take" id="c10-take4"></p></div>
+    <div class="fig"><h3><span class="fn">Fig. 4.8</span>Questions that separate naevus from melanoma</h3><p class="cap">Univariate AUROC on the 200 images (above 0.5: higher answers in melanoma), with mean P(yes) in <span class="dot" id="dotn"></span> naevi and <span class="dot" id="dotmm"></span> melanomas. Select a question to open it.</p>
+      <div id="nm-q"></div><p class="take" id="c10-take5"></p></div>
+  </div>
+  <details class="method"><summary>Methods for naevus against melanoma</summary><div id="c10-method"></div></details>
+</section>
+
+<!-- V importance -->
+<section class="chapter" id="c5" data-long="Question Importance" data-title="Importance" data-rn="V" hidden>
+  <header class="chead"><div class="initial">V</div><div><div class="kicker">Interpretation</div><h2>Which questions carry the decision, and how is a single prediction formed?</h2>
+    <p class="aim">Importance is ranked by consensus across six model families for malignant against benign (stage S7), with the standardised ridge weight giving the direction; the marker questions of each subtype come from the ten-subtype ridge model. Two worked cases then show how one prediction is assembled from the answers. Selecting any question opens it.</p></div></header>
+  <div class="finding" id="c6-find"></div>
+  <div class="fig"><h3><span class="fn">Fig. 5.1</span>The twenty highest-ranked questions</h3>
+    <p class="cap">Weight: standardised ridge coefficient (red toward malignant, blue toward benign). Mean P(yes) in <span class="dot" id="dotb"></span> benign and <span class="dot" id="dotm"></span> malignant images. Alone: univariate AUROC. Kept: selection frequency over 25 lasso fits, a measure of how stable the question's contribution is. <span class="badge">doubt</span> affirmed in fewer than 5% of images of every class, so the signal lies in the confidence of the negative answer.</p>
+    <div class="imp" id="imp"></div>
+    <p class="take" id="c6-take1"></p></div>
+  <div class="fig"><h3><span class="fn">Fig. 5.2</span>Subtype marker questions</h3><p class="cap">Largest positive coefficients for each class in the ten-subtype ridge model, with mean P(yes) within the subtype against all others.</p><div class="markers" id="markers"></div></div>
+  <div class="fig"><h3><span class="fn">Fig. 5.3</span>Ranking of all <span id="nq-all"></span> clinical questions</h3>
+    <p class="cap">Every question in the classifier, by consensus rank (malignant against benign). Columns as in Fig. 5.1, with the question's cluster from Fig. 2.3 (k = <span id="rk-k"></span>). Search the wording, or sort by another column.</p>
+    <div class="controls"><label class="control"><span>Search</span><input type="search" id="rk-search" placeholder="e.g. vessels, sun damage"></label>
+      <div class="control"><span>Sort by</span><div class="seg" id="rk-sort"></div></div>
+      <div class="control"><span>Direction</span><div class="seg" id="rk-dir"></div></div>
+      <div class="control"><span>&nbsp;</span><button class="dl" id="rk-csv">Download ranking (CSV)</button></div></div>
+    <div class="scroll" style="max-height:620px"><div class="imp rank" id="rk"></div></div>
+    <p class="muted" id="rk-note" style="margin:8px 0 0"></p></div>
+  <h3 class="subhead"><span class="sn">V.i</span>Two worked cases</h3>
+  <p class="lead" id="cases-lead"></p>
+  <div id="cases"></div>
+  <details class="method"><summary>How the case studies are computed</summary><div id="c7-method"></div></details>
+</section>
+
+<section class="chapter" id="c8" data-long="Methods and Supplement" data-title="Methods" data-rn="" hidden>
+  <header class="chead"><div class="initial">❦</div><div><div class="kicker">Notes</div><h2>Procedures, assumptions, limitations and supplementary material</h2></div></header>
+  <div id="methods"></div>
+</section>
+<footer id="foot"></footer>
+</main>
+<div class="tip" id="tip" role="status"></div>
+<dialog class="card" id="card"><button class="x" id="card-x" aria-label="Close">×</button><div id="card-body"></div></dialog>
+
+<script>
+const D = __DATA__;
+// ------------------------------------------------------------------ data
+function dec(s, T) { const b = atob(s), a = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return new T(a.buffer); }
+const NQ = D.meta.n_questions, NI = D.meta.n_images;
+const R = dec(D.R, Int8Array), Z = dec(D.Z, Int8Array), P = dec(D.P, Uint8Array);
+const r_ = (i, j) => R[i * NQ + j] / 127, z_ = (im, q) => Z[im * NQ + q] / 32, p_ = (im, q) => P[im * NQ + q] / 255;
+const SUB = D.subtypes, GRP = D.groups, TOP = D.topics, E = D.eval, IMP = D.imp, TEN = D.sub.ten, PAIR = D.sub.pair;
+const fmt = (v, d = 2) => v === null || v === undefined || Number.isNaN(v) ? "n/a" : (+v).toFixed(d);
+const pct = v => (100 * v).toFixed(0) + "%";
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const $ = id => document.getElementById(id);
+const el = (tag, attrs = {}, html) => { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html !== undefined) e.innerHTML = html; return e; };
+const svgEl = (tag, attrs = {}) => { const e = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
+const svgText = (parent, x, y, txt, attrs = {}) => { const t = svgEl("text", {x, y, ...attrs}); t.textContent = txt; parent.appendChild(t); return t; };
+const subOrder = [...SUB.keys()].sort((a, b) => D.sub_group[a] - D.sub_group[b] || a - b);
+// ------------------------------------------------------------------ colour
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const hex2rgb = h => { h = h.replace("#", ""); return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)]; };
+const rgb = a => `rgb(${a.map(Math.round).join(",")})`;
+const mix = (a, b, t) => a.map((v, i) => v + (b[i] - v) * t);
+let PAL = {};
+function readPalette() {
+  PAL = {c: [css("--c1"), css("--c2"), css("--c3")], muted: css("--mark-muted"), ink: css("--text-primary"), ink2: css("--text-secondary"), ink3: css("--text-muted"),
+    neg: hex2rgb(css("--neg")), pos: hex2rgb(css("--pos")), mid: hex2rgb(css("--mid")), surf: hex2rgb(css("--surface-1")),
+    seq: css("--seq").split(",").map(s => hex2rgb(s.trim())), grid: css("--grid"), border: css("--border"), accent: css("--accent")};
+  PAL.grp = [PAL.c[0], PAL.c[2], PAL.c[1]];     // benign blue, indeterminate aqua, malignant orange
+}
+const onFill = c => (0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) > 150 ? "#0b0b0b" : "#ffffff";
+function divRGB(t) { t = Math.max(-1, Math.min(1, t)); return t < 0 ? mix(PAL.mid, PAL.neg, -t) : mix(PAL.mid, PAL.pos, t); }
+function seqRGB(t) { t = Math.max(0, Math.min(1, t)) * (PAL.seq.length - 1); const i = Math.min(Math.floor(t), PAL.seq.length - 2); return mix(PAL.seq[i], PAL.seq[i + 1], t - i); }
+const seqCell = t => { const c = seqRGB(t); return `background:${rgb(c)};color:${onFill(c)}`; };
+const divCell = t => { const c = divRGB(t); return `background:${rgb(c)};color:${onFill(c)}`; };
+function gradHTML(kind, lo, hi, label) {
+  const stops = kind === "div" ? [-1, -0.5, 0, 0.5, 1].map(t => rgb(divRGB(t))) : [0, .25, .5, .75, 1].map(t => rgb(seqRGB(t)));
+  return `<span>${esc(lo)}</span><span class="bar" style="background:linear-gradient(90deg,${stops.join(",")})"></span><span>${esc(hi)}</span><span class="muted">${esc(label)}</span>`;
+}
+const grpDot = g => `<span class="dot" style="background:${PAL.grp[g]}"></span>`;
+
+// ------------------------------------------------------------------ tooltip and hover
+const tip = $("tip");
+function showTip(html, ev) { tip.innerHTML = html; tip.style.display = "block";
+  const w = tip.offsetWidth, h = tip.offsetHeight; let x = ev.clientX + 14, y = ev.clientY + 14;
+  if (x + w > innerWidth - 8) x = ev.clientX - w - 14; if (y + h > innerHeight - 8) y = ev.clientY - h - 14;
+  tip.style.left = x + "px"; tip.style.top = y + "px"; }
+function hideTip() { tip.style.display = "none"; }
+function hoverPoints(svg, list) {
+  const near = ev => { const pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY; const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+    let best = null, bd = 300; list.forEach(l => { const d = (l[0] - p.x) ** 2 + (l[1] - p.y) ** 2; if (d < bd) { bd = d; best = l; } }); return best; };
+  svg.onmousemove = ev => { const b = near(ev); if (b) { showTip(b[2], ev); svg.style.cursor = b[3] ? "pointer" : "default"; } else { hideTip(); svg.style.cursor = "default"; } };
+  svg.onmouseleave = hideTip;
+  svg.onclick = ev => { const b = near(ev); if (b && b[3]) b[3](); };
+}
+
+// ------------------------------------------------------------------ widgets
+function seg(container, options, value, onChange) {
+  container.innerHTML = "";
+  options.forEach(([v, label]) => { const b = el("button", {"aria-pressed": v === value}, label);
+    b.onclick = () => { container.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); onChange(v); }; container.appendChild(b); });
+}
+function fillSelect(sel, options, value) { sel.innerHTML = ""; options.forEach(([v, l]) => { const o = el("option", {value: v}, esc(l)); if (String(v) === String(value)) o.selected = true; sel.appendChild(o); }); }
+const kOptions = ks => ks.map(k => [k, String(k)]);
+function axes(svg, W, H, m, xs, ys, xl, yl, o = {}) {
+  const g = svgEl("g", {class: "axis"}); svg.appendChild(g);
+  const lx = v => o.xlog ? Math.log(v) : v, ly = v => o.ylog ? Math.log(v) : v;
+  const X = v => m.l + (lx(v) - lx(xs[0])) / (lx(xs[1]) - lx(xs[0])) * (W - m.l - m.r);
+  const Y = v => H - m.b - (ly(v) - ly(ys[0])) / (ly(ys[1]) - ly(ys[0])) * (H - m.t - m.b);
+  (o.yt || []).forEach(v => { g.appendChild(svgEl("line", {x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v)})); svgText(g, m.l - 6, Y(v) + 4, o.yf ? o.yf(v) : v, {"text-anchor": "end"}); });
+  (o.xt || []).forEach(v => { if (o.xgrid) g.appendChild(svgEl("line", {x1: X(v), x2: X(v), y1: m.t, y2: H - m.b})); svgText(g, X(v), H - m.b + 16, o.xf ? o.xf(v) : v, {"text-anchor": "middle"}); });
+  svgText(g, (m.l + W - m.r) / 2, H - 4, xl, {"text-anchor": "middle"});
+  if (yl) svgText(g, 12, (m.t + H - m.b) / 2, yl, {"text-anchor": "middle", transform: `rotate(-90 12 ${(m.t + H - m.b) / 2})`});
+  return {X, Y};
+}
+function line(svg, pts, color, dash, w = 2) { svg.appendChild(svgEl("polyline", {points: pts.map(p => p.join(",")).join(" "), fill: "none", stroke: color, "stroke-width": w, "stroke-dasharray": dash || "", "stroke-linejoin": "round"})); }
+function legendRow(items) { return `<div class="legend">` + items.map(([c, t, dash]) => `<span class="chip" style="cursor:default"><svg width="22" height="8"><line x1="1" x2="21" y1="4" y2="4" stroke="${c}" stroke-width="2.5" ${dash ? 'stroke-dasharray="3 3"' : ""}/></svg>${esc(t)}</span>`).join("") + `</div>`; }
+function catLegend(container, cats, counts, colored, active, onPick, colors) {
+  container.innerHTML = ""; const box = el("div", {class: "legend"});
+  if (!colored) box.appendChild(el("span", {class: "muted"}, "Click to highlight:&nbsp;"));
+  cats.forEach((c, k) => { if (!counts[k]) return;
+    const b = el("button", {class: "chip", "aria-pressed": active === k}, `${colored ? `<span class="sw" style="background:${(colors || PAL.c)[k]}"></span>` : ""}${esc(c)} <span class="n">${counts[k]}</span>`);
+    b.onclick = () => onPick(active === k ? -1 : k); box.appendChild(b); });
+  container.appendChild(box);
+}
+function profBars(vals, names, scale = 1) {
+  return `<div class="bars">` + subOrder.map(i => { const v = vals[i], w = Math.min(Math.abs(v) / scale, 1) * 50;
+    return `<span>${esc(names[i])}</span><span class="track"><span class="zero"></span><span class="b" style="left:${v < 0 ? 50 - w : 50}%;width:${w}%;background:${rgb(v < 0 ? PAL.neg : PAL.pos)}"></span></span><span class="num">${fmt(v)}</span>`; }).join("") + `</div>`;
+}
+function hist(svg, counts, xl, color, fmtY) {
+  svg.innerHTML = ""; const W = 480, H = 220, m = {l: 50, r: 10, t: 10, b: 36}, n = counts.length, mx = Math.max(...counts);
+  const ax = axes(svg, W, H, m, [0, 1], [0, mx * 1.05], xl, "", {xt: [0, .25, .5, .75, 1], yt: [0, mx / 2, mx].map(v => Math.round(v)), yf: fmtY || (v => v.toLocaleString())});
+  const bw = (W - m.l - m.r) / n;
+  counts.forEach((c, i) => svg.appendChild(svgEl("rect", {x: m.l + i * bw + 1, width: bw - 2, y: ax.Y(c), height: ax.Y(0) - ax.Y(c), rx: 2, fill: color})));
+}
+
+const KEY = k => E.key[k] || {};
+// ------------------------------------------------------------------ tabs
+const CHAPTERS = [...document.querySelectorAll("section.chapter")];
+let current = "c0";
+function renderTabs() {
+  CHAPTERS.forEach(s => { const h = s.querySelector(".chead h2"); if (h) h.before(el("div", {class: "ctitle"}, esc(s.dataset.long || s.dataset.title))); });
+  $("tabs").innerHTML = CHAPTERS.map(s => `<button role="tab" data-id="${s.id}" aria-selected="${s.id === current}">${s.dataset.rn ? `<span class="rn">${s.dataset.rn}</span>` : ""}${esc(s.dataset.title)}</button>`).join("");
+  $("tabs").querySelectorAll("button").forEach(b => b.onclick = () => showTab(b.dataset.id));
+  CHAPTERS.forEach((s, i) => { if (s.id === "c0") return;
+    const nav = el("nav", {class: "pager"}), btn = (t, label) => { const b = el("button", {}, `<span class="rn">${t.dataset.rn || "❦"}</span><span><small>${label}</small>${esc(t.dataset.title)}</span>`); b.onclick = () => { showTab(t.id); scrollTo(0, 0); }; return b; };
+    if (CHAPTERS[i - 1]) nav.appendChild(btn(CHAPTERS[i - 1], "previous"));
+    if (CHAPTERS[i + 1]) nav.appendChild(btn(CHAPTERS[i + 1], "next"));
+    s.appendChild(nav); });
+}
+function showTab(id, keepScroll) {
+  if (!$(id)) id = "c0";
+  current = id;
+  CHAPTERS.forEach(s => s.hidden = s.id !== id);
+  $("tabs").querySelectorAll("button").forEach(b => b.setAttribute("aria-selected", b.dataset.id === id));
+  const b = $("tabs").querySelector(`[data-id="${id}"]`); if (b) { const row = $("tabs"); if (row.scrollWidth > row.clientWidth) row.scrollLeft = b.offsetLeft - 24; }
+  if (history.replaceState) history.replaceState(null, "", "#" + id);
+  renderTab(id);
+  if (!keepScroll) { const top = $("top").offsetTop + $("top").offsetHeight; if (scrollY > top) scrollTo(0, top); }
+}
+
+// ------------------------------------------------------------------ correlation explorer
+const C = {order: "tree", k: D.meta.kq, topic: -1};
+function qOrder(kind) {
+  const leaves = D.q.dendro.leaves; if (kind === "tree") return leaves;
+  const pos = new Map(leaves.map((q, i) => [q, i]));
+  return [...Array(NQ).keys()].sort((a, b) => D.q.topic[a] - D.q.topic[b] || pos.get(a) - pos.get(b));
+}
+function renderCorr() {
+  seg($("corr-order"), [["tree", "Clustering"], ["topic", "Topic"]], C.order, v => { C.order = v; drawCorr(); });
+  fillSelect($("corr-k"), kOptions(D.meta.qks), C.k); $("corr-k").onchange = e => { C.k = +e.target.value; drawCorr(); };
+  fillSelect($("corr-topic"), [[-1, "none"], ...TOP.map((t, i) => [i, t])], C.topic); $("corr-topic").onchange = e => { C.topic = +e.target.value; drawCorr(); };
+  $("corr-grad").innerHTML = gradHTML("div", "−1", "+1", "Pearson r across images · select a row to open its question");
+  drawCorr();
+}
+function drawCorr() {
+  const ord = qOrder(C.order), cv = $("corr-canvas"), n = ord.length; cv.width = n; cv.height = n;
+  const ctx = cv.getContext("2d"), img = ctx.createImageData(n, n);
+  for (let a = 0; a < n; a++) for (let b = 0; b < n; b++) { const c = divRGB(r_(ord[a], ord[b])), o = 4 * (a * n + b); img.data[o] = c[0]; img.data[o + 1] = c[1]; img.data[o + 2] = c[2]; img.data[o + 3] = 255; }
+  ctx.putImageData(img, 0, 0);
+  const cl = D.q.cl[String(C.k)], s1 = $("corr-strip"), s2 = $("corr-strip2"); s1.width = n; s2.width = n;
+  const c1 = s1.getContext("2d"), c2 = s2.getContext("2d");
+  for (let a = 0; a < n; a++) { c1.fillStyle = cl[ord[a]] % 2 ? PAL.ink2 : PAL.muted; c1.fillRect(a, 0, 1, 2); c2.fillStyle = D.q.topic[ord[a]] === C.topic ? PAL.c[1] : PAL.grid; c2.fillRect(a, 0, 1, 1); }
+  const dg = $("corr-dendro"); dg.innerHTML = "";
+  if (C.order === "tree") { const ymax = Math.max(...D.q.dendro.y.flat());
+    D.q.dendro.x.forEach((xs, s) => { const ys = D.q.dendro.y[s];
+      dg.appendChild(svgEl("polyline", {points: xs.map((x, j) => `${(x + .5) / n * 1000},${108 - ys[j] / ymax * 104}`).join(" "), fill: "none", stroke: PAL.ink2, "stroke-width": 1, "vector-effect": "non-scaling-stroke"})); }); }
+  cv.onmousemove = ev => { const rc = cv.getBoundingClientRect(), b = Math.floor((ev.clientX - rc.left) / rc.width * n), a = Math.floor((ev.clientY - rc.top) / rc.height * n);
+    if (a < 0 || b < 0 || a >= n || b >= n) return hideTip(); const i = ord[a], j = ord[b];
+    showTip(`r = <b>${r_(i, j).toFixed(2)}</b><br><b>${esc(D.q.text[i])}</b><br><span class="k">${esc(TOP[D.q.topic[i]])}</span><br><b>${esc(D.q.text[j])}</b><br><span class="k">${esc(TOP[D.q.topic[j]])}</span>`, ev); };
+  cv.onmouseleave = hideTip;
+  cv.onclick = ev => { const rc = cv.getBoundingClientRect(), a = Math.floor((ev.clientY - rc.top) / rc.height * n); if (a >= 0 && a < n) openQuestion(ord[a]); };
+}
+
+const QG = {k: D.meta.kq, row: -1};
+function drawQG() {
+  const qs = D.qsum[String(QG.k)];
+  const order = [...qs.keys()].sort((a, b) => Math.abs(qs[b].auroc - .5) - Math.abs(qs[a].auroc - .5));
+  $("qg-table").innerHTML = `<table><tr><th>cluster</th><th class="num">n</th><th class="num">AUROC</th><th>most central question</th>${subOrder.map(i => `<th class="cell" style="writing-mode:vertical-rl;transform:rotate(180deg);max-height:150px;border-bottom:3px solid ${PAL.grp[D.sub_group[i]]};font-weight:500">${esc(SUB[i])}</th>`).join("")}</tr>` +
+    order.map(c => { const d = qs[c]; return `<tr data-c="${c}" style="cursor:pointer"><td><b>${c + 1}</b></td><td class="num">${d.n}</td><td class="num">${fmt(d.auroc)}</td>
+      <td style="max-width:340px">${esc(D.q.text[d.central[0]])}<div class="muted">${d.topics.slice(0, 2).map(([t, n]) => `${esc(TOP[t].split(" (")[0])} (${n})`).join(" · ")}</div></td>
+      ${subOrder.map(i => `<td class="cell" style="${divCell(d.prof[i] / 1.2)}">${fmt(d.prof[i], 1)}</td>`).join("")}</tr>`; }).join("") + `</table>`;
+  $("qg-table").querySelectorAll("tr[data-c]").forEach(tr => tr.onclick = () => { QG.row = +tr.dataset.c; members(); });
+  members();
+}
+function members() {
+  if (QG.row < 0) { $("qg-members").innerHTML = ""; return; }
+  const cl = D.q.cl[String(QG.k)], mem = [...Array(NQ).keys()].filter(i => cl[i] === QG.row).sort((a, b) => Math.abs((D.q.auc[b] ?? .5) - .5) - Math.abs((D.q.auc[a] ?? .5) - .5));
+  $("qg-members").innerHTML = `<h4 style="margin:14px 0 6px">Cluster ${QG.row + 1}: ${mem.length} questions, ordered by univariate |AUROC − 0.5|</h4><div class="scroll" style="max-height:300px"><table><tr><th>question</th><th>topic</th><th class="num">affirmed</th><th class="num">AUROC alone</th></tr>` +
+    mem.map(i => `<tr data-q="${i}" style="cursor:pointer"><td>${esc(D.q.text[i])}</td><td class="muted">${esc(TOP[D.q.topic[i]])}</td><td class="num">${pct(D.q.yes[i])}</td><td class="num">${fmt(D.q.auc[i])}</td></tr>`).join("") + `</table></div>`;
+  $("qg-members").querySelectorAll("tr[data-q]").forEach(tr => tr.onclick = () => openQuestion(+tr.dataset.q));
+}
+
+const EV = {sub: "all", metric: "auc"};
+function drawROC() {
+  const svg = $("roc-svg"); svg.innerHTML = "";
+  const R1 = E.roc[EV.sub === "all" ? "ridge_all" : "ridge_derm"], R2 = E.roc[EV.sub === "all" ? "ctrl_all" : "ctrl_derm"];
+  $("roc-legend").innerHTML = legendRow([[PAL.c[0], `question-based (ridge) · ${fmt(R1.auc, 3)}`], [PAL.c[1], `direct question · ${fmt(R2.auc, 3)}`]]);
+  const ax = axes(svg, 420, 400, {l: 50, r: 14, t: 10, b: 42}, [0, 1], [0, 1], "false positive rate (1 − specificity)", "sensitivity", {xt: [0, .25, .5, .75, 1], yt: [0, .25, .5, .75, 1], xgrid: true});
+  svg.appendChild(svgEl("line", {x1: ax.X(0), y1: ax.Y(0), x2: ax.X(1), y2: ax.Y(1), stroke: PAL.muted, "stroke-dasharray": "4 4"}));
+  svg.appendChild(svgEl("line", {x1: ax.X(0), y1: ax.Y(.95), x2: ax.X(1), y2: ax.Y(.95), stroke: PAL.ink3, "stroke-dasharray": "2 3"}));
+  svgText(svg, ax.X(1) - 4, ax.Y(.95) + 14, "95% sensitivity", {"text-anchor": "end", style: `font-size:10.5px;fill:${PAL.ink3}`});
+  const hov = [];
+  [[R2, PAL.c[1], "direct question"], [R1, PAL.c[0], "question-based"]].forEach(([r, col, name]) => {
+    line(svg, r.pts.map(([x, y]) => [ax.X(x), ax.Y(y)]), col, "", 2.5);
+    svg.appendChild(svgEl("circle", {cx: ax.X(r.op.fpr), cy: ax.Y(r.op.tpr), r: 6, fill: col, stroke: rgb(PAL.surf), "stroke-width": 2}));
+    hov.push([ax.X(r.op.fpr), ax.Y(r.op.tpr), `<b>${name}</b><br>sensitivity ${pct(r.op.tpr)}, specificity ${pct(r.op.spec)}`]); });
+  const bx = ax.X(.42), by = ax.Y(.34);
+  svg.appendChild(svgEl("rect", {x: bx, y: by, width: ax.X(.98) - bx, height: 64, rx: 8, fill: rgb(PAL.surf), stroke: PAL.border}));
+  svgText(svg, bx + 10, by + 18, "Specificity at 95% sensitivity", {style: `font-size:11px;fill:${PAL.ink3}`});
+  svgText(svg, bx + 10, by + 37, `● question-based  ${pct(R1.op.spec)}`, {style: `font-size:12.5px;font-weight:700;fill:${PAL.c[0]}`});
+  svgText(svg, bx + 10, by + 55, `● direct question  ${pct(R2.op.spec)}`, {style: `font-size:12.5px;font-weight:700;fill:${PAL.c[1]}`});
+  hoverPoints(svg, hov);
+}
+function drawStrip() {
+  const svg = $("strip-svg"); svg.innerHTML = "";
+  const W = 900, m = {l: 230, r: 20, t: 10, b: 36}, rowH = 33, Hh = m.t + m.b + rowH * subOrder.length; svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`);
+  const ax = axes(svg, W, Hh, m, [0, 1], [0, 1], "P(malignant), out of fold", "", {xt: [0, .25, .5, .75, 1], xgrid: true});
+  const hov = [], meds = [];
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  subOrder.forEach((s, row) => { const y0 = m.t + row * rowH + rowH / 2, gi = D.sub_group[s];
+    svgText(svg, m.l - 12, y0 + 4, SUB[s], {"text-anchor": "end", style: `font-size:12px;fill:${PAL.ink}`});
+    svg.appendChild(svgEl("circle", {cx: 12, cy: y0, r: 4.5, fill: PAL.grp[gi]}));
+    const ims = [...Array(NI).keys()].filter(i => D.img.sub[i] === s && D.img.ridge[i] !== null), vs = ims.map(i => D.img.ridge[i]).sort((a, b) => a - b);
+    ims.forEach(i => { const x = ax.X(D.img.ridge[i]), y = y0 + (rnd() - .5) * (rowH - 12);
+      svg.appendChild(svgEl("circle", {cx: x, cy: y, r: 2.6, fill: PAL.grp[gi], "fill-opacity": .75}));
+      hov.push([x, y, `<img src="data:image/jpeg;base64,${D.img.thumb[i]}" style="width:100px;border-radius:3px;float:right;margin-left:8px"><b>${esc(SUB[s])}</b><br>P(malignant) ${fmt(D.img.ridge[i])}<br>${esc(D.img.imtype[i])}<br><span class="k">select to open</span>`, () => openImage(i)]); });
+    const med = vs[Math.floor(vs.length / 2)]; meds.push([s, med]);
+    svg.appendChild(svgEl("line", {x1: ax.X(med), x2: ax.X(med), y1: y0 - rowH / 2 + 3, y2: y0 + rowH / 2 - 3, stroke: PAL.ink, "stroke-width": 2.5}));
+    if (row < subOrder.length - 1 && D.sub_group[subOrder[row + 1]] !== gi) svg.appendChild(svgEl("line", {x1: 4, x2: W - m.r, y1: y0 + rowH / 2, y2: y0 + rowH / 2, stroke: PAL.border})); });
+  hoverPoints(svg, hov);
+  const ind = meds.filter(([s]) => D.sub_group[s] === 1).map(([s, v]) => `${SUB[s]} ${fmt(v)}`).join(", ");
+  $("c5-take-strip").innerHTML = `The indeterminate subtypes, absent from training, fall between the benign and malignant distributions (medians: ${esc(ind)}), as expected of a graded malignancy score.`;
+}
+// ------------------------------------------------------------------ 7 ten subtypes
+const TM = {m: "sensitivity"};
+const TMET = {sensitivity: ["Sensitivity", "share of the subtype's images assigned to it", .1], precision: ["Precision", "share of images assigned to the subtype that belong to it", .1],
+  f1: ["F1", "harmonic mean of sensitivity and precision", .1], auroc_ovr: ["AUROC, one against rest", "ranking of the subtype's probability against all other images", .5],
+  sensitivity_dermoscopic: ["Sensitivity, dermoscopic images", "as sensitivity, dermoscopic images only", .1]};
+const tenRow = s => TEN.per[s];
+function renderC9() {
+  const b = TEN.bacc, per = TEN.per;
+  const bySens = subOrder.map(s => [s, per[s].sensitivity]).sort((x, y) => y[1] - x[1]);
+  $("c9-find").innerHTML = `<div class="stat">${fmt(b[0], 3)}<small>balanced accuracy (chance 0.100); ${fmt(b[1], 3)} to ${fmt(b[2], 3)} over repeats</small></div><div class="say">The true subtype is the model's first choice for <b>${pct(TEN.acc)}</b> of images, and among its first three for <b>${pct(TEN.top3)}</b>. Sensitivity ranges from <b>${pct(bySens[0][1])}</b> (${esc(SUB[bySens[0][0]])}) to <b>${pct(bySens[bySens.length - 1][1])}</b> (${esc(SUB[bySens[bySens.length - 1][0]])}). Of the misassigned images, <b>${pct(TEN.same_lineage)}</b> are placed in the correct lineage (melanocytic or not).</div>`;
+  seg($("ten-metric"), Object.entries(TMET).map(([k, v]) => [k, v[0]]), TM.m, v => { TM.m = v; drawTen(); });
+  drawTen(); drawConf(); drawErr();
+  const mel = subOrder.find(s => SUB[s] === "malignant melanocytic"), nev = subOrder.find(s => SUB[s] === "benign melanocytic"), ind = subOrder.find(s => SUB[s] === "indeterminate melanocytic");
+  const conf2 = s => { const row = TEN.cm[s].map((v, j) => [j, v]).filter(([j]) => j !== s).sort((x, y) => y[1] - x[1]); return row.slice(0, 2).map(([j, v]) => `${esc(SUB[j])} (${Math.round(v)}%)`).join(" and "); };
+  $("c9-take2").innerHTML = `The atypical (indeterminate) melanocytic proliferations are the least separable class: only ${pct(per[ind].sensitivity)} are recognised, and most are assigned to ${conf2(ind)}, the benign classes they resemble. Melanomas are recognised in ${pct(per[mel].sensitivity)} and most often taken for ${conf2(mel)}; naevi are recognised in ${pct(per[nev].sensitivity)}.`;
+  $("c9-method").innerHTML = `<p>Ridge (L2-penalised multinomial logistic regression) on the standardised Directional Scores of the 446 clinical questions, with balanced class weights; nested cross-validation, five repeats of 5-fold, stratified on subtype and grouped by patient; penalty chosen by inner cross-validation on log loss (stage S10). Per-subtype measures are computed within each repeat on the pooled out-of-fold predictions and then averaged; whiskers in Fig. 4.1 give the range over the five repeats. Lineage follows the ISIC <i>melanocytic</i> field, which classes flat melanotic pigmentation (lentigines) as melanocytic. The probabilities of the malignant and benign subtypes, summed and renormalised over the 800 benign and malignant images, give AUROC ${fmt(TEN.collapsed_auc, 3)} for benign against malignant, against ${fmt(TEN.twoclass_auc, 3)} for the two-class model of Ch. III on the same pooling: training on the finer target costs nothing on the coarse one. Stage S11.</p>`;
+}
+function drawTen() {
+  const svg = $("ten-svg"); svg.innerHTML = "";
+  const [name, desc, chance] = TMET[TM.m], per = TEN.per;
+  $("c9-cap1").innerHTML = `${esc(name)}: ${esc(desc)}. Bars: mean over five repeats; whiskers: range over repeats; dashed line: chance (${fmt(chance, 2)}). Bar colour: malignancy group.`;
+  const W = 900, m = {l: 230, r: 60, t: 8, b: 36}, rowH = 33, Hh = m.t + m.b + rowH * subOrder.length; svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`);
+  const ax = axes(svg, W, Hh, m, [0, 1], [0, 1], name, "", {xt: [0, .25, .5, .75, 1], xgrid: true});
+  const hov = [];
+  subOrder.forEach((s, row) => { const r = per[s], y0 = m.t + row * rowH + rowH / 2, gi = D.sub_group[s], v = r[TM.m], lo = r[TM.m + "_min"], hi = r[TM.m + "_max"];
+    svgText(svg, m.l - 12, y0 + 4, SUB[s], {"text-anchor": "end", style: `font-size:12px;fill:${PAL.ink}`});
+    svg.appendChild(svgEl("rect", {x: ax.X(0), y: y0 - 9, width: Math.max(ax.X(v) - ax.X(0), 1), height: 18, rx: 3, fill: PAL.grp[gi], "fill-opacity": .85}));
+    svg.appendChild(svgEl("line", {x1: ax.X(lo), x2: ax.X(hi), y1: y0, y2: y0, stroke: PAL.ink, "stroke-width": 1.5}));
+    svgText(svg, ax.X(Math.max(v, hi)) + 6, y0 + 4, fmt(v), {style: `font-size:11.5px;fill:${PAL.ink2}`});
+    hov.push([ax.X(v), y0, `<b>${esc(SUB[s])}</b> (${esc(GRP[gi])}, ${esc(r.lineage)})<br>${esc(name)} ${fmt(v)} (${fmt(lo)} to ${fmt(hi)})<br>sensitivity ${fmt(r.sensitivity)} · precision ${fmt(r.precision)} · AUROC ${fmt(r.auroc_ovr, 3)}<br>most often taken for ${esc(r.most_confused_with)} (${pct(r.share_to_most_confused)})`]);
+    if (row < subOrder.length - 1 && D.sub_group[subOrder[row + 1]] !== gi) svg.appendChild(svgEl("line", {x1: 4, x2: W - m.r, y1: y0 + rowH / 2, y2: y0 + rowH / 2, stroke: PAL.border})); });
+  svg.appendChild(svgEl("line", {x1: ax.X(chance), x2: ax.X(chance), y1: m.t, y2: Hh - m.b, stroke: PAL.ink3, "stroke-dasharray": "4 4"}));
+  hoverPoints(svg, hov);
+  const best = [...subOrder].sort((a, b) => per[b][TM.m] - per[a][TM.m]);
+  $("c9-take1").innerHTML = TM.m === "auroc_ovr"
+    ? `Every subtype is ranked well above chance against the rest (AUROC ${fmt(per[best[best.length - 1]].auroc_ovr, 2)} to ${fmt(per[best[0]].auroc_ovr, 2)}); the low sensitivities reflect competition between similar classes for the top choice, not an absence of signal.`
+    : `Highest: ${best.slice(0, 2).map(s => `${esc(SUB[s])} (${fmt(per[s][TM.m])})`).join(", ")}. Lowest: ${best.slice(-2).reverse().map(s => `${esc(SUB[s])} (${fmt(per[s][TM.m])})`).join(", ")}. Benign fibro-histiocytic is a heterogeneous class (dermatofibroma, fibroepithelial polyp and scar), and the atypical melanocytic proliferations are by definition intermediate between naevus and melanoma.`;
+}
+function drawConf() {
+  const M = TEN.cm;
+  const ab = s => s.replace("benign ", "b. ").replace("malignant ", "m. ").replace("indeterminate ", "ind. ").replace("flat melanotic pigmentation", "flat melanotic").replace("inflammatory or infectious", "inflammatory").replace("fibro-histiocytic", "fibro-hist.").replace("adnexal follicular", "adnexal");
+  $("conf").innerHTML = `<div style="overflow:auto"><table style="font-size:11.5px"><tr><th></th>${subOrder.map(j => `<th class="cell" style="writing-mode:vertical-rl;transform:rotate(180deg);max-height:120px;font-weight:500;border-bottom:3px solid ${PAL.grp[D.sub_group[j]]}">${esc(ab(SUB[j]))}</th>`).join("")}</tr>` +
+    subOrder.map(i => `<tr><td style="white-space:nowrap;border-left:3px solid ${PAL.grp[D.sub_group[i]]}">${esc(ab(SUB[i]))}</td>${subOrder.map(j => `<td class="cell" title="${esc(SUB[i])} assigned to ${esc(SUB[j])}: ${fmt(M[i][j], 1)} of 100 images" style="${seqCell(Math.min(M[i][j] / 70, 1))};${i === j ? "font-weight:700;outline:1.5px solid var(--text-primary);outline-offset:-1.5px" : ""}">${M[i][j] >= .5 ? Math.round(M[i][j]) : ""}</td>`).join("")}</tr>`).join("") + `</table></div>`;
+}
+function drawErr() {
+  const bars = [["first choice", TEN.acc], ["first two", TEN.top2], ["first three", TEN.top3]];
+  const W = 230, rh = 30, svg = `<svg class="plot" viewBox="0 0 ${W} ${rh * 3 + 30}" style="max-width:260px">` + bars.map(([n, v], k) => { const y = 6 + k * rh, w = v * (W - 90);
+    return `<text x="0" y="${y + 15}" style="font-size:11.5px;fill:${PAL.ink}">${n}</text><rect x="78" y="${y + 3}" width="${w}" height="16" rx="3" fill="${PAL.c[0]}" fill-opacity="${.45 + .2 * k}"/><text x="${82 + w}" y="${y + 15}" style="font-size:11.5px;fill:${PAL.ink2}">${pct(v)}</text>`; }).join("") +
+    `<line x1="78" x2="${W - 12}" y1="${3 * rh + 12}" y2="${3 * rh + 12}" stroke="${PAL.border}"/><text x="78" y="${3 * rh + 26}" style="font-size:10.5px;fill:${PAL.ink3}">0</text><text x="${78 + (W - 90)}" y="${3 * rh + 26}" text-anchor="end" style="font-size:10.5px;fill:${PAL.ink3}">100%</text></svg>`;
+  const off = []; subOrder.forEach(i => subOrder.forEach(j => { if (i !== j) off.push([i, j, TEN.cm[i][j]]); }));
+  off.sort((a, b) => b[2] - a[2]);
+  const tab = `<table><tr><th>true subtype</th><th>assigned to</th><th class="num">of 100</th></tr>${off.slice(0, 7).map(([i, j, v]) => `<tr><td>${grpDot(D.sub_group[i])} ${esc(SUB[i])}</td><td>${grpDot(D.sub_group[j])} ${esc(SUB[j])}</td><td class="num">${fmt(v, 0)}</td></tr>`).join("")}</table>`;
+  $("c9-err").innerHTML = `<div style="display:grid;grid-template-columns:1fr;gap:12px">${svg}${tab}</div>`;
+  $("c9-take3").innerHTML = `Errors are seldom arbitrary: <b>${pct(TEN.same_lineage)}</b> of misassigned images stay within the correct lineage, and the commonest confusions pair clinically similar entities (atypical melanocytic proliferations with lentigines and naevi; actinic keratosis, the indeterminate epidermal class, with squamous and basal cell carcinoma). Only <b>${pct(TEN.same_group)}</b> stay within the correct malignancy group, so a subtype error frequently crosses the benign–malignant boundary.`;
+}
+
+// ------------------------------------------------------------------ 8 naevus and melanoma
+const NM = {model: "pair"};
+const SCN = {pair: "pair model", tenclass: "ten-subtype model", twoclass: "benign–malignant model", direct: "direct question"};
+const scCol = k => ({pair: PAL.c[0], tenclass: PAL.c[1], twoclass: PAL.c[2], direct: PAL.ink3})[k];
+const PM = () => Object.fromEntries(PAIR.metrics.map(m => [m.score, m]));
+function renderC10() {
+  const M = PM(), q3 = ["pair", "tenclass", "twoclass"], aucs = q3.map(k => M[k].auroc_repeat_mean), sp = q3.map(k => M[k].spec95_repeat_mean);
+  const dPT = PAIR.diffs.find(d => d.a === "pair" && d.b === "tenclass");
+  const dTP = PAIR.diffs.find(d => d.a === "tenclass" && d.b === "direct");
+  $("c10-find").innerHTML = `<div class="stat">${fmt(M.tenclass.auroc_repeat_mean, 3)}<small>AUROC, ten-subtype model; direct question ${fmt(M.direct.auroc_repeat_mean, 3)}</small></div><div class="say">Read from the ten-subtype model, with no further training, melanoma is separated from naevus with AUROC <b>${fmt(M.tenclass.auroc_repeat_mean, 2)}</b>; all three question-based scores reach <b>${fmt(Math.min(...aucs), 2)} to ${fmt(Math.max(...aucs), 2)}</b>, against <b>${fmt(M.direct.auroc_repeat_mean, 2)}</b> for the direct question. The larger difference lies at high sensitivity: detecting 95% of melanomas, they clear <b>${pct(Math.min(...sp))} to ${pct(Math.max(...sp))}</b> of naevi, the direct question <b>${pct(M.direct.spec95_repeat_mean)}</b>. A model trained on these two subtypes alone does not improve on the ten-subtype model (difference ${(dPT.auroc_diff > 0 ? "+" : "") + fmt(dPT.auroc_diff, 3)}).</div>`;
+  $("dotn").style.background = PAL.grp[0]; $("dotmm").style.background = PAL.grp[2];
+  seg($("nm-model"), q3.map(k => [k, SCN[k]]), NM.model, v => { NM.model = v; drawNMBreak(); });
+  drawNMROC(); drawNMTable(); drawNMStrip(); drawNMBreak(); drawNMQ();
+  $("c10-method").innerHTML = `<p><b>Pair model.</b> Ridge on the 446 clinical questions, trained on the 100 naevi and 100 melanomas only, with the nested cross-validation of Ch. III (five repeats of 5-fold, stratified on the two classes, grouped by patient; median λ ${fmt(M.pair.lambda_median, 0)}). The atypical melanocytic images were never used in training; each of the 25 outer models scored them, and Fig. 4.6 shows the mean. A final pair model fitted on all 200 images (λ ${fmt(PAIR.final_lambda, 0)}) supplies the weights quoted in Fig. 4.8; it is not scored.</p>
+    <p><b>Other scores.</b> Ten-subtype model: P(melanoma) / (P(melanoma) + P(naevus)) from the out-of-fold predictions of the ten-subtype model (IV.i). Benign–malignant model: out-of-fold P(malignant) from Ch. III. Direct question: the model's P(yes) to <i>“Is this a malignant lesion?”</i>. All four are scored on the same 200 images.</p>
+    <p><b>Uncertainty.</b> Ranges over the five repeats reflect fold assignment; bootstrap intervals (2,000 resamples of patients, on the repeat-averaged score) reflect the finite sample. With 100 images per class, an AUROC interval spans about ±0.04 and a specificity interval about ±0.2, so differences between the question-based models are not resolved. Stage S11.</p>`;
+}
+function drawNMROC() {
+  const svg = $("nm-roc"); svg.innerHTML = "";
+  const M = PM(), order = ["direct", "twoclass", "tenclass", "pair"];
+  const op = pts => { const p = pts.find(([x, y]) => y >= .95); return p || [1, 1]; };
+  $("nm-legend").innerHTML = legendRow(["pair", "tenclass", "twoclass", "direct"].map(k => [scCol(k), `${SCN[k]} · ${fmt(M[k].auroc_avg_score, 3)}`, k === "direct"]));
+  const ax = axes(svg, 420, 400, {l: 50, r: 14, t: 10, b: 42}, [0, 1], [0, 1], "naevi called melanoma (1 − specificity)", "melanomas detected (sensitivity)", {xt: [0, .25, .5, .75, 1], yt: [0, .25, .5, .75, 1], xgrid: true});
+  svg.appendChild(svgEl("line", {x1: ax.X(0), y1: ax.Y(0), x2: ax.X(1), y2: ax.Y(1), stroke: PAL.muted, "stroke-dasharray": "4 4"}));
+  svg.appendChild(svgEl("line", {x1: ax.X(0), y1: ax.Y(.95), x2: ax.X(1), y2: ax.Y(.95), stroke: PAL.ink3, "stroke-dasharray": "2 3"}));
+  svgText(svg, ax.X(1) - 4, ax.Y(.95) + 14, "95% sensitivity", {"text-anchor": "end", style: `font-size:10.5px;fill:${PAL.ink3}`});
+  const hov = [];
+  order.forEach(k => { const pts = PAIR.curves[k]; line(svg, pts.map(([x, y]) => [ax.X(x), ax.Y(y)]), scCol(k), k === "direct" ? "5 4" : "", 2.2);
+    const [fx, ty] = op(pts); svg.appendChild(svgEl("circle", {cx: ax.X(fx), cy: ax.Y(ty), r: 5.5, fill: scCol(k), stroke: rgb(PAL.surf), "stroke-width": 2}));
+    hov.push([ax.X(fx), ax.Y(ty), `<b>${SCN[k]}</b><br>sensitivity ${pct(ty)}, specificity ${pct(1 - fx)}`]); });
+  hoverPoints(svg, hov);
+}
+function drawNMTable() {
+  const M = PM(), ks = ["pair", "tenclass", "twoclass", "direct"];
+  const ci = (lo, hi, f) => `<span class="muted">[${f(lo)}, ${f(hi)}]</span>`, f2 = v => fmt(v, 2), p0 = v => (100 * v).toFixed(0);
+  const t1 = `<table><tr><th>score</th><th class="num">AUROC [95% CI]</th><th class="num">specificity at 95% sens. [CI]</th><th class="num">AUROC, dermoscopic</th></tr>` +
+    ks.map(k => { const m = M[k], rg = k === "direct" ? "" : ` title="range over repeats: AUROC ${fmt(m.auroc_repeat_min, 3)} to ${fmt(m.auroc_repeat_max, 3)}; specificity ${pct(m.spec95_repeat_min)} to ${pct(m.spec95_repeat_max)}"`;
+      return `<tr${rg}><td><span class="dot" style="background:${scCol(k)}"></span> ${SCN[k]}</td><td class="num" style="white-space:nowrap">${fmt(m.auroc_repeat_mean, 3)} ${ci(m.auroc_ci_lo, m.auroc_ci_hi, f2)}</td><td class="num" style="white-space:nowrap">${pct(m.spec95_repeat_mean)} ${ci(m.spec95_ci_lo, m.spec95_ci_hi, p0)}</td><td class="num">${fmt(m.auroc_dermoscopic, 3)}</td></tr>`; }).join("") + `</table>`;
+  const D2 = PAIR.diffs.filter(d => d.b === "direct" || (d.a === "pair" && d.b === "tenclass"));
+  const t2 = `<table style="margin-top:16px"><tr><th>comparison (AUROC)</th><th class="num">difference [95% CI]</th><th class="num">repeats higher</th></tr>` +
+    D2.map(d => `<tr><td>${SCN[d.a]} against ${SCN[d.b]}</td><td class="num" style="white-space:nowrap">${(d.auroc_diff > 0 ? "+" : "") + fmt(d.auroc_diff, 3)} ${ci(d.ci_lo, d.ci_hi, v => fmt(v, 3))}</td><td class="num">${d.repeats_higher} of 5</td></tr>`).join("") + `</table>`;
+  $("nm-table").innerHTML = `<div style="overflow:auto">${t1}${t2}</div><p class="muted" style="margin:8px 0 0">Hover a row for the range over the five repeats.</p>`;
+  const dT = PAIR.diffs.find(d => d.a === "tenclass" && d.b === "direct");
+  $("c10-take2").innerHTML = `Every question-based model exceeds the direct question in all five repeats, but on 200 images the bootstrap intervals of the AUROC differences still include zero (ten-subtype model: ${fmt(dT.ci_lo, 3)} to ${fmt(dT.ci_hi, 3)}). The specificity advantage at 95% sensitivity is larger in size, though its intervals are wide.`;
+}
+function drawNMStrip() {
+  const svg = $("nm-strip"); svg.innerHTML = "";
+  const ims = PAIR.images, B = PAIR.between, thr = B.threshold_95;
+  const short = r => ({"atypical proliferative nodules in congenital melanocytic nevus": "proliferative nodule in congenital naevus", "atypical intraepithelial melanocytic proliferation": "atypical intraepithelial melanocytic prolif.", "melanoma, not otherwise specified": "melanoma, not otherwise specified"})[r] || r;
+  const rows = [...new Set(ims.map(r => r.row))].map(r => { const g = ims.filter(x => x.row === r), v = g.map(x => x.s).sort((a, b) => a - b);
+    return {r, g, grp: g[0].grp, med: v[Math.floor(v.length / 2)], above: g.filter(x => x.s >= thr).length}; })
+    .sort((a, b) => a.grp - b.grp || a.med - b.med);
+  const W = 900, m = {l: 320, r: 20, t: 10, b: 36}, rowH = 34, Hh = m.t + m.b + rowH * rows.length; svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`);
+  const ax = axes(svg, W, Hh, m, [0, 1], [0, 1], "pair-model score (melanoma against naevus), out of fold", "", {xt: [0, .25, .5, .75, 1], xgrid: true});
+  let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const hov = [];
+  rows.forEach((R, k) => { const y0 = m.t + k * rowH + rowH / 2;
+    svgText(svg, m.l - 12, y0, short(R.r), {"text-anchor": "end", style: `font-size:12px;fill:${PAL.ink}`});
+    svgText(svg, m.l - 12, y0 + 13, `n = ${R.g.length}; ${pct(R.above / R.g.length)} above threshold`, {"text-anchor": "end", style: `font-size:10.5px;fill:${PAL.ink3}`});
+    svg.appendChild(svgEl("circle", {cx: 10, cy: y0 + 2, r: 4.5, fill: PAL.grp[R.grp]}));
+    R.g.forEach(x => { const cx = ax.X(x.s), cy = y0 + (rnd() - .5) * (rowH - 12);
+      svg.appendChild(svgEl("circle", {cx, cy, r: 3, fill: PAL.grp[R.grp], "fill-opacity": .75}));
+      hov.push([cx, cy, `<img src="data:image/jpeg;base64,${D.img.thumb[x.i]}" style="width:100px;border-radius:3px;float:right;margin-left:8px"><b>${esc(x.dx)}</b><br>pair-model score ${fmt(x.s)}<br>${esc(D.img.imtype[x.i])}<br>confirmed by ${esc(x.conf)}<br><span class="k">select to open</span>`, () => openImage(x.i)]); });
+    svg.appendChild(svgEl("line", {x1: ax.X(R.med), x2: ax.X(R.med), y1: y0 - rowH / 2 + 4, y2: y0 + rowH / 2 - 4, stroke: PAL.ink, "stroke-width": 2.5}));
+    if (k < rows.length - 1 && rows[k + 1].grp !== R.grp) svg.appendChild(svgEl("line", {x1: 4, x2: W - m.r, y1: y0 + rowH / 2, y2: y0 + rowH / 2, stroke: PAL.border})); });
+  svg.appendChild(svgEl("line", {x1: ax.X(thr), x2: ax.X(thr), y1: m.t, y2: Hh - m.b, stroke: PAL.accent, "stroke-dasharray": "5 4", "stroke-width": 1.5}));
+  svgText(svg, ax.X(thr) + 5, m.t + 10, `95% of melanomas above ${fmt(thr)}`, {style: `font-size:10.5px;fill:${PAL.accent}`});
+  hoverPoints(svg, hov);
+  const bd = B.by_diagnosis, aimp = bd["Atypical intraepithelial melanocytic proliferation"], amn = bd["Atypical melanocytic neoplasm"];
+  const ex = rows.find(r => r.r === "naevus, excised"), nx = rows.find(r => r.r === "naevus, not excised");
+  $("c10-take3").innerHTML = `At the threshold that detects 95% of melanomas, <b>${pct(B.naevi_above)}</b> of naevi would also be flagged: ${pct(ex.above / ex.g.length)} of the excised naevi against ${pct(nx.above / nx.g.length)} of those diagnosed without excision. The atypical melanocytic proliferations, unseen in training, fall between the two classes (median ${fmt(B.median.between)}, against ${fmt(B.median.naevus)} for naevi and ${fmt(B.median.melanoma)} for melanomas); atypical intraepithelial proliferations lie closer to melanoma (median ${fmt(aimp.median)}, ${pct(aimp.above)} above threshold) than atypical melanocytic neoplasms (${fmt(amn.median)}, ${pct(amn.above)}).`;
+}
+function drawNMBreak() {
+  const svg = $("nm-break"); svg.innerHTML = "";
+  const subs = [...new Set(PAIR.breakdown.map(b => b.subset))], get = (s, k) => PAIR.breakdown.find(b => b.subset === s && b.score === k);
+  const lab = s => s.replace("melanoma: Melanoma, NOS", "melanoma, unspecified type").replace("melanoma: Melanoma Invasive", "invasive melanoma").replace("melanoma: Melanoma in situ", "melanoma in situ").replace("melanoma: Melanoma metastasis", "melanoma metastasis").replace(" (consensus, follow-up, other)", "").replace(" (histopathology)", "");
+  const W = 520, m = {l: 186, r: 16, t: 8, b: 40}, rowH = 38, Hh = m.t + m.b + rowH * subs.length; svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`);
+  const ax = axes(svg, W, Hh, m, [.4, 1], [0, 1], "AUROC", "", {xt: [.4, .5, .6, .7, .8, .9, 1], xgrid: true});
+  const hov = [];
+  subs.forEach((s, k) => { const y0 = m.t + k * rowH + rowH / 2, a = get(s, NM.model), d = get(s, "direct");
+    svgText(svg, m.l - 10, y0, lab(s), {"text-anchor": "end", style: `font-size:11.5px;fill:${PAL.ink}`});
+    svgText(svg, m.l - 10, y0 + 13, `${a.n_naevi} naevi, ${a.n_melanoma} melanomas`, {"text-anchor": "end", style: `font-size:10px;fill:${PAL.ink3}`});
+    [[d, PAL.ink3, 6, "direct question"], [a, scCol(NM.model), -6, SCN[NM.model]]].forEach(([r, c, dy, n]) => {
+      svg.appendChild(svgEl("line", {x1: ax.X(Math.max(r.auroc_ci_lo, .4)), x2: ax.X(r.auroc_ci_hi), y1: y0 + dy, y2: y0 + dy, stroke: c, "stroke-width": 2}));
+      svg.appendChild(svgEl("circle", {cx: ax.X(r.auroc), cy: y0 + dy, r: 5, fill: c, stroke: rgb(PAL.surf), "stroke-width": 1.5}));
+      hov.push([ax.X(r.auroc), y0 + dy, `<b>${esc(lab(s))}</b><br>${n}: AUROC ${fmt(r.auroc, 3)} (95% CI ${fmt(r.auroc_ci_lo, 2)} to ${fmt(r.auroc_ci_hi, 2)})`]); });
+    if (k === subs.length - 2 || (s.startsWith("melanoma") && !subs[k + 1].startsWith("melanoma"))) svg.appendChild(svgEl("line", {x1: 4, x2: W - m.r, y1: y0 + rowH / 2, y2: y0 + rowH / 2, stroke: PAL.border})); });
+  hoverPoints(svg, hov);
+  const p = s => get(s, "pair");
+  const ex = subs.find(s => s.startsWith("naevi excised")), nx = subs.find(s => s.startsWith("naevi not")), is = subs.find(s => s.includes("in situ")), inv = subs.find(s => s.includes("Invasive"));
+  $("c10-take4").innerHTML = `Melanomas in situ are separated from naevi as well as invasive melanomas (pair model ${fmt(p(is).auroc, 2)} and ${fmt(p(inv).auroc, 2)}). The excised naevi, typically removed because of clinical concern, are the harder comparison (${fmt(p(ex).auroc, 2)}, against ${fmt(p(nx).auroc, 2)} for naevi diagnosed by consensus or follow-up), and are the more realistic one clinically. There are only 15 excised naevi and five metastases, so these estimates are imprecise.`;
+}
+function drawNMQ() {
+  const nev = PAIR.images.filter(x => x.grp === 0).map(x => x.i), mel = PAIR.images.filter(x => x.grp === 2).map(x => x.i);
+  const mp = (ims, q) => ims.reduce((a, i) => a + p_(i, q), 0) / ims.length;
+  const db = (a, b) => { const X = v => 6 + v * 108;
+    return `<svg width="120" height="14" style="vertical-align:middle"><line x1="${X(Math.min(a, b))}" x2="${X(Math.max(a, b))}" y1="7" y2="7" stroke="${PAL.muted}" stroke-width="2"/><circle cx="${X(a)}" cy="7" r="4.5" fill="${PAL.grp[0]}"/><circle cx="${X(b)}" cy="7" r="4.5" fill="${PAL.grp[2]}"/></svg>`; };
+  const col = (list, title, c) => `<div><h4><span class="dot" style="background:${c}"></span>${title}</h4><ul class="qlist">${list.map(t => `<li data-q="${t.q}"><span class="r">${fmt(t.auc)}</span>${db(mp(nev, t.q), mp(mel, t.q))} ${esc(D.q.text[t.q])}</li>`).join("")}</ul></div>`;
+  $("nm-q").innerHTML = `<div class="twocol" style="grid-template-columns:1fr">${col(PAIR.q_mel, "Toward melanoma", rgb(PAL.pos))}${col(PAIR.q_nev, "Toward naevus", rgb(PAL.neg))}</div>`;
+  $("nm-q").querySelectorAll("li[data-q]").forEach(l => l.onclick = () => openQuestion(+l.dataset.q));
+  $("c10-take5").innerHTML = `Of the ${PAIR.n_q} questions, <b>${PAIR.n_sep.melanoma}</b> separate the two classes with AUROC above 0.75 in the direction of melanoma, but only <b>${PAIR.n_sep.naevus}</b> in the direction of naevus. The questionnaire enumerates the features of melanoma (shiny white structures, regression, multiple colours, atypical vessels); a naevus is recognised chiefly by their absence and by uniformity (one compact region, a homogeneous pattern, a flat and subtle lesion).`;
+}
+
+// ------------------------------------------------------------------ 9 model metrics
+const MT = {task: "benign vs malignant", rule: "P >= 0.5", sub: "all images", model: "all"};
+const MCOLS = [["sensitivity", "Sensitivity"], ["specificity", "Specificity"], ["accuracy", "Accuracy"], ["f1", "F1"]];
+const BCOLS = [["auroc", "AUROC", 3], ["sensitivity", "Sensitivity", 2], ["specificity", "Specificity", 2], ["accuracy", "Accuracy", 2], ["f1", "F1", 2], ["spec95", "Specificity at 95% sensitivity", 2, "Spec. at 95% sens."]];
+const CMP_TASKS = [["benign vs malignant", "Benign against malignant", "300 malignant, 500 benign images", BCOLS],
+  ["naevus vs melanoma", "Naevus against melanoma", "100 melanomas, 100 naevi", BCOLS],
+  ["ten subtypes", "Ten subtypes", "100 images each; chance accuracy 0.10", [["auroc", "AUROC (mean one vs rest)", 3, "AUROC (one vs rest)"], ["sensitivity", "Sensitivity (mean)", 2], ["specificity", "Specificity (mean)", 2], ["accuracy", "Accuracy", 2], ["f1", "F1 (macro)", 2]]]];
+const CMP_KINDS = [["questions", "Sonnet's answers to the questions"], ["embedding", "SkinGPT-R1 embedding"], ["diagnosis", "SkinGPT-R1 diagnosis"], ["reference", "direct question, no model"]];
+function cmpKind(r) {
+  if (r.features.startsWith("Sonnet asked")) return "reference";
+  if (r.features.startsWith("SkinGPT-R1's own") || r.features.includes("candidate diagnoses")) return "diagnosis";
+  if (r.features.startsWith("SkinGPT-R1")) return "embedding";
+  return "questions";
+}
+const cmpCol = k => ({questions: PAL.c[1], embedding: PAL.c[0], diagnosis: PAL.c[2], reference: PAL.ink3})[k];
+const cmpKey = () => `<div class="cmpkey">${CMP_KINDS.map(([k, n]) => `<span><span class="kdot" style="background:${cmpCol(k)}"></span>${n}</span>`).join("")}</div>`;
+function cmpSections(no) {
+  const C = D.sub.comparison, secs = [...new Set(C.rows.filter(r => r.no === no).map(r => r.section))];
+  return secs.map(s => ({M: "3.3", T: "3.4", U: "3.4"})[s] || "explorer 9." + (C.sections.findIndex(x => x.key === s) + 1)).join(", ");
+}
+function cmpTable(sec, task, cols) {
+  const R = D.sub.comparison.rows.filter(r => r.section === sec && r.task === task);
+  if (!R.length) return "";
+  const shown = k => R.map(r => r[k] === null || r[k] === undefined || Number.isNaN(r[k]) ? null : +(+r[k]).toFixed(cols.find(c => c[0] === k)[2]));
+  // the best value is marked only where it singles out a minority of the rows
+  const best = Object.fromEntries(cols.map(([k]) => { const v = shown(k).filter(x => x !== null), m = Math.max(...v);
+    return [k, R.length > 1 && new Set(v).size > 1 && v.filter(x => x === m).length <= R.length / 2 ? m : null]; }));
+  const T = CMP_TASKS.find(t => t[0] === task);
+  // descriptive columns that are the same for every row go into the table's heading instead
+  const meta = [["target", "Trained on"], ["folds", "Folds grouped by"], ["score", "Score"]];
+  const same = meta.filter(([k]) => R.filter(r => r.classifier !== "none").every((r, i, a) => r[k] === a[0][k]) && R.some(r => r.classifier !== "none"));
+  const vary = meta.filter(m => !same.includes(m));
+  const first = R.find(r => r.classifier !== "none");
+  const phr = {target: v => `trained on ${v}`, folds: v => `folds grouped by ${v}`, score: v => `score: ${v}`};
+  const head = same.map(([k]) => phr[k](esc(first[k]))).join("; ");
+  return `<div class="cmpwrap"><h4>${T[1]} <span class="muted">(${T[2]})</span></h4>${head ? `<p class="cmpnote" style="margin-top:0">Every trained model in this table: ${head}.</p>` : ""}<table class="mtab cmp"><tr><th>No.</th><th>Model</th>${vary.map(([, n]) => `<th>${n}</th>`).join("")}${cols.map(([, n, , sh]) => `<th class="num"${sh ? ` title="${n}"` : ""}>${sh || n}</th>`).join("")}</tr>` +
+    R.map(r => { const k = cmpKind(r);
+      return `<tr class="${k === "reference" ? "ref" : ""}"><td class="no" title="Model ${r.no} appears in Tables ${cmpSections(r.no)}">${r.no}</td><td class="mname"><span class="kdot" style="background:${cmpCol(k)}"></span>${esc(r.name)}${r.classifier === "none" && same.some(([k]) => k === "score") ? ` <span class="muted">(${esc(r.target)}; score ${esc(r.score)})</span>` : ""}</td>` +
+        vary.map(([c]) => `<td class="meta">${esc(r[c])}</td>`).join("") +
+        cols.map(([c, , d]) => { const v = r[c] === null || r[c] === undefined || Number.isNaN(r[c]) ? null : +(+r[c]).toFixed(d);
+          return `<td class="num${v !== null && v === best[c] ? " best" : ""}">${v === null ? "n/a" : fmt(v, d)}</td>`; }).join("") + `</tr>`; }).join("") + `</table></div>`;
+}
+const cmpSection = sec => CMP_TASKS.map(([t, , , cols]) => cmpTable(sec, t, cols)).join("");
+let C11_METHOD = "";
+function renderCmp() {
+  const C = D.sub.comparison, M = C.rows.filter(r => r.section === "M");
+  const note = k => C.sections.find(x => x.key === k).note;
+  const qm = t => M.find(r => r.task === t && cmpKind(r) === "questions");
+  const sk = t => M.filter(r => r.task === t && cmpKind(r) !== "questions" && cmpKind(r) !== "reference").sort((a, b) => b.auroc - a.auroc)[0];
+  const zs = t => M.find(r => r.task === t && r.classifier === "none" && cmpKind(r) === "diagnosis");
+  const dq = t => M.find(r => r.task === t && cmpKind(r) === "reference");
+  const [bm, nm, tn] = ["benign vs malignant", "naevus vs melanoma", "ten subtypes"];
+  const cmpw = (a, b, d = 3) => (+(+a).toFixed(d)) > (+(+b).toFixed(d)) ? `higher than` : (+(+a).toFixed(d)) < (+(+b).toFixed(d)) ? `lower than` : `equal to`;
+  $("c11-find").innerHTML = `<div class="stat">${fmt(qm(tn).accuracy, 2)}<small>balanced accuracy over ten subtypes, ridge on Sonnet's answers (model ${qm(tn).no})</small></div><div class="say">Trained on the ten subtypes and scored on identical patient-grouped folds, the ridge model on Sonnet's answers (model ${qm(bm).no}) reaches AUROC <b>${fmt(qm(bm).auroc, 3)}</b> for benign against malignant and <b>${fmt(qm(nm).auroc, 3)}</b> for naevus against melanoma. The best SkinGPT-R1 model for each task, a ridge model on its image embedding, reaches <b>${fmt(sk(bm).auroc, 3)}</b> (model ${sk(bm).no}) and <b>${fmt(sk(nm).auroc, 3)}</b> (model ${sk(nm).no}), and ${fmt(sk(tn).accuracy, 2)} balanced accuracy over the subtypes (model ${sk(tn).no}). SkinGPT-R1's own diagnosis, without training, reaches ${fmt(zs(bm).auroc, 3)}, ${fmt(zs(nm).auroc, 3)} and ${fmt(zs(tn).accuracy, 2)}.</div>`;
+  $("cmp-cap-M").innerHTML = esc(note("M")) + " Bold marks the best value in each column of each table. Hover a model number for the tables it appears in.";
+  $("cmp-M").innerHTML = cmpKey() + cmpSection("M");
+  $("c11-take1").innerHTML = `Against the best SkinGPT-R1 embedding model for each task, the model on Sonnet's answers is ${cmpw(qm(bm).auroc, sk(bm).auroc)} it in AUROC for benign against malignant (${fmt(qm(bm).auroc, 3)} against ${fmt(sk(bm).auroc, 3)}), ${cmpw(qm(nm).auroc, sk(nm).auroc)} it for naevus against melanoma (${fmt(qm(nm).auroc, 3)} against ${fmt(sk(nm).auroc, 3)}), and ${cmpw(qm(tn).accuracy, sk(tn).accuracy, 2)} it in ten-subtype accuracy (${fmt(qm(tn).accuracy, 2)} against ${fmt(sk(tn).accuracy, 2)}). Differences of 0.01 to 0.02 are within the spread over repeats (about ±0.03 in AUROC for benign against malignant, ±0.04 for naevus against melanoma). SkinGPT-R1's own diagnosis ranks well below both, and the direct question to Sonnet (AUROC ${fmt(dq(bm).auroc, 3)}) is a reference with no training.`;
+  const T = C.rows.filter(r => r.section === "T" && r.task === bm);
+  const t2 = T.find(r => cmpKind(r) === "questions" && r.target === "two classes" && r.folds === "patient"), t10 = T.find(r => cmpKind(r) === "questions" && r.target === "ten subtypes" && r.folds === "patient");
+  $("cmp-cap-T").innerHTML = esc(note("T"));
+  $("cmp-T").innerHTML = cmpKey() + CMP_TASKS.slice(0, 2).map(([t, , , cols]) => cmpTable("T", t, cols)).join("");
+  $("cmp-cap-U").innerHTML = esc(note("U"));
+  $("cmp-U").innerHTML = CMP_TASKS.slice(0, 2).map(([t, , , cols]) => cmpTable("U", t, cols)).join("");
+  $("c11-take2").innerHTML = `On Sonnet's answers, the model trained on ten subtypes (model ${t10.no}) ranks benign against malignant at least as well as the model trained on the two classes directly (model ${t2.no}): AUROC ${fmt(t10.auroc, 3)} against ${fmt(t2.auroc, 3)}, specificity at 95% sensitivity ${fmt(t10.spec95)} against ${fmt(t2.spec95)}. The finer target costs nothing on the coarse task and gives the subtype as well.`;
+  $("c11-defs").innerHTML = `<dl class="kv defs">
+    <dt>Model number</dt><dd>one fitted model: a pipeline stage, an input (Sonnet's answers, a SkinGPT-R1 embedding or its diagnosis), a classifier, a training target and a fold grouping. The same number in two tables is the same model; a two-class and a ten-subtype model on the same answers carry different numbers.</dd>
+    <dt>Trained on</dt><dd>the target the model was fitted to: two classes (benign, malignant), three (with indeterminate), the ten subtypes, or naevus against melanoma only. "No training" marks scores used as they come.</dd>
+    <dt>Score</dt><dd>how the task's score is read from the model's output, for example P(melanoma) / (P(melanoma) + P(naevus)) from a ten-subtype model.</dd>
+    <dt>Sensitivity</dt><dd>of the truly positive cases (malignant, melanoma, or the subtype in question), the share the model flags at P ≥ 0.5. Also called recall. A screening tool needs this high.</dd>
+    <dt>Specificity</dt><dd>of the truly negative cases, the share the model correctly leaves alone at P ≥ 0.5. 1 − specificity is the false-alarm rate.</dd>
+    <dt>Accuracy</dt><dd>the share of all images classified correctly. With equal class sizes, as in the naevus–melanoma comparison and the ten subtypes, it equals balanced accuracy; in benign against malignant there are 500 benign and 300 malignant images, so it leans toward specificity.</dd>
+    <dt>F1</dt><dd>the harmonic mean of precision (the share of flagged cases that are truly positive) and sensitivity: high only when the model both finds the positive cases and does not over-call them.</dd>
+    <dt>Specificity at 95% sensitivity</dt><dd>the share of negatives still cleared when the threshold is lowered until 95% of positives are caught; chosen on the same predictions, so slightly optimistic. The project's pre-set main score for benign against malignant. Table 9.10 of the full explorer gives the version with the cutoff fixed from the training images.</dd>
+    <dt>P cutoff</dt><dd>the value of P(malignant) at or above which an image is called malignant. Lowering it catches more malignancies (sensitivity up) at the cost of more false alarms (specificity down).</dd>
+    <dt>PPV, NPV</dt><dd>positive predictive value: of the images called malignant, the share that are; negative predictive value: of those called benign, the share that are. Both depend on how common malignancy is (37.5% of these 800 images), so they will differ in a clinic.</dd>
+    <dt>Youden's index</dt><dd>the cutoff that maximises sensitivity + specificity, weighting a missed malignancy and a false alarm equally.</dd>
+    <dt>AUROC</dt><dd>independent of any threshold: the probability that a random positive case scores above a random negative one (0.5 chance, 1 perfect). For the ten subtypes, the mean of each subtype against the rest.</dd></dl>`;
+  C11_METHOD = `<p>All values come from out-of-fold predictions: each image is scored by a model that did not see it in training (five repeats of 5-fold cross-validation). Within each repeat the folds' predictions are pooled and the measures computed once; the tables give the mean over the five repeats. These pooled values can differ by 0.01 to 0.02 from the fold means quoted in earlier chapters and in the SkinGPT-R1 benchmark report.</p>
+    <p><b>Same folds.</b> Tables 3.3 and 3.4 (upper part) share S10's folds: grouped by ISIC patient, with near-duplicate pictures merged, lambda chosen by inner cross-validation, everything fitted inside the training folds. Stage S13 refitted the question model on these folds and reproduced S10's fold results exactly before fitting SkinGPT-R1's embeddings (image tokens averaged at layers 0, 14, 21 and 28 of SkinGPT-R1, a dermatology fine-tune of Qwen2.5-VL-7B; and the last prompt token) and its diagnosis scores (log-probabilities of 16 candidate diagnoses, averaged over two list orders, without the reasoning step). The S6 rows (lower part of Table 3.4) used folds grouped by lesion, which is unique per image, so they are comparable with each other but not with the patient-grouped tables.</p>
+    <p><b>Thresholds.</b> The trained models output probabilities for equal class priors (balanced class weights), so P ≥ 0.5 means equal prior odds. A ten-subtype model read as benign against malignant sums the malignant and the benign subtypes, each sum divided by its number of subtypes, so that 0.5 again means equal prior odds; AUROC is unaffected. The zero-shot diagnosis and the direct question are not calibrated in this way; compare them by AUROC. Stage S11 (<i>model_comparison.csv</i>, <i>model_comparison.md</i>).</p>`;
+}
+
+function renderCmpIndex() {
+  const C = D.sub.comparison, seen = new Map();
+  C.rows.forEach(r => { if (!seen.has(r.no)) seen.set(r.no, r); });
+  $("cmp-index").innerHTML = `<div class="cmpwrap"><table class="mtab cmp"><tr><th>No.</th><th>Model</th><th>Trained on</th><th>Folds grouped by</th><th>Stage</th><th>Tables</th></tr>` +
+    [...seen.values()].sort((a, b) => a.no - b.no).map(r => `<tr><td class="no">${r.no}</td><td class="mname"><span class="kdot" style="background:${cmpCol(cmpKind(r))}"></span>${esc(r.name)}</td><td class="meta">${esc(r.target)}</td><td class="meta">${esc(r.folds)}</td><td class="meta">${esc(r.stage)}</td><td class="meta">${cmpSections(r.no)}</td></tr>`).join("") + `</table></div>`;
+}
+function renderMtDetail() {
+  seg($("mt-task"), [["benign vs malignant", "Benign vs malignant"], ["naevus vs melanoma", "Naevus vs melanoma"], ["ten", "Ten subtypes"]], MT.task, v => { MT.task = v; drawMetrics(); });
+  seg($("mt-rule"), [["P >= 0.5", "P ≥ 0.5"], ["95% sensitivity", "95% sensitivity"]], MT.rule, v => { MT.rule = v; drawMetrics(); });
+  seg($("mt-sub"), [["all images", "All images"], ["dermoscopic only", "Dermoscopic only"]], MT.sub, v => { MT.sub = v; drawMetrics(); });
+  seg($("mt-model"), [["all", "All 446 questions"], ["lasso120", "Lasso 120"], ["lasso60", "Lasso 60"], ["lasso27", "Lasso 27"]], MT.model, v => { MT.model = v; drawMetrics(); });
+  $("mt-csv").onclick = downloadMetrics;
+  drawMetrics();
+}
+// the detailed view's model keys, named with their training target so they cannot be confused with each other
+const MT_NAMES = {"benign vs malignant": {all: "ridge on all 446 questions, trained on two classes", lasso120: "ridge on 120 lasso-chosen questions, trained on two classes",
+  lasso60: "ridge on 60 lasso-chosen questions, trained on two classes", lasso27: "ridge on 27 lasso-chosen questions, trained on two classes", direct: 'Sonnet asked "Is this a malignant lesion?", no model'},
+  "naevus vs melanoma": {pair: "ridge on all 446 questions, trained on naevus vs melanoma only", tenclass: "ridge on all 446 questions, trained on ten subtypes",
+  twoclass: "ridge on all 446 questions, trained on two classes", direct: 'Sonnet asked "Is this a malignant lesion?", no model'}};
+function mBar(v, col) {
+  if (v === null || v === undefined || Number.isNaN(v)) return "n/a";
+  return `<span class="mbar"><span style="width:${(100 * v).toFixed(1)}%;background:${col}"></span></span><span class="mval">${fmt(v)}</span>`;
+}
+function curMetricRows() {
+  if (MT.task === "ten") return D.sub.metrics.ten.filter(x => x.model === MT.model && x.subset === MT.sub);
+  return D.sub.metrics.binary.filter(x => x.task === MT.task && x.rule === MT.rule && x.subset === MT.sub);
+}
+function drawMetrics() {
+  const ten = MT.task === "ten";
+  $("mt-rule-c").hidden = ten; $("mt-model-c").hidden = !ten;
+  const rows = curMetricRows(), rg = (x, k) => `${fmt(x[k + "_min"])} to ${fmt(x[k + "_max"])} over repeats`;
+  if (!ten) {
+    const order = MT.task === "naevus vs melanoma" ? ["pair", "tenclass", "twoclass", "direct"] : ["all", "lasso120", "lasso60", "lasso27", "direct"];
+    const R = order.map(k => rows.find(x => x.model === k)).filter(Boolean);
+    const col = k => k === "direct" ? PAL.ink3 : PAL.c[0];
+    const pos = MT.task === "naevus vs melanoma" ? "melanoma" : "malignant", neg = MT.task === "naevus vs melanoma" ? "naevi" : "benign";
+    $("mt-cap").innerHTML = `Positive class: ${pos}. ${R[0].n_pos} ${pos === "melanoma" ? "melanomas" : "malignant"} and ${R[0].n_neg} ${neg} images${MT.sub === "dermoscopic only" ? " (dermoscopic only)" : ""}. Threshold: ${MT.rule === "P >= 0.5" ? "P ≥ 0.5, fixed in advance" : "the threshold that detects 95% of positive cases, chosen on the same predictions"}. Hover a cell for its range over the five repeats.`;
+    $("mt-table").innerHTML = `<table class="mtab"><tr><th>model</th><th class="num">threshold</th>${MCOLS.map(([, n]) => `<th>${n}</th>`).join("")}<th class="num">precision</th><th class="num">AUROC</th></tr>` +
+      R.map(x => `<tr><td>${x.model === "direct" ? `<i>${esc(MT_NAMES[MT.task][x.model])}</i>` : esc(MT_NAMES[MT.task][x.model] || x.name)}</td><td class="num">${fmt(x.threshold)}</td>${MCOLS.map(([k]) => `<td title="${rg(x, k)}">${mBar(x[k], col(x.model))}</td>`).join("")}<td class="num" title="${rg(x, "precision")}">${fmt(x.precision)}</td><td class="num">${fmt(x.auroc, 3)}</td></tr>`).join("") + `</table>`;
+    const m = R[0], d = R.find(x => x.model === "direct"), best = MT.task === "naevus vs melanoma" ? R.find(x => x.model === "tenclass") : m;
+    $("c11-take3").innerHTML = MT.rule === "P >= 0.5"
+      ? `At P ≥ 0.5 the question-based models balance the two errors (${esc(MT_NAMES[MT.task][best.model] || best.name)}: sensitivity ${pct(best.sensitivity)}, specificity ${pct(best.specificity)}), whereas the direct question is conservative: it rarely calls a lesion ${pos} (sensitivity ${pct(d.sensitivity)}, specificity ${pct(d.specificity)}). Its accuracy (${pct(d.accuracy)}) therefore looks respectable while it misses ${pct(1 - d.sensitivity)} of ${pos === "melanoma" ? "melanomas" : "malignant lesions"}; F1 (${fmt(d.f1)} against ${fmt(best.f1)}) exposes the difference.`
+      : `Forced to detect 95% of ${pos === "melanoma" ? "melanomas" : "malignant lesions"}, every model gives up specificity, but the question-based models keep ${pct(Math.min(...R.filter(x => x.model !== "direct").map(x => x.specificity)))} to ${pct(Math.max(...R.filter(x => x.model !== "direct").map(x => x.specificity)))} of ${neg} correctly cleared, against ${pct(d.specificity)} for the direct question.`;
+  } else {
+    const ov = rows.find(x => x.subtype === "overall");
+    $("mt-cap").innerHTML = `Each image assigned to its most probable subtype; ${ov.n.toLocaleString()} images, 100 per subtype${MT.sub === "dermoscopic only" ? " (dermoscopic only, so fewer in some subtypes)" : ""}. For each subtype, sensitivity is the share of its images assigned to it, specificity the share of other images not assigned to it. Hover a cell for its range over the five repeats.`;
+    const body = subOrder.map(s => rows.find(x => x.subtype === SUB[s])).filter(Boolean);
+    $("mt-table").innerHTML = `<dl class="kv big" style="grid-template-columns:auto auto auto auto auto auto;margin-bottom:12px"><dt>accuracy</dt><dd><b>${fmt(ov.accuracy, 3)}</b></dd><dt>macro-F1</dt><dd><b>${fmt(ov.f1, 3)}</b></dd><dt>mean specificity</dt><dd><b>${fmt(ov.specificity, 3)}</b></dd></dl>` +
+      `<table class="mtab"><tr><th>subtype</th><th class="num">n</th><th>Sensitivity</th><th>Specificity</th><th>Precision</th><th>F1</th></tr>` +
+      body.map(x => { const gi = D.sub_group[SUB.indexOf(x.subtype)], c = PAL.grp[gi];
+        return `<tr><td>${grpDot(gi)} ${esc(x.subtype)}</td><td class="num">${x.n}</td>${["sensitivity", "specificity", "precision", "f1"].map(k => `<td title="${rg(x, k)}">${mBar(x[k], c)}</td>`).join("")}</tr>`; }).join("") +
+      `<tr class="tot"><td>mean over subtypes</td><td class="num">${ov.n}</td>${["sensitivity", "specificity", "precision", "f1"].map(k => `<td title="${rg(ov, k)}">${mBar(ov[k], PAL.ink2)}</td>`).join("")}</tr></table>`;
+    $("c11-take3").innerHTML = `Specificity is high for every subtype (${fmt(Math.min(...body.map(x => x.specificity)))} to ${fmt(Math.max(...body.map(x => x.specificity)))}) simply because nine of every ten images belong to other subtypes; sensitivity and F1 carry the information. Mean sensitivity equals balanced accuracy (${fmt(ov.sensitivity, 3)}); with equal class sizes it also equals overall accuracy.`;
+  }
+}
+function downloadMetrics() {
+  const rows = curMetricRows(); if (!rows.length) return;
+  const keys = Object.keys(rows[0]), q = v => typeof v === "string" ? `"${v.replace(/"/g, '""')}"` : v ?? "";
+  const csv = [keys.join(","), ...rows.map(r => keys.map(k => q(r[k])).join(","))].join("\n");
+  const a = el("a", {href: URL.createObjectURL(new Blob([csv], {type: "text/csv"})), download: `metrics_${(MT.task === "ten" ? "ten_subtypes_" + MT.model : MT.task.replace(/ /g, "_") + "_" + (MT.rule === "P >= 0.5" ? "p05" : "sens95"))}_${MT.sub === "all images" ? "all" : "dermoscopic"}.csv`});
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+
+// ------------------------------------------------------------------ derived quantities used on several pages
+const MAIN = () => KEY("s1_2c|all|patient|all images"), CTRL = () => KEY("s1_2c|control question|patient|all images");
+const BEN = [...Array(NI).keys()].filter(i => D.img.grp[i] === 0), MAL = [...Array(NI).keys()].filter(i => D.img.grp[i] === 2);
+const meanOver = (ims, f) => ims.reduce((a, i) => a + f(i), 0) / ims.length;
+const meanP = (ims, q) => meanOver(ims, i => p_(i, q)), meanZ = (ims, q) => meanOver(ims, i => z_(i, q));
+const yesRate = (ims, q) => meanOver(ims, i => p_(i, q) >= .5 ? 1 : 0);
+const nSources = () => new Set(D.q.sources.flatMap(s => String(s).split(";").map(x => x.trim()).filter(Boolean))).size;
+const CASE_M = () => D.cases.cases.find(c => c.grp === 2), CASE_B = () => D.cases.cases.find(c => c.grp === 0);
+function typicalIndeterminate() {
+  const ims = [...Array(NI).keys()].filter(i => D.img.grp[i] === 1 && D.img.imtype[i] === "dermoscopic" && D.img.ridge[i] !== null);
+  const v = ims.map(i => D.img.ridge[i]).sort((a, b) => a - b), med = v[Math.floor(v.length / 2)];
+  return ims.sort((a, b) => Math.abs(D.img.ridge[a] - med) - Math.abs(D.img.ridge[b] - med))[0];
+}
+
+// ------------------------------------------------------------------ graphical abstract (overview)
+function renderAbstract() {
+  const ims = [[CASE_B().i, 0], [typicalIndeterminate(), 1], [CASE_M().i, 2]];
+  const thumb = i => `data:image/jpeg;base64,${D.img.thumb[i]}`;
+  const arrow = `<div class="arrow" aria-hidden="true"><svg viewBox="0 0 34 14"><line x1="1" y1="7" x2="29" y2="7" stroke="${PAL.muted}" stroke-width="1.6"/><path d="M26,2 L33,7 L26,12" fill="none" stroke="${PAL.muted}" stroke-width="1.6"/></svg></div>`;
+  const pn = (id, cls, k, body) => `<div class="pn ${cls}" tabindex="0" role="link" data-id="${id}"><div class="k"><span>${k}</span><span class="go">${$(id).dataset.rn || ""}</span></div>${body}</div>`;
+  const nG = g => D.img.grp.filter(x => x === g).length;
+  const qShow = [0, 1, 2, 3];
+  const colA = `<div class="col">
+    ${pn("c2", "", "Literature", `<div class="big">400+ papers <small>read</small></div><div class="s">${nSources()} of them cited directly by the questions</div>`)}
+    <div class="vlink"></div>
+    ${pn("c2", "dash", "Questionnaire", `<div class="big">${NQ} questions <small>in ${TOP.length} topics</small></div>
+      <ol>${qShow.map(q => `<li>${esc(D.q.text[q])}</li>`).join("")}<li class="more">… and ${NQ - qShow.length} more, each answered yes or no</li></ol>`)}
+    <div class="vlink"></div>
+    ${pn("c1", "grow", "Images", `<div class="big">${NI.toLocaleString()} ISIC images <small>ten subtypes of 100</small></div>
+      <div class="thumbs">${ims.map(([i, g]) => `<figure><img src="${thumb(i)}" alt="" style="border-color:${PAL.grp[g]}"><figcaption>${GRP[g]}</figcaption></figure>`).join("")}</div>
+      <div class="s">${nG(0)} benign · ${nG(1)} indeterminate · ${nG(2)} malignant</div>`)}</div>`;
+  const qs = [0, 1, 2], last = NQ - 1;
+  const colB = `<div class="col">${pn("c1", "grow", "Answerer", `<div class="big">Claude Sonnet 5.5 <small>answers every question</small></div>
+    <div class="s" style="margin-bottom:4px">P(yes) for each question, with a stated confidence</div>
+    ${ims.map(([i, g]) => `<div class="ans"><img src="${thumb(i)}" alt="" style="border-color:${PAL.grp[g]}"><table>${qs.map(q => `<tr><td>Q${q + 1}</td><td class="num">${fmt(p_(i, q))}</td></tr>`).join("")}<tr><td>…</td><td></td></tr><tr><td>Q${last + 1}</td><td class="num">${fmt(p_(i, last))}</td></tr></table></div>`).join("")}
+    <div class="s" style="margin-top:6px">${(NQ * NI).toLocaleString()} answers, each turned into a Directional Score</div>`)}</div>`;
+  const M = PM();
+  const colC = `<div class="col">${pn("c3", "", "Classifier", `<div class="big">Ridge regression <small>on ${IMP.n_questions} clinical questions</small></div>
+      <div class="stat3"><div><b>AUROC ${fmt(MAIN().fold_mean)}</b><span>benign against malignant; asking “Is this malignant?” directly gives ${fmt(CTRL().fold_mean)}</span></div></div>`)}
+    <div class="vlink"></div>
+    ${pn("c4", "grow", "Ten subtypes", `<div class="stat3"><div><b>${pct(TEN.bacc[0])}</b><span>balanced accuracy over ten subtypes (chance 10%); true subtype among the first three choices for ${pct(TEN.top3)}</span></div>
+      <div><b>AUROC ${fmt(M.tenclass.auroc_repeat_mean)}</b><span>naevus against melanoma, read from the same model</span></div></div>`)}</div>`;
+  const top = [...IMP.top.slice(0, 20)].sort((a, b) => b.ridge - a.ridge), pick = [...top.slice(0, 3), ...top.slice(-3)];
+  const wmax = Math.max(...pick.map(t => Math.abs(t.ridge)));
+  const bar = w => { const f = Math.abs(w) / wmax * 40; return `<svg width="88" height="12"><line x1="44" x2="44" y1="0" y2="12" stroke="${PAL.ink3}"/><rect x="${w > 0 ? 44 : 44 - f}" y="2" width="${f}" height="8" rx="2" fill="${rgb(w > 0 ? PAL.pos : PAL.neg)}"/></svg>`; };
+  const colD = `<div class="col">${pn("c5", "grow", "Interpretation", `<div class="big">Which questions decide <small>and in which direction</small></div>
+    <div class="wq"><div class="h">question</div><div class="h">benign | malignant</div>${pick.map(t => `<div>${esc(D.q.text[t.q])}</div><div>${bar(t.ridge)}</div>`).join("")}</div>
+    <div class="s" style="margin-top:8px">Three strongest questions each way among the top 20 (standardised ridge weight). The full ranking, the subtype markers and two worked cases are in Ch. V.</div>`)}</div>`;
+  $("ga").innerHTML = colA + arrow + colB + arrow + colC + arrow + colD;
+  $("ga").querySelectorAll(".pn[data-id]").forEach(p => { p.onclick = () => { showTab(p.dataset.id); scrollTo(0, 0); }; p.onkeydown = e => { if (e.key === "Enter") p.click(); }; });
+}
+
+// ------------------------------------------------------------------ overview
+function renderC0() {
+  const M = PM();
+  $("hero-lede").innerHTML = `Claude Sonnet 5.5 answered ${NQ} yes-or-no dermatological questions, drafted from the clinical literature, for each of ${NI.toLocaleString()} ISIC images spanning ten diagnostic subtypes. Each answer carries a stated probability and confidence, so every image becomes a profile of ${NQ} interpretable values. We describe what these answers contain, train a ridge classifier on them under patient-grouped nested cross-validation, measure how well it distinguishes the ten subtypes and, among them, melanoma from naevus, and identify the questions on which its decisions rest.
+    <span class="kw">The answers (I) and the structure of the questions (II) come first; the classifier and its comparison with other models (III) then lead to the ten subtypes (IV) and to the questions that carry the decision, with two worked cases (V).</span>`;
+  renderAbstract();
+  const S = [
+    ["c1", "I", `<b>${pct(D.answers.yes_share)} of answers are affirmative.</b> ${D.answers.n_rarely} of ${NQ} questions are affirmed in fewer than 5% of images; their information lies in the confidence of the “no”.`],
+    ["c2", "II", `<b>The ${NQ} questions span about ${D.pca.n_parallel} dimensions</b> above chance; agglomerative clustering groups them into families that follow dermoscopic structure and the perilesional skin.`],
+    ["c3", "III", `<b>Ridge reaches AUROC ${fmt(MAIN().fold_mean)}</b> for benign against malignant, against ${fmt(CTRL().fold_mean)} for the direct question; training on the ten subtypes costs nothing on this task.`],
+    ["c4", "IV", `<b>Ten subtypes are assigned correctly in ${pct(TEN.bacc[0])} of images</b> (chance 10%); the same model separates melanoma from naevus with AUROC ${fmt(M.tenclass.auroc_repeat_mean)}.`],
+    ["c5", "V", `<b>No single question exceeds AUROC ${fmt(IMP.best_alone.auc)};</b> the decision rests on many weak, partly redundant items, several describing the skin around the lesion.`]];
+  $("summary").innerHTML = S.map(([id, rn, t]) => `<div data-id="${id}"><span class="rn">${rn}</span><p>${t}</p></div>`).join("");
+  $("summary").querySelectorAll("div[data-id]").forEach(d => d.onclick = () => { showTab(d.dataset.id); scrollTo(0, 0); });
+}
+
+// ------------------------------------------------------------------ I answers
+function renderC1() {
+  const A = D.answers;
+  $("c1-intro").textContent = `${NI.toLocaleString()} ISIC images, 100 per subtype (500 benign, 200 indeterminate, 300 malignant). For every question the model returned P(yes) and a stated confidence; questions were posed one topic per prompt.`;
+  $("c1-cap1").textContent = `All question–image pairs (n = ${(NQ * NI).toLocaleString()}), in bins of 0.05.`;
+  $("c1-find").innerHTML = `<div class="stat">${pct(A.yes_share)}<small>of answers affirmative</small></div><div class="say">The model rarely affirms. <b>${A.n_rarely} of ${NQ} questions</b> are affirmed in fewer than 5% of images; for these, the informative quantity is <b>the confidence of the negative answer</b> rather than its direction.</div>`;
+  hist($("c1-hist1"), A.p_hist, "stated P(yes)", PAL.c[0], v => (v / 1000).toFixed(0) + "k");
+  const lo = A.p_hist[0] / (NQ * NI);
+  $("c1-take1").innerHTML = `${pct(lo)} of all answers fall below P(yes) = 0.05. Most of the questionnaire describes features a given lesion does not have, so the answers are dominated by confident or hesitant “no”.`;
+  const s = [["confident absent", -1], ["uncertain", 0], ["confident present", 1]];
+  $("c1-score").innerHTML = `<div style="font-size:21px;margin-bottom:12px">Directional Score <i>s</i> = (2 · P(yes) − 1) × <i>c</i></div>
+    <div style="display:flex;gap:4px;font-family:var(--sans)">${s.map(([t, v]) => `<div style="text-align:center;font-size:11.5px;color:var(--text-secondary)"><div style="width:92px;height:14px;border-radius:2px;background:${rgb(divRGB(v))};margin-bottom:3px"></div>${t}</div>`).join("")}</div>
+    <p class="muted" style="margin:10px 0 0">where <i>c</i> ∈ [0, 1] is the stated confidence; <i>s</i> is then standardised per question across the ${NI.toLocaleString()} images.</p>`;
+}
+
+// ------------------------------------------------------------------ II questions
+function renderC2() {
+  const pc = D.pca;
+  $("c2-find").innerHTML = `<div class="stat">${pc.n_parallel}<small>components above the permutation null</small></div><div class="say">The ${NQ} questions span approximately <b>${pc.n_parallel} independent dimensions</b>; ${pc.n_for["0.5"]} components account for half of the variance and ${pc.n_for["0.9"]} for 90%. Agglomerative clustering groups the questions into <b>families that follow dermoscopic structure</b> (vessels, keratinisation, pigment network, blue-grey structures) and <b>the perilesional skin</b>.</div>`;
+  const svg = $("scree-svg"); svg.innerHTML = "";
+  $("scree-legend").innerHTML = legendRow([[PAL.c[0], "observed"], [PAL.ink2, "permuted, 95th percentile", true]]);
+  const n = pc.ratio.length, ymin = Math.min(...pc.ratio, ...pc.null95) * .8, ymax = pc.ratio[0] * 1.3;
+  const ax = axes(svg, 520, 330, {l: 52, r: 12, t: 10, b: 40}, [1, n], [ymin, ymax], "principal component", "explained variance", {ylog: true, yt: [.001, .003, .01, .03, .1, .3].filter(v => v >= ymin && v <= ymax), yf: v => (100 * v) + "%", xt: [1, 10, 20, 30, 40, 50].filter(v => v <= n)});
+  svg.appendChild(svgEl("line", {x1: ax.X(pc.n_parallel + .5), x2: ax.X(pc.n_parallel + .5), y1: 10, y2: 290, stroke: PAL.ink2, "stroke-dasharray": "2 3"}));
+  svgText(svg, ax.X(pc.n_parallel + .5) + 5, 24, `${pc.n_parallel} components`, {style: `font-size:11px;fill:${PAL.ink2}`});
+  line(svg, pc.null95.map((v, i) => [ax.X(i + 1), ax.Y(v)]), PAL.ink2, "4 3", 1.5);
+  line(svg, pc.ratio.map((v, i) => [ax.X(i + 1), ax.Y(v)]), PAL.c[0], "", 2.5);
+  hoverPoints(svg, pc.ratio.map((v, i) => [ax.X(i + 1), ax.Y(v), `PC${i + 1}: ${(100 * v).toFixed(1)}% (null ${(100 * pc.null95[i]).toFixed(2)}%)<br>cumulative ${(100 * pc.cum[i]).toFixed(0)}%`]));
+  $("c2-take1").innerHTML = `The first component explains ${(100 * pc.ratio[0]).toFixed(0)}% of the variance; beyond component ${pc.n_parallel}, each explains no more than shuffled answers would. Many questions are therefore partly redundant, which is what the clustering in Fig. 2.2 makes visible.`;
+  renderCorr();
+  fillSelect($("qg-k"), kOptions(D.meta.qks), QG.k); $("qg-k").onchange = e => { QG.k = +e.target.value; QG.row = -1; drawQG(); };
+  drawQG();
+  $("c2-method").innerHTML = `<p>All ${NQ} questions as written, clinical and artefact, on the standardised Directional Score. <b>Correlation:</b> Pearson <i>r</i> between two questions across the ${NI.toLocaleString()} images. <b>Agglomerative clustering:</b> Ward linkage on correlation distance 1 − <i>r</i>; every question starts as its own cluster and the two clusters whose merger least increases the within-cluster variance are joined, until one remains. Cutting the tree at <i>k</i> gives the clusters (default k = ${D.meta.kq}). <b>Dimensions:</b> principal component analysis of the same matrix; parallel analysis keeps the components whose explained variance exceeds the 95th percentile of 50 permutations in which each question's answers are shuffled independently across images. Stage S9.</p>`;
+}
+
+// ------------------------------------------------------------------ III modeling
+function renderC3() {
+  const main = MAIN(), ctl = CTRL(), derm = KEY("s1_2c|all|patient|dermoscopic only"), les = KEY("s1_2c|all|lesion|all images");
+  const fa = E.folds.filter(f => f.subset === "all images"), better = fa.filter(f => f.ridge_auc > f.ctrl_auc).length;
+  $("c3-find").innerHTML = `<div class="stat">${fmt(main.fold_mean, 3)}<small>AUROC, ± ${fmt(main.fold_sd, 3)} (s.d. over 25 folds)</small></div><div class="say">The question-based model exceeds the direct question (<b>${fmt(ctl.fold_mean, 3)}</b>) in <b>${better} of ${fa.length} folds</b>. At 95% sensitivity its specificity is <b>${pct(main.spec_at_sens)}</b>, against ${pct(ctl.spec_at_sens)}. Restricted to dermoscopic images, AUROC is <b>${fmt(derm.fold_mean, 3)}</b>.</div>`;
+  const G = E.groups;
+  $("c3-checks").innerHTML = [
+    ["Patient-grouped folds", `${G.n_groups} groups; the ${G.multi} patients with 2 to ${G.largest} images are never split across training and test. Lesion-grouped estimate: ${fmt(les.fold_mean, 3)}.`],
+    ["Near-duplicate merging", `Perceptual hash (dHash, 256 bits, threshold 12 bits) over all image pairs; ${G.dups} pair found, already within one patient.`],
+    ["In-fold fitting", "Standardisation, penalty selection and any feature selection are refitted within every training split, inner and outer."],
+    ["Unscored final model", "Fitted on all labelled images and frozen; it will be evaluated once, on the external test set."]].map(([a, b]) => `<li><b>${a}</b>${esc(b)}</li>`).join("");
+  seg($("roc-sub"), [["all", "All images"], ["derm", "Dermoscopic only"]], EV.sub, v => { EV.sub = v; drawROC(); });
+  drawROC(); drawStrip();
+  renderCmp();
+  renderMtDetail();
+  $("c3-method").innerHTML = `<p><b>Classifier.</b> Ridge denotes L2-penalised logistic regression on the standardised Directional Scores of the 446 clinical questions (artefact questions and the control question excluded), with balanced class weights. Performance is estimated by nested cross-validation: five repeats of 5-fold, stratified on the ten subtypes and grouped by ISIC patient (by lesion where no patient is recorded). The penalty is selected from 21 values (λ = 1 to 10⁵) by grouped 3-fold inner cross-validation on log loss. Headline values are means over the 25 outer test folds; ROC curves pool each image's out-of-fold prediction averaged over repeats. Stage S10.</p>` + C11_METHOD;
+}
+
+// ------------------------------------------------------------------ IV classification
+function renderC4() { renderC9(); renderC10(); }
+
+// ------------------------------------------------------------------ V importance
+function renderC5() {
+  const best = IMP.best_alone;
+  $("c6-find").innerHTML = `<div class="stat">${fmt(best.auc)}<small>best univariate AUROC</small></div><div class="say">The strongest single item (<i>“${esc(best.q !== null ? D.q.text[best.q] : "")}”</i>) falls below both the combined model (${fmt(MAIN().fold_mean)}) and the direct question. Discrimination arises from <b>many weak, partially redundant items</b>; for <b>${IMP.n_top20_doubt} of the top 20</b> the signal lies in the confidence of a negative answer.</div>`;
+  $("dotb").style.background = PAL.grp[0]; $("dotm").style.background = PAL.grp[2];
+  const top = IMP.top.slice(0, 20), wmax = Math.max(...top.map(t => Math.abs(t.ridge))), pmax = Math.max(...top.flatMap(t => [t.p_b, t.p_m]));
+  $("imp").innerHTML = `<div class="h"></div><div class="h">question</div><div class="h">weight (benign | malignant)</div><div class="h opt">mean P(yes), 0 to ${fmt(pmax, 1)}</div><div class="h num opt">alone</div><div class="h num opt">kept</div>` +
+    top.map(t => `<div class="row" data-q="${t.q}"><div class="rk">${t.rank}</div><div>${esc(D.q.text[t.q])}${t.doubt ? '<span class="badge">doubt</span>' : ""}</div><div>${wBar(t.ridge, wmax)}</div><div class="opt">${dumbbell(t.p_b, t.p_m, pmax)}</div><div class="num opt">${fmt(t.auc)}</div><div class="num opt">${pct(t.lasso)}</div></div>`).join("");
+  $("imp").querySelectorAll(".row").forEach(r => r.onclick = () => openQuestion(+r.dataset.q));
+  $("c6-take1").innerHTML = `${top.filter(t => t.ridge > 0).length} of the 20 carry positive (malignant) weight. Several describe the <b>perilesional skin</b> (surface roughness, chronic actinic damage, dyspigmentation) rather than the lesion itself; such features may not transfer to images from other acquisition sources.`;
+  $("markers").innerHTML = subOrder.map(s => `<div class="mk"><h4>${grpDot(D.sub_group[s])}${esc(SUB[s])}</h4><ol>${(IMP.markers[SUB[s]] || []).map(m => `<li data-q="${m.q}">${esc(D.q.text[m.q])} <span class="muted">${fmt(m.p_in)} vs ${fmt(m.p_out)}</span></li>`).join("")}</ol></div>`).join("");
+  $("markers").querySelectorAll("li[data-q]").forEach(l => l.onclick = () => openQuestion(+l.dataset.q));
+  renderRank();
+  renderCases();
+}
+const wBar = (w, wmax, W = 140) => { const h = W / 2, f = Math.min(Math.abs(w) / wmax, 1) * (h - 4), col = rgb(w > 0 ? PAL.pos : PAL.neg);
+  return `<svg width="${W}" height="14"><line x1="${h}" x2="${h}" y1="0" y2="14" stroke="${PAL.ink3}"/><rect x="${w > 0 ? h : h - f}" y="2" width="${f}" height="10" rx="2" fill="${col}"/></svg>`; };
+const dumbbell = (b, m, pmax) => { const X = v => 6 + Math.min(v / pmax, 1) * 128;
+  return `<svg width="140" height="14"><line x1="${X(Math.min(b, m))}" x2="${X(Math.max(b, m))}" y1="7" y2="7" stroke="${PAL.muted}" stroke-width="2"/><circle cx="${X(b)}" cy="7" r="4.5" fill="${PAL.grp[0]}"/><circle cx="${X(m)}" cy="7" r="4.5" fill="${PAL.grp[2]}"/></svg>`; };
+
+// the full ranking of the clinical questions
+const RK = {sort: "rank", dir: "all", search: "", rows: null};
+function rankRows() {
+  if (RK.rows) return RK.rows;
+  const k = String(QG.k);
+  RK.rows = [...Array(NQ).keys()].filter(q => IMP.rank_all[q] !== null && IMP.rank_all[q] !== undefined).map(q => {
+    const yb = yesRate(BEN, q), ym = yesRate(MAL, q);
+    return {q, rank: IMP.rank_all[q], w: IMP.ridge_all[q], auc: D.q.auc[q], pb: meanP(BEN, q), pm: meanP(MAL, q), yes: D.q.yes[q],
+      doubt: yb < .05 && ym < .05, cl: D.q.cl[k][q] + 1, text: D.q.text[q]}; });
+  return RK.rows;
+}
+function renderRank() {
+  $("nq-all").textContent = IMP.n_questions; $("rk-k").textContent = QG.k;
+  seg($("rk-sort"), [["rank", "Consensus rank"], ["w", "Ridge weight"], ["auc", "AUROC alone"]], RK.sort, v => { RK.sort = v; drawRank(); });
+  seg($("rk-dir"), [["all", "Both"], ["mal", "Toward malignant"], ["ben", "Toward benign"]], RK.dir, v => { RK.dir = v; drawRank(); });
+  $("rk-search").oninput = e => { RK.search = e.target.value.trim().toLowerCase(); drawRank(); };
+  $("rk-csv").onclick = () => {
+    const rows = rankRows().slice().sort((a, b) => a.rank - b.rank), qq = v => typeof v === "string" ? `"${v.replace(/"/g, '""')}"` : v ?? "";
+    const keys = [["rank", "consensus_rank"], ["q", "question_id"], ["text", "question"], ["w", "ridge_weight_toward_malignant"], ["auc", "auroc_alone"], ["pb", "mean_p_yes_benign"], ["pm", "mean_p_yes_malignant"], ["yes", "affirmation_rate"], ["cl", "cluster_k" + QG.k]];
+    const csv = [keys.map(k => k[1]).join(","), ...rows.map(r => keys.map(([k]) => k === "q" ? qq(D.q.id[r.q]) : qq(r[k])).join(","))].join("\n");
+    const a = el("a", {href: URL.createObjectURL(new Blob([csv], {type: "text/csv"})), download: "question_ranking.csv"}); document.body.appendChild(a); a.click(); a.remove(); };
+  drawRank();
+}
+function drawRank() {
+  const all = rankRows(), s = RK.search;
+  let R = all.filter(r => (!s || r.text.toLowerCase().includes(s)) && (RK.dir === "all" || (RK.dir === "mal" ? r.w > 0 : r.w < 0)));
+  const key = {rank: r => r.rank, w: r => -Math.abs(r.w), auc: r => -Math.abs((r.auc ?? .5) - .5)}[RK.sort];
+  R = R.sort((a, b) => key(a) - key(b));
+  const wmax = Math.max(...all.map(r => Math.abs(r.w))), pmax = Math.max(...all.flatMap(r => [r.pb, r.pm]));
+  $("rk").innerHTML = `<div class="h">#</div><div class="h">question</div><div class="h">ridge weight (benign | malignant)</div><div class="h opt">mean P(yes), 0 to ${fmt(pmax, 1)}</div><div class="h num opt">alone</div><div class="h num opt">affirmed</div><div class="h num opt">cluster</div>` +
+    R.map(r => `<div class="row" data-q="${r.q}"><div class="rk">${r.rank}</div><div>${esc(r.text)}${r.doubt ? '<span class="badge">doubt</span>' : ""}</div><div>${wBar(r.w, wmax)}</div><div class="opt">${dumbbell(r.pb, r.pm, pmax)}</div><div class="num opt">${fmt(r.auc)}</div><div class="num opt">${pct(r.yes)}</div><div class="num opt">${r.cl}</div></div>`).join("");
+  $("rk").querySelectorAll(".row").forEach(x => x.onclick = () => openQuestion(+x.dataset.q));
+  $("rk-note").textContent = `${R.length} of ${all.length} questions shown. Rank 1 is the most important. “Affirmed”: share of all images with P(yes) ≥ 0.5. Badge: affirmed in fewer than 5% of benign and of malignant images.`;
+}
+
+// ------------------------------------------------------------------ V.i case studies: evidence toward each side
+function renderCases() {
+  const C = D.cases.cases, NSIDE = 6, sig = v => 1 / (1 + Math.exp(-v));
+  const c0 = C[0], p0 = sig(c0.models.all.b0);
+  $("cases-lead").innerHTML = `One melanoma and one naevus, each typical of its subtype. The benign-against-malignant model, refitted without the patient's images, starts every image at the average image (P(malignant) ${fmt(p0)}). Each question then adds evidence toward malignant or toward benign, according to its weight and to how this image's answer compares with the average image's; the evidence on both sides sums exactly to the prediction. For each case we show where the prediction ends, the total evidence on each side, and the six strongest questions on each side, with the image's answer placed beside the average benign and the average malignant answer.`;
+  const cmax = Math.max(...C.flatMap(c => c.models.all.terms.map(t => Math.abs(t.c))));
+  const ZL = 2.5, SW = 190;
+  const strip = (t, mb, mm) => { const X = v => 8 + (Math.max(-ZL, Math.min(ZL, v)) + ZL) / (2 * ZL) * (SW - 16);
+    return `<svg width="${SW}" height="20"><line x1="8" x2="${SW - 8}" y1="10" y2="10" stroke="${PAL.border}" stroke-width="2"/><line x1="${X(0)}" x2="${X(0)}" y1="4" y2="16" stroke="${PAL.ink3}" stroke-dasharray="2 2"/>
+      <circle cx="${X(mb)}" cy="10" r="5" fill="${PAL.grp[0]}"/><circle cx="${X(mm)}" cy="10" r="5" fill="${PAL.grp[2]}"/><circle cx="${X(t.z)}" cy="10" r="6" fill="${PAL.ink}" stroke="${rgb(PAL.surf)}" stroke-width="1.5"/></svg>`; };
+  const cbar = v => { const W = 124, f = Math.abs(v) / cmax * (W - 36);
+    return `<svg width="${W}" height="16"><rect x="0" y="3" width="${Math.max(f, 1.5)}" height="10" rx="2" fill="${rgb(v > 0 ? PAL.pos : PAL.neg)}"/><text x="${f + 4}" y="12" style="font-size:11px;fill:${PAL.ink2}">${v > 0 ? "+" : "−"}${Math.abs(v).toFixed(2)}</text></svg>`; };
+  const ansTxt = t => `Claude: <b>${t.py >= .5 ? "yes" : "no"}</b> (P(yes) ${fmt(t.py)}, confidence ${fmt(t.cf)})`;
+  $("cases").innerHTML = C.map((c, ci) => {
+    const M = c.models.all, T = M.terms, pos = T.filter(t => t.c > 0).sort((a, b) => b.c - a.c), neg = T.filter(t => t.c < 0).sort((a, b) => a.c - b.c);
+    const sp = pos.reduce((a, t) => a + t.c, 0), sn = neg.reduce((a, t) => a + t.c, 0);
+    // where the prediction starts and ends, on the probability scale
+    const gW = 600, X = v => 20 + v * (gW - 40), pa = sig(M.b0), pe = M.p, up = pe > pa;
+    // label positions: centred over their points, kept inside the frame and at least 170 apart
+    const cl = v => Math.max(80, Math.min(gW - 80, v)), LX = [cl(X(pa)), cl(X(pe))];
+    if (Math.abs(LX[1] - LX[0]) < 170) { const m = (LX[0] + LX[1]) / 2, s = LX[1] >= LX[0] ? 1 : -1; LX[0] = cl(m - s * 85); LX[1] = cl(m + s * 85);
+      if (Math.abs(LX[1] - LX[0]) < 170) { if (LX[0] <= 80 || LX[1] <= 80) { LX[s > 0 ? 1 : 0] = (s > 0 ? LX[0] : LX[1]) + 170; } else { LX[s > 0 ? 0 : 1] = (s > 0 ? LX[1] : LX[0]) - 170; } } }
+    const gauge = `<svg viewBox="0 0 ${gW} 58"><line x1="${X(0)}" x2="${X(1)}" y1="30" y2="30" stroke="${PAL.border}" stroke-width="6" stroke-linecap="round"/>
+      ${[0, .25, .5, .75, 1].map(v => `<text x="${X(v)}" y="54" text-anchor="middle" style="font-size:11px;fill:${PAL.ink3}">${v}</text>`).join("")}
+      <line x1="${X(.5)}" x2="${X(.5)}" y1="20" y2="40" stroke="${PAL.ink3}" stroke-dasharray="2 2"/>
+      <line x1="${X(pa)}" x2="${X(pe)}" y1="30" y2="30" stroke="${rgb(up ? PAL.pos : PAL.neg)}" stroke-width="6"/>
+      <circle cx="${X(pa)}" cy="30" r="6" fill="${rgb(PAL.surf)}" stroke="${PAL.ink2}" stroke-width="2"/><circle cx="${X(pe)}" cy="30" r="8" fill="${PAL.ink}"/>
+      <text x="${LX[0]}" y="13" text-anchor="middle" style="font-size:12px;fill:${PAL.ink2}">average image ${fmt(pa)}</text>
+      <text x="${LX[1]}" y="13" text-anchor="middle" style="font-size:12.5px;font-weight:700;fill:${PAL.ink}">this image ${fmt(pe)}</text></svg>`;
+    // the total evidence on each side, as a tug of war around the starting point
+    const tW = 600, mid = tW / 2, tmax = Math.max(...C.flatMap(cc => { const tt = cc.models.all.terms; return [tt.filter(t => t.c > 0).reduce((a, t) => a + t.c, 0), -tt.filter(t => t.c < 0).reduce((a, t) => a + t.c, 0)]; })), sc = v => v / tmax * (mid - 10);
+    const net = sp + sn;
+    const tug = `<svg viewBox="0 0 ${tW} 62"><rect x="${mid - sc(-sn)}" y="8" width="${sc(-sn)}" height="18" rx="2" fill="${rgb(PAL.neg)}"/><rect x="${mid}" y="8" width="${sc(sp)}" height="18" rx="2" fill="${rgb(PAL.pos)}"/>
+      <line x1="${mid}" x2="${mid}" y1="2" y2="32" stroke="${PAL.ink}" stroke-width="1.5"/>
+      <line x1="${mid}" x2="${mid + sc(net)}" y1="40" y2="40" stroke="${PAL.ink}" stroke-width="3"/><circle cx="${mid + sc(net)}" cy="40" r="4" fill="${PAL.ink}"/>
+      <text x="${mid - 6}" y="56" text-anchor="end" style="font-size:11.5px;fill:${rgb(PAL.neg)}">toward benign ${sn.toFixed(2)} (${neg.length} questions)</text>
+      <text x="${mid + 6}" y="56" text-anchor="start" style="font-size:11.5px;fill:${rgb(PAL.pos)}">toward malignant +${sp.toFixed(2)} (${pos.length} questions)</text></svg>`;
+    const col = (list, title, colr, total) => { const shown = list.slice(0, NSIDE), rest = total - shown.reduce((a, t) => a + t.c, 0);
+      return `<div><h4><span class="dot" style="background:${rgb(colr)}"></span>${title}</h4>` + shown.map(t => `<div class="row" data-q="${t.q}"><div class="qt">${esc(D.q.text[t.q])}</div>
+        <div>${strip(t, meanZ(BEN, t.q), meanZ(MAL, t.q))}<small>${ansTxt(t)}</small></div><div>${cbar(t.c)}</div></div>`).join("") +
+        `<div class="rest">The other ${list.length - shown.length} questions on this side add ${rest > 0 ? "+" : "−"}${Math.abs(rest).toFixed(2)}.</div></div>`; };
+    const correct = (M.p >= .5) === (c.grp === 2), i = c.i;
+    const info = [D.img.imtype[i], D.img.site[i], D.img.age[i] != null ? `age about ${D.img.age[i]}` : "", D.img.sex[i], D.img.dx3[i], D.img.confirm[i]].filter(Boolean).map(esc).join(" · ");
+    return `<div class="fig"><h3><span class="fn">Fig. 5.${4 + ci}</span>${c.grp === 2 ? "Malignant" : "Benign"}: ${esc(SUB[c.sub])}</h3>
+      <div class="case"><div class="pic"><img src="data:image/jpeg;base64,${c.image}" alt="${esc(c.id)}" data-i="${i}" title="Open the image">
+        <p class="idl">${esc(c.id)} · ${info}</p>
+        <p class="verdict">True diagnosis ${c.grp === 2 ? "malignant" : "benign"}; prediction ${M.p >= .5 ? "malignant" : "benign"}, ${correct ? "correct" : "incorrect"}. The cross-validated estimate of Ch. III gave ${fmt(c.oof)}; asking Claude directly “Is this a malignant lesion?” gave P(yes) ${fmt(c.ctrl)}.</p></div>
+      <div><h4 class="tsub" style="margin-top:0">Where the prediction ends: P(malignant)</h4><div class="gauge">${gauge}</div>
+        <h4 class="tsub" style="margin-top:4px">The evidence on each side, and its balance</h4><div class="tug">${tug}</div>
+        <div class="evkey"><span><span class="dot" style="background:${PAL.grp[0]}"></span>average benign answer</span><span><span class="dot" style="background:${PAL.grp[2]}"></span>average malignant answer</span><span><span class="dot" style="background:${PAL.ink}"></span>this image</span><span style="color:var(--text-muted)">scale: firmer “no” on the left, firmer “yes” on the right; dashed: the average image</span></div>
+        <div class="ev">${col(pos, "Strongest evidence toward malignant", PAL.pos, sp)}${col(neg, "Strongest evidence toward benign", PAL.neg, sn)}</div></div></div></div>`;
+  }).join("");
+  $("cases").querySelectorAll(".row[data-q]").forEach(r => r.onclick = () => openQuestion(+r.dataset.q));
+  $("cases").querySelectorAll("img[data-i]").forEach(m => m.onclick = () => openImage(+m.dataset.i));
+  $("c7-method").innerHTML = `<p>The model is the main ridge model (Ch. III) on all ${c0.models.all.terms.length} clinical questions, refitted with the same penalty (C = ${c0.models.all.C}) on every labelled image except those of the case's patient (${C.map(c => `${c.n_train} training images, ${c.n_left_out} left out`).join("; ")}). The penalty itself was chosen with the case included, so the hold-out is close to, but not quite, a clean test.</p>
+  <p>The model works in log-odds. Each question contributes its weight times how far this image's Directional Score lies from the training average, in standard deviations; the contributions and the intercept (the average image) sum exactly to the log-odds of the prediction. The bars give each contribution in log-odds; the tug of war sums them on each side, and its black line is the net shift from the average image. The answer scale shows the image's standardised Directional Score beside the mean of the benign and of the malignant images, clipped at ±${ZL} standard deviations.</p>
+  <p>Because each contribution depends on how the answer compares with other images, a “no” can push either way. A question with a positive weight pushes toward malignant whenever the answer leans more toward yes than usual, which includes a less certain “no”; on the answer scale, the black dot then sits nearer the malignant average. ${D.cases.auto ? "Cases chosen automatically: dermoscopic, correctly classified out of fold, and the most typical of their subtype (out-of-fold probability closest to the subtype median)." : "Cases named in the configuration."}</p>`;
+}
+
+// ------------------------------------------------------------------ cards for a question or an image
+function qCard(i) {
+  const q = D.q, corr = [...Array(NQ).keys()].filter(j => j !== i).map(j => [j, r_(i, j)]).sort((a, b) => b[1] - a[1]);
+  const li = ([j, r]) => `<li data-q="${j}"><span class="r">${r >= 0 ? "+" : ""}${r.toFixed(2)}</span>${esc(q.text[j])}</li>`;
+  const rk = IMP.rank_all[i];
+  return `<h3>${esc(q.text[i])}</h3>
+    <dl class="kv"><dt>Topic</dt><dd>${esc(TOP[q.topic[i]])}</dd><dt>Cluster</dt><dd>${q.cl[String(QG.k)][i] + 1} of ${QG.k} (Fig. 2.3)</dd>
+    <dt>Affirmed</dt><dd>${pct(q.yes[i])} of images</dd><dt>AUROC alone</dt><dd>${fmt(q.auc[i])}</dd><dt>Ridge weight</dt><dd>${fmt(q.ridge[i], 3)}</dd>
+    <dt>Consensus rank</dt><dd>${rk == null ? "not in the classifier" : `${rk} of ${IMP.n_questions}`}</dd><dt>ID</dt><dd>${esc(q.id[i])} · ${esc(q.kind[i])}</dd></dl>
+    <h4>Mean z-score by subtype</h4>${profBars(q.prof[i], SUB, 1.2)}
+    <h4>Most correlated answers</h4><ul class="qlist">${corr.slice(0, 6).map(li).join("")}</ul>
+    <h4>Most anticorrelated answers</h4><ul class="qlist">${corr.slice(-3).reverse().map(li).join("")}</ul>
+    <h4>Most similar wording</h4><ul class="qlist">${q.nn_text[i].slice(0, 5).map(j => li([j, r_(i, j)])).join("")}</ul>`;
+}
+function iCard(i) {
+  const g = D.img, z = [...Array(NQ).keys()].map(q => [q, z_(i, q)]).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1])).slice(0, 8);
+  const d = []; for (let j = 0; j < NI; j++) { if (j === i) continue; let s = 0; for (let q = 0; q < NQ; q++) { const t = Z[i * NQ + q] - Z[j * NQ + q]; s += t * t; } d.push([j, s]); }
+  d.sort((a, b) => a[1] - b[1]);
+  return `<img class="big-thumb" src="data:image/jpeg;base64,${g.thumb[i]}" alt="${esc(g.id[i])}">
+    <h3>${grpDot(g.grp[i])} ${esc(SUB[g.sub[i]])}</h3>
+    <dl class="kv"><dt>ISIC diagnosis</dt><dd>${esc(g.dx3[i] || "n/a")}</dd><dt>Image</dt><dd>${esc(g.imtype[i])} · ${esc(g.inst[i])}</dd>
+    <dt>Patient</dt><dd>${esc([g.sex[i], g.age[i] !== null ? g.age[i] + " y" : "", g.site[i]].filter(Boolean).join(", ") || "n/a")}</dd>
+    <dt>Ridge</dt><dd>P(malignant) ${fmt(g.ridge[i])}, out of fold</dd><dt>Direct question</dt><dd>P(yes) ${fmt(g.ctrl[i])}</dd></dl>
+    <h4>Most atypical answers</h4><ul class="qlist">${z.map(([q, v]) => `<li data-q="${q}"><span class="r">${v >= 0 ? "+" : ""}${v.toFixed(1)} sd</span>${esc(D.q.text[q])}</li>`).join("")}</ul>
+    <h4>Nearest images in answer space</h4><div class="thumbgrid">${d.slice(0, 6).map(([j]) => `<figure data-i="${j}"><img src="data:image/jpeg;base64,${g.thumb[j]}" style="border-color:${PAL.grp[g.grp[j]]}" alt=""><figcaption>${esc(SUB[g.sub[j]])}</figcaption></figure>`).join("")}</div>
+    <p class="muted" style="margin-top:8px">${esc(g.id[i])}</p>`;
+}
+function showCard(html) {
+  const dlg = $("card"), body = $("card-body");
+  body.innerHTML = html; dlg.scrollTop = 0;
+  body.querySelectorAll("li[data-q]").forEach(l => l.onclick = () => openQuestion(+l.dataset.q));
+  body.querySelectorAll("figure[data-i]").forEach(f => f.onclick = () => openImage(+f.dataset.i));
+  if (!dlg.open) dlg.showModal();
+}
+function openQuestion(i) { hideTip(); showCard(qCard(i)); }
+function openImage(i) { hideTip(); showCard(iCard(i)); }
+$("card-x").onclick = () => $("card").close();
+$("card").addEventListener("click", e => { if (e.target === $("card")) $("card").close(); });
+
+// ------------------------------------------------------------------ methods and supplement
+function renderMethods() {
+  $("methods").innerHTML = `
+  <p><b>Answers.</b> Claude Sonnet 5.5 (effort low) in topic mode, one prompt per topic (${TOP.length} prompts per image), images downscaled to at most 3.6 MP, one replicate. The Directional Score is (2 P(yes) − 1) multiplied by the stated confidence and standardised per question. Chapters I and II use all ${NQ} questions as written, clinical and artefact; the classifier uses the ${IMP.n_questions} clinical questions. The control question, “Is this a malignant lesion?”, is never used as a feature.</p>
+  <p><b>Questions.</b> Pearson correlation across images; agglomerative (Ward) clustering on correlation distance; principal component analysis with parallel analysis (50 permutations).</p>
+  <p><b>Classifier.</b> Stage S10: ridge under nested 5 × 5 cross-validation, grouped by patient, with every learned step fitted inside the training folds. Model comparison with SkinGPT-R1 on the same folds: stages S12 and S13; tables assembled by stage S11. Importance from stage S7: consensus ranking over six model families (whose folds were grouped by lesion, not patient).</p>
+  <p><b>Subtypes and naevus against melanoma.</b> Stage S11. The ten-subtype results are read from the S10 out-of-fold predictions. The pair model is a ridge model refitted on the 200 naevi and melanomas under the same nested, patient-grouped cross-validation; intervals come from a bootstrap over patients (2,000 resamples). Melanoma types and the naevus confirmation method are taken from the ISIC metadata (<i>diagnosis_3</i>, <i>diagnosis_confirm_type</i>).</p>
+  <p><b>Limitations.</b> A single answering model, one replicate, and topic mode only. Answers to questions posed in the same prompt covary more than wording alone explains, so part of the correlation in Ch. II may reflect consistency within a prompt rather than shared features (explorer, Ch. II). ISIC metadata are incomplete (patient unknown for about half of the images). Institution and diagnosis are entangled in this beta set. No external test set has yet been scored.</p>
+  <h3 class="subhead" style="margin-top:28px">Supplementary material</h3>
+  <ul class="supp">
+    <li><a href="../reports/2026-11-15_answer_structure/explorer.html">Answer Structure Explorer</a><span>The full interactive analysis in eleven chapters, including those not carried into this narrative: topic coherence, image structure and its covariates, questionnaire size, the 27-question lasso model and the choice of P(malignant) cutoff.</span></li>
+    <li><a href="../reports/2026-11-16_skingpt_benchmark/README.md">SkinGPT-R1 benchmark</a><span>Its image embedding and its own diagnosis on the same folds (Table 3.3).</span></li>
+    <li><a href="../reports/2026-11-16_naevus_melanoma_subtypes/README.md">Ten subtypes, naevus and melanoma</a><span>The report behind Ch. IV.</span></li>
+    <li><a href="../reports/2026-11-16_cutoffs/README.md">Choosing the P(malignant) cutoff</a><span>Cutoffs fixed on the training images and applied unchanged to the held-out fold.</span></li>
+    <li><a href="../reports/README.md">All reports</a><span>Every experiment batch, in order, with the runs it covers.</span></li>
+  </ul>`;
+  $("foot").textContent = `Generated ${D.meta.generated} by stage S9 (explore ${D.meta.run_hash}). Self-contained apart from the supplementary links; font EB Garamond (SIL Open Font License).`;
+}
+
+// ------------------------------------------------------------------ rendering on demand, per tab
+const RENDERERS = {renderCmpIndex};
+const TABR = {c0: renderC0, c1: renderC1, c2: renderC2, c3: renderC3, c4: renderC4, c5: renderC5, c8: renderMethods};
+const done = new Set(), rendered = new Set();
+function renderTab(id) {
+  if (!done.has(id)) { TABR[id](); done.add(id); }
+  $(id).querySelectorAll("details.explore[open]").forEach(d => { const fn = d.dataset.render; if (fn && !rendered.has(fn)) { RENDERERS[fn](); rendered.add(fn); } });
+}
+document.querySelectorAll("details.explore").forEach(d => d.addEventListener("toggle", () => { const fn = d.dataset.render; if (d.open && fn && !rendered.has(fn)) { RENDERERS[fn](); rendered.add(fn); } }));
+
+readPalette();
+$("hero-eyebrow").textContent = `QA-DermEmb · the project to date · Claude Sonnet 5.5 · ${NI.toLocaleString()} ISIC images · ${D.meta.generated}`;
+renderTabs();
+showTab((location.hash || "#c0").slice(1), true);
+addEventListener("hashchange", () => { const id = location.hash.slice(1); if (id !== current && $(id)) showTab(id); });
+</script>
+</body>
+</html>

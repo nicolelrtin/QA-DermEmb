@@ -17,6 +17,7 @@ Project status, current decisions and plan: [PROJECT.md](PROJECT.md). Running re
 | `qaemb/` | code workflow | QA-Emb pipeline: stages, answerers, models, reports, the Claude queue |
 | `analysis/` | code workflow | Earlier stand-alone analyses: question embeddings + UMAP (`question_embeddings/`), PanDerm image analysis (`image_analysis/`), shared DermLIP loader (`dermlip.py`) |
 | `reports/` | reports | One folder per experiment batch (`<date>_<name>/`), index in `reports/README.md`, one row per run in `reports/experiments_log.md` |
+| `project_narrative/` | reports | The project told in the order of the paper: `index.html` (built by stage S9 from `qaemb/templates/narrative.html`), with the reports as its supplement |
 | `outputs/` | generated | Stage caches, run records, MLflow, the queue (not in git) |
 | `infra/` | infrastructure | Environment setup (`setup_derm1m.sh`) and the cron entry for the Claude queue (`crontab.txt`); `pyproject.toml`/`poetry.lock` stay at the root |
 | `third_party/` | infrastructure | Derm1M fork fetched by `infra/setup_derm1m.sh` (not in git) |
