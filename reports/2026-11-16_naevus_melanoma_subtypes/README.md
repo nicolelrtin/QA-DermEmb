@@ -11,14 +11,28 @@ question-based model good at the distinction that matters most among pigmented l
 
 | Run | Experiments (meaning) | Stage hashes |
 |---|---|---|
-| [20261116-181530_s11-subtypes-metrics](../../outputs/qaemb/runs/20261116-181530_s11-subtypes-metrics/report.md) | `D1_train` (all 1,000 beta images), `I1_claude_max` (images shrunk only, to at most 3.6 MP), `Q0_orig` (500 questions as written plus the control question, no negations), `M_topic` (one prompt per topic), `ANS_claude_sonnet` (Claude Sonnet 5.5 through the Batch API, effort low), `G1` (whole image), `R1` (replicate 1). Stage `subtypes`. | embed `6cd6f95ebcbd`, ridge `159decea7f3d`, subtypes `b88b736bdec8` |
+| [20261116-193015_s11-subtypes-comparison](../../outputs/qaemb/runs/20261116-193015_s11-subtypes-comparison/report.md) | `D1_train` (all 1,000 beta images), `I1_claude_max` (images shrunk only, to at most 3.6 MP), `Q0_orig` (500 questions as written plus the control question, no negations), `M_topic` (one prompt per topic), `ANS_claude_sonnet` (Claude Sonnet 5.5 through the Batch API, effort low), `G1` (whole image), `R1` (replicate 1). Stage `subtypes`. | embed `6cd6f95ebcbd`, classify `670746415c57`, ridge `159decea7f3d`, subtypes `b4089b614f92` |
 | [20261116-182605_s9-explore-metrics](../../outputs/qaemb/runs/20261116-182605_s9-explore-metrics/report.md) | Same experiments. Stage `explore`: the interactive page, with three new chapters drawn from the run above. | subtypes `b88b736bdec8`, explore `d374126c546a` |
+| [20261116-204105_s9-explore-skingpt-comparison](../../outputs/qaemb/runs/20261116-204105_s9-explore-skingpt-comparison/report.md) | Same experiments. Stages `subtypes` (version 4) and `explore` (version 3): the model comparison now includes the SkinGPT-R1 benchmarks of S13, and chapter IX of the page leads with it. | bench `84d7b6fd7f04`, subtypes `8925f7ce772b`, explore `79d9482232f8` |
 
 The same afternoon the stage was first run as `20261116-174919_s11-subtypes` (subtypes `4ff0bc60bd81`), and the page built from it as
-`20261116-174534_s9-explore-subtypes` (explore `f21e0ac0a1d6`). Version 2 of the stage added the threshold metrics below; every
-output the two versions share is byte-identical.
+`20261116-174534_s9-explore-subtypes` (explore `f21e0ac0a1d6`). Version 2 of the stage (`20261116-181530_s11-subtypes-metrics`, subtypes `b88b736bdec8`) added the threshold metrics below, and the
+page was rebuilt from it; version 3 (the run in the table) added the comparison over all experiments. Every output the
+versions share is byte-identical, so the page, built from version 2, shows the same numbers. Version 4 (2026-11-16, evening, last row of the table) adds the SkinGPT-R1 models of
+S13 (`bench` `84d7b6fd7f04`, report [2026-11-16_skingpt_benchmark](../2026-11-16_skingpt_benchmark/README.md)) to the
+comparison and numbers every distinct model; again every other output is byte-identical to version 3.
 
 No API calls were made. The new stage takes about 3 minutes.
+
+**All models side by side:** [model_comparison.md](model_comparison.md) lays out AUROC, sensitivity, specificity,
+accuracy, F1 and specificity at 95% sensitivity for every model trained so far, from Sonnet's answers or from
+SkinGPT-R1, with one table per task. It opens with the ten-subtype models on S10's folds (the questions against
+SkinGPT-R1's embeddings and diagnosis), then the training target (two classes, three or ten subtypes), then model
+families, answer encoding, leakage controls, number of questions and the naevus–melanoma scores. Each distinct model
+(stage, input, classifier, training target, fold grouping) has one number, so the same model is recognisable across
+tables, and a model index at the end lists them all. Chapter IX of the
+[explorer](../2026-11-15_answer_structure/explorer.html) shows the same tables, with the earlier threshold view in a
+dropdown.
 
 **What changed before the run.**
 - **New stage S11 subtypes** (`qaemb/stages/s11_subtypes.py`, run with `stage=subtypes`; settings under `subtypes:`
@@ -303,6 +317,9 @@ with nine negatives per positive it is about 0.9 for every subtype and says litt
 - `pair_scores.csv`: every naevus and melanoma with its four scores (averaged over repeats), diagnosis, confirmation
   method and image type.
 - `pair_between.csv`: the atypical melanocytic images with their pair-model score.
+- `model_comparison.md`, `model_comparison.csv`: every S6, S10, S11 and S13 (SkinGPT-R1) model scored the same way on
+  the three tasks (AUROC; sensitivity, specificity, accuracy and F1 at P ≥ 0.5; specificity at 95% sensitivity), each
+  distinct model numbered once (column `no`).
 - `metrics_binary.csv`, `metrics_10c.csv`: the threshold metrics, with their range over repeats, on all images and on
   dermoscopic images only.
 - `pair_questions.csv`, `pair_final_weights.csv`: each question's AUROC alone and mean answer in each class, and the

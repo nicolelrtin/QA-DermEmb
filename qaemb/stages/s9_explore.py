@@ -29,9 +29,10 @@ from ..config import ROOT, file_hash
 from ..models import explore as ex
 from ..models import plots
 from .s6_classify import GROUPS, SOURCE_NAMES, load_labels
+from .s11_subtypes import SECTION_ORDER, SECTIONS
 
-UPSTREAM = ["manifest", "embed", "importance", "ridge", "subtypes"]
-VERSION = 2
+UPSTREAM = ["manifest", "embed", "importance", "ridge", "subtypes", "thresholds"]
+VERSION = 3                                       # 3: chapter IX leads with the model comparison tables (S11)
 TEMPLATE = Path(__file__).resolve().parents[1] / "templates" / "explore.html"
 FONTS = [  # (family, style, file): embedded so the page needs no network (templates/fonts/README.md)
     ("Garamond", "normal", "garamond.woff2"), ("Garamond", "italic", "garamond-italic.woff2")]
@@ -193,7 +194,17 @@ def subtypes_payload(inputs, ids, qids, sub_order, meta) -> dict:
                      "n_sep": {"melanoma": int(sep.get("melanoma", 0)), "naevus": int(sep.get("naevus", 0))},
                      "n_q": int(len(q))},
             "metrics": {"binary": pd.read_csv(d / "metrics_binary.csv").to_dict("records"),
-                        "ten": pd.read_csv(d / "metrics_10c.csv").to_dict("records")}}
+                        "ten": pd.read_csv(d / "metrics_10c.csv").to_dict("records")},
+            "comparison": {"rows": pd.read_csv(d / "model_comparison.csv").to_dict("records"),
+                           "sections": [{"key": k, "title": SECTIONS[k][0], "note": SECTIONS[k][1]} for k in SECTION_ORDER]}}
+
+
+def thresholds_payload(inputs) -> dict:
+    """Table 9.10 and Fig. 9.11: P(malignant) cutoffs chosen in the training split, and the fixed-cutoff sweep (S14)."""
+    d = inputs["thresholds"]
+    return {"rules": pd.read_csv(d / "rules_summary.csv").to_dict("records"),
+            "sweep": pd.read_csv(d / "sweep_summary.csv").to_dict("records"),
+            "max_diff": float(pd.read_csv(d / "reproduction.csv").max_abs_diff.max())}
 
 
 def importance_payload(inputs, qids, sub_order, top_n=25) -> dict:
@@ -546,6 +557,7 @@ def _run(cfg, out, inputs, ctx) -> dict:
         "eval": eval_payload(inputs, ids, lab, meta, ctrl, sub_order),
         "imp": importance_payload(inputs, qids, sub_order),
         "sub": subtypes_payload(inputs, ids, qids, sub_order, meta),
+        "thr": thresholds_payload(inputs),
         "cases": case_payload(cfg, inputs, lab, meta, man, ids, qids, rp, ctrl, sub_order),
         "answers": {"yes_share": float((Pq >= 0.5).mean()),
                     "p_hist": np.histogram(Pq.ravel(), bins=20, range=(0, 1))[0].tolist(),

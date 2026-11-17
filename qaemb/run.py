@@ -3,7 +3,7 @@
   python -m qaemb.run stage=<stage|all> +exp=[<ID>,<ID>,...] tag=<free_text> [key=value ...]
   python -m qaemb.run stage=all +exp=[...] dry_run=true      # resolved config + cache hits, runs nothing
 
-Stages: manifest -> prepare -> answer -> embed -> model | classify -> importance; tune (penalty curves, after classify); explore (answer structure and interactive page); ridge (main model, leakage-controlled, final models); subtypes (10-subtype detail, naevus against melanoma); vlmfeat (SkinGPT-R1 embeddings and candidate-label diagnosis, GPU); bench (ridge on the questions against SkinGPT-R1, same folds). Asking for a stage runs its upstream chain
+Stages: manifest -> prepare -> answer -> embed -> model | classify -> importance; tune (penalty curves, after classify); explore (answer structure and interactive page); ridge (main model, leakage-controlled, final models); subtypes (10-subtype detail, naevus against melanoma); vlmfeat (SkinGPT-R1 embeddings and candidate-label diagnosis, GPU); bench (ridge on the questions against SkinGPT-R1, same folds); thresholds (P(malignant) cutoffs chosen in the training split, and a sweep of fixed cutoffs). Asking for a stage runs its upstream chain
 (classify with classify.synthetic set needs only the manifest);
 stages whose content-addressed output dir is already complete are skipped.
 """
@@ -20,7 +20,7 @@ from omegaconf import OmegaConf
 
 from .config import ROOT, compose, parse_cli, stable_hash
 
-ORDER = ["manifest", "prepare", "answer", "embed", "model", "classify", "importance", "tune", "ridge", "subtypes", "explore", "vlmfeat", "bench"]
+ORDER = ["manifest", "prepare", "answer", "embed", "model", "classify", "importance", "tune", "ridge", "vlmfeat", "bench", "subtypes", "thresholds", "explore"]
 MODULES = {
     "manifest": "qaemb.stages.s0_manifest",
     "prepare": "qaemb.stages.s1_prepare",
@@ -35,6 +35,7 @@ MODULES = {
     "vlmfeat": "qaemb.stages.s12_vlmfeat",
     "bench": "qaemb.stages.s13_bench",
     "subtypes": "qaemb.stages.s11_subtypes",
+    "thresholds": "qaemb.stages.s14_thresholds",
 }
 DONE = "_DONE"
 os.environ.setdefault("MLFLOW_DISABLE_AGENT_HINT", "1")
@@ -218,7 +219,7 @@ def write_run_meta(cfg, ctx: Context, chain: list[str], summaries: dict, wall_s:
         meta["answerer"] = {"checkpoint": cfg.answerer.checkpoint, "revision": ctx.answerer_revision,
                             "dtype": cfg.answerer.dtype, "attn": cfg.answerer.attn}
         meta["prompts"] = summaries.get("answer", {}).get("prompts")
-    if any(s in chain for s in ("answer", "embed", "model", "classify", "importance", "tune", "explore", "ridge", "subtypes", "bench")):
+    if any(s in chain for s in ("answer", "embed", "model", "classify", "importance", "tune", "explore", "ridge", "subtypes", "bench", "thresholds")):
         meta["question_set"] = {"hash": ctx.qset_hash, "count": len(ctx.questions), "csv": cfg.questions.csv}
 
     run_dir = ROOT / cfg.paths.out_root / "runs" / ctx.run_id

@@ -112,6 +112,33 @@ Full tables, including pooled scores per repeat and macro-F1: [bench_summary.md]
   chose the edge.
 - The question ridge reproduced S10 exactly (above), so its row here is S10's main result.
 
+### Follow-up: the same benchmark as ten-subtype models (added the same evening)
+
+The tables above score benign against malignant with models trained on the two classes. Because the ten-subtype model
+on the questions turned out to rank benign against malignant at least as well as the two-class model (FINDINGS 25), the
+comparison was repeated with every method's ten-subtype model, read three ways from the same ten probabilities:
+malignant subtypes summed against benign subtypes, P(melanoma) / (P(melanoma) + P(naevus)), and the most probable
+subtype. These come from the same S13 fits (no new run of S13), scored by S11 in
+[model_comparison.md](../2026-11-16_naevus_melanoma_subtypes/model_comparison.md) (sections 1 and 2) and in chapter IX
+of the [explorer](../2026-11-15_answer_structure/explorer.html); run `20261116-204105_s9-explore-skingpt-comparison`
+(subtypes `8925f7ce772b`, explore `79d9482232f8`). The numbers there are pooled over the folds of each repeat and
+averaged over the five repeats, so they differ by up to 0.02 from the fold means above.
+
+| Model (ridge, trained on the ten subtypes) | Benign vs malignant AUROC | Specificity at 95% sensitivity | Naevus vs melanoma AUROC | Ten-subtype accuracy |
+|---|---|---|---|---|
+| Sonnet's answers, 446 questions | 0.843 | 0.49 | 0.910 | 0.48 |
+| SkinGPT-R1 image embedding, layer 28 (prespecified) | 0.803 | 0.38 | 0.890 | 0.47 |
+| SkinGPT-R1 vision encoder (layer 0) | 0.824 | 0.39 | 0.879 | 0.48 |
+| SkinGPT-R1 diagnosis scores, ridge readout | 0.722 | 0.26 | 0.805 | 0.37 |
+| SkinGPT-R1 diagnosis, zero-shot (no training) | 0.636 | 0.20 | 0.802 | 0.24 |
+| Sonnet asked directly (no training; reference) | 0.786 | 0.22 | 0.883 | n/a |
+
+Training on the ten subtypes helps the SkinGPT-R1 embeddings more than the questions (layer 28: 0.786 to 0.803 for
+benign against malignant, 0.844 to 0.890 for naevus against melanoma), but the order is unchanged: the questions stay
+ahead for malignancy, by about 0.02 to 0.04 in AUROC and 0.10 in specificity at 95% sensitivity, and level on the
+ten subtypes. The naevus–melanoma differences (0.02 to 0.03) are within the spread of about ±0.04 for 100 images per
+class.
+
 ## What we conclude
 
 1. **On benign against malignant, the question answers beat every SkinGPT-R1 benchmark on the same folds.** The main

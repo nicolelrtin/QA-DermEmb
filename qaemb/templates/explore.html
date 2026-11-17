@@ -191,6 +191,13 @@ canvas.hm { display: block; width: 100%; image-rendering: pixelated; cursor: cro
 .mtab td, .mtab th { vertical-align: middle; } .mtab th { white-space: nowrap; } .mtab tr.tot td { border-top: 1px solid var(--text-secondary); font-weight: 600; }
 .mbar { display: inline-block; width: 90px; height: 9px; background: var(--grid); border-radius: 2px; vertical-align: middle; margin-right: 8px; overflow: hidden; } .mbar span { display: block; height: 100%; border-radius: 2px; }
 .mval { font-variant-numeric: tabular-nums; }
+.cmpwrap { overflow-x: auto; margin: 4px 0 14px; } .cmpwrap h4 { margin: 12px 0 4px; font-size: 16px; font-weight: 600; } .cmpwrap h4 .muted { font-weight: 400; font-style: italic; font-size: 14px; color: var(--text-muted); }
+table.cmp { font-size: 13px; } table.cmp th { white-space: normal; vertical-align: bottom; } table.cmp td.num { white-space: nowrap; } table.cmp td.no { color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.cmp td.mname { min-width: 240px; } table.cmp td.meta { color: var(--text-secondary); font-size: 12px; min-width: 80px; max-width: 220px; }
+table.cmp td.num.best { font-weight: 700; color: var(--accent); background: var(--accent-soft); }
+table.cmp tr.ref td { font-style: italic; } .cmpnote { font-size: 15px; color: var(--text-secondary); max-width: 88ch; margin: 4px 0 8px; }
+.kdot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+.cmpkey { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--text-secondary); margin: 2px 0 8px; }
 .kv.defs { font-size: 15px; font-family: var(--serif); gap: 6px 18px; } .kv.defs dt { font-variant: all-small-caps; letter-spacing: .06em; color: var(--accent); font-size: 16px; }
 button.dl { font: 12.5px var(--sans); padding: 5px 12px; border: 1px solid var(--border); background: var(--surface-1); border-radius: 4px; cursor: pointer; color: var(--text-primary); } button.dl:hover { border-color: var(--text-primary); }
 .kv.big { font-size: 15.5px; gap: 10px 16px; font-family: var(--serif); } .kv.big a { color: var(--accent); margin-left: 6px; font-variant: all-small-caps; letter-spacing: .06em; }
@@ -472,17 +479,33 @@ footer::before { content: "❦"; display: block; color: var(--gold); font-size: 
 
 <!-- 9 -->
 <section class="chapter" id="c11" data-long="Model Metrics" data-title="Metrics" data-rn="IX" hidden>
-  <header class="chead"><div class="initial">IX</div><div><div class="kicker">Summary of performance</div><h2>How do the models perform at a fixed decision threshold?</h2>
-    <p class="aim">AUROC summarises how well a model ranks cases over all possible thresholds; a clinical decision needs one threshold. This chapter gives, for every model and task, the sensitivity, specificity, accuracy and F1 at a stated threshold, computed on the same out-of-fold predictions as the preceding chapters.</p></div></header>
+  <header class="chead"><div class="initial">IX</div><div><div class="kicker">Summary of performance</div><h2>How do the models compare, task by task?</h2>
+    <p class="aim">Every model fitted so far, from Sonnet's answers or from SkinGPT-R1, scored the same way on the three tasks: benign against malignant, naevus against melanoma, and the ten subtypes. Each distinct model carries one number; the same number in two tables is the same fitted model read for a different task.</p></div></header>
   <div class="finding" id="c11-find"></div>
-  <div class="fig"><h3><span class="fn">Fig. 9.1</span>Threshold metrics by model</h3><p class="cap" id="mt-cap"></p>
-    <div class="controls"><div class="control"><span>Task</span><div class="seg" id="mt-task"></div></div>
-      <div class="control" id="mt-rule-c"><span>Threshold</span><div class="seg" id="mt-rule"></div></div>
-      <div class="control" id="mt-model-c" hidden><span>Model</span><div class="seg" id="mt-model"></div></div>
-      <div class="control"><span>Images</span><div class="seg" id="mt-sub"></div></div>
-      <div class="control"><span>&nbsp;</span><button class="dl" id="mt-csv">Download table (CSV)</button></div></div>
-    <div id="mt-table" style="overflow:auto"></div><p class="take" id="c11-take1"></p></div>
-  <div class="fig"><h3><span class="fn">Table 9.2</span>Definitions</h3><div id="c11-defs"></div></div>
+  <div class="fig"><h3><span class="fn">Table 9.1</span>Ten-subtype models on the same folds</h3><p class="cap" id="cmp-cap-M"></p>
+    <div id="cmp-M"></div><p class="take" id="c11-take1"></p></div>
+  <div class="fig"><h3><span class="fn">Table 9.2</span>Training target: two classes or ten subtypes</h3><p class="cap" id="cmp-cap-T"></p>
+    <div id="cmp-T"></div><p class="take" id="c11-take2"></p>
+    <h3 style="margin-top:22px"><span class="fn">Table 9.3</span>Training target in the S6 pipeline: two, three or ten classes</h3><p class="cap" id="cmp-cap-U"></p>
+    <div id="cmp-U"></div></div>
+  <details class="explore" id="x-cmp-more" data-render="renderCmpMore"><summary>Further comparisons <span class="muted">model families, answer encodings, leakage controls, number of questions, scores built for naevus against melanoma</span></summary><div class="inner" id="cmp-more"></div></details>
+  <details class="explore" id="x-mt-detail" data-render="renderMtDetail"><summary>Threshold metrics in detail <span class="muted">per model with precision and the 95%-sensitivity threshold, per subtype, dermoscopic images only</span></summary><div class="inner">
+    <div class="fig"><h3><span class="fn">Table 9.9</span>Threshold metrics by model</h3><p class="cap" id="mt-cap"></p>
+      <div class="controls"><div class="control"><span>Task</span><div class="seg" id="mt-task"></div></div>
+        <div class="control" id="mt-rule-c"><span>Threshold</span><div class="seg" id="mt-rule"></div></div>
+        <div class="control" id="mt-model-c" hidden><span>Model</span><div class="seg" id="mt-model"></div></div>
+        <div class="control"><span>Images</span><div class="seg" id="mt-sub"></div></div>
+        <div class="control"><span>&nbsp;</span><button class="dl" id="mt-csv">Download table (CSV)</button></div></div>
+      <div id="mt-table" style="overflow:auto"></div><p class="take" id="c11-take3"></p></div></div></details>
+  <details class="explore" id="x-cmp-index" data-render="renderCmpIndex"><summary>Model index <span class="muted">every numbered model, its training target, folds, stage, and the tables it appears in</span></summary><div class="inner" id="cmp-index"></div></details>
+  <div class="fig"><h3><span class="fn">Table 9.10</span>Choosing the P(malignant) cutoff</h3>
+    <p class="cap">Benign against malignant. Each rule is turned into a cutoff using the training images only (cross-validated predictions inside the training split), then applied unchanged to the held-out fold, as it would be on a new test set. Values are means over the 25 held-out folds, with the range across folds in brackets. Grey rows: the same rule with the cutoff read on the held-out fold itself, after seeing its labels (how specificity at 95% sensitivity has been reported so far).</p>
+    <div class="controls"><div class="control"><span>Score</span><div class="seg" id="thr-score"></div></div><div class="control"><span>Images</span><div class="seg" id="thr-sub"></div></div></div>
+    <div id="thr-table" style="overflow:auto"></div><p class="take" id="thr-take1"></p></div>
+  <div class="fig"><h3><span class="fn">Fig. 9.11</span>Sensitivity and specificity across cutoffs</h3>
+    <p class="cap">The same held-out folds at fixed cutoffs from 0.05 to 0.95 (an image is called malignant if P ≥ cutoff). Lines: mean over 25 folds; bands: range across folds. Vertical lines: the training-split cutoffs for 95% sensitivity (dashed) and for Youden's index (dotted). Hover for the values at each cutoff. Uses the score and image controls of Table 9.10.</p>
+    <div id="thr-legend"></div><svg class="plot" id="thr-svg" viewBox="0 0 900 380"></svg><p class="take" id="thr-take2"></p></div>
+  <div class="fig"><h3><span class="fn">Table 9.12</span>Definitions</h3><div id="c11-defs"></div></div>
   <details class="method"><summary>Methods for this chapter</summary><div id="c11-method"></div></details>
 </section>
 
@@ -692,7 +715,7 @@ function renderC0() {
   const main = KEY("s1_2c|all|patient|all images"), ctl = KEY("s1_2c|control question|patient|all images"), o = D.cohesion.overall;
   const ami = v => fmt((D.ica.find(r => r.k === D.meta.ki && r.variable === v) || {}).ami);
   $("hero-lede").innerHTML = `Claude Sonnet 5.5 answered ${NQ} binary dermatological questions, each with a stated probability and confidence, for each of ${NI.toLocaleString()} ISIC images spanning ten diagnostic subtypes. We characterise the covariance of these answers across questions and across images, estimate their discriminative value for malignancy under patient-grouped nested cross-validation, and identify the questions on which the decision rests.
-    <span class="kw">Structure of the questions (II, III) and of the images (IV) are examined separately, then brought together in the classifier (V) and its most important items (VI), and carried to the ten diagnostic subtypes (VII) and to naevus against melanoma (VIII); threshold metrics for every model are collected in IX.</span>`;
+    <span class="kw">Structure of the questions (II, III) and of the images (IV) are examined separately, then brought together in the classifier (V) and its most important items (VI), and carried to the ten diagnostic subtypes (VII) and to naevus against melanoma (VIII); every model, including the SkinGPT-R1 benchmarks, is compared in numbered tables in IX.</span>`;
   renderFlow();
   const S = [
     ["c1", "I", `<b>${pct(D.answers.yes_share)} of answers are affirmative.</b> ${D.answers.n_rarely} of ${NQ} questions are affirmed in fewer than 5% of images.`],
@@ -703,7 +726,7 @@ function renderC0() {
     ["c6", "VI", `<b>No single question exceeds AUROC ${fmt(IMP.best_alone.auc)};</b> the signal is distributed over many partially redundant items.`],
     ["c9", "VII", `<b>Ten subtypes are assigned correctly in ${pct(TEN.bacc[0])} of images</b> (chance 10%); the true subtype is among the first three choices in ${pct(TEN.top3)}.`],
     ["c10", "VIII", `<b>Naevus against melanoma: AUROC ${fmt(PAIR.metrics.find(m => m.score === "pair").auroc_repeat_mean)}</b>, against ${fmt(PAIR.metrics.find(m => m.score === "direct").auroc_repeat_mean)} for the direct question; at 95% sensitivity, ${pct(PAIR.metrics.find(m => m.score === "pair").spec95_repeat_mean)} of naevi are cleared, against ${pct(PAIR.metrics.find(m => m.score === "direct").spec95_repeat_mean)}.`],
-    ["c11", "IX", `<b>At P ≥ 0.5</b> the main model detects ${pct(D.sub.metrics.binary.find(x => x.task === "benign vs malignant" && x.model === "all" && x.rule === "P >= 0.5" && x.subset === "all images").sensitivity)} of malignant lesions at ${pct(D.sub.metrics.binary.find(x => x.task === "benign vs malignant" && x.model === "all" && x.rule === "P >= 0.5" && x.subset === "all images").specificity)} specificity; sensitivity, specificity, accuracy and F1 for every model and task.`],
+    ["c11", "IX", `<b>On identical folds, the ten-subtype ridge on Sonnet's answers reaches AUROC ${fmt(D.sub.comparison.rows.find(r => r.section === "M" && r.task === "benign vs malignant" && cmpKind(r) === "questions").auroc, 3)}</b> for benign against malignant, against ${fmt(Math.max(...D.sub.comparison.rows.filter(r => r.section === "M" && r.task === "benign vs malignant" && ["embedding", "diagnosis"].includes(cmpKind(r))).map(r => r.auroc)), 3)} for the best SkinGPT-R1 model; every model compared in numbered tables.`],
     ["c7", "X", `<b>Worked examples:</b> a melanoma (P = ${fmt(D.cases.cases[0].models.all.p)}) and a naevus (P = ${fmt(D.cases.cases[1].models.all.p)}), each traced from the average image through the questions that moved it.`]];
   $("summary").innerHTML = S.map(([id, rn, t]) => `<div data-id="${id}"><span class="rn">${rn}</span><p>${t}</p></div>`).join("");
   $("summary").querySelectorAll("div[data-id]").forEach(d => d.onclick = () => showTab(d.dataset.id));
@@ -1349,27 +1372,148 @@ function drawNMQ() {
 // ------------------------------------------------------------------ 9 model metrics
 const MT = {task: "benign vs malignant", rule: "P >= 0.5", sub: "all images", model: "all"};
 const MCOLS = [["sensitivity", "Sensitivity"], ["specificity", "Specificity"], ["accuracy", "Accuracy"], ["f1", "F1"]];
+const BCOLS = [["auroc", "AUROC", 3], ["sensitivity", "Sensitivity", 2], ["specificity", "Specificity", 2], ["accuracy", "Accuracy", 2], ["f1", "F1", 2], ["spec95", "Specificity at 95% sensitivity", 2, "Spec. at 95% sens."]];
+const CMP_TASKS = [["benign vs malignant", "Benign against malignant", "300 malignant, 500 benign images", BCOLS],
+  ["naevus vs melanoma", "Naevus against melanoma", "100 melanomas, 100 naevi", BCOLS],
+  ["ten subtypes", "Ten subtypes", "100 images each; chance accuracy 0.10", [["auroc", "AUROC (mean one vs rest)", 3, "AUROC (one vs rest)"], ["sensitivity", "Sensitivity (mean)", 2], ["specificity", "Specificity (mean)", 2], ["accuracy", "Accuracy", 2], ["f1", "F1 (macro)", 2]]]];
+const CMP_KINDS = [["questions", "Sonnet's answers to the questions"], ["embedding", "SkinGPT-R1 embedding"], ["diagnosis", "SkinGPT-R1 diagnosis"], ["reference", "direct question, no model"]];
+function cmpKind(r) {
+  if (r.features.startsWith("Sonnet asked")) return "reference";
+  if (r.features.startsWith("SkinGPT-R1's own") || r.features.includes("candidate diagnoses")) return "diagnosis";
+  if (r.features.startsWith("SkinGPT-R1")) return "embedding";
+  return "questions";
+}
+const cmpCol = k => ({questions: PAL.c[1], embedding: PAL.c[0], diagnosis: PAL.c[2], reference: PAL.ink3})[k];
+const cmpKey = () => `<div class="cmpkey">${CMP_KINDS.map(([k, n]) => `<span><span class="kdot" style="background:${cmpCol(k)}"></span>${n}</span>`).join("")}</div>`;
+function cmpSections(no) {
+  const C = D.sub.comparison, secs = [...new Set(C.rows.filter(r => r.no === no).map(r => r.section))];
+  return secs.map(s => "9." + (C.sections.findIndex(x => x.key === s) + 1)).join(", ");
+}
+function cmpTable(sec, task, cols) {
+  const R = D.sub.comparison.rows.filter(r => r.section === sec && r.task === task);
+  if (!R.length) return "";
+  const shown = k => R.map(r => r[k] === null || r[k] === undefined || Number.isNaN(r[k]) ? null : +(+r[k]).toFixed(cols.find(c => c[0] === k)[2]));
+  // the best value is marked only where it singles out a minority of the rows
+  const best = Object.fromEntries(cols.map(([k]) => { const v = shown(k).filter(x => x !== null), m = Math.max(...v);
+    return [k, R.length > 1 && new Set(v).size > 1 && v.filter(x => x === m).length <= R.length / 2 ? m : null]; }));
+  const T = CMP_TASKS.find(t => t[0] === task);
+  // descriptive columns that are the same for every row go into the table's heading instead
+  const meta = [["target", "Trained on"], ["folds", "Folds grouped by"], ["score", "Score"]];
+  const same = meta.filter(([k]) => R.filter(r => r.classifier !== "none").every((r, i, a) => r[k] === a[0][k]) && R.some(r => r.classifier !== "none"));
+  const vary = meta.filter(m => !same.includes(m));
+  const first = R.find(r => r.classifier !== "none");
+  const phr = {target: v => `trained on ${v}`, folds: v => `folds grouped by ${v}`, score: v => `score: ${v}`};
+  const head = same.map(([k]) => phr[k](esc(first[k]))).join("; ");
+  return `<div class="cmpwrap"><h4>${T[1]} <span class="muted">(${T[2]})</span></h4>${head ? `<p class="cmpnote" style="margin-top:0">Every trained model in this table: ${head}.</p>` : ""}<table class="mtab cmp"><tr><th>No.</th><th>Model</th>${vary.map(([, n]) => `<th>${n}</th>`).join("")}${cols.map(([, n, , sh]) => `<th class="num"${sh ? ` title="${n}"` : ""}>${sh || n}</th>`).join("")}</tr>` +
+    R.map(r => { const k = cmpKind(r);
+      return `<tr class="${k === "reference" ? "ref" : ""}"><td class="no" title="Model ${r.no} appears in Tables ${cmpSections(r.no)}">${r.no}</td><td class="mname"><span class="kdot" style="background:${cmpCol(k)}"></span>${esc(r.name)}${r.classifier === "none" && same.some(([k]) => k === "score") ? ` <span class="muted">(${esc(r.target)}; score ${esc(r.score)})</span>` : ""}</td>` +
+        vary.map(([c]) => `<td class="meta">${esc(r[c])}</td>`).join("") +
+        cols.map(([c, , d]) => { const v = r[c] === null || r[c] === undefined || Number.isNaN(r[c]) ? null : +(+r[c]).toFixed(d);
+          return `<td class="num${v !== null && v === best[c] ? " best" : ""}">${v === null ? "n/a" : fmt(v, d)}</td>`; }).join("") + `</tr>`; }).join("") + `</table></div>`;
+}
+const cmpSection = sec => CMP_TASKS.map(([t, , , cols]) => cmpTable(sec, t, cols)).join("");
 function renderC11() {
-  const B = D.sub.metrics.binary, get = (t, m, r) => B.find(x => x.task === t && x.model === m && x.rule === r && x.subset === "all images");
-  const a5 = get("benign vs malignant", "all", "P >= 0.5"), d5 = get("benign vs malignant", "direct", "P >= 0.5"), n5 = get("naevus vs melanoma", "tenclass", "P >= 0.5");
-  const o10 = D.sub.metrics.ten.find(x => x.model === "all" && x.subset === "all images" && x.subtype === "overall");
-  $("c11-find").innerHTML = `<div class="stat">${pct(a5.accuracy)}<small>accuracy, benign against malignant at P ≥ 0.5</small></div><div class="say">At the default threshold the main model detects <b>${pct(a5.sensitivity)}</b> of malignant lesions and correctly clears <b>${pct(a5.specificity)}</b> of benign ones (F1 ${fmt(a5.f1)}); the direct question detects only ${pct(d5.sensitivity)} at ${pct(d5.specificity)} specificity. For naevus against melanoma the ten-subtype model reaches <b>${pct(n5.accuracy)}</b> accuracy (sensitivity ${pct(n5.sensitivity)}, specificity ${pct(n5.specificity)}); across the ten subtypes, overall accuracy is <b>${pct(o10.accuracy)}</b> (chance 10%).</div>`;
+  renderThr();
+  const C = D.sub.comparison, M = C.rows.filter(r => r.section === "M");
+  const note = k => C.sections.find(x => x.key === k).note;
+  const qm = t => M.find(r => r.task === t && cmpKind(r) === "questions");
+  const sk = t => M.filter(r => r.task === t && cmpKind(r) !== "questions" && cmpKind(r) !== "reference").sort((a, b) => b.auroc - a.auroc)[0];
+  const zs = t => M.find(r => r.task === t && r.classifier === "none" && cmpKind(r) === "diagnosis");
+  const dq = t => M.find(r => r.task === t && cmpKind(r) === "reference");
+  const [bm, nm, tn] = ["benign vs malignant", "naevus vs melanoma", "ten subtypes"];
+  const cmpw = (a, b, d = 3) => (+(+a).toFixed(d)) > (+(+b).toFixed(d)) ? `higher than` : (+(+a).toFixed(d)) < (+(+b).toFixed(d)) ? `lower than` : `equal to`;
+  $("c11-find").innerHTML = `<div class="stat">${fmt(qm(tn).accuracy, 2)}<small>balanced accuracy over ten subtypes, ridge on Sonnet's answers (model ${qm(tn).no})</small></div><div class="say">Trained on the ten subtypes and scored on identical patient-grouped folds, the ridge model on Sonnet's answers (model ${qm(bm).no}) reaches AUROC <b>${fmt(qm(bm).auroc, 3)}</b> for benign against malignant and <b>${fmt(qm(nm).auroc, 3)}</b> for naevus against melanoma. The best SkinGPT-R1 model for each task, a ridge model on its image embedding, reaches <b>${fmt(sk(bm).auroc, 3)}</b> (model ${sk(bm).no}) and <b>${fmt(sk(nm).auroc, 3)}</b> (model ${sk(nm).no}), and ${fmt(sk(tn).accuracy, 2)} balanced accuracy over the subtypes (model ${sk(tn).no}). SkinGPT-R1's own diagnosis, without training, reaches ${fmt(zs(bm).auroc, 3)}, ${fmt(zs(nm).auroc, 3)} and ${fmt(zs(tn).accuracy, 2)}.</div>`;
+  $("cmp-cap-M").innerHTML = esc(note("M")) + " Bold marks the best value in each column of each table. Hover a model number for the tables it appears in.";
+  $("cmp-M").innerHTML = cmpKey() + cmpSection("M");
+  $("c11-take1").innerHTML = `Against the best SkinGPT-R1 embedding model for each task, the model on Sonnet's answers is ${cmpw(qm(bm).auroc, sk(bm).auroc)} it in AUROC for benign against malignant (${fmt(qm(bm).auroc, 3)} against ${fmt(sk(bm).auroc, 3)}), ${cmpw(qm(nm).auroc, sk(nm).auroc)} it for naevus against melanoma (${fmt(qm(nm).auroc, 3)} against ${fmt(sk(nm).auroc, 3)}), and ${cmpw(qm(tn).accuracy, sk(tn).accuracy, 2)} it in ten-subtype accuracy (${fmt(qm(tn).accuracy, 2)} against ${fmt(sk(tn).accuracy, 2)}). Differences of 0.01 to 0.02 are within the spread over repeats (about ±0.03 in AUROC for benign against malignant, ±0.04 for naevus against melanoma). SkinGPT-R1's own diagnosis ranks well below both, and the direct question to Sonnet (AUROC ${fmt(dq(bm).auroc, 3)}) is a reference with no training.`;
+  const T = C.rows.filter(r => r.section === "T" && r.task === bm);
+  const t2 = T.find(r => cmpKind(r) === "questions" && r.target === "two classes" && r.folds === "patient"), t10 = T.find(r => cmpKind(r) === "questions" && r.target === "ten subtypes" && r.folds === "patient");
+  $("cmp-cap-T").innerHTML = esc(note("T"));
+  $("cmp-T").innerHTML = cmpKey() + CMP_TASKS.slice(0, 2).map(([t, , , cols]) => cmpTable("T", t, cols)).join("");
+  $("cmp-cap-U").innerHTML = esc(note("U"));
+  $("cmp-U").innerHTML = CMP_TASKS.slice(0, 2).map(([t, , , cols]) => cmpTable("U", t, cols)).join("");
+  $("c11-take2").innerHTML = `On Sonnet's answers, the model trained on ten subtypes (model ${t10.no}) ranks benign against malignant at least as well as the model trained on the two classes directly (model ${t2.no}): AUROC ${fmt(t10.auroc, 3)} against ${fmt(t2.auroc, 3)}, specificity at 95% sensitivity ${fmt(t10.spec95)} against ${fmt(t2.spec95)}. The finer target costs nothing on the coarse task and gives the subtype as well.`;
   $("c11-defs").innerHTML = `<dl class="kv defs">
-    <dt>Sensitivity</dt><dd>of the truly positive cases (malignant, melanoma, or the subtype in question), the share the model flags. Also called recall or true-positive rate. A screening tool needs this high.</dd>
-    <dt>Specificity</dt><dd>of the truly negative cases, the share the model correctly leaves alone. 1 − specificity is the false-alarm rate.</dd>
-    <dt>Accuracy</dt><dd>the share of all images classified correctly. With equal class sizes, as in the naevus–melanoma comparison and the ten subtypes, it equals the mean of sensitivity and specificity (balanced accuracy); in benign against malignant there are 500 benign and 300 malignant images, so it leans toward specificity.</dd>
-    <dt>Precision</dt><dd>of the cases the model flags, the share that are truly positive (positive predictive value). It depends on how common the positive class is, here far higher than in clinical practice.</dd>
-    <dt>F1</dt><dd>the harmonic mean of precision and sensitivity: high only when the model both finds the positive cases and does not over-call them. It ignores true negatives.</dd>
-    <dt>AUROC</dt><dd>independent of any threshold: the probability that a random positive case scores above a random negative one (0.5 chance, 1 perfect). Shown for reference.</dd></dl>`;
+    <dt>Model number</dt><dd>one fitted model: a pipeline stage, an input (Sonnet's answers, a SkinGPT-R1 embedding or its diagnosis), a classifier, a training target and a fold grouping. The same number in two tables is the same model; a two-class and a ten-subtype model on the same answers carry different numbers.</dd>
+    <dt>Trained on</dt><dd>the target the model was fitted to: two classes (benign, malignant), three (with indeterminate), the ten subtypes, or naevus against melanoma only. "No training" marks scores used as they come.</dd>
+    <dt>Score</dt><dd>how the task's score is read from the model's output, for example P(melanoma) / (P(melanoma) + P(naevus)) from a ten-subtype model.</dd>
+    <dt>Sensitivity</dt><dd>of the truly positive cases (malignant, melanoma, or the subtype in question), the share the model flags at P ≥ 0.5. Also called recall. A screening tool needs this high.</dd>
+    <dt>Specificity</dt><dd>of the truly negative cases, the share the model correctly leaves alone at P ≥ 0.5. 1 − specificity is the false-alarm rate.</dd>
+    <dt>Accuracy</dt><dd>the share of all images classified correctly. With equal class sizes, as in the naevus–melanoma comparison and the ten subtypes, it equals balanced accuracy; in benign against malignant there are 500 benign and 300 malignant images, so it leans toward specificity.</dd>
+    <dt>F1</dt><dd>the harmonic mean of precision (the share of flagged cases that are truly positive) and sensitivity: high only when the model both finds the positive cases and does not over-call them.</dd>
+    <dt>Specificity at 95% sensitivity</dt><dd>the share of negatives still cleared when the threshold is lowered until 95% of positives are caught; chosen on the same predictions, so slightly optimistic. The project's pre-set main score for benign against malignant. Table 9.10 gives the version with the cutoff fixed from the training images.</dd>
+    <dt>P cutoff</dt><dd>the value of P(malignant) at or above which an image is called malignant. Lowering it catches more malignancies (sensitivity up) at the cost of more false alarms (specificity down).</dd>
+    <dt>PPV, NPV</dt><dd>positive predictive value: of the images called malignant, the share that are; negative predictive value: of those called benign, the share that are. Both depend on how common malignancy is (37.5% of these 800 images), so they will differ in a clinic.</dd>
+    <dt>Youden's index</dt><dd>the cutoff that maximises sensitivity + specificity, weighting a missed malignancy and a false alarm equally.</dd>
+    <dt>AUROC</dt><dd>independent of any threshold: the probability that a random positive case scores above a random negative one (0.5 chance, 1 perfect). For the ten subtypes, the mean of each subtype against the rest.</dd></dl>`;
+  $("c11-method").innerHTML = `<p>All values come from out-of-fold predictions: each image is scored by a model that did not see it in training (five repeats of 5-fold cross-validation). Within each repeat the folds' predictions are pooled and the measures computed once; the tables give the mean over the five repeats. These pooled values can differ by 0.01 to 0.02 from the fold means quoted in earlier chapters and in the SkinGPT-R1 benchmark report.</p>
+    <p><b>Same folds.</b> Tables 9.1 and 9.2 share S10's folds: grouped by ISIC patient, with near-duplicate pictures merged, lambda chosen by inner cross-validation, everything fitted inside the training folds. Stage S13 refitted the question model on these folds and reproduced S10's fold results exactly before fitting SkinGPT-R1's embeddings (image tokens averaged at layers 0, 14, 21 and 28 of SkinGPT-R1, a dermatology fine-tune of Qwen2.5-VL-7B; and the last prompt token) and its diagnosis scores (log-probabilities of 16 candidate diagnoses, averaged over two list orders, without the reasoning step). The S6 rows (Tables 9.3 to 9.5) used folds grouped by lesion, which is unique per image, so they are comparable with each other but not with the patient-grouped tables.</p>
+    <p><b>Thresholds.</b> The trained models output probabilities for equal class priors (balanced class weights), so P ≥ 0.5 means equal prior odds. A ten-subtype model read as benign against malignant sums the malignant and the benign subtypes, each sum divided by its number of subtypes, so that 0.5 again means equal prior odds; AUROC is unaffected. The zero-shot diagnosis and the direct question are not calibrated in this way; compare them by AUROC. Stage S11 (<i>model_comparison.csv</i>, <i>model_comparison.md</i>).</p>`;
+}
+
+// ------------------------------------------------------------------ 9 cutoffs (S14)
+const THR = {score: "ridge", sub: "all images"};
+function renderThr() {
+  seg($("thr-score"), [["ridge", "Ridge on the answers"], ["direct question", "Direct question"]], THR.score, v => { THR.score = v; drawThr(); });
+  seg($("thr-sub"), [["all images", "All images"], ["dermoscopic only", "Dermoscopic only"]], THR.sub, v => { THR.sub = v; drawThr(); });
+  drawThr();
+}
+function drawThr() {
+  const R = D.thr.rules.filter(r => r.score === THR.score && r.subset === THR.sub);
+  const rg = (r, m, d = 2) => `${fmt(r[m + "_mean"], d)} <span class="muted">(${fmt(r[m + "_min"], d)}–${fmt(r[m + "_max"], d)})</span>`;
+  const order = ["p50", "youden", "sens90", "sens95", "sens975", "sens99", "spec90", "spec95"];
+  const row = (r, hind) => `<tr${hind ? ' style="color:var(--text-muted)"' : ""}><td>${hind ? "&nbsp;&nbsp;read on the held-out fold" : esc(r.rule_label)}</td><td class="num">${rg(r, "cutoff")}</td><td class="num">${rg(r, "sensitivity")}</td><td class="num">${rg(r, "specificity")}</td><td class="num">${fmt(r.ppv_mean)}</td><td class="num">${fmt(r.npv_mean)}</td><td class="num">${pct(r.called_malignant_mean)}</td></tr>`;
+  $("thr-table").innerHTML = `<table class="mtab"><tr><th>Rule</th><th class="num">P cutoff</th><th class="num">Sensitivity</th><th class="num">Specificity</th><th class="num">PPV</th><th class="num">NPV</th><th class="num">Called malignant</th></tr>` +
+    order.map(k => { const t = R.find(r => r.rule === k && r.chosen_on === "training split"), h = R.find(r => r.rule === k && r.chosen_on !== "training split");
+      return (t ? row(t, false) : "") + (h ? row(h, true) : ""); }).join("") + `</table>`;
+  const s95 = R.find(r => r.rule === "sens95" && r.chosen_on === "training split"), h95 = R.find(r => r.rule === "sens95" && r.chosen_on !== "training split");
+  const yo = R.find(r => r.rule === "youden" && r.chosen_on === "training split");
+  $("thr-take1").innerHTML = `Fixed from the training images, the 95%-sensitivity rule gives a cutoff of P = ${fmt(s95.cutoff_mean)} (${fmt(s95.cutoff_min)} to ${fmt(s95.cutoff_max)} across folds). On the held-out folds it catches ${pct(s95.sensitivity_mean)} of malignancies on average (${pct(s95.sensitivity_min)} to ${pct(s95.sensitivity_max)} in a single fold) and clears <b>${pct(s95.specificity_mean)} of benign lesions</b>, against ${pct(h95.specificity_mean)} when the cutoff is read in hindsight. The cutoffs chosen from training images vary little between folds; read on a held-out fold of about 160 images they range from ${fmt(h95.cutoff_min)} to ${fmt(h95.cutoff_max)}, so the hindsight figure owes part of its value to fitting the fold. The Youden cutoff (${fmt(yo.cutoff_mean)}) is close to 0.5, as expected from the balanced class weights.`;
+  // sweep
+  const S = D.thr.sweep.filter(r => r.score === THR.score && r.subset === THR.sub).sort((a, b) => a.cutoff - b.cutoff);
+  const svg = $("thr-svg"); svg.innerHTML = "";
+  const ax = axes(svg, 900, 380, {l: 52, r: 16, t: 12, b: 42}, [0, 1], [0, 1], "P cutoff (called malignant if P ≥ cutoff)", "", {xt: [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1], xgrid: true, yt: [0, .2, .4, .6, .8, 1]});
+  const M = [["sensitivity", "Sensitivity", rgb(PAL.pos), true], ["specificity", "Specificity", rgb(PAL.neg), true], ["ppv", "PPV", PAL.c[1], false], ["npv", "NPV", PAL.c[2], false]];
+  M.forEach(([m, , c, band]) => { if (!band) return;
+    const pts = S.map(r => [ax.X(r.cutoff), ax.Y(r[m + "_max"])]).concat([...S].reverse().map(r => [ax.X(r.cutoff), ax.Y(r[m + "_min"])]));
+    svg.appendChild(svgEl("polygon", {points: pts.map(p => p.join(",")).join(" "), fill: c, "fill-opacity": .14, stroke: "none"})); });
+  M.forEach(([m, , c, band]) => line(svg, S.map(r => [ax.X(r.cutoff), ax.Y(r[m + "_mean"])]), c, band ? "" : "5 3", band ? 2.5 : 1.8));
+  [[s95, "6 4", "95% sensitivity"], [yo, "2 3", "Youden"]].forEach(([r, d, t]) => { const x = ax.X(r.cutoff_mean);
+    svg.appendChild(svgEl("line", {x1: x, x2: x, y1: 12, y2: 338, stroke: PAL.ink2, "stroke-dasharray": d, "stroke-width": 1.3}));
+    svgText(svg, x + 4, 24, t, {style: `font-size:11px;fill:${PAL.ink2}`}); });
+  $("thr-legend").innerHTML = legendRow(M.map(([, n, c, band]) => [c, n, !band]));
+  hoverPoints(svg, S.flatMap(r => M.map(([m]) => [ax.X(r.cutoff), ax.Y(r[m + "_mean"]),
+    `<b>P ≥ ${fmt(r.cutoff)}</b><br>sensitivity ${fmt(r.sensitivity_mean)} (${fmt(r.sensitivity_min)}–${fmt(r.sensitivity_max)})<br>specificity ${fmt(r.specificity_mean)} (${fmt(r.specificity_min)}–${fmt(r.specificity_max)})<br>PPV ${fmt(r.ppv_mean)} · NPV ${fmt(r.npv_mean)}<br>called malignant ${pct(r.called_malignant_mean)}`])));
+  const at = c => S.find(r => Math.abs(r.cutoff - c) < 1e-6);
+  const a = at(.15), b = at(.3), c5 = at(.5);
+  $("thr-take2").innerHTML = THR.score === "ridge"
+    ? `The ridge curves change smoothly, with no cutoff at which many images switch at once, so the result is not fragile to the exact choice. Between P = 0.15 and 0.30 sensitivity falls only from ${fmt(a.sensitivity_mean)} to ${fmt(b.sensitivity_mean)} while specificity rises from ${fmt(a.specificity_mean)} to ${fmt(b.specificity_mean)}; at 0.5 the two meet near ${fmt(c5.sensitivity_mean)}. The bands show that a single fold of about 160 images can sit well away from the mean, especially for sensitivity, which rests on about 60 malignant images per fold.`
+    : `The direct question moves in steps, because Sonnet's stated P(yes) takes only a few distinct values; a small change of cutoff can move many images at once, which makes it the less robust score to set a cutoff on.`;
+}
+function renderCmpMore() {
+  const C = D.sub.comparison;
+  $("cmp-more").innerHTML = cmpKey() + C.sections.map((s, i) => ["M", "T", "U"].includes(s.key) ? "" :
+    `<div class="fig"><h3><span class="fn">Table 9.${i + 1}</span>${esc(s.title)}</h3><p class="cmpnote">${esc(s.note)}</p>${cmpSection(s.key)}</div>`).join("");
+}
+function renderCmpIndex() {
+  const C = D.sub.comparison, seen = new Map();
+  C.rows.forEach(r => { if (!seen.has(r.no)) seen.set(r.no, r); });
+  $("cmp-index").innerHTML = `<div class="cmpwrap"><table class="mtab cmp"><tr><th>No.</th><th>Model</th><th>Trained on</th><th>Folds grouped by</th><th>Stage</th><th>Tables</th></tr>` +
+    [...seen.values()].sort((a, b) => a.no - b.no).map(r => `<tr><td class="no">${r.no}</td><td class="mname"><span class="kdot" style="background:${cmpCol(cmpKind(r))}"></span>${esc(r.name)}</td><td class="meta">${esc(r.target)}</td><td class="meta">${esc(r.folds)}</td><td class="meta">${esc(r.stage)}</td><td class="meta">${cmpSections(r.no)}</td></tr>`).join("") + `</table></div>`;
+}
+function renderMtDetail() {
   seg($("mt-task"), [["benign vs malignant", "Benign vs malignant"], ["naevus vs melanoma", "Naevus vs melanoma"], ["ten", "Ten subtypes"]], MT.task, v => { MT.task = v; drawMetrics(); });
   seg($("mt-rule"), [["P >= 0.5", "P ≥ 0.5"], ["95% sensitivity", "95% sensitivity"]], MT.rule, v => { MT.rule = v; drawMetrics(); });
   seg($("mt-sub"), [["all images", "All images"], ["dermoscopic only", "Dermoscopic only"]], MT.sub, v => { MT.sub = v; drawMetrics(); });
   seg($("mt-model"), [["all", "All 446 questions"], ["lasso120", "Lasso 120"], ["lasso60", "Lasso 60"], ["lasso27", "Lasso 27"]], MT.model, v => { MT.model = v; drawMetrics(); });
   $("mt-csv").onclick = downloadMetrics;
   drawMetrics();
-  $("c11-method").innerHTML = `<p>All values come from out-of-fold predictions: each image is scored by a model whose training folds excluded its patient (five repeats of patient-grouped 5-fold cross-validation, Ch. V). Within each repeat the 25 folds' predictions are pooled and the measures computed once; the table shows the mean over the five repeats, with the range over repeats on hover. These pooled values can differ slightly from the fold means quoted in earlier chapters (for example, specificity at 95% sensitivity is 0.45 as a mean over folds and ${fmt(B.find(x => x.task === "benign vs malignant" && x.model === "all" && x.rule === "95% sensitivity" && x.subset === "all images").specificity)} pooled).</p>
-    <p><b>Thresholds.</b> P ≥ 0.5 is fixed in advance; the ridge models are trained with balanced class weights, so 0.5 corresponds to equal prior odds. The 95%-sensitivity threshold is the highest threshold at which at least 95% of the positive cases score above it, chosen on the same pooled predictions it is evaluated on; its specificity is therefore slightly optimistic. The direct question takes few distinct values, so at its threshold sensitivity may exceed 95%. Ten subtypes: each image is assigned to its most probable subtype, with no threshold; per-subtype accuracy is not shown, because with nine negatives per positive it is dominated by correct rejections (about 0.9 for every subtype). Stage S11 (<i>metrics_binary.csv</i>, <i>metrics_10c.csv</i>).</p>`;
 }
+// the detailed view's model keys, named with their training target so they cannot be confused with each other
+const MT_NAMES = {"benign vs malignant": {all: "ridge on all 446 questions, trained on two classes", lasso120: "ridge on 120 lasso-chosen questions, trained on two classes",
+  lasso60: "ridge on 60 lasso-chosen questions, trained on two classes", lasso27: "ridge on 27 lasso-chosen questions, trained on two classes", direct: 'Sonnet asked "Is this a malignant lesion?", no model'},
+  "naevus vs melanoma": {pair: "ridge on all 446 questions, trained on naevus vs melanoma only", tenclass: "ridge on all 446 questions, trained on ten subtypes",
+  twoclass: "ridge on all 446 questions, trained on two classes", direct: 'Sonnet asked "Is this a malignant lesion?", no model'}};
 function mBar(v, col) {
   if (v === null || v === undefined || Number.isNaN(v)) return "n/a";
   return `<span class="mbar"><span style="width:${(100 * v).toFixed(1)}%;background:${col}"></span></span><span class="mval">${fmt(v)}</span>`;
@@ -1389,10 +1533,10 @@ function drawMetrics() {
     const pos = MT.task === "naevus vs melanoma" ? "melanoma" : "malignant", neg = MT.task === "naevus vs melanoma" ? "naevi" : "benign";
     $("mt-cap").innerHTML = `Positive class: ${pos}. ${R[0].n_pos} ${pos === "melanoma" ? "melanomas" : "malignant"} and ${R[0].n_neg} ${neg} images${MT.sub === "dermoscopic only" ? " (dermoscopic only)" : ""}. Threshold: ${MT.rule === "P >= 0.5" ? "P ≥ 0.5, fixed in advance" : "the threshold that detects 95% of positive cases, chosen on the same predictions"}. Hover a cell for its range over the five repeats.`;
     $("mt-table").innerHTML = `<table class="mtab"><tr><th>model</th><th class="num">threshold</th>${MCOLS.map(([, n]) => `<th>${n}</th>`).join("")}<th class="num">precision</th><th class="num">AUROC</th></tr>` +
-      R.map(x => `<tr><td>${x.model === "direct" ? `<i>${esc(x.name)}</i>` : esc(x.name)}</td><td class="num">${fmt(x.threshold)}</td>${MCOLS.map(([k]) => `<td title="${rg(x, k)}">${mBar(x[k], col(x.model))}</td>`).join("")}<td class="num" title="${rg(x, "precision")}">${fmt(x.precision)}</td><td class="num">${fmt(x.auroc, 3)}</td></tr>`).join("") + `</table>`;
+      R.map(x => `<tr><td>${x.model === "direct" ? `<i>${esc(MT_NAMES[MT.task][x.model])}</i>` : esc(MT_NAMES[MT.task][x.model] || x.name)}</td><td class="num">${fmt(x.threshold)}</td>${MCOLS.map(([k]) => `<td title="${rg(x, k)}">${mBar(x[k], col(x.model))}</td>`).join("")}<td class="num" title="${rg(x, "precision")}">${fmt(x.precision)}</td><td class="num">${fmt(x.auroc, 3)}</td></tr>`).join("") + `</table>`;
     const m = R[0], d = R.find(x => x.model === "direct"), best = MT.task === "naevus vs melanoma" ? R.find(x => x.model === "tenclass") : m;
-    $("c11-take1").innerHTML = MT.rule === "P >= 0.5"
-      ? `At P ≥ 0.5 the question-based models balance the two errors (${esc(best.name)}: sensitivity ${pct(best.sensitivity)}, specificity ${pct(best.specificity)}), whereas the direct question is conservative: it rarely calls a lesion ${pos} (sensitivity ${pct(d.sensitivity)}, specificity ${pct(d.specificity)}). Its accuracy (${pct(d.accuracy)}) therefore looks respectable while it misses ${pct(1 - d.sensitivity)} of ${pos === "melanoma" ? "melanomas" : "malignant lesions"}; F1 (${fmt(d.f1)} against ${fmt(best.f1)}) exposes the difference.`
+    $("c11-take3").innerHTML = MT.rule === "P >= 0.5"
+      ? `At P ≥ 0.5 the question-based models balance the two errors (${esc(MT_NAMES[MT.task][best.model] || best.name)}: sensitivity ${pct(best.sensitivity)}, specificity ${pct(best.specificity)}), whereas the direct question is conservative: it rarely calls a lesion ${pos} (sensitivity ${pct(d.sensitivity)}, specificity ${pct(d.specificity)}). Its accuracy (${pct(d.accuracy)}) therefore looks respectable while it misses ${pct(1 - d.sensitivity)} of ${pos === "melanoma" ? "melanomas" : "malignant lesions"}; F1 (${fmt(d.f1)} against ${fmt(best.f1)}) exposes the difference.`
       : `Forced to detect 95% of ${pos === "melanoma" ? "melanomas" : "malignant lesions"}, every model gives up specificity, but the question-based models keep ${pct(Math.min(...R.filter(x => x.model !== "direct").map(x => x.specificity)))} to ${pct(Math.max(...R.filter(x => x.model !== "direct").map(x => x.specificity)))} of ${neg} correctly cleared, against ${pct(d.specificity)} for the direct question.`;
   } else {
     const ov = rows.find(x => x.subtype === "overall");
@@ -1403,7 +1547,7 @@ function drawMetrics() {
       body.map(x => { const gi = D.sub_group[SUB.indexOf(x.subtype)], c = PAL.grp[gi];
         return `<tr><td>${grpDot(gi)} ${esc(x.subtype)}</td><td class="num">${x.n}</td>${["sensitivity", "specificity", "precision", "f1"].map(k => `<td title="${rg(x, k)}">${mBar(x[k], c)}</td>`).join("")}</tr>`; }).join("") +
       `<tr class="tot"><td>mean over subtypes</td><td class="num">${ov.n}</td>${["sensitivity", "specificity", "precision", "f1"].map(k => `<td title="${rg(ov, k)}">${mBar(ov[k], PAL.ink2)}</td>`).join("")}</tr></table>`;
-    $("c11-take1").innerHTML = `Specificity is high for every subtype (${fmt(Math.min(...body.map(x => x.specificity)))} to ${fmt(Math.max(...body.map(x => x.specificity)))}) simply because nine of every ten images belong to other subtypes; sensitivity and F1 carry the information. Mean sensitivity equals balanced accuracy (${fmt(ov.sensitivity, 3)}); with equal class sizes it also equals overall accuracy.`;
+    $("c11-take3").innerHTML = `Specificity is high for every subtype (${fmt(Math.min(...body.map(x => x.specificity)))} to ${fmt(Math.max(...body.map(x => x.specificity)))}) simply because nine of every ten images belong to other subtypes; sensitivity and F1 carry the information. Mean sensitivity equals balanced accuracy (${fmt(ov.sensitivity, 3)}); with equal class sizes it also equals overall accuracy.`;
   }
 }
 function downloadMetrics() {
@@ -1468,7 +1612,7 @@ function renderMethods() {
 }
 
 // ------------------------------------------------------------------ rendering on demand, per tab
-const RENDERERS = {renderCorr, renderQmap, renderIclust, renderHeat};
+const RENDERERS = {renderCorr, renderQmap, renderIclust, renderHeat, renderCmpMore, renderMtDetail, renderCmpIndex};
 const TABR = {c0: renderC0, c1: renderC1, c2: renderC2, c3: renderC3, c4: renderC4, c5: renderC5, c6: renderC6, c9: renderC9, c10: renderC10, c11: renderC11, c7: renderC7, c8: renderMethods};
 const done = new Set(), rendered = new Set();
 function renderTab(id) {

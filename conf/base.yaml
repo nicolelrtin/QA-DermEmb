@@ -195,6 +195,11 @@ explore:                         # S9: unsupervised structure of the answers + i
   case_images: null               # case-study images (ISIC ids); null = one typical melanoma and one naevus (pick_cases)
   n_jobs: 16
 
+thresholds:                      # S14: P(malignant) cutoffs chosen in the training split; fixed-cutoff sweep (qaemb/stages/s14_thresholds.py)
+  sweep: [0.05, 0.95, 0.05]      # fixed cutoffs: from, to, step
+  reproduce_tol: 1.0e-4          # S10's test-fold predictions must be reproduced to within this
+  n_jobs: 16
+
 subtypes:                        # S11: 10-subtype detail and naevus against melanoma (qaemb/stages/s11_subtypes.py)
   pair: [benign melanocytic, malignant melanocytic]   # negative (naevus), positive (melanoma)
   between: [indeterminate melanocytic]                # never fitted; scored by every outer fit of the pair model

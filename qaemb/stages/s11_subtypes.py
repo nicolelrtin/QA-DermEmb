@@ -32,7 +32,15 @@ Threshold metrics (for the explorer's metrics chapter)
   computed per repeat on the pooled out-of-fold predictions, then averaged (range over repeats kept), on all images and
   on dermoscopic images only.
 
-Outputs: metrics_binary.csv, metrics_10c.csv, tenclass_per_class.csv, tenclass_confusion.csv, tenclass_summary.csv, pair_scores.csv, pair_metrics.csv, pair_differences.csv,
+Comparison over all runs
+  model_comparison.md / .csv: the ten-subtype models on S10's folds (Sonnet's answers and the S13 SkinGPT-R1 benchmarks)
+  first, then the training target (two classes, three, ten subtypes), every S6 model family and answer encoding, the S10
+  ridge variants (fold grouping, question subsets) and the S11 naevus-against-melanoma scores; every distinct model
+  numbered once, each scored the same way (AUROC; sensitivity,
+  specificity, accuracy and F1 at P >= 0.5; specificity at the 95%-sensitivity threshold) on benign against malignant,
+  naevus against melanoma and the ten subtypes.
+
+Outputs: model_comparison.md, model_comparison.csv, metrics_binary.csv, metrics_10c.csv, tenclass_per_class.csv, tenclass_confusion.csv, tenclass_summary.csv, pair_scores.csv, pair_metrics.csv, pair_differences.csv,
 pair_breakdown.csv, pair_between.csv, pair_questions.csv, pair_final_weights.csv, pair_extra.json (ROC points, threshold), figures/, summary.md.
 """
 import json
@@ -49,8 +57,8 @@ from .s5_model import feature_mask
 from .s6_classify import load_labels
 from .s10_ridge import fit_split, grid_values, make_pipe
 
-UPSTREAM = ["manifest", "embed", "ridge"]
-VERSION = 2                                       # 2: threshold metrics table (metrics_binary.csv, metrics_10c.csv)
+UPSTREAM = ["manifest", "embed", "ridge", "classify", "bench"]
+VERSION = 4    # 2: threshold metrics; 3: model_comparison over S6, S10, S11; 4: + S13 SkinGPT-R1, numbered models
 SCORES = [("pair", "pair model (naevus vs melanoma only)"), ("tenclass", "10-subtype model"),
           ("twoclass", "benign-vs-malignant model"), ("direct", 'Sonnet asked "malignant?"')]
 
@@ -198,6 +206,301 @@ def tenclass_rows(oof, classes, derm) -> pd.DataFrame:
                             "sensitivity": P.sensitivity.mean(), "specificity": P.specificity.mean(),
                             "precision": P.precision.mean(), "f1": P.f1.mean()})
     return aggregate(pd.DataFrame(out), ["model", "name", "subset", "subtype"])
+
+
+
+# ------------------------------------------------------------------ comparison over all runs (model_comparison.md)
+FAMILIES = [("l2", "ridge (L2 logistic)"), ("l1", "lasso (L1 logistic)"), ("enet", "elastic net"), ("rf", "random forest"),
+            ("hgb", "gradient boosting"), ("mlp", "MLP")]
+SOURCES = [("dir", "Directional Score"), ("orig", "P(yes)"), ("coh", "Coherence Score")]
+QSETS = [("all", "all 446 questions", 446), ("lasso120", "120, chosen jointly by the lasso", 120),
+         ("lasso60", "60, chosen jointly by the lasso", 60), ("lasso27", "27, chosen jointly by the lasso", 27),
+         ("top60", "60, best one at a time (F-test)", 60), ("top27", "27, best one at a time (F-test)", 27),
+         ("reps60", "60, most typical per answer cluster", 60), ("reps27", "27, most typical per answer cluster", 27),
+         ("pca60", "60 principal components (all 446 asked)", 60), ("pca27", "27 principal components (all 446 asked)", 27),
+         ("rand120", "120 at random (mean of 5 draws)", 120), ("rand60", "60 at random (mean of 5 draws)", 60),
+         ("rand27", "27 at random (mean of 5 draws)", 27)]
+
+
+def _mat(d, ids, f):
+    """Per-repeat matrix [repeats x len(ids)] of f(frame indexed by image_id)."""
+    return np.vstack([f(h.set_index("image_id").reindex(ids)) for _, h in d.groupby("repeat")])
+
+
+def bin_summary(y, S, sens) -> dict:
+    """Pooled per repeat at P >= 0.5, then mean over repeats; plus specificity at the 95%-sensitivity threshold."""
+    rows = [at_threshold(y, s, 0.5) | {"spec95": at_threshold(y, s, thr_for_sens(y, s, sens))["specificity"]} for s in S]
+    return {k: float(np.mean([r[k] for r in rows])) for k in ("auroc", "sensitivity", "specificity", "accuracy", "f1", "spec95")}
+
+
+def multi_summary(y, Ps) -> dict:
+    from sklearn.metrics import roc_auc_score
+
+    out = []
+    for P in Ps:
+        pred, K = P.argmax(1), P.shape[1]
+        se = [((pred == k) & (y == k)).sum() / max((y == k).sum(), 1) for k in range(K)]
+        sp = [((pred != k) & (y != k)).sum() / max((y != k).sum(), 1) for k in range(K)]
+        f1 = [2 * ((pred == k) & (y == k)).sum() / max((pred == k).sum() + (y == k).sum(), 1) for k in range(K)]
+        out.append({"auroc": roc_auc_score(y, P, multi_class="ovr", average="macro"), "accuracy": float((pred == y).mean()),
+                    "sensitivity": float(np.mean(se)), "specificity": float(np.mean(sp)), "f1": float(np.mean(f1))})
+    return {k: float(np.mean([r[k] for r in out])) for k in out[0]}
+
+
+ANS = "Sonnet's answers to all 446 questions (Directional Score)"
+DIRECT_Q = 'Sonnet asked "Is this a malignant lesion?"'
+BENCH = [("questions", ANS),
+         ("skingpt_emb:img_L28", "SkinGPT-R1 image embedding, layer 28 of 28 (prespecified)"),
+         ("skingpt_emb:img_L21", "SkinGPT-R1 image embedding, layer 21"),
+         ("skingpt_emb:img_L14", "SkinGPT-R1 image embedding, layer 14"),
+         ("skingpt_emb:img_L0", "SkinGPT-R1 vision encoder output (layer 0)"),
+         ("skingpt_emb:last_L28", "SkinGPT-R1 last prompt token, layer 28"),
+         ("skingpt_diagnosis_fitted", "SkinGPT-R1's scores for 16 candidate diagnoses")]
+SCORE = {("two classes", "benign vs malignant"): "P(malignant)",
+         ("two classes", "naevus vs melanoma"): "P(malignant), on the 200 naevi and melanomas",
+         ("three classes", "benign vs malignant"): "P(malignant) / (P(malignant) + P(benign))",
+         ("three classes", "naevus vs melanoma"): "P(malignant) / (P(malignant) + P(benign)), on the 200 images",
+         ("ten subtypes", "benign vs malignant"): "malignant subtypes summed against benign subtypes",
+         ("ten subtypes", "naevus vs melanoma"): "P(melanoma) / (P(melanoma) + P(naevus))",
+         ("ten subtypes", "ten subtypes"): "most probable subtype",
+         ("naevus vs melanoma", "naevus vs melanoma"): "P(melanoma)",
+         ("no training", "benign vs malignant"): "P(yes)", ("no training", "naevus vs melanoma"): "P(yes), on the 200 images",
+         ("candidates", "benign vs malignant"): "malignant candidate labels summed",
+         ("candidates", "naevus vs melanoma"): "malignant candidate labels summed, on the 200 images"}
+
+
+def model_name(r) -> str:
+    """One readable name per distinct model (features, classifier, training target, folds, pipeline)."""
+    if r["classifier"] == "none":
+        return r["features"]
+    return f"{r['classifier']} on {r['features']}"
+
+
+def model_comparison(out, oof10, oof6, oofb, classes, grp3, direct, pair_S, pid, ypair, neg, pos, sens, run_names) -> pd.DataFrame:
+    """Every model of S6, S10, S11 and S13 scored the same way on the three tasks. Each distinct model (pipeline, input,
+    classifier, training target, fold grouping) gets one number, so a model that appears in several tables is
+    recognisable as the same one. Writes model_comparison.csv / model_comparison.md and returns the long table."""
+    b = oof10[(oof10.task == "s1_2c") & (oof10.set == "all") & (oof10.grouping == "patient") & (oof10.repeat == 0)]
+    ids2, y2 = b.image_id.values, (b.true.values == "malignant").astype(int)
+    a = oof10[(oof10.task == "flat_10c") & (oof10.set == "all") & (oof10.grouping == "patient") & (oof10.repeat == 0)]
+    ids10, y10 = a.image_id.values, np.array([classes.index(v) for v in a.true])
+    pc = [f"p::{c}" for c in classes]
+    mal = [f"p::{c}" for c in classes if grp3[c] == "malignant"]
+    ben = [f"p::{c}" for c in classes if grp3[c] == "benign"]
+    ratio = lambda h: (h[f"p::{pos}"] / (h[f"p::{pos}"] + h[f"p::{neg}"])).values
+    # ten subtypes collapsed to benign vs malignant: the summed probabilities, each group divided by its number of subtypes,
+    # so that 0.5 again means equal prior odds (the model was trained with equal weight per subtype)
+    collapse = lambda h: ((m := h[mal].sum(1) / len(mal)) / (m + h[ben].sum(1) / len(ben))).values
+    three = lambda h: (h["p::malignant"] / (h["p::malignant"] + h["p::benign"])).values
+    pmal = lambda h: h["p::malignant"].values
+    rows = []
+
+    def ident(section, stage, features, classifier, target, folds):
+        return {"section": section, "stage": stage, "features": features, "classifier": classifier, "target": target,
+                "folds": folds}
+
+    def add(idn, task, metrics, readout=None):
+        rows.append(idn | {"task": task, "score": SCORE[(readout or idn["target"], task)]} | metrics)
+
+    def add_model(idn, d=None, tasks=("benign vs malignant", "naevus vs melanoma", "ten subtypes"), ds=None, readout=None):
+        """d: the model's out-of-fold predictions (one frame, or ds: several draws whose metrics are averaged)."""
+        for task in tasks:
+            mets = []
+            for dd in (ds if ds is not None else [d]):
+                if task == "ten subtypes":
+                    Ps = [h.set_index("image_id").reindex(ids10)[pc].values for _, h in dd.groupby("repeat")]
+                    mets.append(multi_summary(y10, Ps))
+                    continue
+                f = {"two classes": pmal, "three classes": three,
+                     "ten subtypes": collapse if task == "benign vs malignant" else ratio}[readout or idn["target"]]
+                ids_, y_ = (ids2, y2) if task == "benign vs malignant" else (pid, ypair)
+                mets.append(bin_summary(y_, _mat(dd, ids_, f), sens))
+            add(idn, task, pd.DataFrame(mets).mean().to_dict(), readout)
+
+    s6 = lambda task, m, s: oof6[(oof6.task == task) & (oof6.model == m) & (oof6.source == s)]
+    s10 = lambda task, fs, g="patient": oof10[(oof10.task == task) & (oof10.set == fs) & (oof10.grouping == g)]
+    bn = lambda task, m: oofb[(oofb.task == task) & (oofb.set == m)]
+    S6F, S10P, S10L = "lesion (S6 pipeline)", "patient", "lesion"
+    BM, NM = ("benign vs malignant",), ("naevus vs melanoma",)
+    zs = ident("M", "S12/S13", "SkinGPT-R1's own diagnosis (16 candidate labels), zero-shot", "none", "no training", "no training")
+    dq = ident("M", "S2", DIRECT_Q, "none", "no training", "no training")
+
+    # M. ten-subtype models, all on S10's patient-grouped folds (S13 reproduced the question model exactly)
+    for m, feat in BENCH:
+        add_model(ident("M", "S10" if m == "questions" else "S13", feat, "ridge", "ten subtypes", S10P), bn("flat_10c", m))
+    add_model(zs, bn("flat_10c", "skingpt_diagnosis"), readout="ten subtypes")
+    for task, ids_, y_ in (("benign vs malignant", ids2, y2), ("naevus vs melanoma", pid, ypair)):
+        add(dq, task, bin_summary(y_, direct.reindex(ids_).values[None, :], sens))
+    # T. training target: the same inputs trained on two classes, three classes or ten subtypes
+    T = lambda st, feat, cl, tg, fo: ident("T", st, feat, cl, tg, fo)
+    for m, feat in BENCH[:2] + BENCH[4:5] + BENCH[6:]:
+        st = "S10" if m == "questions" else "S13"
+        add_model(T(st, feat, "ridge", "two classes", S10P), bn("s1_2c", m), BM + NM)
+        add_model(T(st, feat, "ridge", "ten subtypes", S10P), bn("flat_10c", m), BM + NM)
+    # the zero-shot diagnosis read two ways: its candidate labels summed by group, or its ten-subtype probabilities
+    for task, ids_, y_ in (("benign vs malignant", ids2, y2), ("naevus vs melanoma", pid, ypair)):
+        add(zs | {"section": "T"}, task, bin_summary(y_, _mat(bn("s1_2c", "skingpt_diagnosis"), ids_, pmal), sens), "candidates")
+    add_model(zs | {"section": "T"}, bn("flat_10c", "skingpt_diagnosis"), BM + NM, readout="ten subtypes")
+    for tg, task in (("two classes", "s1_2c"), ("three classes", "s1_3c"), ("ten subtypes", "flat_10c")):
+        add_model(ident("U", "S6", ANS, dict(FAMILIES)["l2"], tg, S6F), s6(task, "l2", "dir"), BM + NM)
+    rows.append(T("S11", ANS, "ridge", "naevus vs melanoma", S10P) | {"task": "naevus vs melanoma", "score": "P(melanoma)"}
+                | bin_summary(ypair, pair_S, sens))
+    # B. model families (S6, Directional Score); C. answer encoding (S6)
+    for m, n in FAMILIES:
+        add_model(ident("B", "S6", ANS, n, "two classes", S6F), s6("s1_2c", m, "dir"), BM)
+        add_model(ident("B", "S6", ANS, n, "ten subtypes", S6F), s6("flat_10c", m, "dir"), NM + ("ten subtypes",))
+    for m, n in FAMILIES:
+        for s, sn in SOURCES:
+            feat = ANS if s == "dir" else f"Sonnet's answers to all 446 questions ({sn})"
+            add_model(ident("C", "S6", feat, n, "two classes", S6F), s6("s1_2c", m, s), BM)
+            add_model(ident("C", "S6", feat, n, "ten subtypes", S6F), s6("flat_10c", m, s), NM + ("ten subtypes",))
+    # D. leakage controls (S10 ridge, all questions)
+    for g, fo in (("lesion", S10L), ("patient", S10P)):
+        add_model(ident("D", "S10", ANS, "ridge", "two classes", fo), s10("s1_2c", "all", g), BM)
+        add_model(ident("D", "S10", ANS, "ridge", "ten subtypes", fo), s10("flat_10c", "all", g), NM + ("ten subtypes",))
+    # E. number of questions (S10 ridge, patient groups)
+    for fs, n, k in QSETS:
+        feat = ANS if fs == "all" else f"Sonnet's answers, {n}"
+        if fs.startswith("rand"):
+            draws = sorted(oof10[oof10.set.str.startswith(fs + "_")].set.unique())
+            add_model(ident("E", "S10", feat, "ridge", "two classes", S10P), tasks=BM, ds=[s10("s1_2c", d) for d in draws])
+            add_model(ident("E", "S10", feat, "ridge", "ten subtypes", S10P), tasks=NM + ("ten subtypes",), ds=[s10("flat_10c", d) for d in draws])
+        else:
+            add_model(ident("E", "S10", feat, "ridge", "two classes", S10P), s10("s1_2c", fs), BM)
+            add_model(ident("E", "S10", feat, "ridge", "ten subtypes", S10P), s10("flat_10c", fs), NM + ("ten subtypes",))
+    # F. naevus against melanoma: the pair model and the scores derived from the general models
+    rows.append(ident("F", "S11", ANS, "ridge", "naevus vs melanoma", S10P) | {"task": "naevus vs melanoma", "score": "P(melanoma)"}
+                | bin_summary(ypair, pair_S, sens))
+    add_model(ident("F", "S10", ANS, "ridge", "ten subtypes", S10P), s10("flat_10c", "all"), NM)
+    add_model(ident("F", "S10", ANS, "ridge", "two classes", S10P), s10("s1_2c", "all"), NM)
+    add(dq | {"section": "F"}, "naevus vs melanoma", bin_summary(ypair, direct.reindex(pid).values[None, :], sens))
+
+    tab = pd.DataFrame(rows)
+    tab["name"] = tab.apply(model_name, axis=1)
+    idk = ["stage", "features", "classifier", "target", "folds"]
+    first = tab.drop_duplicates(idk)[idk].reset_index(drop=True)
+    first["no"] = np.arange(1, len(first) + 1)
+    tab = tab.merge(first, on=idk, how="left")
+    tab = tab[["section", "no", "name", "stage", "features", "classifier", "target", "folds", "task", "score",
+               "auroc", "sensitivity", "specificity", "accuracy", "f1", "spec95"]]
+    tab.to_csv(out / "model_comparison.csv", index=False)
+    write_comparison(out, tab, sens, run_names)
+    return tab
+
+
+SECTIONS = {
+    "M": ("Ten-subtype models on the same folds",
+          "Each model was trained to name one of the ten subtypes, on the same patient-grouped folds (S10's design: 5 repeats "
+          "of 5-fold cross-validation, every learned step inside the training folds). The two binary tasks are read from the "
+          "same ten probabilities, so each row is one model scored three ways. Stage S13 refitted the question model on these "
+          "folds and reproduced S10's fold results exactly. SkinGPT-R1's diagnosis was scored without its reasoning step (S13 "
+          "report). The direct question is a reference with no training; it cannot name a subtype."),
+    "T": ("Training target: two classes or ten subtypes",
+          "The same inputs trained on two classes or on the ten subtypes, on S10's patient-grouped folds, all scored on the "
+          "two binary tasks. A ten-subtype model is read as malignant subtypes against benign subtypes (each group's summed "
+          "probability divided by its number of subtypes, so that 0.5 again means equal prior odds; this rescaling does not "
+          "change AUROC). SkinGPT-R1's zero-shot diagnosis has no training target; it is shown read both ways. For naevus "
+          "against melanoma the ridge trained on the 200 naevi and melanomas only is added."),
+    "U": ("Training target in the S6 pipeline: two, three or ten classes",
+          "The S6 ridge on all 446 questions trained on two classes, three (with indeterminate) or the ten subtypes. S6 folds "
+          "were grouped by lesion, so these rows are comparable with each other but not with the patient-grouped tables."),
+    "B": ("Model families",
+          "The six model families of S6, on all 446 questions encoded as the Directional Score. S6 folds were grouped by "
+          "`lesion_id`, which is unique per image, so a patient's other lesions can sit in the training folds (FINDINGS 22); "
+          "compare these rows with each other, and with the leakage-control table for the effect of the grouping. Benign against malignant "
+          "uses each family's two-class model; the other two tasks use its ten-subtype model, so each family is two models."),
+    "C": ("Answer encoding",
+          "The same six families on each of the three ways of turning Sonnet's answers into numbers: P(yes) as stated; the "
+          "Directional Score (2 P(yes) − 1 times the stated confidence, standardised); the Coherence Score. S6 folds, grouped "
+          "by lesion; two-class models for benign against malignant, ten-subtype models for the other tasks."),
+    "D": ("Ridge with leakage controls",
+          "S10 ridge on all 446 questions, with every learned step inside the training folds, and the folds grouped either by "
+          "lesion (as in S6) or by ISIC patient. Two-class models for benign against malignant, ten-subtype models for the "
+          "other tasks."),
+    "E": ("Number of questions",
+          "S10 ridge, folds grouped by patient, on subsets of the questions chosen inside each training fold, or at random. "
+          "Two-class models for benign against malignant, ten-subtype models (trained on the same subset) for the other tasks."),
+    "F": ("Scores built for naevus against melanoma",
+          "S11: a ridge model trained on the 100 naevi and 100 melanomas only, against scores read from the general models "
+          "on the same 200 images."),
+}
+SECTION_ORDER = "MTUBCDEF"
+TASKS = [("benign vs malignant", "Benign against malignant (300 malignant, 500 benign images)",
+          [("auroc", "AUROC"), ("sensitivity", "Sensitivity"), ("specificity", "Specificity"), ("accuracy", "Accuracy"),
+           ("f1", "F1"), ("spec95", "Specificity at 95% sensitivity")]),
+         ("naevus vs melanoma", "Naevus against melanoma (100 melanomas, 100 naevi)",
+          [("auroc", "AUROC"), ("sensitivity", "Sensitivity"), ("specificity", "Specificity"), ("accuracy", "Accuracy"),
+           ("f1", "F1"), ("spec95", "Specificity at 95% sensitivity")]),
+         ("ten subtypes", "Ten subtypes (100 images each; chance accuracy 0.10)",
+          [("auroc", "AUROC (mean one vs rest)"), ("sensitivity", "Sensitivity (mean)"), ("specificity", "Specificity (mean)"),
+           ("accuracy", "Accuracy"), ("f1", "F1 (macro)")])]
+
+
+def write_comparison(out, tab, sens, run_names):
+    L = ["# Model metrics across all experiments", "",
+         "Every model trained so far on the 1,000 beta images, from Sonnet's answers or from SkinGPT-R1, scored the same way "
+         f"on three tasks. Generated by stage S11 from {run_names}; the numbers are in `model_comparison.csv`.", "",
+         "**Each model has one number.** A model is one combination of pipeline stage, input, classifier, training target "
+         "and fold grouping. The same number in two tables is the same fitted model scored on a different task; a different "
+         "number is a different model, even when the name looks alike (for example, the question ridge trained on two classes "
+         "and the one trained on ten subtypes). The column *Trained on* gives the training target and *Score* how the task "
+         "is read from the model's output. The model index at the end lists every number.", "",
+         "**How every number is computed.** Each image is scored by a model that did not see it in training (out-of-fold "
+         "predictions; 5 repeats of 5-fold cross-validation). Within each repeat the predictions of all folds are pooled and "
+         "the measure is computed once; the tables give the mean over the 5 repeats. Pooled values can differ by about 0.01 "
+         "to 0.02 from the fold means quoted in earlier reports.", "",
+         "**What the measures mean.**",
+         "- **AUROC:** the chance that a randomly chosen positive case (malignant, melanoma) scores above a randomly chosen "
+         "negative one, over all thresholds. 0.5 is chance, 1 is perfect.",
+         "- **Sensitivity:** of the positive cases, the share the model flags (P ≥ 0.5).",
+         "- **Specificity:** of the negative cases, the share it correctly leaves alone (P ≥ 0.5).",
+         "- **Accuracy:** the share of all images classified correctly (P ≥ 0.5). For benign against malignant there are "
+         "more benign images (500 against 300), so accuracy leans toward specificity.",
+         "- **F1:** the harmonic mean of precision (the share of flagged cases that are truly positive) and sensitivity; high "
+         "only when the model both finds the positives and does not over-call them.",
+         f"- **Specificity at {sens:.0%} sensitivity:** the share of negatives left alone when the threshold is lowered until "
+         f"{sens:.0%} of positives are caught. The threshold is chosen on the same predictions, so this is slightly optimistic. "
+         "It is the project's pre-set main score for benign against malignant.",
+         "- **Ten subtypes:** each image goes to its most probable subtype (no threshold). Sensitivity, specificity and F1 "
+         "are computed per subtype and averaged. With 100 images per subtype, accuracy equals mean sensitivity (balanced "
+         "accuracy).", "",
+         "The trained models output probabilities for equal class priors (balanced class weights, or the random forest and "
+         "MLP corrected to equal priors), so P ≥ 0.5 means the same for each. The zero-shot SkinGPT-R1 diagnosis and the "
+         "direct question are not calibrated that way, so their threshold metrics depend on where their scores happen to sit; "
+         "compare them by AUROC. Bold marks the best value in each column of each table (ties included; not marked where more "
+         "than half the rows share it).", "",
+         "Differences of 0.01 to 0.02 between models are within the spread over repeats and folds (about ±0.03 in AUROC for "
+         "benign against malignant, ±0.04 for naevus against melanoma, where each class has only 100 images); the highest "
+         "value in a column is not by itself evidence that the model is better.", ""]
+    fmtv = lambda k, v: "n/a" if pd.isna(v) else f"{v:.3f}" if k == "auroc" else f"{v:.2f}"
+    for i, sec in enumerate(SECTION_ORDER, 1):
+        title, note = SECTIONS[sec]
+        L += [f"## {i}. {title}", "", note, ""]
+        for task, ttitle, cols in TASKS:
+            g = tab[(tab.section == sec) & (tab.task == task)]
+            if g.empty:
+                continue
+            shown = {k: [fmtv(k, v) for v in g[k]] for k, _ in cols}
+            best = {k: max((float(v) for v in shown[k] if v != "n/a"), default=None) for k, _ in cols}
+            # mark the best only where it singles out a minority of rows
+            vary = {k: len(set(shown[k])) > 1 and sum(v != "n/a" and float(v) == best[k] for v in shown[k]) <= len(g) / 2
+                    for k, _ in cols}
+            L += [f"### {ttitle}", "", "| No. | Model | Trained on | Folds grouped by | Score | " + " | ".join(n for _, n in cols) + " |",
+                  "|---|---|---|---|---|" + "---|" * len(cols)]
+            for x in g.itertuples():
+                cells = []
+                for k, _ in cols:
+                    s = fmtv(k, getattr(x, k))
+                    cells.append(f"**{s}**" if s != "n/a" and len(g) > 1 and vary[k] and float(s) == best[k] else s)
+                L.append(f"| {x.no} | {x.name} | {x.target} | {x.folds} | {x.score} | " + " | ".join(cells) + " |")
+            L.append("")
+    L += ["## Model index", "", "Every distinct model in the tables above, with the sections it appears in.", "",
+          "| No. | Model | Trained on | Folds grouped by | Stage | Sections |", "|---|---|---|---|---|---|"]
+    for no, g in tab.groupby("no", sort=True):
+        x = g.iloc[0]
+        secs = ", ".join(str(SECTION_ORDER.index(s) + 1) for s in sorted(g.section.unique(), key=SECTION_ORDER.index))
+        L.append(f"| {no} | {x['name']} | {x.target} | {x.folds} | {x.stage} | {secs} |")
+    (out / "model_comparison.md").write_text("\n".join(L) + "\n")
 
 
 # ------------------------------------------------------------------ main
@@ -375,6 +678,12 @@ def _run(cfg, out, inputs, ctx) -> dict:
     mb.to_csv(out / "metrics_binary.csv", index=False)
     m10 = tenclass_rows(oof, classes, derm)
     m10.to_csv(out / "metrics_10c.csv", index=False)
+    oof6 = pd.read_parquet(inputs["classify"] / "oof_predictions.parquet")
+    oofb = pd.read_parquet(inputs["bench"] / "oof_predictions.parquet")
+    grp3 = {c: lab.c3[lab.c10 == c].iloc[0] for c in classes}
+    model_comparison(out, oof, oof6, oofb, classes, grp3, direct, S["pair"], pid, y, neg, pos, sens,
+                     f"S6 classify `{inputs['classify'].name}`, S10 ridge `{inputs['ridge'].name}`, "
+                     f"S13 bench `{inputs['bench'].name}` and this stage")
 
     curves = {k: roc_points(y, mean[k]) for k, _ in SCORES}
     plots.pair_roc(curves, dict(SCORES), {k: auc(y, mean[k]) for k, _ in SCORES}, sens,
