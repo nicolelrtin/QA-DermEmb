@@ -35,10 +35,14 @@ patient. The two-class keys (eval, imp, cases, thr) are unchanged.
                           sum_terms, oof_p [10], oof_p_mal, C, n_train, n_left_out, max_err, terms: [{q, x, z, dw, c, py,
                           cf}]}, logratio = d0 + sum of terms.c
   ten2.check              reproduction checks (S11 collapsed AUROC, S11 model 1, S10 fold refits, case decompositions)
+  bench.models[]          the ten-subtype models of S13 (S11 model numbers 1 to 9, see bench_payload) scored per outer
+                          fold: {model, no, n_folds, auroc_all, auroc_derm, bacc}, each {mean, sd, min, max} over the 25
+                          folds (bacc null for the direct question); bench.check: rebuilt folds against S13's fold metrics
+                          and model numbers against S11. Per fold in bench_folds.csv.
 Outputs: explorer.html (self-contained), narrative.html (the same data in the order of the paper; copied to
 project_narrative/index.html), question_table.csv, question_clusters.csv, topic_cohesion.csv, agreement.csv,
 text_vs_answers.csv, pca.csv, pc_association.csv, image_table.csv, image_cluster_association.csv, tenclass_folds.csv,
-tenclass_importance.csv, tenclass.md, figures/, summary.md.
+bench_folds.csv, tenclass_importance.csv, tenclass.md, figures/, summary.md.
 """
 import base64
 import io
@@ -54,8 +58,8 @@ from ..models import plots
 from .s6_classify import GROUPS, SOURCE_NAMES, load_labels
 from .s11_subtypes import SECTION_ORDER, SECTIONS
 
-UPSTREAM = ["manifest", "embed", "importance", "ridge", "subtypes", "thresholds", "qclusters"]
-VERSION = 6   # 4: also writes narrative.html (project_narrative/); 5: + payload key ten2 (ten-subtype model); 6: ten-subtype worked cases chosen by that model, with their image
+UPSTREAM = ["manifest", "embed", "importance", "ridge", "subtypes", "thresholds", "qclusters", "bench"]
+VERSION = 7   # 4: also writes narrative.html (project_narrative/); 5: + payload key ten2 (ten-subtype model); 6: ten-subtype worked cases chosen by that model, with their image; 7: + payload key bench (fold-level scores of the ten-subtype models of S13)
 TEMPLATE = Path(__file__).resolve().parents[1] / "templates" / "explore.html"
 NARRATIVE = TEMPLATE.parent / "narrative.html"   # same payload, five chapters in the order of the paper
 FONTS = [  # (family, style, file): embedded so the page needs no network (templates/fonts/README.md)
@@ -231,6 +235,91 @@ def thresholds_payload(inputs) -> dict:
     return {"rules": pd.read_csv(d / "rules_summary.csv").to_dict("records"),
             "sweep": pd.read_csv(d / "sweep_summary.csv").to_dict("records"),
             "max_diff": float(pd.read_csv(d / "reproduction.csv").max_abs_diff.max())}
+
+
+BENCH_MODELS = [  # S13 method -> the model's number in S11's model comparison (section M), checked against its AUROC
+    ("questions", 1), ("skingpt_emb:img_L28", 2), ("skingpt_emb:img_L21", 3), ("skingpt_emb:img_L14", 4),
+    ("skingpt_emb:img_L0", 5), ("skingpt_emb:last_L28", 6), ("skingpt_diagnosis_fitted", 7), ("skingpt_diagnosis", 8),
+    ("control question", 9)]
+
+
+def bench_payload(cfg, inputs, ids, lab, meta, ctrl) -> dict:
+    """Fold-level scores of the ten-subtype models of Table 3.4 (S13, same patient-grouped folds as S10), for the
+    benchmark figure of the 'Model selection' chapter: per outer fold, AUROC for benign against malignant (malignant
+    subtypes summed against benign ones, as S11) on all and on dermoscopic test images, and balanced accuracy over the
+    ten subtypes. S13 stores out-of-fold probabilities without the fold index, so the folds are rebuilt with S10's
+    splitter; the rebuilt balanced accuracies must equal S13's own fold metrics, which proves they are the same folds.
+    The direct question has no training, so it is scored on the same test folds as a reference (benign against
+    malignant only)."""
+    from sklearn.metrics import balanced_accuracy_score, roc_auc_score
+
+    from ..models.refit import s10_splits
+    from .s11_subtypes import collapse_malignant
+
+    d = inputs["bench"]
+    o = pd.read_parquet(d / "oof_predictions.parquet")
+    o = o[o.task == "flat_10c"]
+    classes = sorted(lab.c10.unique())
+    pc = [f"p::{c}" for c in classes]
+    grp3 = {c: lab.c3[lab.c10 == c].iloc[0] for c in classes}
+    y10 = np.array([classes.index(v) for v in lab.c10.values])
+    bm = lab.c3.isin(["benign", "malignant"]).values
+    yb = (lab.c3.values == "malignant").astype(int)
+    derm = meta.image_type.reindex(ids).eq("dermoscopic").values
+    groups = pd.read_csv(inputs["ridge"] / "groups.csv").set_index("image_id").group.reindex(ids).values
+    splits = s10_splits(lab.c10.values, groups, cfg.classify, cfg.seed)
+    reps = sorted(o.repeat.unique())
+
+    P = {}                                              # method -> R x N x K, in the order of ids
+    for m, _ in BENCH_MODELS:
+        if m == "control question":
+            continue
+        g = o[o.set == m]
+        P[m] = np.stack([g[g.repeat == r].set_index("image_id").reindex(ids)[pc].values for r in reps])
+        if np.isnan(P[m]).any():
+            raise SystemExit(f"S13's flat_10c predictions for {m} do not cover every image in every repeat")
+
+    rows = []
+    for r, f, tr, te in splits:
+        k = reps.index(r)
+        for m, no in BENCH_MODELS:
+            row = {"model": m, "no": no, "repeat": int(r), "fold": int(f)}
+            score = ctrl if m == "control question" else collapse_malignant(P[m][k], classes, grp3)
+            for sub, msk in (("all", np.ones(len(ids), bool)), ("derm", derm)):
+                t = te[bm[te] & msk[te]]
+                row[f"auroc_{sub}"] = float(roc_auc_score(yb[t], score[t])) if len(np.unique(yb[t])) == 2 else None
+            row["bacc"] = None if m == "control question" else float(balanced_accuracy_score(y10[te], P[m][k][te].argmax(1)))
+            rows.append(row)
+    F = pd.DataFrame(rows)
+
+    # the rebuilt folds are S13's: balanced accuracy per fold must equal S13's stored fold metrics
+    s13 = pd.read_csv(d / "metrics_folds.csv")
+    s13 = s13[(s13.task == "flat_10c") & (s13.subset == "all images")][["set", "repeat", "fold", "balanced_accuracy"]]
+    chk = F[F.model != "control question"].merge(s13, left_on=["model", "repeat", "fold"], right_on=["set", "repeat", "fold"])
+    fold_diff = float((chk.bacc - chk.balanced_accuracy).abs().max())
+    if len(chk) != (F.model != "control question").sum() or fold_diff > 1e-9:
+        raise SystemExit(f"Rebuilt folds do not reproduce S13's fold metrics ({len(chk)} rows matched, largest difference {fold_diff:.2e})")
+    # and the model numbers are S11's: pooled AUROC per repeat, averaged, against model_comparison (section M)
+    mc = pd.read_csv(inputs["subtypes"] / "model_comparison.csv")
+    mc = mc[(mc.section == "M") & (mc.task == "benign vs malignant")].set_index("no").auroc
+    no_diff = 0.0
+    for m, no in BENCH_MODELS:
+        if m == "control question":
+            a = roc_auc_score(yb[bm], ctrl[bm])
+        else:
+            a = np.mean([roc_auc_score(yb[bm], collapse_malignant(P[m][k], classes, grp3)[bm]) for k in range(len(reps))])
+        no_diff = max(no_diff, abs(a - mc[no]))
+    if no_diff > 1e-6:
+        raise SystemExit(f"S13 methods do not map onto S11's model numbers (largest AUROC difference {no_diff:.2e})")
+
+    summ = []
+    for (m, no), g in F.groupby(["model", "no"], sort=False):
+        s = {"model": m, "no": int(no), "n_folds": int(len(g))}
+        for c in ("auroc_all", "auroc_derm", "bacc"):
+            v = g[c].dropna()
+            s[c] = None if v.empty else {"mean": float(v.mean()), "sd": float(v.std()), "min": float(v.min()), "max": float(v.max())}
+        summ.append(s)
+    return {"models": summ, "check": {"s13_fold_bacc_max_diff": fold_diff, "s11_auroc_max_diff": float(no_diff)}}, F
 
 
 def importance_payload(inputs, qids, sub_order, top_n=25) -> dict:
@@ -749,6 +838,8 @@ def _run(cfg, out, inputs, ctx) -> dict:
     ten2 = tenclass_payload(cfg, inputs, ids, lab, meta, X, P, qids, ctrl, sub_order,
                             pick_cases(lab, meta, rp, ids, e.get("case_images")), ev, out)
     write_tenclass_summary(out, ten2, qids, qt)
+    bench, bench_folds = bench_payload(cfg, inputs, ids, lab, meta, ctrl)
+    bench_folds.to_csv(out / "bench_folds.csv", index=False)
 
     # ---------------- page
     print("  thumbnails ...", flush=True)
@@ -800,6 +891,7 @@ def _run(cfg, out, inputs, ctx) -> dict:
         "thr": thresholds_payload(inputs),
         "cases": case_payload(cfg, inputs, lab, meta, man, ids, qids, rp, ctrl, sub_order),
         "ten2": ten2,
+        "bench": bench,
         "qcl": json.loads((inputs["qclusters"] / "payload.json").read_text()),   # S15: questions answered alike, and the checks on why
         "answers": {"yes_share": float((Pq >= 0.5).mean()),
                     "p_hist": np.histogram(Pq.ravel(), bins=20, range=(0, 1))[0].tolist(),
