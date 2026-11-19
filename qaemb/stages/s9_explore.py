@@ -36,7 +36,7 @@ patient. The two-class keys (eval, imp, cases, thr) are unchanged.
                           cf}]}, logratio = d0 + sum of terms.c
   ten2.check              reproduction checks (S11 collapsed AUROC, S11 model 1, S10 fold refits, case decompositions)
   bench.models[]          the ten-subtype models of S13 (S11 model numbers 1 to 9, see bench_payload) scored per outer
-                          fold: {model, no, n_folds, auroc_all, auroc_derm, bacc}, each {mean, sd, min, max} over the 25
+                          fold: {model, no, n_folds, auroc_all, auroc_derm, auroc_nm, bacc}, each {mean, sd, min, max} over the 25
                           folds (bacc null for the direct question); bench.check: rebuilt folds against S13's fold metrics
                           and model numbers against S11. Per fold in bench_folds.csv.
 Outputs: explorer.html (self-contained), narrative.html (the same data in the order of the paper; copied to
@@ -250,7 +250,8 @@ def bench_payload(cfg, inputs, ids, lab, meta, ctrl) -> dict:
     ten subtypes. S13 stores out-of-fold probabilities without the fold index, so the folds are rebuilt with S10's
     splitter; the rebuilt balanced accuracies must equal S13's own fold metrics, which proves they are the same folds.
     The direct question has no training, so it is scored on the same test folds as a reference (benign against
-    malignant only)."""
+    malignant only). auroc_nm: naevus against melanoma on the test fold's naevi and melanomas, read as
+    P(melanoma) / (P(melanoma) + P(naevus)) as in S11 (the direct question: its P(yes))."""
     from sklearn.metrics import balanced_accuracy_score, roc_auc_score
 
     from ..models.refit import s10_splits
@@ -265,6 +266,10 @@ def bench_payload(cfg, inputs, ids, lab, meta, ctrl) -> dict:
     y10 = np.array([classes.index(v) for v in lab.c10.values])
     bm = lab.c3.isin(["benign", "malignant"]).values
     yb = (lab.c3.values == "malignant").astype(int)
+    nm = lab.c10.isin(["benign melanocytic", "malignant melanocytic"]).values      # 100 naevi, 100 melanomas
+    yn = (lab.c10.values == "malignant melanocytic").astype(int)
+    kn, km = classes.index("benign melanocytic"), classes.index("malignant melanocytic")
+    mel_vs_nev = lambda Pk: Pk[:, km] / (Pk[:, km] + Pk[:, kn])                   # S11's naevus-against-melanoma score
     derm = meta.image_type.reindex(ids).eq("dermoscopic").values
     groups = pd.read_csv(inputs["ridge"] / "groups.csv").set_index("image_id").group.reindex(ids).values
     splits = s10_splits(lab.c10.values, groups, cfg.classify, cfg.seed)
@@ -288,6 +293,9 @@ def bench_payload(cfg, inputs, ids, lab, meta, ctrl) -> dict:
             for sub, msk in (("all", np.ones(len(ids), bool)), ("derm", derm)):
                 t = te[bm[te] & msk[te]]
                 row[f"auroc_{sub}"] = float(roc_auc_score(yb[t], score[t])) if len(np.unique(yb[t])) == 2 else None
+            t = te[nm[te]]
+            sn = ctrl if m == "control question" else mel_vs_nev(P[m][k])
+            row["auroc_nm"] = float(roc_auc_score(yn[t], sn[t])) if len(np.unique(yn[t])) == 2 else None
             row["bacc"] = None if m == "control question" else float(balanced_accuracy_score(y10[te], P[m][k][te].argmax(1)))
             rows.append(row)
     F = pd.DataFrame(rows)
@@ -301,21 +309,23 @@ def bench_payload(cfg, inputs, ids, lab, meta, ctrl) -> dict:
         raise SystemExit(f"Rebuilt folds do not reproduce S13's fold metrics ({len(chk)} rows matched, largest difference {fold_diff:.2e})")
     # and the model numbers are S11's: pooled AUROC per repeat, averaged, against model_comparison (section M)
     mc = pd.read_csv(inputs["subtypes"] / "model_comparison.csv")
+    mcn = mc[(mc.section == "M") & (mc.task == "naevus vs melanoma")].set_index("no").auroc
     mc = mc[(mc.section == "M") & (mc.task == "benign vs malignant")].set_index("no").auroc
     no_diff = 0.0
     for m, no in BENCH_MODELS:
         if m == "control question":
-            a = roc_auc_score(yb[bm], ctrl[bm])
+            a, an = roc_auc_score(yb[bm], ctrl[bm]), roc_auc_score(yn[nm], ctrl[nm])
         else:
             a = np.mean([roc_auc_score(yb[bm], collapse_malignant(P[m][k], classes, grp3)[bm]) for k in range(len(reps))])
-        no_diff = max(no_diff, abs(a - mc[no]))
+            an = np.mean([roc_auc_score(yn[nm], mel_vs_nev(P[m][k])[nm]) for k in range(len(reps))])
+        no_diff = max(no_diff, abs(a - mc[no]), abs(an - mcn[no]))
     if no_diff > 1e-6:
         raise SystemExit(f"S13 methods do not map onto S11's model numbers (largest AUROC difference {no_diff:.2e})")
 
     summ = []
     for (m, no), g in F.groupby(["model", "no"], sort=False):
         s = {"model": m, "no": int(no), "n_folds": int(len(g))}
-        for c in ("auroc_all", "auroc_derm", "bacc"):
+        for c in ("auroc_all", "auroc_derm", "auroc_nm", "bacc"):
             v = g[c].dropna()
             s[c] = None if v.empty else {"mean": float(v.mean()), "sd": float(v.std()), "min": float(v.min()), "max": float(v.max())}
         summ.append(s)

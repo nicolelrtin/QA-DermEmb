@@ -524,7 +524,7 @@ table.zoom sup { font-size: 8px; color: var(--gold); }
   <div class="finding sub" id="c11-find"></div>
   <div class="fig keyed" id="bench-fig"><h3><span class="fn">Fig. 3.3</span>Ten-subtype models on the same folds, over the 25 test folds</h3><p class="cap" id="bench-cap"></p>
     <div id="bench-key"></div><svg class="plot" id="bench-svg" viewBox="0 0 1100 300"></svg><p class="take" id="bench-take"></p></div>
-  <div class="fig keyed"><h3><span class="fn">Table 3.4</span>Ten-subtype models on the same folds, scored on two tasks</h3><p class="cap" id="cmp-cap-M"></p>
+  <div class="fig keyed"><h3><span class="fn">Table 3.4</span>Ten-subtype models on the same folds, scored by task</h3><p class="cap" id="cmp-cap-M"></p>
     <div id="cmp-M"></div><p class="take" id="c11-take1"></p></div>
   <div class="fig keyed"><h3><span class="fn">Table 3.5</span>How many classes to train on: two, three or ten</h3><p class="cap" id="cmp-cap-T"></p>
     <div id="cmp-T"></div><p class="take" id="c11-take2"></p>
@@ -967,16 +967,17 @@ function isKeyRow(r) {
   if (k === "diagnosis") return r.classifier === "none";                          // zero-shot only, not the ridge readout
   return /layer 28 of 28|vision encoder/.test(r.features);                       // prespecified last layer, and the vision encoder
 }
-const C3_TASKS = () => CMP_TASKS.filter(t => t[0] !== "naevus vs melanoma");
+const C3_TASKS = () => SHOW_ALL ? CMP_TASKS : CMP_TASKS.filter(t => t[0] !== "naevus vs melanoma");
+// expanded: every model fitted on these folds, and naevus against melanoma as a further task
 function rowToggle(fig, nAll, nKey) {
   let b = fig.querySelector(":scope > .rowtoggle");
   if (!b) { b = el("button", {class: "rowtoggle", type: "button"}); b.onclick = () => { SHOW_ALL = !SHOW_ALL; drawKeyed(); }; fig.appendChild(b); }
-  b.hidden = nAll <= nKey;
-  b.textContent = SHOW_ALL ? `Key models only (${nKey})` : `All models (+${nAll - nKey})`;
-  b.title = SHOW_ALL ? "Hide the further SkinGPT-R1 layers, its diagnosis readout and the lasso models" : "Show every model fitted on these folds";
+  const more = nAll > nKey ? `+${nAll - nKey} models, ` : "";
+  b.textContent = SHOW_ALL ? "Key models only" : `Expand (${more}naevus vs melanoma)`;
+  b.title = SHOW_ALL ? "Back to the five key models and the two main tasks" : "Show every model fitted on these folds, and naevus against melanoma (100 naevi, 100 melanomas)";
   b.setAttribute("aria-pressed", SHOW_ALL);
 }
-function drawKeyed() { drawCmpTables(); drawBench(); drawMetrics(); }
+function drawKeyed() { drawCmpTables(); drawBench(); mtTaskSeg(); drawMetrics(); }
 const cmpKey = () => `<div class="cmpkey">${CMP_KINDS.map(([k, n]) => `<span><span class="kdot" style="background:${cmpCol(k)}"></span>${n}</span>`).join("")}</div>`;
 function cmpSections(no) {
   const C = D.sub.comparison, secs = [...new Set(C.rows.filter(r => r.no === no).map(r => r.section))];
@@ -1008,8 +1009,9 @@ const cmpSection = sec => C3_TASKS().map(([t, , , cols]) => cmpTable(sec, t, col
 function drawCmpTables() {
   const C = D.sub.comparison, cnt = secs => { const R = C.rows.filter(r => secs.includes(r.section) && r.task === "benign vs malignant"); return [R.length, R.filter(isKeyRow).length]; };
   $("cmp-M").innerHTML = cmpKey() + cmpSection("M");
-  $("cmp-T").innerHTML = cmpKey() + C3_TASKS().slice(0, 1).map(([t, , , cols]) => cmpTable("T", t, cols)).join("");
-  $("cmp-U").innerHTML = C3_TASKS().slice(0, 1).map(([t, , , cols]) => cmpTable("U", t, cols)).join("");
+  const bin = C3_TASKS().filter(t => t[0] !== "ten subtypes");
+  $("cmp-T").innerHTML = cmpKey() + bin.map(([t, , , cols]) => cmpTable("T", t, cols)).join("");
+  $("cmp-U").innerHTML = bin.map(([t, , , cols]) => cmpTable("U", t, cols)).join("");
   rowToggle($("cmp-M").closest(".fig"), ...cnt(["M"]));
   rowToggle($("cmp-T").closest(".fig"), ...cnt(["T", "U"]));
 }
@@ -1020,13 +1022,14 @@ const BENCH_LAB = {1: "Ridge on 446 question answers (Sonnet)", 2: "SkinGPT-R1 l
   7: "SkinGPT-R1 diagnosis, ridge readout", 8: "SkinGPT-R1 diagnosis, zero-shot", 9: "Sonnet asked “Is this malignant?”"};
 const BENCH_PANELS = [["auroc_all", "AUROC, benign against malignant", [.5, .9], [.5, .6, .7, .8, .9], .5],
   ["auroc_derm", "AUROC, dermoscopic images only", [.5, .9], [.5, .6, .7, .8, .9], .5],
-  ["bacc", "Balanced accuracy, ten subtypes", [.1, .6], [.1, .2, .3, .4, .5, .6], .1]];
+  ["bacc", "Balanced accuracy, ten subtypes", [.1, .6], [.1, .2, .3, .4, .5, .6], .1],
+  ["auroc_nm", "AUROC, naevus vs melanoma", [.5, 1], [.5, .6, .7, .8, .9, 1], .5]];
 const benchRow = b => D.sub.comparison.rows.find(r => r.section === "M" && r.no === b.no);
 function renderBench() {
   const B = D.bench.models, q = B.find(b => b.no === 1), dq = B.find(b => b.no === 9);
   const emb = B.filter(b => [2, 5].includes(b.no)), best = emb.reduce((a, b) => b.auroc_all.mean > a.auroc_all.mean ? b : a);
   const zs = B.find(b => b.no === 8), n = q.n_folds;
-  $("bench-cap").innerHTML = `The models of Table 3.4, on the same ${n} outer test folds (patient-grouped; five repeats of 5-fold). Point: mean over the folds; bar: ± 1 SD across folds. Every trained model here was trained on the ten subtypes, and benign against malignant is read from its ten probabilities as in Table 3.4, on the 800 benign and malignant images of each test fold. Dotted line: chance; dashed line: the model on Sonnet's answers. Fold means differ by up to about 0.02 from Table 3.4, which pools each repeat's folds. Hover a point for its range over the folds.`;
+  $("bench-cap").innerHTML = `The models of Table 3.4, on the same ${n} outer test folds (patient-grouped; five repeats of 5-fold). Point: mean over the folds; bar: ± 1 SD across folds. Every trained model here was trained on the ten subtypes, and benign against malignant is read from its ten probabilities as in Table 3.4, on the 800 benign and malignant images of each test fold. Dotted line: chance; dashed line: the model on Sonnet's answers. Fold means differ by up to about 0.02 from Table 3.4, which pools each repeat's folds. Expanded, a fourth panel reads naevus against melanoma from the same models (P(melanoma) / (P(melanoma) + P(naevus)) on each fold's naevi and melanomas, about 40 images, so its spread is wider). Hover a point for its range over the folds.`;
   $("bench-take").innerHTML = `Read as benign against malignant, the model on Sonnet's answers (${fmt(q.auroc_all.mean, 3)} ± ${fmt(q.auroc_all.sd, 3)}) is above the better of SkinGPT-R1's principal embeddings, ${BENCH_LAB[best.no].replace(", ridge", "")} with a ridge readout (${fmt(best.auroc_all.mean, 3)} ± ${fmt(best.auroc_all.sd, 3)}), by less than one fold SD, and above the direct question (${fmt(dq.auroc_all.mean, 3)}). On the ten subtypes the two inputs are level (${fmt(q.bacc.mean, 3)} against ${fmt(best.bacc.mean, 3)}). SkinGPT-R1's own diagnosis without its reasoning step is far lower on both (${fmt(zs.auroc_all.mean, 3)} and ${fmt(zs.bacc.mean, 3)}).`;
   drawBench();
 }
@@ -1036,16 +1039,17 @@ function drawBench() {
   const all = D.bench.models.map(b => ({...b, r: benchRow(b)})).sort((a, b) => a.no - b.no);
   const B = all.filter(b => SHOW_ALL || isKeyRow(b.r));
   rowToggle($("bench-fig"), all.length, all.filter(b => isKeyRow(b.r)).length);
-  const W = 1100, lab = 330, gap = 44, top = 46, rowH = 40, bot = 34, H = top + B.length * rowH + bot;
+  const PANELS = BENCH_PANELS.filter(p => SHOW_ALL || p[0] !== "auroc_nm"), np = PANELS.length;
+  const W = np > 3 ? 1360 : 1100, lab = 330, gap = 44, top = 46, rowH = 40, bot = 34, H = top + B.length * rowH + bot;
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
-  const pw = (W - lab - gap * 2 - 8) / 3, q = all.find(b => b.no === 1), hov = [];
+  const pw = (W - lab - gap * (np - 1) - 8) / np, q = all.find(b => b.no === 1), hov = [];
   const Y = i => top + i * rowH + rowH / 2 + 6;
   B.forEach((b, i) => {
     const t = svgText(svg, lab - 14, Y(i) + 4, BENCH_LAB[b.no], {"text-anchor": "end", class: "rlab"});
     if (b.no === 1) t.style.fontWeight = 600;
     svgText(svg, 6, Y(i) + 4, b.no, {class: "rno"});
   });
-  BENCH_PANELS.forEach(([k, title, dom, ticks, chance], p) => {
+  PANELS.forEach(([k, title, dom, ticks, chance], p) => {
     const x0 = lab + p * (pw + gap), X = v => x0 + (v - dom[0]) / (dom[1] - dom[0]) * pw;
     const g = svgEl("g", {class: "axis"}); svg.appendChild(g);
     ticks.forEach(v => { g.appendChild(svgEl("line", {x1: X(v), x2: X(v), y1: top, y2: H - bot})); svgText(g, X(v), H - bot + 16, fmt(v, 1), {"text-anchor": "middle"}); });
@@ -1077,11 +1081,11 @@ function renderCmp() {
   const [bm, tn] = ["benign vs malignant", "ten subtypes"];
   const cmpw = (a, b, d = 3) => (+(+a).toFixed(d)) > (+(+b).toFixed(d)) ? `higher than` : (+(+a).toFixed(d)) < (+(+b).toFixed(d)) ? `lower than` : `equal to`;
   $("c11-find").innerHTML = `<div class="stat">${fmt(qm(tn).accuracy, 2)}<small>balanced accuracy over ten subtypes, ridge on Sonnet's answers (model ${qm(tn).no})</small></div><div class="say">Trained on the ten subtypes and scored on identical patient-grouped folds, the ridge model on Sonnet's answers (model ${qm(bm).no}) reaches AUROC <b>${fmt(qm(bm).auroc, 3)}</b> for benign against malignant. The better of SkinGPT-R1's two principal embeddings with the same ridge readout reaches <b>${fmt(sk(bm).auroc, 3)}</b> (model ${sk(bm).no}), and the two are level on the ten subtypes (balanced accuracy ${fmt(qm(tn).accuracy, 2)} against ${fmt(sk(tn).accuracy, 2)}). SkinGPT-R1's own diagnosis, without training, reaches ${fmt(zs(bm).auroc, 3)} and ${fmt(zs(tn).accuracy, 2)}.</div>`;
-  $("cmp-cap-M").innerHTML = `Each model was trained to name one of the ten subtypes, on the same patient-grouped folds (S10's design: five repeats of 5-fold cross-validation, every learned step inside the training folds); benign against malignant is read from the same ten probabilities, so each row is one model scored twice. Stage S13 refitted the question model on these folds and reproduced S10's fold results exactly. SkinGPT-R1's diagnosis was scored without its reasoning step. The direct question is a reference with no training; it cannot name a subtype. Values are pooled within each repeat and averaged over the five. Bold marks the best value in each column of each table. Hover a model number for the tables it appears in.`;
+  $("cmp-cap-M").innerHTML = `Each model was trained to name one of the ten subtypes, on the same patient-grouped folds (S10's design: five repeats of 5-fold cross-validation, every learned step inside the training folds); benign against malignant is read from the same ten probabilities, so each row is one model scored twice (three times when expanded, with naevus against melanoma: P(melanoma) / (P(melanoma) + P(naevus)) on the 100 naevi and 100 melanomas). Stage S13 refitted the question model on these folds and reproduced S10's fold results exactly. SkinGPT-R1's diagnosis was scored without its reasoning step. The direct question is a reference with no training; it cannot name a subtype. Values are pooled within each repeat and averaged over the five. Bold marks the best value in each column of each table. Hover a model number for the tables it appears in.`;
   $("c11-take1").innerHTML = `Against the better SkinGPT-R1 embedding model (model ${sk(bm).no}), the model on Sonnet's answers is ${cmpw(qm(bm).auroc, sk(bm).auroc)} it in AUROC for benign against malignant (${fmt(qm(bm).auroc, 3)} against ${fmt(sk(bm).auroc, 3)}) and ${cmpw(qm(tn).accuracy, sk(tn).accuracy, 2)} it in ten-subtype accuracy (${fmt(qm(tn).accuracy, 2)} against ${fmt(sk(tn).accuracy, 2)}). Differences of 0.01 to 0.02 are within the spread over repeats (about ±0.03 in AUROC for benign against malignant). SkinGPT-R1's own diagnosis ranks well below both, and the direct question to Sonnet (AUROC ${fmt(dq(bm).auroc, 3)}) is a reference with no training.`;
   const T = C.rows.filter(r => r.section === "T" && r.task === bm);
   const t2 = T.find(r => cmpKind(r) === "questions" && r.target === "two classes" && r.folds === "patient"), t10 = T.find(r => cmpKind(r) === "questions" && r.target === "ten subtypes" && r.folds === "patient");
-  $("cmp-cap-T").innerHTML = esc(note("T").replace(/ For naevus against melanoma[^.]*\./, "").replace("all scored on the two binary tasks", "scored on benign against malignant"));
+  $("cmp-cap-T").innerHTML = esc(note("T").replace(/ For naevus against melanoma[^.]*\./, " Expanded, naevus against melanoma is added, with the ridge trained on the 200 naevi and melanomas only.").replace("all scored on the two binary tasks", "scored on benign against malignant"));
   $("cmp-cap-U").innerHTML = esc(note("U"));
   drawCmpTables();
   renderBench();
@@ -1110,8 +1114,12 @@ function renderCmpIndex() {
   $("cmp-index").innerHTML = `<div class="cmpwrap"><table class="mtab cmp"><tr><th>No.</th><th>Model</th><th>Trained on</th><th>Folds grouped by</th><th>Stage</th><th>Tables</th></tr>` +
     [...seen.values()].sort((a, b) => a.no - b.no).map(r => `<tr><td class="no">${r.no}</td><td class="mname"><span class="kdot" style="background:${cmpCol(cmpKind(r))}"></span>${esc(r.name)}</td><td class="meta">${esc(r.target)}</td><td class="meta">${esc(r.folds)}</td><td class="meta">${esc(r.stage)}</td><td class="meta">${cmpSections(r.no)}</td></tr>`).join("") + `</table></div>`;
 }
+function mtTaskSeg() {
+  if (!SHOW_ALL && MT.task === "naevus vs melanoma") MT.task = "benign vs malignant";
+  seg($("mt-task"), [["benign vs malignant", "Benign vs malignant"], ...(SHOW_ALL ? [["naevus vs melanoma", "Naevus vs melanoma"]] : []), ["ten", "Ten subtypes"]], MT.task, v => { MT.task = v; drawMetrics(); });
+}
 function renderMtDetail() {
-  seg($("mt-task"), [["benign vs malignant", "Benign vs malignant"], ["ten", "Ten subtypes"]], MT.task, v => { MT.task = v; drawMetrics(); });
+  mtTaskSeg();
   seg($("mt-rule"), [["P >= 0.5", "P ≥ 0.5"], ["95% sensitivity", "95% sensitivity"]], MT.rule, v => { MT.rule = v; drawMetrics(); });
   seg($("mt-sub"), [["all images", "All images"], ["dermoscopic only", "Dermoscopic only"]], MT.sub, v => { MT.sub = v; drawMetrics(); });
   seg($("mt-model"), [["all", "All 446 questions"], ["lasso120", "Lasso 120"], ["lasso60", "Lasso 60"], ["lasso27", "Lasso 27"]], MT.model, v => { MT.model = v; drawMetrics(); });

@@ -15,7 +15,7 @@ the chapter that develops it.
 | Run | Experiments | Hashes |
 |---|---|---|
 | [20261116-220131_s9-explore-narrative](../outputs/qaemb/runs/20261116-220131_s9-explore-narrative/report.md) | `D1_train` (all 1,000 beta images), `I1_claude_max` (images shrunk only, to at most 3.6 MP), `Q0_orig` (500 questions as written plus the control question, no negations), `M_topic` (one prompt per topic), `ANS_claude_sonnet` (Claude Sonnet 5.5 through the Batch API, effort low), `G1` (whole image), `R1` (replicate 1). Stage `explore`. | explore `81acb51f0bca` |
-| [20261119-151359_s9-narrative-bench](../outputs/qaemb/runs/20261119-151359_s9-narrative-bench/report.md) (current page) | the same seven experiments. Stage `explore`, version 7, now also reading S13 bench `84d7b6fd7f04` directly. | explore `05ed2d9809e6` |
+| [20261119-152941_s9-narrative-nm-expand2](../outputs/qaemb/runs/20261119-152941_s9-narrative-nm-expand2/report.md) (current page; first built in `20261119-151359_s9-narrative-bench`) | the same seven experiments. Stage `explore`, version 7, now also reading S13 bench `84d7b6fd7f04` directly. | explore `05542ab46676` |
 
 The data on the page are identical to those of the explorer built in run `20261116-211352_s9-explore-cutoffs` (explore
 `a887c4d68972`); we checked that the embedded payloads match apart from the run hash. Nothing was recomputed: the page
@@ -104,10 +104,12 @@ the explorer's maps.
   SkinGPT-R1's prespecified last layer (layer 28, image tokens) and its vision encoder, each with ridge, SkinGPT-R1's
   zero-shot diagnosis, and the direct question. A button at the top right of each figure (outside the table, so a
   screenshot of the table can leave it out) shows the rest: layers 21 and 14, the last-token embedding, the diagnosis
-  readout and, in Table 3.8, the lasso models. Bold best values are recomputed over the rows shown.
+  readout and, in Table 3.8, the lasso models. The same button adds naevus against melanoma as a task: a fourth panel in
+  Fig. 3.3 (fold scores in `bench_folds.csv`, column `auroc_nm`, checked against S11), its table in Tables 3.4 and 3.5,
+  and its option in Table 3.8. Bold best values are recomputed over the rows shown.
 - **Sub-navigation.** A second row under the tab bar lists the open chapter's sections, figures, tables and supplements;
   it marks the one in view.
-- **Naevus against melanoma** is no longer a task in Ch. III (Tables 3.4, 3.5 and 3.8 drop it). In Ch. IV it is a closed
+- **Naevus against melanoma** is no longer shown by default in Ch. III; it appears only in the expanded view (above). In Ch. IV it is a closed
   supplement rather than part ii, and the overview no longer quotes it. This follows the decision that it was a
   differentiation check for the dermatologist, not a result of the paper. The figures themselves are unchanged.
 - Ch. III renumbered: Fig. 3.3 is new, and the old Tables 3.3 to 3.7 are now 3.4 to 3.8.
